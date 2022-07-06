@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Maximisation techniques | MAS5052 Part 2: Likelihood and Linear Models</title>
+  <meta name="description" content="Lecture notes for MAS5052" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Maximisation techniques | MAS5052 Part 2: Likelihood and Linear Models" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Lecture notes for MAS5052" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Maximisation techniques | MAS5052 Part 2: Likelihood and Linear Models" />
+  
+  <meta name="twitter:description" content="Lecture notes for MAS5052" />
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2022-07-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="models-and-data.html"/>
+<link rel="next" href="likelihood-for-confidence-intervals-and-hypothesis-tests.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS5052 Part 2</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About these notes</a></li>
+<li class="part"><span><b>I Likelihood methods</b></span></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introducing likelihood methods</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#recap-maximising-functions"><i class="fa fa-check"></i><b>1.1</b> Recap: maximising functions</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#maximum-likelihood-estimation-a-first-example"><i class="fa fa-check"></i><b>1.2</b> Maximum likelihood estimation: a first example</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introducing-the-likelihood-function.html"><a href="introducing-the-likelihood-function.html"><i class="fa fa-check"></i><b>2</b> Introducing the likelihood function</a></li>
+<li class="chapter" data-level="3" data-path="models-and-data.html"><a href="models-and-data.html"><i class="fa fa-check"></i><b>3</b> Models and data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="models-and-data.html"><a href="models-and-data.html#data-notation"><i class="fa fa-check"></i><b>3.1</b> Data: notation</a></li>
+<li class="chapter" data-level="3.2" data-path="models-and-data.html"><a href="models-and-data.html#models-and-parameters"><i class="fa fa-check"></i><b>3.2</b> Models and parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="models-and-data.html"><a href="models-and-data.html#likelihood-functions-for-i.i.d-data"><i class="fa fa-check"></i><b>3.3</b> Likelihood functions for i.i.d data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html"><i class="fa fa-check"></i><b>4</b> Maximisation techniques</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#log-likelihood"><i class="fa fa-check"></i><b>4.1</b> Log-likelihood</a></li>
+<li class="chapter" data-level="4.2" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#discrete-parameters"><i class="fa fa-check"></i><b>4.2</b> Discrete parameters</a></li>
+<li class="chapter" data-level="4.3" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#multi-parameter-problems"><i class="fa fa-check"></i><b>4.3</b> Multi-parameter problems</a></li>
+<li class="chapter" data-level="4.4" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#using-a-computer"><i class="fa fa-check"></i><b>4.4</b> Using a computer</a></li>
+<li class="chapter" data-level="4.5" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#a-warning-example"><i class="fa fa-check"></i><b>4.5</b> A warning example</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><i class="fa fa-check"></i><b>5</b> Likelihood for confidence intervals and hypothesis tests</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#confidence-intervals"><i class="fa fa-check"></i><b>5.1</b> Confidence intervals</a></li>
+<li class="chapter" data-level="5.2" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#hypothesis-tests"><i class="fa fa-check"></i><b>5.2</b> Hypothesis tests</a></li>
+<li class="chapter" data-level="5.3" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#a-more-formal-approach"><i class="fa fa-check"></i><b>5.3</b> A more formal approach</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#asymptotic-normality-of-the-maximum-likelihood-estimator"><i class="fa fa-check"></i><b>5.3.1</b> Asymptotic normality of the maximum likelihood estimator</a></li>
+<li class="chapter" data-level="5.3.2" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#confidence-intervals-based-on-asymptotic-normality"><i class="fa fa-check"></i><b>5.3.2</b> Confidence intervals based on asymptotic normality</a></li>
+<li class="chapter" data-level="5.3.3" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#the-generalised-likelihood-ratio-test"><i class="fa fa-check"></i><b>5.3.3</b> The generalised likelihood ratio test</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Linear Models</b></span></li>
+<li class="chapter" data-level="6" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html"><i class="fa fa-check"></i><b>6</b> Introducing linear models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#example-relationship-between-temperature-and-ozone"><i class="fa fa-check"></i><b>6.1</b> Example: relationship between temperature and ozone</a></li>
+<li class="chapter" data-level="6.2" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#notation-and-terminology"><i class="fa fa-check"></i><b>6.2</b> Notation and terminology</a></li>
+<li class="chapter" data-level="6.3" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#example-suspected-electoral-fraud"><i class="fa fa-check"></i><b>6.3</b> Example: suspected electoral fraud</a></li>
+<li class="chapter" data-level="6.4" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#definition-of-a-linear-model"><i class="fa fa-check"></i><b>6.4</b> Definition of a linear model</a></li>
+<li class="chapter" data-level="6.5" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#the-simple-linear-regression-model"><i class="fa fa-check"></i><b>6.5</b> The simple linear regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>7</b> Parameter estimation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="parameter-estimation.html"><a href="parameter-estimation.html#least-squares-estimation"><i class="fa fa-check"></i><b>7.1</b> Least squares estimation</a></li>
+<li class="chapter" data-level="7.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html#assumptions-for-least-squares"><i class="fa fa-check"></i><b>7.2</b> Assumptions for least squares</a></li>
+<li class="chapter" data-level="7.3" data-path="parameter-estimation.html"><a href="parameter-estimation.html#relationship-with-maximum-likelihood-estimation"><i class="fa fa-check"></i><b>7.3</b> Relationship with maximum likelihood estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html#estimating-sigma2"><i class="fa fa-check"></i><b>7.4</b> Estimating <span class="math inline">\(\sigma^2\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html"><i class="fa fa-check"></i><b>8</b> Matrix notation for linear models</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#least-squares-estimates-in-matrix-form"><i class="fa fa-check"></i><b>8.1</b> Least squares estimates in matrix form</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#example-fitting-a-polynomial-regression-model"><i class="fa fa-check"></i><b>8.1.1</b> Example: fitting a polynomial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#estimate-of-sigma2-in-matrix-form"><i class="fa fa-check"></i><b>8.2</b> Estimate of <span class="math inline">\(\sigma^2\)</span> in matrix form</a></li>
+<li class="chapter" data-level="8.3" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#derivation-of-hatbeta"><i class="fa fa-check"></i><b>8.3</b> Derivation of <span class="math inline">\(\hat{\beta}\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html"><i class="fa fa-check"></i><b>9</b> Fitting a linear model in R</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html#plotting-a-fitted-regression-line"><i class="fa fa-check"></i><b>9.1</b> Plotting a fitted regression line</a></li>
+<li class="chapter" data-level="9.2" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html#the-summary-command"><i class="fa fa-check"></i><b>9.2</b> The <code>summary()</code> command</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html"><i class="fa fa-check"></i><b>10</b> Qualitative independent variables</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#example-cancer-survival-data"><i class="fa fa-check"></i><b>10.1</b> Example: cancer survival data</a></li>
+<li class="chapter" data-level="10.2" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#a-linear-model-for-the-cancer-data"><i class="fa fa-check"></i><b>10.2</b> A linear model for the cancer data</a></li>
+<li class="chapter" data-level="10.3" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#notation-for-qualitative-independent-variables"><i class="fa fa-check"></i><b>10.3</b> Notation for qualitative independent variables</a></li>
+<li class="chapter" data-level="10.4" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#the-one-way-anova-model-in-matrix-form"><i class="fa fa-check"></i><b>10.4</b> The one-way ANOVA model in matrix form</a></li>
+<li class="chapter" data-level="10.5" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#least-squares-estimates-for-the-one-way-anova-model"><i class="fa fa-check"></i><b>10.5</b> Least squares estimates for the one-way ANOVA model</a></li>
+<li class="chapter" data-level="10.6" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#fitting-a-one-way-anova-model-in-r"><i class="fa fa-check"></i><b>10.6</b> Fitting a one-way ANOVA model in R</a></li>
+<li class="chapter" data-level="10.7" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#an-alternative-parameterisation"><i class="fa fa-check"></i><b>10.7</b> An alternative parameterisation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html"><i class="fa fa-check"></i><b>11</b> Multiple independent variables</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html#causation-versus-association"><i class="fa fa-check"></i><b>11.1</b> Causation versus association</a></li>
+<li class="chapter" data-level="11.2" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html#analysis-of-covariance"><i class="fa fa-check"></i><b>11.2</b> Analysis of Covariance</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="using-linear-models-for-prediction.html"><a href="using-linear-models-for-prediction.html"><i class="fa fa-check"></i><b>12</b> Using linear models for prediction</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="using-linear-models-for-prediction.html"><a href="using-linear-models-for-prediction.html#obtaining-predictions-in-r"><i class="fa fa-check"></i><b>12.1</b> Obtaining predictions in R</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS5052 Part 2: Likelihood and Linear Models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="maximisation-techniques" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Maximisation techniques<a href="maximisation-techniques.html#maximisation-techniques" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<script type="text/javascript">
+$(document).ready(function() {
+  $folds = $(".fold");
+  $folds.wrapInner("<div class=\"fold-blck\">"); // wrap a div container around content
+  $folds.prepend("<button class=\"fold-btn\">Show solution</button>");  // add a button
+  $(".fold-blck").toggle();  // fold all blocks
+  $(".fold-btn").on("click", function() {  // add onClick event
+    $(this).text($(this).text() === "Show solution" ? "Hide solution" : "Show solution");  // if the text equals "Fold", change it to "Unfold"or else to "Fold" 
+    $(this).next(".fold-blck").toggle("linear");  // "swing" is the default easing function. This can be further customized in its speed or the overall animation itself.
+  })
+});
+</script>
+<p>Maximum likelihood estimation comes down to a maximisation
+problem. Whether this is easy or difficult depends on (a) the
+statistical model we use in the form
+<span class="math inline">\(f_{\mathbf{X}}(\mathbf{x};\boldsymbol\theta)\)</span> and (b) the parameter vector
+<span class="math inline">\(\boldsymbol{\theta}\)</span>. One-parameter problems are clearly easier
+to handle and in many cases multi-parameter problems require the
+use of numerical maximisation techniques.</p>
+<div id="log-likelihood" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Log-likelihood<a href="maximisation-techniques.html#log-likelihood" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When maximising <span class="math inline">\(L(\boldsymbol{\theta};\mathbf{x})\)</span> it is usually
+easier to work with the logarithm of the likelihood instead of the
+likelihood itself. In this course we always work with natural
+logarithms. These work well when dealing with the many standard
+distributions whose p.d.f.s include an exponential term.</p>
+<hr>
+<div class="definition">
+<p><span id="def:defLogLikelihood" class="definition"><strong>Definition 4.1  (Log likelihood) </strong></span><br>
+Given a likelihood function <span class="math inline">\(L(\boldsymbol\theta;\mathbf{x})\)</span>, the
+<strong>log-likelihood function</strong> is
+<span class="math display">\[
+\ell (\boldsymbol{\theta};\mathbf{x})=\log
+L(\boldsymbol{\theta};\mathbf{x}).
+\]</span></p>
+</div>
+<div class="rmdnote">
+<p>You may be used to reading <span class="math inline">\(\log x\)</span> as “log base 10 of <span class="math inline">\(x\)</span>.” In statistics, the convention is to read <span class="math inline">\(\log x\)</span> as “log base <span class="math inline">\(e\)</span> of <span class="math inline">\(x\)</span>.” In R, <code>log(x)</code> will use base <span class="math inline">\(e\)</span>.</p>
+</div>
+<hr>
+<p>Maximising <span class="math inline">\(\ell(\boldsymbol{\theta};\mathbf{x})\)</span> over
+<span class="math inline">\(\boldsymbol{\theta}\in\Theta\)</span> produces the same estimator
+<span class="math inline">\(\widehat{\boldsymbol\theta}\)</span> as maximising <span class="math inline">\(L(\boldsymbol\theta;\mathbf{x})\)</span>, because the
+function <span class="math inline">\(\log(\cdot)\)</span> is strictly increasing. However, maximising <span class="math inline">\(\ell\)</span> is usually easier!</p>
+<p>Using the log-likelihood is by far the most important maximisation technique. Part of the reason is that <span class="math inline">\(\log(ab)=\log(a)+\log(b)\)</span>, so in the case of i.i.d. data points, we have
+<span class="math display">\[\ell(\boldsymbol\theta;\mathbf{x})=\log(L(\boldsymbol\theta;\mathbf{x}))=\log\left(\prod\limits_{i=1}^nf(x_i;\boldsymbol\theta)\right)=\sum\limits_{i=1}^n\log(f(x_i;\boldsymbol\theta)).\]</span>
+Using <span class="math inline">\(\ell\)</span> instead of <span class="math inline">\(L\)</span> changes the <span class="math inline">\(\prod\)</span> into a <span class="math inline">\(\sum\)</span>, and it is usually easier to work with a sum than a product.</p>
+<div class="example">
+<p><span id="exm:exampleMLEdna" class="example"><strong>Example 4.1  (Maximum likelihood estimation through log-likelihood: mutations in DNA.) </strong></span><br></p>
+</div>
+<p>When organisms reproduce, the DNA (or RNA) of the offspring is a combination of the DNA of its (one, or two) parents. Additionally, the DNA of the offspring contains a small number of locations in which it differs from its parent(s). These locations are called ‘mutations.’</p>
+<p>The number of mutations per unit length of DNA is typically modelled using a Poisson distribution<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, with an unknown parameter <span class="math inline">\(\theta\in(0,\infty)\)</span>. The numbers of mutations found in disjoint sections of DNA are independent.</p>
+<p>Using this model, find the likelihood function for the number of mutations present in a sample of <span class="math inline">\(n\)</span> (disjoint) strands of DNA, each of which has unit length.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>Let <span class="math inline">\(X_i\)</span> be the number of mutations in the <span class="math inline">\(i^{th}\)</span> strand of DNA. So, under our model,
+<span class="math display">\[f_{X_i}(x_i;\theta)=\frac{e^{-\theta}\theta^{x_i}}{(x_i)!}\]</span>
+for <span class="math inline">\(x_i\in\{0,1,2,\ldots\}\)</span>, and <span class="math inline">\(f_{X_i}(x_i)=0\)</span> if <span class="math inline">\(x_i\notin\mathbb{N}\cup\{0\}\)</span>.
+Since we assume the <span class="math inline">\((X_i)\)</span> are independent, the joint distribution of <span class="math inline">\(\mathbf{X}=(X_1,X_2,\ldots,X_n)\)</span> has probability mass function
+<span class="math display">\[\begin{align*}
+f_{\mathbf{X}}(\mathbf{x})&amp;=
+\prod\limits_{i=1}^n\frac{e^{-\theta}\theta^{x_i}}{(x_i)!} \\
+&amp;=
+\frac{1}{(x_1)!(x_2)!\ldots (x_n)!}e^{-n\theta}\theta^{\sum_1^n x_i}
+\end{align*}\]</span>
+provided all <span class="math inline">\(x_i\in\mathbb{N}\cup\{0\}\)</span>, and zero otherwise. Therefore, our likelihood function is
+<span class="math display">\[L(\theta;\mathbf{x})=\frac{1}{(x_1)!(x_2)!\ldots (x_n)!}e^{-n\theta}\theta^{\sum_1^n x_i}.\]</span>
+The range of possible values for <span class="math inline">\(\theta\)</span> is <span class="math inline">\(\Theta=(0,\infty)\)</span>.</p>
+</div>
+<p>Let <span class="math inline">\(\mathbf{x}\)</span> be a vector of data, where <span class="math inline">\(x_i\)</span> is the number of mutations observed in a (distinct) unit length segment of DNA. Suppose that at least one of the <span class="math inline">\(x_i\)</span> is non-zero.</p>
+<p>Find the corresponding log-likelihood function, and hence find the maximum likelihood estimator of <span class="math inline">\(\theta\)</span>.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>The log-likelihood function is <span class="math inline">\(\ell(\theta;\mathbf{x})=\log L(\theta;\mathbf{x})\)</span>, so
+<span class="math display">\[\begin{align*}
+\log L(\theta,\mathbf{x})
+&amp;=\log\left(\frac{1}{(x_1)!(x_2)!\ldots (x_n)!}e^{-n\theta}\theta^{\sum_1^n x_i}\right)\\
+&amp;=\sum\limits_{i=1}^n(-\log (x_i)!) -n\theta + (\log \theta)\sum\limits_{i=1}^n x_i.
+\end{align*}\]</span>
+We now look to maximise <span class="math inline">\(l(\theta;\mathbf{x})\)</span>, over <span class="math inline">\(\theta\in(0,\infty)\)</span>. Differentiating, we obtain
+<span class="math display">\[\frac{d\ell}{d\theta}=-n+\frac{1}{\theta}\sum\limits_{i=1}^n x_i.\]</span>
+Note that this is much simpler than what we’d get if we differentiated <span class="math inline">\(L(\theta;\mathbf{x})\)</span>.
+So, the only turning point of <span class="math inline">\(\ell(\theta,\mathbf{x})\)</span> is at <span class="math inline">\(\theta=\frac{1}{n}\sum_{i=1}^nx_i\)</span>.
+Differentiating again, we have
+<span class="math display">\[\frac{d^2\ell}{d\theta^2}=-\frac{1}{\theta^2}\sum\limits_{i=1}^nx_i.\]</span>
+Since our <span class="math inline">\(x_i\)</span> are counting the occurrences of mutations, <span class="math inline">\(x_i\geq 0\)</span>, and since at least one is non-zero we have <span class="math inline">\(\frac{d^2l}{d\theta^2}&lt;0\)</span> (for all <span class="math inline">\(\theta\)</span>). Hence, our turning point is a maximum and, since it is the only maximum, is also the global maximum. Therefore, the maximum likelihood estimator of <span class="math inline">\(\theta\)</span> is
+<span class="math display">\[\hat\theta=\frac{1}{n}\sum\limits_{i=1}^nx_i.\]</span></p>
+</div>
+<p>Mutations rates were measured, for 11 HIV patients, and there were found to be
+<span class="math display">\[\begin{align*}
+&amp;\mathbf{x}=\Big\{19,\, 16,\, 37,\, 28,\, 24,\, 34,\, 37,\, 126,\, 32,\, 48,\, 45\Big\}
+\end{align*}\]</span>
+mutations per <span class="math inline">\(10^4\)</span> possible locations (i.e.~`per unit length’). This data comes from the article Cuevas et al. (2015)<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
+<p>Assuming the model suggested above, calculate the maximum likelihood estimator of the mutation rate of HIV.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>The data has
+<span class="math display">\[\bar{x}=\frac{1}{11}\sum\limits_{i=1}^{11}x_i=\frac{446}{11}\approx 41\]</span>
+so we conclude that the maximum likelihood estimator of the mutation rate <span class="math inline">\(\theta\)</span>, given this data, is <span class="math inline">\(\hat\theta=\frac{446}{11}.\)</span></p>
+</div>
+</div>
+<div id="discrete-parameters" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Discrete parameters<a href="maximisation-techniques.html#discrete-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When we maximise <span class="math inline">\(L(\boldsymbol{\theta};\mathbf{x})\)</span> (or <span class="math inline">\(\ell(\boldsymbol\theta;\mathbf{x})\)</span>), we need
+to be careful to keep <span class="math inline">\(\boldsymbol\theta\)</span> within the parameter set <span class="math inline">\(\Theta\)</span>. In most of the
+examples we will meet in this module <span class="math inline">\(\boldsymbol{\theta}\)</span> will be
+continuous and so we can use
+differentiation to obtain the maximum. However, in some cases, such as the next example, the possible values of
+<span class="math inline">\(\boldsymbol{\theta}\)</span> may be discrete (i.e. <span class="math inline">\(\Theta\)</span> is a discrete
+set) and in such cases we cannot use differentiation. Instead, we just check each value of <span class="math inline">\(\boldsymbol\theta\)</span> in turn and find out which <span class="math inline">\(\boldsymbol\theta\)</span> gives the biggest <span class="math inline">\(L(\boldsymbol\theta;\mathbf{x})\)</span>.</p>
+<div class="example">
+<p><span id="exm:exampleMLEdiscrete" class="example"><strong>Example 4.2  (Maximum likelihood estimation for discrete parameters: mass spectroscopy.) </strong></span><br></p>
+</div>
+<p>Using a mass spectrometer, it is possible to measure the mass<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>
+of individual molecules. For example, it is possible to measure the masses of individual amino acid molecules.</p>
+<p>A sample of <span class="math inline">\(15\)</span> amino acid molecules, which are all known to be of the same type (and therefore, the same mass), were reported to have masses
+<span class="math display">\[\begin{align*}
+&amp;\mathbf{x}=\{
+65.76,\, 
+140.40,\, 
+94.02,\, 
+32.23,\, 
+115.00,\, 
+4.77,\, 
+116.00,\, 
+86.41,\,
+\\
+&amp;
+91.14,\, 
+66.27,\, 
+91.00,\, 
+144.7.\, 
+39.33,\, 
+58.90
+\}.
+\end{align*}\]</span>
+It is known that these molecules are either Alanine, which has mass <span class="math inline">\(71.0\)</span>, or Leucine, which has mass <span class="math inline">\(113.1\)</span>. Given a molecule of mass <span class="math inline">\(\theta\)</span>, the spectrometer is known to report its mass as <span class="math inline">\(X\sim N(\theta,35^2)\)</span>, independently for each molecule.</p>
+<p>Using this model, and the data above, find the likelihoods of Alanine and Leucine. Specify which of these has the greatest the likelihood.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>Our model, for the reported mass <span class="math inline">\(X\)</span> of a single molecule with (real) weight <span class="math inline">\(\theta\)</span>, is <span class="math inline">\(X\sim N(0,35^2)\)</span>. Therefore, <span class="math inline">\(X_i\sim N(\theta,35^2)\)</span> and the p.d.f. of a single data point is
+<span class="math display">\[f_{X_i}(x_i)=\frac{1}{\sqrt{2\pi}35}\exp\left(-\frac{(x_i-\theta)^2}{2\times 35^2}\right).\]</span>
+Therefore, the p.d.f. of the reported masses <span class="math inline">\(\mathbf{X}=(X_1,\ldots,X_n)\)</span> of <span class="math inline">\(n\)</span> molecules is
+<span class="math display">\[f_{\mathbf{X}}(x)=\prod\limits_{i=1}^n f_{X_i}(x_i)=\frac{1}{(2\pi)^{n/2}35^n}\exp\left(-\frac{1}{2450}\sum\limits_{i=1}^n(x_i-\theta)^2\right).\]</span>
+We know that, in reality, <span class="math inline">\(\theta\)</span> must be one of only two different values; 71.0 (for Alanine) and 113.1 (for Leucine). Therefore, our likelihood function is
+<span class="math display">\[L(\theta; \mathbf{x})=\frac{1}{(2\pi)^{n/2}35^n}\exp\left(-\frac{1}{2450}\sum\limits_{i=1}^n(x_i-\theta)^2\right)\]</span>
+and the possible range of values for <span class="math inline">\(\theta\)</span> is the two point set <span class="math inline">\(\Theta=\{71.0,113.1\}\)</span>. We need to find out which of these two values maximises the likelihood.</p>
+<p>Our data <span class="math inline">\(\mathbf{x}\)</span> contains <span class="math inline">\(n=15\)</span> data points. A short calculation shows that
+<span class="math display">\[\frac{1}{2450}\sum\limits_{i=1}^{15}(x_i-71.0)^2\approx 12.70,\hspace{3pc}\frac{1}{2450}\sum\limits_{i=1}^{15}(x_i-113.1)^2\approx 20.41.\]</span>
+and, therefore, that
+<span class="math display">\[L(71.0;\mathbf{x})\approx 2.19\times 10^{-34}, \hspace{3pc}L(113.1;\mathbf{x})=9.90\times 10^{-38}.\]</span>
+We conclude that <span class="math inline">\(\theta=71.0\)</span> has (much) greater likelihood than <span class="math inline">\(\theta=113.1\)</span>, so we expect that the molecules sampled are Alanine.</p>
+<p>Note that, if we were to differentiate (as we did in other examples), we would find the maximiser <span class="math inline">\(\theta\)</span> for <span class="math inline">\(L(\theta;\mathbf{x})\)</span>  <span class="math inline">\(\theta\in(-\infty,\infty)\)</span>, which turns out to be <span class="math inline">\(\theta=81.07\)</span>. This is not what we want here! The design of our experiment has meant that the range of possible values for <span class="math inline">\(\theta\)</span> is restricted to the two point set <span class="math inline">\(\Theta=\{71.0,113.1\}.\)</span></p>
+</div>
+</div>
+<div id="multi-parameter-problems" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Multi-parameter problems<a href="maximisation-techniques.html#multi-parameter-problems" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For multi-parameter problems, where <span class="math inline">\(\boldsymbol{\theta}\)</span> is a
+vector, a similar procedure can be followed. Here for simplicity
+we consider only the case where there are 2 parameters (so that
+<span class="math inline">\(\boldsymbol{\theta}\)</span> is a <span class="math inline">\(2\times 1\)</span> vector) and write
+<span class="math inline">\(\boldsymbol{\theta}=(\theta_1,\theta_2)\)</span>. Now we find a
+stationary point
+<span class="math inline">\(\widehat{\boldsymbol{\theta}}=(\widehat{\theta}_1,\widehat{\theta}_2)\)</span>
+of the log-likelihood by solving the simultaneous equations
+<span class="math display" id="eq:2dturningpoints">\[\begin{equation}
+\frac{\partial \ell(\boldsymbol{\theta},\mathbf{x})}{\partial
+\theta_1}=0,\quad \frac{\partial
+\ell(\boldsymbol{\theta},\mathbf{x})}{\partial
+\theta_2}=0.\tag{4.1}
+\end{equation}\]</span>
+These equations are the analogue of the one parameter case in which we solve <span class="math inline">\(\frac{df}{dx}=0\)</span>.<br />
+In two dimensions and higher, the turning points that we find may be maxima or minima, or saddle points.</p>
+<p>To check that a turning point is a (local) maximum, we again have to consider second derivatives. First we calculate the so called
+<strong>Hessian matrix</strong>:
+<span class="math display">\[
+H=\left(\begin{array}{cc} 
+\dfrac {\partial^2 \ell(\boldsymbol{\theta};\mathbf{x})}{\partial \theta_1^2 } &amp;
+\dfrac {\partial^2 \ell(\boldsymbol{\theta};\mathbf{x})}{\partial \theta_1 \partial \theta_2 }\\
+\dfrac {\partial^2 \ell(\boldsymbol{\theta};\mathbf{x})}{\partial \theta_1\partial \theta_2} &amp; 
+\dfrac {\partial^2 \ell(\boldsymbol{\theta};\mathbf{x})}{\partial \theta_2^2 }
+\end{array}\right)
+\]</span>
+and then we evaluate <span class="math inline">\(H\)</span> at
+<span class="math inline">\(\boldsymbol{\theta}=\widehat{\boldsymbol{\theta}}\)</span>, where
+<span class="math inline">\(\widehat{\boldsymbol{\theta}}\)</span> is the stationary point we found
+using <a href="maximisation-techniques.html#eq:2dturningpoints">(4.1)</a>.</p>
+<p>In the 2 variable case we can use a fact from multi-variable calculus: if
+<span class="math display" id="eq:2dnegdef">\[\begin{equation}
+\frac{\partial^2
+\ell(\boldsymbol{\theta};\mathbf{x})}{\partial \theta_1^2}\bigg{|}_{\boldsymbol\theta=\widehat{\boldsymbol\theta}}&lt;0
+\hspace{1pc}\text{ and }\hspace{1pc}
+\det H\;\Big{|}_{\boldsymbol\theta=\widehat{\boldsymbol\theta}}&gt;0 \tag{4.2}
+\end{equation}\]</span>
+then we can conclude that our turning point is a local maximum.</p>
+<div class="example">
+<p><span id="exm:exampleMLE2D" class="example"><strong>Example 4.3  (Multi-parameter maximum likelihood estimation (rainfall).) </strong></span><br></p>
+</div>
+<p>Find the maximum likelihood estimator of the parameter
+vector <span class="math inline">\(\boldsymbol{\theta}=(\mu,\sigma^2)\)</span> when the data
+<span class="math inline">\(\mathbf{x}=(x_1,x_2,\ldots,x_n)\)</span> are modelled as i.i.d. samples from a normal
+distribution <span class="math inline">\(N(\mu,\sigma^2)\)</span>.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>Our parameter vector is <span class="math inline">\(\boldsymbol\theta=(\mu,\sigma^2)\)</span>, so let us write <span class="math inline">\(v=\sigma^2\)</span> to avoid confusion. As a result, we are interested in the parameters <span class="math inline">\(\boldsymbol\theta=(\mu,v)\)</span>, and the range of possible values of <span class="math inline">\(\boldsymbol\theta\)</span> is <span class="math inline">\(\Theta=\mathbb{R}\times(0,\infty)\)</span>.</p>
+<p>The p.d.f. of the univariate normal distribution <span class="math inline">\(N(\mu,v)\)</span> is
+<span class="math display">\[f_X(x)=\frac{1}{\sqrt{2\pi v}}e^{-(x-\mu)^2/2v}.\]</span>
+Writing <span class="math inline">\(\mathbf{X}=(X_1,\ldots,X_n)\)</span>, where the <span class="math inline">\(X_i\)</span> are i.i.d.~univariate <span class="math inline">\(N(\mu,v)\)</span> random variables, the likelihood function of <span class="math inline">\(\mathbf{X}\)</span> is
+<span class="math display">\[L(\boldsymbol{\theta};\mathbf{x})=f_\mathbf{X}(\mathbf{x})=\frac{1}{(2\pi v)^{n/2}}
+\exp\left(-\frac{1}{2v}\sum_{i=1}^n(x_i-\mu)^2\right).\]</span>
+Therefore, the log likelihood is
+<span class="math display">\[\ell(\boldsymbol{\theta};\mathbf{x}) =
+-\frac{n}{2}\left(\log(2\pi)+\log(v)\right)-
+\frac{1}{2v}\sum_{i=1}^n(x_i-\mu)^2.\]</span></p>
+<p>We now look to maximise <span class="math inline">\(\ell(\boldsymbol{\theta};\mathbf{x})\)</span> over <span class="math inline">\(\boldsymbol\theta\in\Theta\)</span>. The partial derivatives are
+<span class="math display">\[\begin{align*}
+\frac{\partial \ell}{\partial \mu} 
+&amp;= \frac{1}{v}\sum_{i=1}^n (x_i-\mu)=\frac{1}{v}\left( \sum_{i=1}^n x_i -n\mu\right) \\
+\frac{\partial \ell}{\partial v} 
+&amp;= -\frac{n}{2v}+\frac{1}{2v^2} \sum_{i=1}^n(x_i-\mu)^2.
+\end{align*}\]</span></p>
+<p>Solving <span class="math inline">\(\frac{\partial \ell}{\partial \mu}=0\)</span> gives
+<span class="math inline">\(\mu=\frac1n\sum_{i=1}^n x_i =\bar{x}\)</span>. Solving
+<span class="math inline">\(\frac{\partial \ell}{\partial v}=0\)</span> gives <span class="math inline">\(v=\frac1n\sum_{i=1}^n (x_i-\mu)^2\)</span>. So both partial derivatives will be zero if and only if
+<span class="math display">\[\begin{equation}
+\label{eq:normal_2param_turning_point}
+\mu = \bar{x},\hspace{4pc}
+v = \frac1n\sum_{i=1}^n (x_i-\bar{x})^2.
+\end{equation}\]</span>
+This gives us the value of <span class="math inline">\(\theta=(\mu,v)\)</span> at the (single) turning point of <span class="math inline">\(\ell\)</span>.</p>
+<p>Next, we use the Hessian matrix to check if this point is a local maximum. We have
+<span class="math display">\[\begin{align*} 
+\frac{\partial^2 \ell}{\partial \mu^2} 
+&amp;= -\frac{n}{v} \\ 
+\frac{\partial^2 \ell}{\partial \mu\partial v} 
+&amp;= \frac{-1}{v^2}\left( \sum_{i=1}^n x_i -n\mu\right) \\ 
+\frac{\partial^2 \ell}{\partial v^2} 
+&amp;= \frac{n}{2v^2}-\frac{1}{v^3}\sum_{i=1}^n(x_i-\mu)^2
+\end{align*}\]</span></p>
+<p>Evaluating these at our turning point, we get
+<span class="math display">\[\begin{align*} 
+\left.\frac{\partial^2 \ell}{\partial \mu^2}\right|_{\widehat{\boldsymbol{\theta}}} 
+&amp;= -\frac{n}{\hat{v}} \\
+\left.\frac{
+\partial^2 \ell}{\partial \mu\partial v} \right|_{\widehat{\boldsymbol{\theta}}}
+&amp;= \frac{-1}{v^2} \left( \sum_{i=1}^n x_i -n\bar{x}\right)=0 \\
+\left.\frac{\partial^2 \ell}{\partial v^2}\right|_{\widehat{\boldsymbol{\theta}}}
+ &amp;=
+ \frac{n}{2v^2}-\frac{1}{v^3}\sum_{i=1}^n(x_i-\bar{x})^2=
+ \frac{n}{2v^2}-\frac{1}{v^3}n\hat{v}=\frac{-n}{2v^2}
+\end{align*}\]</span>
+so
+<span class="math display">\[H=\begin{pmatrix}-\frac{n}{v} &amp; 0 \\ 0 &amp;
+\frac{-n}{2v^2}\end{pmatrix}.\]</span>
+Since <span class="math inline">\(-\frac{n}{v}&lt;0\)</span> and <span class="math inline">\(\det H=\frac{n^2}{2v^3}&gt;0\)</span>, our turning point  is a local maximum. Since it is the only turning point, it is also the global maximum.
+Hence, the MLE is
+<span class="math display">\[\begin{align*}
+\hat{\mu} &amp;= \bar{x} \\
+\hat{\sigma}^2=\hat{v} &amp;= \frac1n\sum_{i=1}^n (x_i-\bar{x})^2.
+\end{align*}\]</span></p>
+<p>Note <span class="math inline">\(\hat{\mu}\)</span> is the sample mean, and <span class="math inline">\(\hat{\sigma}^2\)</span> is
+the (biased) sample variance.</p>
+</div>
+<p>For the years 1985-2015, the amount of rainfall (in millimetres) recorded as falling on Sheffield in December is as follows:
+<span class="math display">\[\begin{align*}
+&amp;\{78.0,\,
+142.3, \,
+38.2, \,
+36.0, \,
+159.1, \,
+136.0, \,
+78.4, \,
+67.4, \,
+171.4,\\
+&amp; 103.9, \,
+70.4, \,
+98.2, \,
+79.4,\,
+57.9, \,
+135.6, \,
+118.0, \,
+28.0, \,
+129.8, \\
+&amp; 106.5, \,
+46.3, \,
+56.7, \,
+114.0, \,
+74.9, \,
+52.8, \,
+66.1, \,
+18.8, \,
+124.6,\,
+136.0, \\
+&amp; 69.8, \,
+102.0, \,
+121.2\}.
+\end{align*}\]</span>
+Denoting the observed rainfall in the <span class="math inline">\(i\)</span>th year by <span class="math inline">\(x_i\)</span>, we have
+<span class="math display">\[\bar{x}=\frac{1}{30}\sum\limits_{i=1}^{30}\approx 93.9,\hspace{3pc}\frac{1}{30}\sum\limits_{i=1}^{30}(x_i-\bar{x})^2\approx1631.2\approx40.4^2\]</span></p>
+<p>This data comes from the historical climate data stored by the Met Office.</p>
+<p>Meteorologists often model the long run distribution of rainfall by a normal distribution (although in some cases the Gamma distribution is used). Assuming that we choose to model the amount of rainfall in Sheffield each December by a normal distribution,
+find the maximum likelihood estimators for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>The data has <span class="math inline">\(n=30\)</span>, and
+<span class="math display">\[\bar{x}=\frac{1}{30}\sum\limits_{i=1}^{30}\approx 93.9,\hspace{3pc}\frac{1}{30}\sum\limits_{i=1}^{30}(x_i-\bar{x})^2\approx1631.2\approx40.4^2\]</span>
+So we conclude that, according to our model, the maximum likelihood estimators are <span class="math inline">\(\hat\mu\approx 93.9\)</span> and <span class="math inline">\(\hat{\sigma^2}\approx 40.4^2\)</span>, which means that Sheffield receives a
+<span class="math inline">\(N(93.9,40.4^2)\)</span>
+quantity of rainfall, in millimetres, each December.</p>
+</div>
+<p><br></p>
+<p>In the general multivariate case, to check that a turning point is a local maxima we should check that <span class="math inline">\(H\)</span>, when evaluated at the turning point, is a negative definite matrix. This fact is outside of the scope of our course, but we mention it here for completeness.</p>
+<p>A negative definite <span class="math inline">\(k\times k\)</span> matrix <span class="math inline">\(\mathbf{M}\)</span> is a matrix for which <span class="math inline">\(\mathbf{a}^T\mathbf{M}\mathbf{a}&lt;0\)</span> for all non-zero vectors <span class="math inline">\(\mathbf{a}\in\mathbb{R}^k\)</span>. When <span class="math inline">\(k=2\)</span> this is equivalent to <a href="maximisation-techniques.html#eq:2dnegdef">(4.2)</a>. For example, you can easily check that <span class="math inline">\(-I\)</span>, where <span class="math inline">\(I\)</span> is the identity matrix, is negative definite.</p>
+</div>
+<div id="using-a-computer" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Using a computer<a href="maximisation-techniques.html#using-a-computer" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In some cases, particularly when a complex model is used, or when many parameters are unknown, it is not possible to obtain an expression for the maximum likelihood estimator <span class="math inline">\(\hat\theta\)</span>.</p>
+<p>These cases can be approached with the aid of a computer, and , which means using a computer to try and approximate the maximum value of the likelihood function. There are a wide range of algorithms designed to maximise functions numerically, but this is outside the scope of our current course.</p>
+</div>
+<div id="a-warning-example" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> A warning example<a href="maximisation-techniques.html#a-warning-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Sometimes, we have to be very careful about using differentiation to maximise the likelihood function. We illustrate with an example.</p>
+<div class="example">
+<p><span id="exm:exampleMLEunif" class="example"><strong>Example 4.4  (Maximum likelihood estimation for the uniform distribution.) </strong></span><br></p>
+</div>
+<p>Find the maximum likelihood estimator of the parameter
+<span class="math inline">\(\theta\)</span> when the data <span class="math inline">\(\mathbf{x}=(x_1,x_2,\ldots,x_n)\)</span> are
+i.i.d. samples from a uniform distribution <span class="math inline">\(U[0,\theta]\)</span>, with unknown parameter <span class="math inline">\(\theta&gt;0\)</span>.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>Here the p.d.f. of <span class="math inline">\(X_i\)</span> is <span class="math inline">\(f(x)=\frac{1}{\theta}\)</span> for <span class="math inline">\(0\leq x\leq \theta\)</span> and zero otherwise. So the likelihood, for
+<span class="math inline">\(\theta\in \Theta=\mathbb{R}^+\)</span>, is
+<span class="math display">\[\begin{align*}
+L(\theta;\mathbf{x}) 
+&amp;=
+\begin{cases}
+\frac{1}{\theta^n} &amp; \text{if }\theta \geq x_i\text{ for all }i \\ 
+0 &amp; \text{if }\theta&lt;x_i\text{ for some }i 
+\end{cases}\\
+&amp;=
+\begin{cases}
+\frac{1}{\theta^n} &amp; \text{if }\theta \geq\max_{i}x_i\\ 
+0 &amp; \text{if }\theta&lt;\max_{i}x_i.
+\end{cases}
+\end{align*}\]</span></p>
+<p><img src="MAS5052-Part2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Differentiating the likelihood, we see that <span class="math inline">\(L(\theta;\mathbf{x})\)</span>
+is decreasing (but positive) for <span class="math inline">\(\theta&gt;\max_{i}x_i\)</span>. For
+<span class="math inline">\(\theta&lt;\max_{i}x_i\)</span> we know <span class="math inline">\(L(\theta;\mathbf{x})=0\)</span>, so by looking at the graph, we can see that the
+maximum occurs at <span class="math display">\[\theta=\hat{\theta}=\max_{i=1,\ldots,n}x_i.\]</span> This is
+the MLE.</p>
+</div>
+<p>The moral of the story is: if something seems strange during maximisation, draw a picture of the function you are trying to maximise.</p>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>Actually, the biological details here are rather complicated, and we omit discussion of them.<a href="maximisation-techniques.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a href="http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002251" class="uri">http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002251</a><a href="maximisation-techniques.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>This is a simplification; in reality a mass spectrometer measures the mass to charge ratio of the molecule, but since the charges of molecule are already known, the mass can be inferred later. Atomic masses are measured in so-called ‘atomic mass units.’<a href="maximisation-techniques.html#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="models-and-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
