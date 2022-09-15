@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Models and data | MAS5052 Part 2: Likelihood and Linear Models</title>
+  <meta name="description" content="Lecture notes for MAS5052" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Models and data | MAS5052 Part 2: Likelihood and Linear Models" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Lecture notes for MAS5052" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Models and data | MAS5052 Part 2: Likelihood and Linear Models" />
+  
+  <meta name="twitter:description" content="Lecture notes for MAS5052" />
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2022-07-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introducing-the-likelihood-function.html"/>
+<link rel="next" href="maximisation-techniques.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS5052 Part 2</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About these notes</a></li>
+<li class="part"><span><b>I Likelihood methods</b></span></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introducing likelihood methods</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#recap-maximising-functions"><i class="fa fa-check"></i><b>1.1</b> Recap: maximising functions</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#maximum-likelihood-estimation-a-first-example"><i class="fa fa-check"></i><b>1.2</b> Maximum likelihood estimation: a first example</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introducing-the-likelihood-function.html"><a href="introducing-the-likelihood-function.html"><i class="fa fa-check"></i><b>2</b> Introducing the likelihood function</a></li>
+<li class="chapter" data-level="3" data-path="models-and-data.html"><a href="models-and-data.html"><i class="fa fa-check"></i><b>3</b> Models and data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="models-and-data.html"><a href="models-and-data.html#data-notation"><i class="fa fa-check"></i><b>3.1</b> Data: notation</a></li>
+<li class="chapter" data-level="3.2" data-path="models-and-data.html"><a href="models-and-data.html#models-and-parameters"><i class="fa fa-check"></i><b>3.2</b> Models and parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="models-and-data.html"><a href="models-and-data.html#likelihood-functions-for-i.i.d-data"><i class="fa fa-check"></i><b>3.3</b> Likelihood functions for i.i.d data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html"><i class="fa fa-check"></i><b>4</b> Maximisation techniques</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#log-likelihood"><i class="fa fa-check"></i><b>4.1</b> Log-likelihood</a></li>
+<li class="chapter" data-level="4.2" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#discrete-parameters"><i class="fa fa-check"></i><b>4.2</b> Discrete parameters</a></li>
+<li class="chapter" data-level="4.3" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#multi-parameter-problems"><i class="fa fa-check"></i><b>4.3</b> Multi-parameter problems</a></li>
+<li class="chapter" data-level="4.4" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#using-a-computer"><i class="fa fa-check"></i><b>4.4</b> Using a computer</a></li>
+<li class="chapter" data-level="4.5" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#a-warning-example"><i class="fa fa-check"></i><b>4.5</b> A warning example</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><i class="fa fa-check"></i><b>5</b> Likelihood for confidence intervals and hypothesis tests</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#confidence-intervals"><i class="fa fa-check"></i><b>5.1</b> Confidence intervals</a></li>
+<li class="chapter" data-level="5.2" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#hypothesis-tests"><i class="fa fa-check"></i><b>5.2</b> Hypothesis tests</a></li>
+<li class="chapter" data-level="5.3" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#a-more-formal-approach"><i class="fa fa-check"></i><b>5.3</b> A more formal approach</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#asymptotic-normality-of-the-maximum-likelihood-estimator"><i class="fa fa-check"></i><b>5.3.1</b> Asymptotic normality of the maximum likelihood estimator</a></li>
+<li class="chapter" data-level="5.3.2" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#confidence-intervals-based-on-asymptotic-normality"><i class="fa fa-check"></i><b>5.3.2</b> Confidence intervals based on asymptotic normality</a></li>
+<li class="chapter" data-level="5.3.3" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#the-generalised-likelihood-ratio-test"><i class="fa fa-check"></i><b>5.3.3</b> The generalised likelihood ratio test</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Linear Models</b></span></li>
+<li class="chapter" data-level="6" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html"><i class="fa fa-check"></i><b>6</b> Introducing linear models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#example-relationship-between-temperature-and-ozone"><i class="fa fa-check"></i><b>6.1</b> Example: relationship between temperature and ozone</a></li>
+<li class="chapter" data-level="6.2" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#notation-and-terminology"><i class="fa fa-check"></i><b>6.2</b> Notation and terminology</a></li>
+<li class="chapter" data-level="6.3" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#example-suspected-electoral-fraud"><i class="fa fa-check"></i><b>6.3</b> Example: suspected electoral fraud</a></li>
+<li class="chapter" data-level="6.4" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#definition-of-a-linear-model"><i class="fa fa-check"></i><b>6.4</b> Definition of a linear model</a></li>
+<li class="chapter" data-level="6.5" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#the-simple-linear-regression-model"><i class="fa fa-check"></i><b>6.5</b> The simple linear regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>7</b> Parameter estimation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="parameter-estimation.html"><a href="parameter-estimation.html#least-squares-estimation"><i class="fa fa-check"></i><b>7.1</b> Least squares estimation</a></li>
+<li class="chapter" data-level="7.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html#assumptions-for-least-squares"><i class="fa fa-check"></i><b>7.2</b> Assumptions for least squares</a></li>
+<li class="chapter" data-level="7.3" data-path="parameter-estimation.html"><a href="parameter-estimation.html#relationship-with-maximum-likelihood-estimation"><i class="fa fa-check"></i><b>7.3</b> Relationship with maximum likelihood estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html#estimating-sigma2"><i class="fa fa-check"></i><b>7.4</b> Estimating <span class="math inline">\(\sigma^2\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html"><i class="fa fa-check"></i><b>8</b> Matrix notation for linear models</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#least-squares-estimates-in-matrix-form"><i class="fa fa-check"></i><b>8.1</b> Least squares estimates in matrix form</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#example-fitting-a-polynomial-regression-model"><i class="fa fa-check"></i><b>8.1.1</b> Example: fitting a polynomial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#estimate-of-sigma2-in-matrix-form"><i class="fa fa-check"></i><b>8.2</b> Estimate of <span class="math inline">\(\sigma^2\)</span> in matrix form</a></li>
+<li class="chapter" data-level="8.3" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#derivation-of-hatbeta"><i class="fa fa-check"></i><b>8.3</b> Derivation of <span class="math inline">\(\hat{\beta}\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html"><i class="fa fa-check"></i><b>9</b> Fitting a linear model in R</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html#plotting-a-fitted-regression-line"><i class="fa fa-check"></i><b>9.1</b> Plotting a fitted regression line</a></li>
+<li class="chapter" data-level="9.2" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html#the-summary-command"><i class="fa fa-check"></i><b>9.2</b> The <code>summary()</code> command</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html"><i class="fa fa-check"></i><b>10</b> Qualitative independent variables</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#example-cancer-survival-data"><i class="fa fa-check"></i><b>10.1</b> Example: cancer survival data</a></li>
+<li class="chapter" data-level="10.2" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#a-linear-model-for-the-cancer-data"><i class="fa fa-check"></i><b>10.2</b> A linear model for the cancer data</a></li>
+<li class="chapter" data-level="10.3" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#notation-for-qualitative-independent-variables"><i class="fa fa-check"></i><b>10.3</b> Notation for qualitative independent variables</a></li>
+<li class="chapter" data-level="10.4" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#the-one-way-anova-model-in-matrix-form"><i class="fa fa-check"></i><b>10.4</b> The one-way ANOVA model in matrix form</a></li>
+<li class="chapter" data-level="10.5" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#least-squares-estimates-for-the-one-way-anova-model"><i class="fa fa-check"></i><b>10.5</b> Least squares estimates for the one-way ANOVA model</a></li>
+<li class="chapter" data-level="10.6" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#fitting-a-one-way-anova-model-in-r"><i class="fa fa-check"></i><b>10.6</b> Fitting a one-way ANOVA model in R</a></li>
+<li class="chapter" data-level="10.7" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#an-alternative-parameterisation"><i class="fa fa-check"></i><b>10.7</b> An alternative parameterisation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html"><i class="fa fa-check"></i><b>11</b> Multiple independent variables</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html#causation-versus-association"><i class="fa fa-check"></i><b>11.1</b> Causation versus association</a></li>
+<li class="chapter" data-level="11.2" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html#analysis-of-covariance"><i class="fa fa-check"></i><b>11.2</b> Analysis of Covariance</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="using-linear-models-for-prediction.html"><a href="using-linear-models-for-prediction.html"><i class="fa fa-check"></i><b>12</b> Using linear models for prediction</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="using-linear-models-for-prediction.html"><a href="using-linear-models-for-prediction.html#obtaining-predictions-in-r"><i class="fa fa-check"></i><b>12.1</b> Obtaining predictions in R</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS5052 Part 2: Likelihood and Linear Models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="models-and-data" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Models and data<a href="models-and-data.html#models-and-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<script type="text/javascript">
+$(document).ready(function() {
+  $folds = $(".fold");
+  $folds.wrapInner("<div class=\"fold-blck\">"); // wrap a div container around content
+  $folds.prepend("<button class=\"fold-btn\">Show solution</button>");  // add a button
+  $(".fold-blck").toggle();  // fold all blocks
+  $(".fold-btn").on("click", function() {  // add onClick event
+    $(this).text($(this).text() === "Show solution" ? "Hide solution" : "Show solution");  // if the text equals "Fold", change it to "Unfold"or else to "Fold" 
+    $(this).next(".fold-blck").toggle("linear");  // "swing" is the default easing function. This can be further customized in its speed or the overall animation itself.
+  })
+});
+</script>
+<p>In the previous Chapter we estimated a parameter value based on a single data point. We will usually have more than one observation, and in this section we discuss how to carry out maximum likelihood estimation using many data points.</p>
+<p>To simplify the presentation we will assume here that we are working with continuous random variables. For discrete random variables, we can simply replace the term “probability density function” with “probability mass function.” However, in a slight abuse of notation, we will use <span class="math inline">\(f_X(x)\)</span> to represent either a probability density function or a probability mass function: for discrete <span class="math inline">\(X\)</span> we will write <span class="math inline">\(f_X(x) = Pr(X = x)\)</span>.</p>
+<div id="data-notation" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Data: notation<a href="models-and-data.html#data-notation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Typically we will have a set of <span class="math inline">\(n\)</span> <strong>data points</strong> which we can think of as a vector, <span class="math inline">\(\mathbf{x}=(x_1,x_2,\ldots,x_n)\)</span>. We will think of the data as being a realisation of a random vector <span class="math inline">\(\mathbf{X}=(X_1,X_2,\ldots,X_n)\)</span>. Note the use of capital letters for the random variables and lower case letters for the values they take.</p>
+<p>The random vector <span class="math inline">\(\mathbf{X}\)</span> will have a joint probability density function
+<span class="math display">\[
+f_{\mathbf{X}}(\mathbf{x})=f_{X_1,X_2,\cdots,X_n}(x_1,x_2,\ldots,x_n).
+\]</span>
+This function will be unknown (it will depend on unknown parameters), the aim of the inference being to obtain information about it.</p>
+<p>We will assume that our data points <span class="math inline">\(x_1,x_2,\ldots,x_n\)</span> come from independent, identically distributed experiments. With this in mind, we call them <strong>i.i.d. samples</strong>.
+Because of this, we also assume that the random variables <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span> are independent and identically distributed.
+In this case, the joint probability function <span class="math inline">\(f_{\mathbf{X}}(\mathbf{x})\)</span> will be a product of terms for each experiment:
+<span class="math display">\[\begin{equation}
+f_{\mathbf{X}}(\mathbf{x})=\prod_{i=1}^n f_X(x_i),
+\end{equation}\]</span>
+where <span class="math inline">\(f_X(x)\)</span> is the common probability density function of the random variables <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span>.</p>
+</div>
+<div id="models-and-parameters" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Models and parameters<a href="models-and-data.html#models-and-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We assume that we already know that the joint probability density function of <span class="math inline">\(\mathbf{X}\)</span> takes a particular form, usually involving some standard distribution. We refer to this as our <strong>model</strong>.However, the <strong>parameters</strong> of this standard distribution are unknown, and our aim in analysing the
+data will be to obtain good choices of values for these parameters, based on the data we have.</p>
+<div class="example">
+<p><span id="exm:exampleModels" class="example"><strong>Example 3.1  (Models, parameters and data: aerosols.) </strong></span><br></p>
+</div>
+<p>The ‘particle size distribution’ of an aerosol is the distribution of the diameter of aerosol particles within a typical region of air. The term is also used for particles within a powder, or suspended in a fluid.</p>
+<p>In many situations, the particle size distribution is modelled using the log-normal distribution. If a random variable <span class="math inline">\(Y\)</span> has log-normal distribution, this simply means that <span class="math inline">\(\log Y\)</span> is normally distributed.</p>
+<p>The p.d.f. of the log-normal distribution is
+<span class="math display">\[
+f_Y(y)=
+\begin{array}{ll}
+\frac{1}{y\sigma\sqrt{2\pi}}\exp\left(-\frac{(\log y-\mu)^2}{2\sigma^2}\right) &amp; \text{if }y\in(0,\infty)\\
+0 &amp; \text{otherwise}.
+\end{array}
+\]</span></p>
+<p>It is typically reasonable to assume that the diameters of particles are independent. Assuming this model, find the joint probability density function of the diameters observed in a sample of <span class="math inline">\(n\)</span> particles, and state the parameters of the model.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>The parameters of this distribution, and hence also the parameters of our model, are <span class="math inline">\(\mu\in\mathbb{R}\)</span> and <span class="math inline">\(\sigma\in(0,\infty)\)</span>. Since the diameters of particles are assumed to be independent, the joint probability density function of <span class="math inline">\(\mathbf{Y}=(Y_1,Y_2,\ldots,Y_n)\)</span>, where <span class="math inline">\(Y_i\)</span> is the diameter of the <span class="math inline">\(i^{th}\)</span> particle, is
+<span class="math display">\[\begin{align*}
+f_{\mathbf{Y}}(y_1,\ldots,y_n)
+&amp;=\prod\limits_{i=1}^n f_{Y_i}(y_i)\\
+&amp;=\begin{cases}
+\frac{1}{(2\pi\sigma^2)^{n/2}}\frac{1}{y_1y_2\ldots y_n}\exp\left(-\sum\limits_{i=1}^n\frac{(\log y_i-\mu)^2}{2\sigma^2}\right) &amp; \text{if }y_i&gt;0\text{ for all }i\\
+0 &amp; \text{otherwise}.
+\end{cases}
+\end{align*}\]</span>
+Note that, if one (or more) of the <span class="math inline">\(y_i\)</span> is less than or equal to zero then <span class="math inline">\(f_{Y_i}(y_i)=0\)</span>, which means that also <span class="math inline">\(f_{\mathbf{Y}}(y_1,\ldots,y_n)=0\)</span>.</p>
+</div>
+<p><br></p>
+<div class="rmdnote">
+<p>It may seem odd to declare that <span class="math inline">\(f\)</span> is unknown, and then assume that in fact <span class="math inline">\(f\)</span> takes a particular form with only unknown parameters. There are statistical methods aimed at handling <em>completely</em> unknown <span class="math inline">\(f\)</span>, but they are outside of the scope of this course.
+In many situations it is sensible to assume a carefully chosen model with unknown parameters.</p>
+<p>Our choice of model may well be wrong. But we hope that it is approximately correct, there are various ‘goodness of fit’ tests to help us check.</p>
+</div>
+<p>We denote the parameters of our model by <span class="math inline">\(\boldsymbol{\theta}\)</span> and
+we represent <span class="math inline">\(\boldsymbol{\theta}=(\theta_1,\theta_2,\ldots)\)</span> as a vector. We write <span class="math inline">\(\Theta\)</span> for the set of possible parameter values.</p>
+<p>Sometimes some of the unknown parameters are so-called <em>nuisance parameters</em>: their values are unknown, and we have to take account
+of this in our analysis, but they are not what we are really
+interested in.</p>
+<p>Given a model, and a particular set of parameter values
+<span class="math inline">\(\boldsymbol{\theta}\)</span>, we write the probability density function of <span class="math inline">\(\mathbf{X}\)</span> as
+<span class="math inline">\(f_{\mathbf{X}}(\mathbf{x};\boldsymbol{\theta})\)</span>, to make sure that we don’t forget the importance of the parameters.</p>
+</div>
+<div id="likelihood-functions-for-i.i.d-data" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Likelihood functions for i.i.d data<a href="models-and-data.html#likelihood-functions-for-i.i.d-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>How can we apply the ideas of maximum likelihood estimation in our new setting? The key is to note that Definition <a href="introducing-the-likelihood-function.html#def:defLikelihoodUnivar">2.1</a> already makes sense in the multivariate case, with our vector <span class="math inline">\(\mathbf{X}\)</span> in place of <span class="math inline">\(X\)</span> and a vector of data <span class="math inline">\(\mathbf{x}\)</span> in place of <span class="math inline">\(x\)</span>. We also allow more than just one unknown parameter.</p>
+<p>So, to summarise, let <span class="math inline">\(\mathbf{X}=(X_1,\ldots,X_k)\)</span> be a random vector, with a known distribution that has one or more unknown parameters <span class="math inline">\(\boldsymbol\theta=(\theta_1,\theta_2,\ldots,\theta_j)\)</span>. Write <span class="math inline">\(\Theta\)</span> for the set of all possible choices <span class="math inline">\(\boldsymbol\theta\)</span> of parameter(s). Let <span class="math inline">\(\mathbf{x}\)</span> be our vector of data, which we think of as a sample of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p>The <strong>likelihood function</strong> of <span class="math inline">\(\mathbf{X}\)</span>, given the data <span class="math inline">\(\mathbf{x}\)</span>, is the function <span class="math inline">\(L:\Theta\to\mathbb{R}\)</span> defined by
+<span class="math display">\[L(\boldsymbol\theta;\mathbf{x})=f_{\mathbf{X}}(\mathbf{x};\boldsymbol\theta).\]</span>
+The likelihood function is therefore the joint density of the <em>observed data</em>, expressed as a function of the model parameters.</p>
+<p>The (hopefully, unique) value <span class="math inline">\(\boldsymbol\theta\in\Theta\)</span> which maximises <span class="math inline">\(L(\boldsymbol\theta;\mathbf{x})\)</span> is known as the <strong>maximum likelihood estimator</strong> of <span class="math inline">\(\boldsymbol\theta\)</span>, written <span class="math inline">\(\widehat{\boldsymbol\theta}\)</span>.</p>
+<p>It is worth noting that, when an explicit numerical value is found for <span class="math inline">\(\hat\theta\)</span>, some people refer to the value found for <span class="math inline">\(\hat\theta\)</span> as a maximum likelihood estimate (and they would only refer to the general formula for <span class="math inline">\(\hat\theta\)</span>, in terms of <span class="math inline">\(\mathbf{x}\)</span>, as the maximum likelihood estimator). You can choose whichever convention you prefer.</p>
+<p>We are mainly interested in the case where our data are i.i.d. samples, and we assume the <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span> are independent and identically distributed. In this case, from , the likelihood function of our model is
+<span class="math display">\[\begin{equation}
+L(\boldsymbol\theta;\mathbf{x})=f_\mathbf{X}(\mathbf{x};\boldsymbol\theta)=\prod\limits_{i=1}^n f_X(x_i;\boldsymbol\theta).
+\end{equation}\]</span>
+where <span class="math inline">\(f_X\)</span> is the common p.d.f. of the <span class="math inline">\(X_i\)</span>.</p>
+<div class="example">
+<p><span id="exm:exampleMLEbiasedCoin" class="example"><strong>Example 3.2  (Maximum likelihood estimation with i.i.d. data.) </strong></span><br></p>
+</div>
+<p>Let <span class="math inline">\(X\sim Bern(\theta)\)</span>, where <span class="math inline">\(\theta\)</span> is an unknown parameter.
+Suppose that we have <span class="math inline">\(3\)</span> independent samples of <span class="math inline">\(X\)</span>, which are
+<span class="math display">\[\mathbf{x}=\{0,1,1\}.\]</span>
+Find the likelihood function of <span class="math inline">\(\theta\)</span>, given this data.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>The probability mass function of a single <span class="math inline">\(Bern(\theta)\)</span> random variable is
+<span class="math display">\[f_X(x;\theta)=
+\begin{cases}
+\theta &amp; \text{if }x=1\\
+1-\theta &amp; \text{if }x=0\\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Since our three samples are independent, we model <span class="math inline">\(\mathbf{x}\)</span> as a sample from the joint distribution <span class="math inline">\(\mathbf{X}=(X_1,X_2,X_3)\)</span>, where
+<span class="math display">\[\begin{align*}
+f_\mathbf{X}(\mathbf{x};\theta)=\prod\limits_{i=1}^3 f_{X_i}(x_i;\theta)
+\end{align*}\]</span>
+and <span class="math inline">\(f_{X_i}\)</span> is the probability mass function of a single <span class="math inline">\(Bern(\theta)\)</span> random variable. Since <span class="math inline">\(f_{X_i}\)</span> has several cases, it would be unhelpful to try and expand out this formula before we put in values for the <span class="math inline">\(x_i\)</span>. Our likelihood function is therefore
+<span class="math display">\[\begin{align*}
+L(\theta;\mathbf{x})&amp;=f_{X_1}(0;\theta)\,f_{X_2}(1;\theta)\,f_{X_3}(1;\theta)\\
+&amp;=(1-\theta)\theta\theta\\
+&amp;=\theta^2-\theta^3.
+\end{align*}\]</span>
+The range of values that the parameter <span class="math inline">\(\theta\)</span> can take is <span class="math inline">\(\Theta=[0,1]\)</span>.</p>
+</div>
+<p>Find the maximum likelihood estimator of <span class="math inline">\(\theta\)</span>, given the data <span class="math inline">\(\mathbf{x}\)</span>.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>We seek to maximize <span class="math inline">\(L(\theta;\mathbf{x})\)</span> for <span class="math inline">\(\theta\in[0,1]\)</span>. Differentiating once,
+<span class="math display">\[\frac{dL}{d\theta}=2\theta-3\theta^2=\theta(2-3\theta)\]</span>
+so the turning points are at <span class="math inline">\(\theta=0\)</span> and <span class="math inline">\(\theta=\frac23\)</span>. Differentiating again,
+<span class="math display">\[\frac{d^2L}{d\theta^2}=2-6\theta\]</span>
+which gives <span class="math inline">\(\frac{d^2L}{d\theta^2}\big|_{\theta=0}=2\)</span> and <span class="math inline">\(\frac{d^2L}{d\theta^2}\big|_{\theta=2/3}=2-4=-2\)</span>. Hence, <span class="math inline">\(\theta=0\)</span> is a local minimum and <span class="math inline">\(\theta=\frac23\)</span> is a local maximum, so <span class="math inline">\(\theta=\frac23\)</span> maximises <span class="math inline">\(L(\theta;\mathbf{x})\)</span> over <span class="math inline">\(\theta\in[0,1]\)</span>. The maximum likelihood estimator of <span class="math inline">\(\theta\)</span> is therefore
+<span class="math display">\[\hat\theta=\frac23.\]</span>
+This is, hopefully, reassuring. The number of <span class="math inline">\(1\)</span>s in our sample of <span class="math inline">\(3\)</span> was <span class="math inline">\(2\)</span>, so (using independence) <span class="math inline">\(\theta=\frac23\)</span> seems like a good guess.</p>
+</div>
+<div class="example">
+<p><span id="exm:exampleMLEradioactiveDecay" class="example"><strong>Example 3.3  (Maximum likelihood estimation (radioactive decay).) </strong></span><br></p>
+</div>
+<p>Atoms of radioactive elements decay as time passes, meaning that any such atom will, at some point in time, suddenly break apart. This process is known as radioactive decay.</p>
+<p>The time taken for a single atom of, say, carbon-15 to decay is usually modelled as an exponential random variable, with unknown parameter <span class="math inline">\(\lambda\in(0,\infty)\)</span>. The parameter <span class="math inline">\(\lambda\)</span> is known as the ‘decay rate.’ The times at which atoms decay are known to be independent.</p>
+<p>Using this model, find the likelihood function for the time to decay of a sample of <span class="math inline">\(n\)</span> carbon-15 atoms.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>The decay time <span class="math inline">\(X_i\)</span> of the <span class="math inline">\(i^{th}\)</span> atom is exponential with parameter <span class="math inline">\(\lambda\in(0,\infty)\)</span>, and therefore has p.d.f.
+<span class="math display">\[f_{X_i}(x_i;\lambda)=
+\begin{cases}
+\lambda e^{-\lambda x_i} &amp; \text{if }x_i&gt;0\\
+0 &amp; \text{otherwise}.
+\end{cases}
+\]</span>
+Since each atom decays independently, the joint distribution of <span class="math inline">\(\mathbf{X}=(X_i)_{i=1}^n\)</span> is
+<span class="math display">\[\begin{align*}
+f_{\mathbf{X}}(\mathbf{x};\lambda)
+=\prod\limits_{i=1}^n f_{X_i}(x_i;\lambda)
+&amp;=
+\begin{cases}
+\prod\limits_{i=1}^n \lambda e^{-\lambda x_i} &amp; \text{if }x_i&gt;0\text{ for all }i\\
+0 &amp; \text{otherwise.}
+\end{cases}\\
+&amp;=
+\begin{cases}
+\lambda^n \exp\left(-\lambda \sum_{i=1}^nx_i\right) &amp; \text{if }x_i&gt;0\text{ for all }i\\
+0 &amp; \text{otherwise.}
+\end{cases}
+\end{align*}\]</span>
+Therefore, the likelihood function is
+<span class="math display">\[L(\lambda;\mathbf{x})=
+\begin{cases}
+\lambda^n \exp\left(-\lambda \sum_{i=1}^nx_i\right) &amp; \text{if }x_i&gt;0\text{ for all }i\\
+0 &amp; \text{otherwise.}
+\end{cases}
+\]</span>
+The range of possible values of the parameter <span class="math inline">\(\lambda\)</span> is <span class="math inline">\(\Theta=(0,\infty)\)</span>.</p>
+</div>
+<p>Suppose that we have sampled the decay times of <span class="math inline">\(15\)</span> carbon-15 atoms (in seconds, accurate to two decimal places), and found them to be
+<span class="math display">\[\begin{align*}
+\mathbf{x}&amp;=\{
+0.50,\,
+2.19,\,
+0.88,\,
+4.06,\,
+9.75,\,
+2.62,\,
+0.13,\,
+2.70,\,
+0.03,\,
+0.28,\,
+4.15,\,
+9.52,\,
+2.67,\,
+3.79,\,
+4.31
+\},
+\end{align*}\]</span>
+with <span class="math display">\[
+\sum\limits_{i=1}^{15} x_i= 47.58.
+\]</span></p>
+<p>Find the maximum likelihood estimator of <span class="math inline">\(\lambda\)</span>, based on these data.</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>Given this data, for which <span class="math inline">\(\sum\limits_{i=1}^{15} x_i= 47.58\)</span>, our likelihood function is
+<span class="math display">\[L(\lambda;\mathbf{x})=\lambda^{15}e^{-47.58\lambda}.\]</span>
+Differentiating, we have
+<span class="math display">\[\begin{align*}
+\frac{dL}{d\lambda}&amp;=15\lambda^{14}e^{-47.58\lambda}-47.58\lambda^{15}e^{-47.58\lambda}\\
+&amp;=\lambda^{14}(15-47.58\lambda)e^{-47.58\lambda}
+\end{align*}\]</span>
+which is zero only when <span class="math inline">\(\lambda=0\)</span> or <span class="math inline">\(\lambda=15/47.58\approx 0.32\)</span>. Since <span class="math inline">\(\lambda=0\)</span> is outside of the range <span class="math inline">\(\Theta=(0,\infty)\)</span> of possible parameter values, the only turning point of interest is <span class="math inline">\(\lambda=15/47.58\)</span>.</p>
+<p>Differentiating again (with the details left to you), we end up with
+<span class="math display">\[\begin{align*}
+\frac{d^2L}{d\lambda^2}
+&amp;=(210\lambda^{13}- 1427.4\lambda^{14}+2263.86\lambda^{15})e^{-47.58 \lambda}\\
+&amp;=\lambda^{13}\left(210-1427.4\lambda+2263.86\lambda^2\right)e^{-47.58\lambda}
+\end{align*}\]</span>
+Evaluating at our turning point gives
+<span class="math display">\[\frac{d^2L}{d\lambda^2}\Big|_{\lambda=15/47.58}=\left(\frac{15}{47.58}\right)^{13}\left(-14.9996\right)e^{-15}&lt;0.\]</span>
+So, our turning point is a local maximum. Since there are no other turning points (within the allowable range) our turning point is the global maximum. Hence, the maximum likelihood estimator of <span class="math inline">\(\lambda\)</span>, given our data <span class="math inline">\(\mathbf{x}\)</span>, is
+<span class="math display">\[\hat\lambda=\frac{15}{47.58}\approx 0.32.\]</span>
+In reality, physicists are able to collect vastly more data than <span class="math inline">\(n=15\)</span>, but even with <span class="math inline">\(15\)</span> data points we are not far away from the true value of <span class="math inline">\(\lambda\)</span>, which is <span class="math inline">\(\lambda\approx 0.283033\)</span>. Of course, by ‘true’ value here we mean the value that has been discovered experimentally, with the help of statistical inference.</p>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introducing-the-likelihood-function.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="maximisation-techniques.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Parameter estimation | MAS5052 Part 2: Likelihood and Linear Models</title>
+  <meta name="description" content="Lecture notes for MAS5052" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Parameter estimation | MAS5052 Part 2: Likelihood and Linear Models" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Lecture notes for MAS5052" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Parameter estimation | MAS5052 Part 2: Likelihood and Linear Models" />
+  
+  <meta name="twitter:description" content="Lecture notes for MAS5052" />
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2022-07-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introducing-linear-models.html"/>
+<link rel="next" href="matrix-notation-for-linear-models.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS5052 Part 2</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About these notes</a></li>
+<li class="part"><span><b>I Likelihood methods</b></span></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introducing likelihood methods</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#recap-maximising-functions"><i class="fa fa-check"></i><b>1.1</b> Recap: maximising functions</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#maximum-likelihood-estimation-a-first-example"><i class="fa fa-check"></i><b>1.2</b> Maximum likelihood estimation: a first example</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introducing-the-likelihood-function.html"><a href="introducing-the-likelihood-function.html"><i class="fa fa-check"></i><b>2</b> Introducing the likelihood function</a></li>
+<li class="chapter" data-level="3" data-path="models-and-data.html"><a href="models-and-data.html"><i class="fa fa-check"></i><b>3</b> Models and data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="models-and-data.html"><a href="models-and-data.html#data-notation"><i class="fa fa-check"></i><b>3.1</b> Data: notation</a></li>
+<li class="chapter" data-level="3.2" data-path="models-and-data.html"><a href="models-and-data.html#models-and-parameters"><i class="fa fa-check"></i><b>3.2</b> Models and parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="models-and-data.html"><a href="models-and-data.html#likelihood-functions-for-i.i.d-data"><i class="fa fa-check"></i><b>3.3</b> Likelihood functions for i.i.d data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html"><i class="fa fa-check"></i><b>4</b> Maximisation techniques</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#log-likelihood"><i class="fa fa-check"></i><b>4.1</b> Log-likelihood</a></li>
+<li class="chapter" data-level="4.2" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#discrete-parameters"><i class="fa fa-check"></i><b>4.2</b> Discrete parameters</a></li>
+<li class="chapter" data-level="4.3" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#multi-parameter-problems"><i class="fa fa-check"></i><b>4.3</b> Multi-parameter problems</a></li>
+<li class="chapter" data-level="4.4" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#using-a-computer"><i class="fa fa-check"></i><b>4.4</b> Using a computer</a></li>
+<li class="chapter" data-level="4.5" data-path="maximisation-techniques.html"><a href="maximisation-techniques.html#a-warning-example"><i class="fa fa-check"></i><b>4.5</b> A warning example</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><i class="fa fa-check"></i><b>5</b> Likelihood for confidence intervals and hypothesis tests</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#confidence-intervals"><i class="fa fa-check"></i><b>5.1</b> Confidence intervals</a></li>
+<li class="chapter" data-level="5.2" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#hypothesis-tests"><i class="fa fa-check"></i><b>5.2</b> Hypothesis tests</a></li>
+<li class="chapter" data-level="5.3" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#a-more-formal-approach"><i class="fa fa-check"></i><b>5.3</b> A more formal approach</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#asymptotic-normality-of-the-maximum-likelihood-estimator"><i class="fa fa-check"></i><b>5.3.1</b> Asymptotic normality of the maximum likelihood estimator</a></li>
+<li class="chapter" data-level="5.3.2" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#confidence-intervals-based-on-asymptotic-normality"><i class="fa fa-check"></i><b>5.3.2</b> Confidence intervals based on asymptotic normality</a></li>
+<li class="chapter" data-level="5.3.3" data-path="likelihood-for-confidence-intervals-and-hypothesis-tests.html"><a href="likelihood-for-confidence-intervals-and-hypothesis-tests.html#the-generalised-likelihood-ratio-test"><i class="fa fa-check"></i><b>5.3.3</b> The generalised likelihood ratio test</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Linear Models</b></span></li>
+<li class="chapter" data-level="6" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html"><i class="fa fa-check"></i><b>6</b> Introducing linear models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#example-relationship-between-temperature-and-ozone"><i class="fa fa-check"></i><b>6.1</b> Example: relationship between temperature and ozone</a></li>
+<li class="chapter" data-level="6.2" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#notation-and-terminology"><i class="fa fa-check"></i><b>6.2</b> Notation and terminology</a></li>
+<li class="chapter" data-level="6.3" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#example-suspected-electoral-fraud"><i class="fa fa-check"></i><b>6.3</b> Example: suspected electoral fraud</a></li>
+<li class="chapter" data-level="6.4" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#definition-of-a-linear-model"><i class="fa fa-check"></i><b>6.4</b> Definition of a linear model</a></li>
+<li class="chapter" data-level="6.5" data-path="introducing-linear-models.html"><a href="introducing-linear-models.html#the-simple-linear-regression-model"><i class="fa fa-check"></i><b>6.5</b> The simple linear regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>7</b> Parameter estimation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="parameter-estimation.html"><a href="parameter-estimation.html#least-squares-estimation"><i class="fa fa-check"></i><b>7.1</b> Least squares estimation</a></li>
+<li class="chapter" data-level="7.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html#assumptions-for-least-squares"><i class="fa fa-check"></i><b>7.2</b> Assumptions for least squares</a></li>
+<li class="chapter" data-level="7.3" data-path="parameter-estimation.html"><a href="parameter-estimation.html#relationship-with-maximum-likelihood-estimation"><i class="fa fa-check"></i><b>7.3</b> Relationship with maximum likelihood estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html#estimating-sigma2"><i class="fa fa-check"></i><b>7.4</b> Estimating <span class="math inline">\(\sigma^2\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html"><i class="fa fa-check"></i><b>8</b> Matrix notation for linear models</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#least-squares-estimates-in-matrix-form"><i class="fa fa-check"></i><b>8.1</b> Least squares estimates in matrix form</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#example-fitting-a-polynomial-regression-model"><i class="fa fa-check"></i><b>8.1.1</b> Example: fitting a polynomial regression model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#estimate-of-sigma2-in-matrix-form"><i class="fa fa-check"></i><b>8.2</b> Estimate of <span class="math inline">\(\sigma^2\)</span> in matrix form</a></li>
+<li class="chapter" data-level="8.3" data-path="matrix-notation-for-linear-models.html"><a href="matrix-notation-for-linear-models.html#derivation-of-hatbeta"><i class="fa fa-check"></i><b>8.3</b> Derivation of <span class="math inline">\(\hat{\beta}\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html"><i class="fa fa-check"></i><b>9</b> Fitting a linear model in R</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html#plotting-a-fitted-regression-line"><i class="fa fa-check"></i><b>9.1</b> Plotting a fitted regression line</a></li>
+<li class="chapter" data-level="9.2" data-path="fitting-a-linear-model-in-r.html"><a href="fitting-a-linear-model-in-r.html#the-summary-command"><i class="fa fa-check"></i><b>9.2</b> The <code>summary()</code> command</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html"><i class="fa fa-check"></i><b>10</b> Qualitative independent variables</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#example-cancer-survival-data"><i class="fa fa-check"></i><b>10.1</b> Example: cancer survival data</a></li>
+<li class="chapter" data-level="10.2" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#a-linear-model-for-the-cancer-data"><i class="fa fa-check"></i><b>10.2</b> A linear model for the cancer data</a></li>
+<li class="chapter" data-level="10.3" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#notation-for-qualitative-independent-variables"><i class="fa fa-check"></i><b>10.3</b> Notation for qualitative independent variables</a></li>
+<li class="chapter" data-level="10.4" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#the-one-way-anova-model-in-matrix-form"><i class="fa fa-check"></i><b>10.4</b> The one-way ANOVA model in matrix form</a></li>
+<li class="chapter" data-level="10.5" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#least-squares-estimates-for-the-one-way-anova-model"><i class="fa fa-check"></i><b>10.5</b> Least squares estimates for the one-way ANOVA model</a></li>
+<li class="chapter" data-level="10.6" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#fitting-a-one-way-anova-model-in-r"><i class="fa fa-check"></i><b>10.6</b> Fitting a one-way ANOVA model in R</a></li>
+<li class="chapter" data-level="10.7" data-path="qualitative-independent-variables.html"><a href="qualitative-independent-variables.html#an-alternative-parameterisation"><i class="fa fa-check"></i><b>10.7</b> An alternative parameterisation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html"><i class="fa fa-check"></i><b>11</b> Multiple independent variables</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html#causation-versus-association"><i class="fa fa-check"></i><b>11.1</b> Causation versus association</a></li>
+<li class="chapter" data-level="11.2" data-path="multiple-independent-variables.html"><a href="multiple-independent-variables.html#analysis-of-covariance"><i class="fa fa-check"></i><b>11.2</b> Analysis of Covariance</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="using-linear-models-for-prediction.html"><a href="using-linear-models-for-prediction.html"><i class="fa fa-check"></i><b>12</b> Using linear models for prediction</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="using-linear-models-for-prediction.html"><a href="using-linear-models-for-prediction.html#obtaining-predictions-in-r"><i class="fa fa-check"></i><b>12.1</b> Obtaining predictions in R</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS5052 Part 2: Likelihood and Linear Models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="parameter-estimation" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Parameter estimation<a href="parameter-estimation.html#parameter-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<script type="text/javascript">
+$(document).ready(function() {
+  $folds = $(".fold");
+  $folds.wrapInner("<div class=\"fold-blck\">"); // wrap a div container around content
+  $folds.prepend("<button class=\"fold-btn\">Show solution</button>");  // add a button
+  $(".fold-blck").toggle();  // fold all blocks
+  $(".fold-btn").on("click", function() {  // add onClick event
+    $(this).text($(this).text() === "Show solution" ? "Hide solution" : "Show solution");  // if the text equals "Fold", change it to "Unfold"or else to "Fold" 
+    $(this).next(".fold-blck").toggle("linear");  // "swing" is the default easing function. This can be further customized in its speed or the overall animation itself.
+  })
+});
+</script>
+<p>In this Chapter we study how to <strong>fit</strong> a linear model to some
+observed data, i.e., how to use the data to estimate the model
+parameters. Recall the disputed election example (re-plotted
+below, with the contested election omitted).</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
+<img src="MAS5052-Part2_files/figure-html/unnamed-chunk-11-1.png" alt="Difference in absentee votes (Democrat - Republican) against difference in machine votes (Democrat - Republican) against in 21 different elections in Philadelphia's senatorial districts." width="672" />
+<p class="caption">
+Figure 7.1: Difference in absentee votes (Democrat - Republican) against difference in machine votes (Democrat - Republican) against in 21 different elections in Philadelphia’s senatorial districts.
+</p>
+</div>
+<p>For election <span class="math inline">\(i\)</span> let <span class="math inline">\(x_i\)</span> denote
+the difference in machine votes (Democrat <span class="math inline">\(-\)</span> Republican) and <span class="math inline">\(y_i\)</span>
+denote the observed difference in absentee votes (Democrat <span class="math inline">\(-\)</span> Republican). We’ll consider the simple linear regression model, and in a slight abuse of notation we will write
+<span class="math display">\[\begin{equation}
+y_i=\beta_0 + \beta_1 x_i + \varepsilon_i, 
+\end{equation}\]</span>
+for <span class="math inline">\(i=1,\ldots,n\)</span>. (Because <span class="math inline">\(y_i\)</span> is an observed value rather than a random variable <span class="math inline">\(Y_i\)</span>, the error term <span class="math inline">\(\varepsilon_i\)</span> is now a constant: the ‘realised’ error rather than a random variable with the <span class="math inline">\(N(0,\sigma^2)\)</span> distribution. But we will not make this distinction in our notation.)</p>
+<p>The unknown parameters to be estimated are <span class="math inline">\(\beta_0,\beta_1\)</span> and <span class="math inline">\(\sigma^2\)</span>. We will consider how to estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> first and deal with <span class="math inline">\(\sigma^2\)</span> later.</p>
+<div id="least-squares-estimation" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Least squares estimation<a href="parameter-estimation.html#least-squares-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Firstly, we rearrange the above equation to get
+<span class="math display">\[
+\varepsilon_i=y_i - \beta_0 - \beta_1 x_i.
+\]</span>
+Since we know the values of <span class="math inline">\(y_i\)</span> and <span class="math inline">\(x_i\)</span>, for any choice of
+<span class="math inline">\((\beta_0,\beta_1)\)</span> we can then calculate the implied values of
+<span class="math inline">\(\varepsilon_i\)</span>. Note that in this model the random error term has expectation 0, and so small
+(absolute) values of the errors are more probable than large
+(absolute) values. Additionally, some choices of <span class="math inline">\((\beta_0,\beta_1)\)</span>
+are clearly better than others. Consider the following figure:</p>
+<div class="figure"><span style="display:block;" id="fig:electionLS"></span>
+<img src="MAS5052-Part2_files/figure-html/electionLS-1.png" alt="The solid line is $y=\beta_0+\beta_1 x$, with $(\beta_0=0,\beta_1=0.001)$ in panel (a), and $(\beta_0=-125,\beta_1=0.013)$ in panel (b). Lengths of the dotted lines indicate the magnitude of each $\varepsilon_i$." width="672" />
+<p class="caption">
+Figure 7.2: The solid line is <span class="math inline">\(y=\beta_0+\beta_1 x\)</span>, with <span class="math inline">\((\beta_0=0,\beta_1=0.001)\)</span> in panel (a), and <span class="math inline">\((\beta_0=-125,\beta_1=0.013)\)</span> in panel (b). Lengths of the dotted lines indicate the magnitude of each <span class="math inline">\(\varepsilon_i\)</span>.
+</p>
+</div>
+<p>We see that choosing
+<span class="math inline">\((\beta_0=-125,\beta_1=0.013)\)</span> appears to fit the data better than
+choosing <span class="math inline">\((\beta_0=0,\beta_1=0.001)\)</span> because the observed points lie
+closer to the line <span class="math inline">\(y=\beta_0 +\beta_1 x\)</span>. Specifically, we prefer
+<span class="math inline">\((\beta_0=-125,\beta_1=0.013)\)</span> because on average
+<span class="math inline">\(|\varepsilon_1|,\ldots,|\varepsilon_n|\)</span> are smaller:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><span class="math inline">\(\sum_{i=1}^n |\varepsilon_i|\)</span></th>
+<th align="center"><span class="math inline">\(\sum_{i=1}^n \varepsilon_i^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\((\beta_0=0,\beta_1=0.001)\)</span></td>
+<td align="center">8410</td>
+<td align="center">4,704,524</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\((\beta_0=-125,\beta_1=0.013)\)</span></td>
+<td align="center">5018</td>
+<td align="center">2,007,945</td>
+</tr>
+</tbody>
+</table>
+<p>This suggests we should choose <span class="math inline">\((\beta_0,\beta_1)\)</span> to make <span class="math inline">\(\sum_{i=1}^n \varepsilon_i^2\)</span> as small as possible (note that minimising <span class="math inline">\(\sum_{i=1}^n \varepsilon_i^2\)</span> is
+easier than minimising <span class="math inline">\(\sum_{i=1}^n |\varepsilon_i|\)</span>). Define
+<span class="math display">\[\begin{equation}R(\beta_0,\beta_1)=\sum_{i=1}^n \varepsilon_i^2 = \sum_{i=1}^n
+(y_i-\beta_0-\beta_1 x_i)^2.
+\end{equation}\]</span>
+The <strong>least squares estimates</strong> of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are
+the values of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimise
+<span class="math inline">\(R(\beta_0,\beta_1)\)</span>. Now
+<span class="math display">\[\begin{eqnarray}
+\frac{\partial R(\beta_0,\beta_1)}{\partial \beta_0}&amp;=&amp; -2\sum_{i=1}^n(y_i-\beta_0-\beta_1 x_i),\\
+\frac{\partial R(\beta_0,\beta_1)}{\partial \beta_1}&amp;=&amp;
+-2\sum_{i=1}^nx_i(y_i-\beta_0-\beta_1 x_i).
+\end{eqnarray}\]</span>
+Let <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> denote the least squares
+estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. Since (by definition)
+<span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> minimise <span class="math inline">\(R(\beta_0,\beta_1)\)</span>,
+both partial derivative must equal 0 at <span class="math inline">\(\beta_0=\hat{\beta}_0\)</span> and
+<span class="math inline">\(\beta_1=\hat{\beta}_1\)</span>, so
+<span class="math display">\[\begin{eqnarray}
+0&amp;=&amp; -\sum_{i=1}^n(y_i-\hat{\beta}_0-\hat{\beta}_1 x_i),\\
+0&amp;=&amp; -\sum_{i=1}^nx_i(y_i-\hat{\beta}_0-\hat{\beta}_1 x_i),
+\end{eqnarray}\]</span>
+which we can re-write as
+<span class="math display">\[\begin{eqnarray}
+n\hat{\beta}_0 +\hat{\beta}_1\sum_{i=1}^n x_i &amp;=&amp; \sum_{i=1}^n y_i,\\
+\hat{\beta}_0\sum_{i=1}^n x_i +\hat{\beta}_1 \sum_{i=1}^n x_i^2 &amp;=&amp; \sum_{i=1}^n x_iy_i,
+\end{eqnarray}\]</span>
+and these can be solved simultaneously to give
+<span class="math display">\[\begin{eqnarray}
+\hat{\beta}_1&amp;=&amp;\frac{n \sum_{i=1}^n x_i y_i -\sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2
+-\left(\sum_{i=1}^n x_i \right)^2}, \\
+\hat{\beta}_0&amp;=&amp;\bar{y} - \hat{\beta}_1\bar{x}.
+\end{eqnarray}\]</span></p>
+<p>Although you won’t need to calculate these terms by hand, we will tidy up these expressions to get the formulae that you may see in textbooks.</p>
+<p>Define <span class="math display">\[\begin{eqnarray} s_{xy}&amp;=&amp;\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y}),\\
+s_{xx}&amp;=&amp;\sum_{i=1}^n (x_i-\bar{x})^2.
+\end{eqnarray}\]</span>
+Note that <span class="math inline">\(\sum_{i=1}^n (x_i-\bar{x})=0\)</span> and so
+<span class="math inline">\(\sum_{i=1}^n(x_i-\bar{x})\bar{y}=\bar{y}\sum_{i=1}^n(x_i-\bar{x})=0\)</span>. Hence
+<span class="math display">\[\begin{equation}
+s_{xy}=\sum_{i=1}^n(x_i-\bar{x})y_i = \sum_{i=1}^n x_i y_i -\frac{\sum_{i=1}^n x_i\sum_{i=1}^n y_i}{n}.
+\end{equation}\]</span>
+Also,
+<span class="math display">\[\begin{equation}
+s_{xx}=\sum_{i=1}^n x_i^2 - \frac{\left(\sum_{i=1}^n x_i\right)^2}{n},
+\end{equation}\]</span>
+and so we can write
+<span class="math display">\[\begin{equation}
+\boxed{\,\hat{\beta}_1=\frac{s_{xy}}{s_{xx}}\quad\hat{\beta}_0=\bar{y}-\hat{\beta}_1\bar{x}.}\label{abhat}
+\end{equation}\]</span></p>
+<p>We will see how to fit linear models in R later on, but for now, for the election data we can do</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="parameter-estimation.html#cb9-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> election<span class="sc">$</span>machine.diff</span>
+<span id="cb9-2"><a href="parameter-estimation.html#cb9-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> election<span class="sc">$</span>absentee.diff</span>
+<span id="cb9-3"><a href="parameter-estimation.html#cb9-3" aria-hidden="true" tabindex="-1"></a>beta1Hat <span class="ot">&lt;-</span> <span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">*</span> (y <span class="sc">-</span> <span class="fu">mean</span>(y)))<span class="sc">/</span></span>
+<span id="cb9-4"><a href="parameter-estimation.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-5"><a href="parameter-estimation.html#cb9-5" aria-hidden="true" tabindex="-1"></a>beta0Hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(y) <span class="sc">-</span> beta1Hat <span class="sc">*</span> <span class="fu">mean</span>(x)</span>
+<span id="cb9-6"><a href="parameter-estimation.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(beta0Hat, beta1Hat)</span></code></pre></div>
+<pre><code>## [1] -125.90364382    0.01270346</code></pre>
+<p>So we have <span class="math inline">\(\hat{\beta}_0=-125.9036\)</span> and <span class="math inline">\(\hat{\beta}_1=0.0127\)</span>. The
+line <span class="math inline">\(y=-125.9036+0.0127x\)</span>. This gives a line very close to that in panel (b) in Figure <a href="parameter-estimation.html#fig:electionLS">7.2</a>.</p>
+<div class="example">
+<p><span id="exm:exampleLMweightsLS" class="example"><strong>Example 7.1  (Least squares estimation: weights example.) </strong></span><br></p>
+</div>
+<p>Continuing from Example <a href="introducing-linear-models.html#exm:exampleLMweights">6.1</a>, suppose the observed weights are denoted by <span class="math inline">\(y_1, y_2, y_3\)</span>. Derive the least squares estimates of <span class="math inline">\(\theta_A\)</span> and <span class="math inline">\(\theta_B\)</span></p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>We define
+<span class="math display">\[
+R(\theta_A, \theta_B) := \sum_{i=1}^3 \varepsilon_i^2 = (y_1-\theta_A)^2 + (y_2-\theta_B)^2+(y_3-\theta_A -\theta_B)^2.
+\]</span>
+Then the least squares estimates are the solutions of
+<span class="math display">\[\begin{align*}
+\frac{\partial R(\theta_A, \theta_B)}{\partial \theta_A} = -2(y_1-\theta_A) -2(y_3 - \theta_A-\theta_B) = 0,\\
+\frac{\partial R(\theta_A, \theta_B)}{\partial \theta_B} = -2(y_2-\theta_B) -2(y_3 - \theta_A-\theta_B) = 0.
+\end{align*}\]</span></p>
+<p>After a little algebra to solve these two equations simultaneously, we get
+<span class="math display">\[
+\hat{\theta}_A = \frac{2y_1 -y_2 + y_3}{3}, \quad \hat{\theta}_B = \frac{2y_2 -y_1 + y_3}{3}.
+\]</span></p>
+</div>
+</div>
+<div id="assumptions-for-least-squares" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Assumptions for least squares<a href="parameter-estimation.html#assumptions-for-least-squares" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Note that we have <em>not</em> made use of the assumption that the errors <span class="math inline">\(\varepsilon_i\)</span> are normally distributed. If we look again at the function we chose to minimise
+<span class="math display">\[
+R(\beta_0,\beta_1)=\sum_{i=1}^n \varepsilon_i^2 = \sum_{i=1}^n
+(y_i-\beta_0-\beta_1 x_i)^2,
+\]</span>
+we note that each error <span class="math inline">\(\varepsilon_i\)</span> has equal weight in the sum; we are not trying to make some errors smaller than others. This relates back to the assumption that the errors have <em>equal variance</em>; this is an assumption we should try to check. There are analyses we might choose to do that rely on the normality assumption, but these will not be the main focus in this module.</p>
+<p>There are actually two ways in which a single observation might be unduly influential:</p>
+<ol style="list-style-type: decimal">
+<li>the error <span class="math inline">\(\varepsilon_i\)</span> is an outlier;</li>
+<li>the <em>independent</em> variable <span class="math inline">\(x_i\)</span> is an outlier.</li>
+</ol>
+<p>Case (1) may be the result of non-constant variance of the errors. An example is shown below.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-13"></span>
+<img src="MAS5052-Part2_files/figure-html/unnamed-chunk-13-1.png" alt="The blue line is the least squares fit using all ten observations. The red dashed line is the least squares fit, omitting the outlier (shown by the blue dot) at $x=2$." width="672" />
+<p class="caption">
+Figure 7.3: The blue line is the least squares fit using all ten observations. The red dashed line is the least squares fit, omitting the outlier (shown by the blue dot) at <span class="math inline">\(x=2\)</span>.
+</p>
+</div>
+<p>Case (2) is sometimes referred to as <strong>high leverage</strong>. We illustrate this below.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
+<img src="MAS5052-Part2_files/figure-html/unnamed-chunk-14-1.png" alt="The blue line is the least squares fit using all ten observations. The red dashed line is the least squares fit, omitting the 'high leverage ' point at $x=20$; the least squares fit will be particularly sensitive to this one observation." width="672" />
+<p class="caption">
+Figure 7.4: The blue line is the least squares fit using all ten observations. The red dashed line is the least squares fit, omitting the ‘high leverage’ point at <span class="math inline">\(x=20\)</span>; the least squares fit will be particularly sensitive to this one observation.
+</p>
+</div>
+</div>
+<div id="relationship-with-maximum-likelihood-estimation" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Relationship with maximum likelihood estimation<a href="parameter-estimation.html#relationship-with-maximum-likelihood-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Exercise</strong>. (This is a good opportunity to test your understanding of likelihood!) Suppose, in the simple linear regression model, <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are to be estimated by maximum likelihood. Show that the maximum likelihood estimates are also the least squares estimates. (You will not need to actually obtain the maximum likelihood estimates to prove this: you just need to show that maximum likelihood must result in the same solution.)</p>
+<div class="fold">
+<p><strong>Solution</strong></p>
+<p>The likelihood function is given by</p>
+<p><span class="math display">\[
+L(\beta_0, \beta_1, \sigma^2; \mathbf{y}) = \prod_{i=1}^nf_Y(y_i; \beta_0, \beta_1,\sigma^2)
+\]</span>
+We have <span class="math inline">\(Y_i \sim N(\beta_0 + \beta_1x_i, \sigma^2)\)</span>, so
+<span class="math display">\[
+f_Y(y_i; \beta_0, \beta_1,\sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{1}{2\sigma^2}(y_i - \beta_0-\beta_1x_i)^2\right)
+\]</span>
+and so the log-likelihood is
+<span class="math display">\[
+\ell(\beta_0, \beta_1, \sigma^2; \mathbf{y}) = -\frac{n}{2}\log\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^n(y_i - \beta_0-\beta_1x_i)^2.
+\]</span>
+The maximum likelihood estimators of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are the solutions of
+<span class="math display">\[\begin{align*}
+\frac{\partial \ell}{\partial \beta_0} &amp;= \frac{1}{\sigma^2}\sum_{i=1}^n(y_i - \beta_0-\beta_1x_i) = 0,\\
+\frac{\partial \ell}{\partial \beta_1} &amp;= \frac{1}{\sigma^2}\sum_{i=1}^nx_i(y_i - \beta_0-\beta_1x_i) = 0,
+\end{align*}\]</span>
+but these are the same two simultaneous equations we solved to get the least squares estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>: the least squares estimates are the same as the maximum likelihood estimates.
+</p>
+</div>
+</div>
+<div id="estimating-sigma2" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Estimating <span class="math inline">\(\sigma^2\)</span><a href="parameter-estimation.html#estimating-sigma2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We’ll just state the estimate of <span class="math inline">\(\sigma^2\)</span>, without going too much into the detail. We define
+<span class="math display">\[
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
+\]</span>
+to be the <span class="math inline">\(i\)</span>-th <strong>fitted value</strong>, so that <span class="math inline">\((x_i, \hat{y}_i)\)</span> is a point on the fitted regression line. We define
+<span class="math display">\[
+e_i = y_i - \hat{y}_i
+\]</span>
+to be the <span class="math inline">\(i\)</span>-th <strong>residual</strong>: the difference between the observation <span class="math inline">\(y_i\)</span> and the corresponding fitted value <span class="math inline">\(\hat{y}_i\)</span>. Informally, we could think of <span class="math inline">\(e_i = y_i - \hat{\beta}_0 + \hat{\beta}_1 x_i\)</span> as an estimate of the error term <span class="math inline">\(\varepsilon_i = y_i - \beta_0 + \beta_1 x_i\)</span>. We then estimate <span class="math inline">\(\sigma^2\)</span> using the <strong>residual sum of squares</strong>
+<span class="math display">\[
+\hat{\sigma}^2 = \frac{1}{n-2} \sum_{i=1}^n e_i^2.
+\]</span>
+The denominator <span class="math inline">\(n-2\)</span> is the <strong>residual degrees of freedom</strong>. Informally, it makes sense that we need at least three observations (for the simple linear regression model) to estimate <span class="math inline">\(\sigma^2\)</span>, because with only two observations, the fitted line would pass through both points; we wouldn’t have any idea how far an observation can be from the regression line.</p>
+<p>We can get <span class="math inline">\(\hat{\sigma}^2\)</span> easily from R, but we will do the calculation manually for now. Repeating the earlier code:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="parameter-estimation.html#cb11-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> election<span class="sc">$</span>machine.diff</span>
+<span id="cb11-2"><a href="parameter-estimation.html#cb11-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> election<span class="sc">$</span>absentee.diff</span>
+<span id="cb11-3"><a href="parameter-estimation.html#cb11-3" aria-hidden="true" tabindex="-1"></a>beta1Hat <span class="ot">&lt;-</span> <span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">*</span> (y <span class="sc">-</span> <span class="fu">mean</span>(y)))<span class="sc">/</span></span>
+<span id="cb11-4"><a href="parameter-estimation.html#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb11-5"><a href="parameter-estimation.html#cb11-5" aria-hidden="true" tabindex="-1"></a>beta0Hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(y) <span class="sc">-</span> beta1Hat <span class="sc">*</span> <span class="fu">mean</span>(x)</span></code></pre></div>
+<p>Then</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="parameter-estimation.html#cb12-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> y <span class="sc">-</span> beta0Hat <span class="sc">-</span> beta1Hat<span class="sc">*</span>x</span>
+<span id="cb12-2"><a href="parameter-estimation.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(e<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (<span class="fu">length</span>(e) <span class="sc">-</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 105519.8</code></pre>
+<p>This suggests that most points will be within <span class="math inline">\(2\sqrt{105519.8}\simeq 650\)</span> of the fitted regression line (on the <span class="math inline">\(y\)</span>-axis). From looking at panel (b) in Figure <a href="parameter-estimation.html#fig:electionLS">7.2</a>, this seems about right.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introducing-linear-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="matrix-notation-for-linear-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
