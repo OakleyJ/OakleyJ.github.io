@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 2 Linear models exercises | Likelihood and linear models exercises</title>
+  <meta name="description" content=" 2 Linear models exercises | Likelihood and linear models exercises" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 2 Linear models exercises | Likelihood and linear models exercises" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 2 Linear models exercises | Likelihood and linear models exercises" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2022-09-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="likelihood-exercises.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS5052 Part 2 exercises</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Instructions</a></li>
+<li class="chapter" data-level="1" data-path="likelihood-exercises.html"><a href="likelihood-exercises.html"><i class="fa fa-check"></i><b>1</b> Likelihood exercises</a></li>
+<li class="chapter" data-level="2" data-path="linear-models-exercises.html"><a href="linear-models-exercises.html"><i class="fa fa-check"></i><b>2</b> Linear models exercises</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Likelihood and linear models exercises</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="linear-models-exercises" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number"> 2</span> Linear models exercises<a href="linear-models-exercises.html#linear-models-exercises" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ol style="list-style-type: decimal">
+<li>For dependent variable <span class="math inline">\(Y\)</span> and independent variable <span class="math inline">\(x\)</span>, which
+of the following are examples of linear models?</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<p><span class="math inline">\(\quad Y_1= 2\theta + \psi + \varepsilon_1\)</span></p>
+<p><span class="math inline">\(\quad Y_2= \theta-\phi + 2\psi + \varepsilon_2\)</span></p>
+<p><span class="math inline">\(\quad Y_3= 2\phi + \varepsilon_3\)</span></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p><span class="math inline">\(Y=\beta_0+\beta_1 x + \beta_2 x^2+\varepsilon\)</span>.</p></li>
+<li><p><span class="math inline">\(Y=\beta_0+\beta_1 x^{-1}+\varepsilon\)</span>.</p></li>
+<li><p><span class="math inline">\(Y=\beta_0+\beta_1x^2e^{3x}+\varepsilon\)</span>.</p></li>
+<li><p><span class="math inline">\(Y=\beta_0(x_0+\beta_1x_1)+\varepsilon\)</span>.</p></li>
+<li><p><span class="math inline">\(Y=\beta_0/(1+\beta_1x)+\varepsilon\)</span>.</p></li>
+</ol>
+<hr>
+<ol start="2" style="list-style-type: decimal">
+<li>At a Y-junction in an electrical circuit the true current flowing along <span class="math inline">\(AO\)</span> towards <span class="math inline">\(O\)</span> must equal the sum of the true currents flowing along <span class="math inline">\(OB\)</span> and <span class="math inline">\(OC\)</span> away from <span class="math inline">\(O\)</span>. The currents are measured (with error) through ammeters of the same accuracy, placed in <span class="math inline">\(AO\)</span>, <span class="math inline">\(OB\)</span> and <span class="math inline">\(OC\)</span>, and observations <span class="math inline">\(y_1\)</span>, <span class="math inline">\(y_2\)</span> and <span class="math inline">\(y_3\)</span> recorded. Defining your notation carefully, write down a linear model to represent these data. Find the least squares estimates for the true values of the currents flowing through each of <span class="math inline">\(AO\)</span>, <span class="math inline">\(OB\)</span> and <span class="math inline">\(OC\)</span>.</li>
+</ol>
+<hr>
+<ol start="3" style="list-style-type: decimal">
+<li>Suppose that
+<span class="math display">\[
+E(Y_i)=\left\{\begin{array}{ll}\mu_1 &amp; i=1,2,\ldots,m,\\ \mu_2 &amp; i=m+1,\ldots,m+n.\end{array}\right.
+\]</span>
+<ol style="list-style-type: lower-alpha">
+<li>Find the least squares estimates of <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_2\)</span>.</li>
+<li>Assuming that each <span class="math inline">\(Y_1,\ldots,Y_{m+n}\)</span> are independent normally distributed random variables, each with variance <span class="math inline">\(\sigma^2\)</span>, write down the log-likelihood function for <span class="math inline">\(\mu_1,\mu_2,\sigma^2\)</span> and obtain the maximum likelihood estimates of all three parameters.</li>
+</ol></li>
+</ol>
+<hr>
+<ol start="4" style="list-style-type: decimal">
+<li>A linear regression model through the origin is given by
+<span class="math display">\[
+Y_i = \beta x_i + \varepsilon_i,
+\]</span>
+for <span class="math inline">\(i=1,\ldots,n\)</span> and <span class="math inline">\(\varepsilon_1,\ldots,\varepsilon_n\stackrel{i.i.d}{\sim}N(0,\sigma^2)\)</span>
+<ol style="list-style-type: lower-alpha">
+<li>Find the least squares estimate of <span class="math inline">\(\beta\)</span>.</li>
+<li>Write down the log-likelihood function for <span class="math inline">\(\beta,\sigma^2\)</span> and obtain the maximum likelihood estimates of these two parameters.</li>
+</ol></li>
+</ol>
+<hr>
+<ol start="5" style="list-style-type: decimal">
+<li>For the two models in questions 2-4, write these models down in matrix notation, writing out the parameter vector and design matrix in full in each case, and verify that you get the same least squares estimates via the formula <span class="math inline">\(\hat{\boldsymbol{\beta}} = (X^TX)^{-1}X^T\mathbf{y}\)</span>.</li>
+</ol>
+<hr>
+<ol start="6" style="list-style-type: decimal">
+<li>The 2000 US presidential election was narrowly won by Republican
+candidate George W. Bush. Bush won the state of Florida with 567
+more votes than the Democratic candidate Al Gore. Had Gore won
+Florida, he would have won the presidency.
+The dataset <code>florida.csv</code> lists the votes for all candidates in each of the
+67 counties in Florida. There was criticism of the ballot paper
+design, in particular, the “butterfly ballot” used in Palm Beach
+county, where it was claimed that some voters, intending to vote for
+Gore, mistakenly voted for the Reform candidate Pat Buchanan.
+<ol style="list-style-type: lower-alpha">
+<li>Buchanan and Bush were both conservative candidates, and so a
+relationship between votes cast for each candidate within each
+county would be expected. Fit a linear model to describe the
+relationship, with votes cast for Buchanan as the dependent variable
+and votes cast for Bush as the independent variable. Obtain the least squares estimates of your regression line parameters.</li>
+<li>Produce a scatter plot, annotated with your regression line and the observation from Palm Beach county.</li>
+</ol></li>
+</ol>
+<hr>
+<ol start="7" style="list-style-type: decimal">
+<li>In an investigation into the relationship between annual
+income and social class, social class is allocated to one of the
+five ordered categories A, B, C, D, E.
+<ol style="list-style-type: lower-alpha">
+<li>One investigator codes A, B, C, D, E as 1,2,3,4,5 respectively,
+and fits the regression <span class="math inline">\(E(Y_i) = \mu_i = \beta_0+\beta_1 x_i\)</span>,
+where <span class="math inline">\(Y_i\)</span> is the income and <span class="math inline">\(x_i\)</span> the coded social class. Explain
+the interpretation of <span class="math inline">\(\beta_1\)</span>.</li>
+<li>Another investigator thinks that A, B, C are more different than C, D, E and suggests using the
+codes 1,3,5,6,7 in the above regression. Interpret <span class="math inline">\(\beta_1\)</span> in
+this case.</li>
+<li>A third investigator says that as social class is a
+categorical variable, one should use indicator variables, and fits
+the regression <span class="math inline">\(\mu_i=\alpha_0+\alpha_1 x_{i,1}+ \alpha_2x_{i,2}+\alpha_3 x_{i,3}+\alpha_4 x_{i,4}\)</span> where <span class="math inline">\(x_{i,1}\)</span> is an
+indicator variable for category A (i.e. <span class="math inline">\(x_{i,1}=1\)</span> if observation
+<span class="math inline">\(i\)</span> is from category A, and 0 otherwise), <span class="math inline">\(x_{i,2}\)</span> for category B,
+<span class="math inline">\(x_{i,3}\)</span> for category C, and <span class="math inline">\(x_{i,4}\)</span> for category D. Interpret
+the <span class="math inline">\(\alpha\)</span>’s in this case.</li>
+<li>A fourth investigator says that
+social class is a classification factor. The investigator fits the model <span class="math inline">\(\mu_i =\alpha_{[i]}\)</span>, where <span class="math inline">\([i]\)</span> is the class to which the <span class="math inline">\(i\)</span>-th
+observation belongs. Interpret the parameters in this case.</li>
+<li>Which model would you use?</li>
+</ol></li>
+</ol>
+<hr>
+<ol start="8" style="list-style-type: decimal">
+<li>Consider the one-way ANOVA model
+<span class="math display">\[
+Y_{ij}=\mu +\tau_i +\varepsilon_{ij},
+\]</span>
+for <span class="math inline">\(i=1,2\)</span> and <span class="math inline">\(j=1,2\)</span> and <span class="math inline">\(\varepsilon_{ij}\sim N(0,\sigma^2)\)</span>.
+<ol style="list-style-type: lower-alpha">
+<li>If <span class="math inline">\(\mu,\tau_1\)</span> and <span class="math inline">\(\tau_2\)</span> are unconstrained, write this model in
+matrix notation and obtain <span class="math inline">\(|X^TX|\)</span>. Can least squares estimates of
+<span class="math inline">\(\mu,\tau_1\)</span> and <span class="math inline">\(\tau_2\)</span> be obtained?</li>
+<li>If the constraint <span class="math inline">\(\tau_1+\tau_2=0\)</span> is applied, write the model in matrix notation, and obtain least squares estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\tau_1\)</span>.</li>
+</ol></li>
+</ol>
+<hr>
+<ol start="9" style="list-style-type: decimal">
+<li>The data frame <code>reading</code> contains data from a study of reading comprehension (which we analysed in the Semester 1 problems). To get this data, you will need to install the <code>randomizationInference</code> package, and then use the <code>data</code> command to load the data:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="linear-models-exercises.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomizationInference)</span>
+<span id="cb1-2"><a href="linear-models-exercises.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(reading)</span>
+<span id="cb1-3"><a href="linear-models-exercises.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reading)</span></code></pre></div>
+<pre><code>##   Subject Block Group Pre1 Post1 Diff1
+## 1       1     1 Basal    4     5     1
+## 2       2     1 Basal    6     9     3
+## 3       3     1 Basal    9     5    -4
+## 4       4     1 Basal   12     8    -4
+## 5       5     1 Basal   16    10    -6
+## 6       6     1 Basal   15     9    -6</code></pre>
+<p>By fitting a single linear model, find the equations of the three fitted regression lines displayed below.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="linear-models-exercises.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="linear-models-exercises.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(reading, <span class="fu">aes</span>(<span class="at">x=</span> Pre1, <span class="at">y =</span> Post1, <span class="at">colour =</span> Group))<span class="sc">+</span></span>
+<span id="cb3-3"><a href="linear-models-exercises.html#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-4"><a href="linear-models-exercises.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="MAS113-5052-exercises_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<hr>
+<ol start="10" style="list-style-type: decimal">
+<li>The dataset <code>dyslexia.csv</code><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> contains the results from a dyslexia study on 34
+children. The variables are
+<ul>
+<li><code>bpvt</code> is the score for each child on the British Picture Vocabulary Test (BPVT), taken when the children were 4 years old. This measures knowledge of vocabulary.</li>
+<li><code>rad</code> is the Reading Age Deficiency (RAD) for each child, measured when the children were 7 years old. This is defined as the Reading Age, as measured by a reading test, minus the chronological age, in months. A negative Reading Age Deficiency indicates potential dyslexia.</li>
+</ul>
+<ol style="list-style-type: lower-alpha">
+<li>Fit a simple linear regression model that can be used to predict RAD given BPVT.</li>
+<li>Make a scatter plot of the data with 95% point-wise prediction intervals for RAD, given BPVT. Comment on the effectiveness of predicting RAD for an individual child, given that child’s BPVT score.</li>
+</ol></li>
+</ol>
+
+</div>
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>the data were obtained in 2007 from <a href="http://stars.ac.uk" class="uri">http://stars.ac.uk</a>, but this site is no longer available; the <a href="http://www.stats.gla.ac.uk/steps/">STEPS project</a> (Statistical Education through Problem Solving was credited for providing the data.)<a href="linear-models-exercises.html#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="likelihood-exercises.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-linear-models.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
