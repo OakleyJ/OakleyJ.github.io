@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 22 Referencing | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 22 Referencing | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="An introduction to R for students on MAS61004" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-07-04" />
+<meta name="date" content="2022-09-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="r-markdown.html"/>
 <link rel="next" href="shiny.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,9 +59,9 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -318,8 +317,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="16" data-path="apis.html"><a href="apis.html"><i class="fa fa-check"></i><b>16</b> APIs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#r-packages-for-apis"><i class="fa fa-check"></i><b>16.1</b> R packages for APIs</a></li>
-<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-daily-case-data"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining daily case data</a></li>
+<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#example-obtaining-covid-19-case-data-data-in-json-format"><i class="fa fa-check"></i><b>16.1</b> Example: obtaining Covid-19 case data (data in JSON format)</a></li>
+<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-an-.xlsx-file"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining an .xlsx file</a></li>
 <li class="chapter" data-level="16.3" data-path="apis.html"><a href="apis.html#exercise-1"><i class="fa fa-check"></i><b>16.3</b> Exercise</a></li>
 <li class="chapter" data-level="16.4" data-path="apis.html"><a href="apis.html#acknowledgements-1"><i class="fa fa-check"></i><b>16.4</b> Acknowledgements</a></li>
 </ul></li>
@@ -404,6 +403,7 @@ div.csl-indent {
 <li class="chapter" data-level="21.7" data-path="r-markdown.html"><a href="r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>21.7</b> The YAML header</a></li>
 <li class="chapter" data-level="21.8" data-path="r-markdown.html"><a href="r-markdown.html#latex-markdown-and-html"><i class="fa fa-check"></i><b>21.8</b> LaTeX, Markdown and html</a></li>
 <li class="chapter" data-level="21.9" data-path="r-markdown.html"><a href="r-markdown.html#bookdown"><i class="fa fa-check"></i><b>21.9</b> bookdown</a></li>
+<li class="chapter" data-level="21.10" data-path="r-markdown.html"><a href="r-markdown.html#quarto"><i class="fa fa-check"></i><b>21.10</b> Quarto</a></li>
 </ul></li>
 <li class="chapter" data-level="22" data-path="referencing.html"><a href="referencing.html"><i class="fa fa-check"></i><b>22</b> Referencing</a>
 <ul>
@@ -432,7 +432,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="23.5" data-path="shiny.html"><a href="shiny.html#reactivity"><i class="fa fa-check"></i><b>23.5</b> Reactivity</a></li>
 <li class="chapter" data-level="23.6" data-path="shiny.html"><a href="shiny.html#customising-the-appearance-of-your-app"><i class="fa fa-check"></i><b>23.6</b> Customising the appearance of your app</a></li>
-<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.7</b> Further reading</a></li>
+<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#shiny-with-r-markdown"><i class="fa fa-check"></i><b>23.7</b> Shiny with R Markdown</a></li>
+<li class="chapter" data-level="23.8" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.8</b> Further reading</a></li>
 </ul></li>
 <li class="part"><span><b>V Miscellaneous</b></span></li>
 <li class="chapter" data-level="24" data-path="eda-for-logistic-regression.html"><a href="eda-for-logistic-regression.html"><i class="fa fa-check"></i><b>24</b> EDA for logistic regression</a>
@@ -482,23 +483,23 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="referencing" class="section level1" number="22">
-<h1><span class="header-section-number">Section 22</span> Referencing</h1>
+<div id="referencing" class="section level1 hasAnchor" number="22">
+<h1><span class="header-section-number">Section 22</span> Referencing<a href="referencing.html#referencing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The reports you write for this module will need to include references. We will give separate guidance on referencing for written reports. Here, we will just comment on some issues likely to arise for reports on this module.</p>
 <p>For reports on this module, the number of references is likely to be small, and you can construct a references section manually. For reports with larger numbers of references (or your disseration), we recommend using reference management software such as BibTeX (which can be used in combination with bookdown)</p>
-<div id="referencing-data-sets" class="section level2" number="22.1">
-<h2><span class="header-section-number">22.1</span> Referencing data sets</h2>
+<div id="referencing-data-sets" class="section level2 hasAnchor" number="22.1">
+<h2><span class="header-section-number">22.1</span> Referencing data sets<a href="referencing.html#referencing-data-sets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If you are using data that you have not produced yourself, you need to give a reference. <a href="https://librarydevelopment.group.shef.ac.uk/referencing/harvard.html#D" target="_blank">The University Library gives examples here of how to cite data sets</a> (with Harvard referencing).</p>
 <p>These sorts of citations can be awkward, in that some of the details may be missing on the website - just do the best you can to give a full reference. Do make sure you include the date you accessed the data.</p>
-<div id="attribution-statements-and-conditions-of-use" class="section level3" number="22.1.1">
-<h3><span class="header-section-number">22.1.1</span> Attribution statements and conditions of use</h3>
+<div id="attribution-statements-and-conditions-of-use" class="section level3 hasAnchor" number="22.1.1">
+<h3><span class="header-section-number">22.1.1</span> Attribution statements and conditions of use<a href="referencing.html#attribution-statements-and-conditions-of-use" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Some data sets are free to use, but only under certain conditions, and you may be required to give an attribution statement. For example, <a href="https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads" target="_blank">HM Land Registry publishes data on prices paid for houses</a>, but requires you to give <a href="https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads#using-or-publishing-our-price-paid-data" target="_blank">this attribution statement</a> if you use it, (and also attaches some conditions for its use).</p>
 </div>
 </div>
-<div id="citing-r-and-r-packages" class="section level2" number="22.2">
-<h2><span class="header-section-number">22.2</span> Citing R and R packages</h2>
+<div id="citing-r-and-r-packages" class="section level2 hasAnchor" number="22.2">
+<h2><span class="header-section-number">22.2</span> Citing R and R packages<a href="referencing.html#citing-r-and-r-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Use of R in any published work should be cited. Cite also any package that you have used (either with a <code>library()</code> command, or with the <code>::</code> syntax). You can get citation details for R with the command</p>
-<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="referencing.html#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="referencing.html#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>()</span></code></pre></div>
 <pre><code>## 
 ## To cite R in publications use:
 ## 
@@ -521,7 +522,7 @@ div.csl-indent {
 ## when using it for data analysis. See also &#39;citation(&quot;pkgname&quot;)&#39; for
 ## citing R packages.</code></pre>
 <p>and you can get citation details for any package by adding the name in quotes:</p>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="referencing.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="referencing.html#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ## To cite ggplot2 in publications, please use:
 ## 
@@ -539,17 +540,18 @@ div.csl-indent {
 ##     url = {https://ggplot2.tidyverse.org},
 ##   }</code></pre>
 </div>
-<div id="using-someone-elses-figures-in-your-work" class="section level2" number="22.3">
-<h2><span class="header-section-number">22.3</span> Using someone else’s figures in your work</h2>
+<div id="using-someone-elses-figures-in-your-work" class="section level2 hasAnchor" number="22.3">
+<h2><span class="header-section-number">22.3</span> Using someone else’s figures in your work<a href="referencing.html#using-someone-elses-figures-in-your-work" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="warning">
 <p>
-Just because a figure is available on the internet, this does not mean you are allowed to use it in your own work!
+Just because a figure is available on the internet, this does not
+mean you are allowed to use it in your own work!
 </p>
 </div>
 <p>You need permission to use someone else’s figure; if permission is not stated then you need to contact the author to ask for it. If you redraw the figure yourself, you don’t need permission, but you should then give a citation to make clear that your plot is based on someone else’s work.</p>
 </div>
-<div id="further-reading." class="section level2" number="22.4">
-<h2><span class="header-section-number">22.4</span> Further reading.</h2>
+<div id="further-reading." class="section level2 hasAnchor" number="22.4">
+<h2><span class="header-section-number">22.4</span> Further reading.<a href="referencing.html#further-reading." class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are various University Library tutorials/guides you might find helpful:</p>
 <ul>
 <li><a href="https://librarydevelopment.group.shef.ac.uk/referencing/harvard.html" target="_blank">Guide to Harvard referencing</a></li>
@@ -558,25 +560,17 @@ Just because a figure is available on the internet, this does not mean you are a
 <li><a href="https://librarydevelopment.group.shef.ac.uk/storyline/referencing/referencing_and_plagiarism_quiz/plagiarism_and_ref_quiz%20-%20Storyline%20output/story.html" target="_blank">Quiz/tutorial on referencing and plagiarism</a></li>
 </ul>
 </div>
-<div id="exercise-3" class="section level2" number="22.5">
-<h2><span class="header-section-number">22.5</span> Exercise</h2>
-<hr>
-<div class="row">
-<div class="column">
-
+<div id="exercise-3" class="section level2 hasAnchor" number="22.5">
+<h2><span class="header-section-number">22.5</span> Exercise<a href="referencing.html#exercise-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="task">
 <div class="exercise">
-<span id="exr:unnamed-chunk-282" class="exercise"><strong>Exercise 22.1  </strong></span>
-</div>
-</div>
-<div class="column">
-<img src="images/exercise.png" width="10%" style="display: block; margin: auto 0 auto auto;" />
-</div>
-</div>
-<p>Using your document from Exercise <a href="r-markdown.html#exr:ex4RMarkdown">21.4</a>:</p>
+<p><span id="exr:unlabeled-div-20" class="exercise"><strong>Exercise 22.1  </strong></span>Using your document from the previous exercise:</p>
 <ul>
 <li>add a reference to the data set;</li>
 <li>add references to R and any R packages that you have used.</li>
 </ul>
+</div>
+</div>
 
 </div>
 </div>
@@ -633,7 +627,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

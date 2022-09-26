@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 2 R and RStudio | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 2 R and RStudio | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="An introduction to R for students on MAS61004" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-07-04" />
+<meta name="date" content="2022-09-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="using-r-as-a-calculator.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,9 +59,9 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -318,8 +317,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="16" data-path="apis.html"><a href="apis.html"><i class="fa fa-check"></i><b>16</b> APIs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#r-packages-for-apis"><i class="fa fa-check"></i><b>16.1</b> R packages for APIs</a></li>
-<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-daily-case-data"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining daily case data</a></li>
+<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#example-obtaining-covid-19-case-data-data-in-json-format"><i class="fa fa-check"></i><b>16.1</b> Example: obtaining Covid-19 case data (data in JSON format)</a></li>
+<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-an-.xlsx-file"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining an .xlsx file</a></li>
 <li class="chapter" data-level="16.3" data-path="apis.html"><a href="apis.html#exercise-1"><i class="fa fa-check"></i><b>16.3</b> Exercise</a></li>
 <li class="chapter" data-level="16.4" data-path="apis.html"><a href="apis.html#acknowledgements-1"><i class="fa fa-check"></i><b>16.4</b> Acknowledgements</a></li>
 </ul></li>
@@ -404,6 +403,7 @@ div.csl-indent {
 <li class="chapter" data-level="21.7" data-path="r-markdown.html"><a href="r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>21.7</b> The YAML header</a></li>
 <li class="chapter" data-level="21.8" data-path="r-markdown.html"><a href="r-markdown.html#latex-markdown-and-html"><i class="fa fa-check"></i><b>21.8</b> LaTeX, Markdown and html</a></li>
 <li class="chapter" data-level="21.9" data-path="r-markdown.html"><a href="r-markdown.html#bookdown"><i class="fa fa-check"></i><b>21.9</b> bookdown</a></li>
+<li class="chapter" data-level="21.10" data-path="r-markdown.html"><a href="r-markdown.html#quarto"><i class="fa fa-check"></i><b>21.10</b> Quarto</a></li>
 </ul></li>
 <li class="chapter" data-level="22" data-path="referencing.html"><a href="referencing.html"><i class="fa fa-check"></i><b>22</b> Referencing</a>
 <ul>
@@ -432,7 +432,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="23.5" data-path="shiny.html"><a href="shiny.html#reactivity"><i class="fa fa-check"></i><b>23.5</b> Reactivity</a></li>
 <li class="chapter" data-level="23.6" data-path="shiny.html"><a href="shiny.html#customising-the-appearance-of-your-app"><i class="fa fa-check"></i><b>23.6</b> Customising the appearance of your app</a></li>
-<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.7</b> Further reading</a></li>
+<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#shiny-with-r-markdown"><i class="fa fa-check"></i><b>23.7</b> Shiny with R Markdown</a></li>
+<li class="chapter" data-level="23.8" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.8</b> Further reading</a></li>
 </ul></li>
 <li class="part"><span><b>V Miscellaneous</b></span></li>
 <li class="chapter" data-level="24" data-path="eda-for-logistic-regression.html"><a href="eda-for-logistic-regression.html"><i class="fa fa-check"></i><b>24</b> EDA for logistic regression</a>
@@ -482,8 +483,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-and-rstudio" class="section level1" number="2">
-<h1><span class="header-section-number">Section 2</span> R and RStudio</h1>
+<div id="r-and-rstudio" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Section 2</span> R and RStudio<a href="r-and-rstudio.html#r-and-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <script type="text/javascript">
 $(document).ready(function() {
   $folds = $(".fold");
@@ -496,25 +497,25 @@ $(document).ready(function() {
   })
 });
 </script>
-<p>The programming language that we are using is called R <span class="citation">(<a href="#ref-RCore" role="doc-biblioref">R Core Team 2020</a>)</span>, but we will use a separate program, called RStudio <span class="citation">(<a href="#ref-RStudio2020" role="doc-biblioref">RStudio Team 2020</a>)</span>, known as an “Integrated Development Environment,” to work with R. You can use R without using RStudio, but you can’t use RStudio without using R.</p>
+<p>The programming language that we are using is called R <span class="citation">(<a href="#ref-RCore" role="doc-biblioref">R Core Team 2020</a>)</span>, but we will use a separate program, called RStudio <span class="citation">(<a href="#ref-RStudio2020" role="doc-biblioref">RStudio Team 2020</a>)</span>, known as an “Integrated Development Environment”, to work with R. You can use R without using RStudio, but you can’t use RStudio without using R.</p>
 <p>R and RStudio are available on the university network, and you can download RStudio and R for free on your own computer.</p>
 <ul>
 <li><a href="https://cran.r-project.org/" target="_blank">Download R</a></li>
 <li><a href="https://rstudio.com/products/rstudio/download/#download" target="_blank">Download RStudio</a></li>
 </ul>
-<div id="starting-rstudio-on-the-university-network" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Starting RStudio on the university network</h2>
+<div id="starting-rstudio-on-the-university-network" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Starting RStudio on the university network<a href="r-and-rstudio.html#starting-rstudio-on-the-university-network" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Click on the Windows 10 icon in the bottom left corner of the screen, then search the list of programs and click on RStudio.</p>
 <p><img src="images/Start-RStudio.png" width="363" height="50%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="the-rstudio-interface" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> The RStudio interface</h2>
+<div id="the-rstudio-interface" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> The RStudio interface<a href="r-and-rstudio.html#the-rstudio-interface" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>When you first start RStudio, you should see something like this:</p>
 <p><img src="images/RStudio.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>There are three windows (a fourth will appear later), and for now, we’ll just use the one on the left, which is called the <strong>Console</strong>. The red circle drawn in the console window shows the <strong>command prompt</strong>: this is where you type in commands.</p>
 </div>
-<div id="inputs-and-outputs" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Inputs and outputs</h2>
+<div id="inputs-and-outputs" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Inputs and outputs<a href="r-and-rstudio.html#inputs-and-outputs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In these notes, input will be displayed in shaded boxes like this:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="r-and-rstudio.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
 <p>and output from R will be shown like this:</p>
@@ -523,8 +524,8 @@ $(document).ready(function() {
 <p>You can copy and paste input directly from these pages into RStudio (it’s helpful to know the keyboard shortcuts for copy and paste: these are usually <code>ctrl c</code> and <code>ctrl v</code> on windows PCs, and <code>cmd c</code> and <code>cmd v</code> on macs.)</p>
 <p>You should try the commands you see here directly in RStudio, to check that they work and that you get the same results.</p>
 </div>
-<div id="get-comfortable" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> Get comfortable!</h2>
+<div id="get-comfortable" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Get comfortable!<a href="r-and-rstudio.html#get-comfortable" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You will be using RStudio quite a lot, so you may wish to change the appearance. Some people find dark backgrounds more comfortable for reading.</p>
 <ul>
 <li>From the menu bar, go to <strong>Tools</strong> &gt; <strong>Global Options</strong></li>
@@ -535,12 +536,12 @@ $(document).ready(function() {
 </ul>
 <hr>
 <div class="fold">
-
+<p><img src="images/Rsetup.gif" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <hr>
 </div>
-<div id="change-your-workspace-settings" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> Change your Workspace settings</h2>
+<div id="change-your-workspace-settings" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Change your Workspace settings<a href="r-and-rstudio.html#change-your-workspace-settings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>R has an optional setting, in which any variables and functions that you have defined are saved and reloaded each time you quit and restart. I suggest you <em>don’t</em> use this setting. To make sure it is switched off, go to <strong>Tools &gt; Global Options…</strong></p>
 <ul>
 <li>Make sure the box <strong>Restore .RData into workspace on startup</strong> is <em>not</em> ticked;</li>
@@ -551,7 +552,7 @@ $(document).ready(function() {
 
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-RCore" class="csl-entry">
 R Core Team. 2020. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
@@ -613,7 +614,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

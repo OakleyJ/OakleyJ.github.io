@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 16 APIs | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 16 APIs | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="An introduction to R for students on MAS61004" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-07-04" />
+<meta name="date" content="2022-09-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="processing-multiple-files.html"/>
 <link rel="next" href="missing-data.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,9 +59,9 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -318,8 +317,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="16" data-path="apis.html"><a href="apis.html"><i class="fa fa-check"></i><b>16</b> APIs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#r-packages-for-apis"><i class="fa fa-check"></i><b>16.1</b> R packages for APIs</a></li>
-<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-daily-case-data"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining daily case data</a></li>
+<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#example-obtaining-covid-19-case-data-data-in-json-format"><i class="fa fa-check"></i><b>16.1</b> Example: obtaining Covid-19 case data (data in JSON format)</a></li>
+<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-an-.xlsx-file"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining an .xlsx file</a></li>
 <li class="chapter" data-level="16.3" data-path="apis.html"><a href="apis.html#exercise-1"><i class="fa fa-check"></i><b>16.3</b> Exercise</a></li>
 <li class="chapter" data-level="16.4" data-path="apis.html"><a href="apis.html#acknowledgements-1"><i class="fa fa-check"></i><b>16.4</b> Acknowledgements</a></li>
 </ul></li>
@@ -404,6 +403,7 @@ div.csl-indent {
 <li class="chapter" data-level="21.7" data-path="r-markdown.html"><a href="r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>21.7</b> The YAML header</a></li>
 <li class="chapter" data-level="21.8" data-path="r-markdown.html"><a href="r-markdown.html#latex-markdown-and-html"><i class="fa fa-check"></i><b>21.8</b> LaTeX, Markdown and html</a></li>
 <li class="chapter" data-level="21.9" data-path="r-markdown.html"><a href="r-markdown.html#bookdown"><i class="fa fa-check"></i><b>21.9</b> bookdown</a></li>
+<li class="chapter" data-level="21.10" data-path="r-markdown.html"><a href="r-markdown.html#quarto"><i class="fa fa-check"></i><b>21.10</b> Quarto</a></li>
 </ul></li>
 <li class="chapter" data-level="22" data-path="referencing.html"><a href="referencing.html"><i class="fa fa-check"></i><b>22</b> Referencing</a>
 <ul>
@@ -432,7 +432,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="23.5" data-path="shiny.html"><a href="shiny.html#reactivity"><i class="fa fa-check"></i><b>23.5</b> Reactivity</a></li>
 <li class="chapter" data-level="23.6" data-path="shiny.html"><a href="shiny.html#customising-the-appearance-of-your-app"><i class="fa fa-check"></i><b>23.6</b> Customising the appearance of your app</a></li>
-<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.7</b> Further reading</a></li>
+<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#shiny-with-r-markdown"><i class="fa fa-check"></i><b>23.7</b> Shiny with R Markdown</a></li>
+<li class="chapter" data-level="23.8" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.8</b> Further reading</a></li>
 </ul></li>
 <li class="part"><span><b>V Miscellaneous</b></span></li>
 <li class="chapter" data-level="24" data-path="eda-for-logistic-regression.html"><a href="eda-for-logistic-regression.html"><i class="fa fa-check"></i><b>24</b> EDA for logistic regression</a>
@@ -482,71 +483,91 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="apis" class="section level1" number="16">
-<h1><span class="header-section-number">Section 16</span> APIs</h1>
-<p>Some websites provide data via an “Application Programming Interface” (API). Typically, this means that you would make selections for what data you wanted, and then a data set would be built for you to download. If you want R to download the data directly, this causes a problem, as there is no file simply waiting to be downloaded; you can’t provide R with a web address.</p>
-<p>Fortunately, there are tools to enable R to communicate with an API directly. We will give an example of using the API at <a href="https://coronavirus.data.gov.uk/" target="_blank">https://coronavirus.data.gov.uk/</a> for obtaining Covid-19 data.</p>
-<div id="r-packages-for-apis" class="section level2" number="16.1">
-<h2><span class="header-section-number">16.1</span> R packages for APIs</h2>
-<p>We need two R packages: <code>httr</code> <span class="citation">(<a href="#ref-r-httr" role="doc-biblioref">Wickham 2020</a>)</span> and <code>jsonlite</code> <span class="citation">(<a href="#ref-r-jsonlite" role="doc-biblioref">Ooms 2014</a>)</span>. We will also need to read the <a href="https://coronavirus.data.gov.uk/developers-guide" target="_blank">API documentation for the host site</a>.</p>
-</div>
-<div id="example-obtaining-daily-case-data" class="section level2" number="16.2">
-<h2><span class="header-section-number">16.2</span> Example: obtaining daily case data</h2>
+<div id="apis" class="section level1 hasAnchor" number="16">
+<h1><span class="header-section-number">Section 16</span> APIs<a href="apis.html#apis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Some websites provide data via an “Application Programming Interface” (API). Typically, this means that you would make selections for what data you wanted, and then a data set would be built for you to download. If you want R to download the data directly, this causes a problem, as there there may not be a file simply waiting to be downloaded; you can’t provide R with a web address.</p>
+<p>APIs provide data in different formats. Some APIs include documentation that will help you to get R to work with the API directly, but others don’t. We’ll give two examples</p>
+<p>The main R package we need is <code>httr</code> <span class="citation">(<a href="#ref-r-httr" role="doc-biblioref">Wickham 2020</a>)</span> and we will also need <code>jsonlite</code> <span class="citation">(<a href="#ref-r-jsonlite" role="doc-biblioref">Ooms 2014</a>)</span> for the first example.</p>
+<div id="example-obtaining-covid-19-case-data-data-in-json-format" class="section level2 hasAnchor" number="16.1">
+<h2><span class="header-section-number">16.1</span> Example: obtaining Covid-19 case data (data in JSON format)<a href="apis.html#example-obtaining-covid-19-case-data-data-in-json-format" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will give an example of using the API at <a href="https://coronavirus.data.gov.uk/" target="_blank">https://coronavirus.data.gov.uk/</a> for obtaining Covid-19 data (you’ll see that the frequency of reporting has changed)</p>
+<p>We will also need to read the <a href="https://coronavirus.data.gov.uk/developers-guide" target="_blank">API documentation for the host site</a>.</p>
 <p>The first step is to specify the web address of the API. This will be provided in the API documentation</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="apis.html#cb209-1" aria-hidden="true" tabindex="-1"></a>endpoint <span class="ot">&lt;-</span> <span class="st">&quot;https://api.coronavirus.data.gov.uk/v1/data&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="apis.html#cb207-1" aria-hidden="true" tabindex="-1"></a>endpoint <span class="ot">&lt;-</span> <span class="st">&quot;https://api.coronavirus.data.gov.uk/v1/data&quot;</span></span></code></pre></div>
 <p>The command to get <em>something</em> from the API is <code>httr::GET()</code>. Arguments include the web address, and any <code>query</code> options, if they are required. Working out how to set the <code>query</code> argument is the tricky part: this is where you need to study the API documentation carefully!</p>
 <p>The <a href="https://coronavirus.data.gov.uk/developers-guide#params-filters" target="_blank">documentation on query parameters</a> tells us that we have to specify something for <code>filters</code> and <code>structure</code>. There are some examples to copy. We do</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="apis.html#cb210-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
-<span id="cb210-2"><a href="apis.html#cb210-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> endpoint,</span>
-<span id="cb210-3"><a href="apis.html#cb210-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> <span class="fu">list</span>(<span class="at">filters =</span> <span class="st">&#39;areaType=nation; areaName=england&#39;</span>,</span>
-<span id="cb210-4"><a href="apis.html#cb210-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">structure=</span><span class="st">&#39;{&quot;date&quot;:&quot;date&quot;,&quot;newCases&quot;:&quot;newCasesByPublishDate&quot;}&#39;</span>)</span>
-<span id="cb210-5"><a href="apis.html#cb210-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="apis.html#cb208-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
+<span id="cb208-2"><a href="apis.html#cb208-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> endpoint,</span>
+<span id="cb208-3"><a href="apis.html#cb208-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> <span class="fu">list</span>(<span class="at">filters =</span> <span class="st">&#39;areaType=nation; areaName=england&#39;</span>,</span>
+<span id="cb208-4"><a href="apis.html#cb208-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">structure=</span><span class="st">&#39;{&quot;date&quot;:&quot;date&quot;,&quot;newCases&quot;:&quot;newCasesByPublishDate&quot;}&#39;</span>)</span>
+<span id="cb208-5"><a href="apis.html#cb208-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>The data we want is in <code>response$content</code>, but it first needs converting into a format we can use:</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="apis.html#cb211-1" aria-hidden="true" tabindex="-1"></a>contentText <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(response<span class="sc">$</span>content)</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="apis.html#cb209-1" aria-hidden="true" tabindex="-1"></a>contentText <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(response<span class="sc">$</span>content)</span></code></pre></div>
 <p>The data are now in JSON (JavaScript Object Notation) format, which we won’t worry about here, but we can convert this to list format:</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="apis.html#cb212-1" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(contentText)</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="apis.html#cb210-1" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(contentText)</span></code></pre></div>
 <p>We inspect <code>covid</code> to see what’s there (try <code>str(covid)</code>); we see that there is a data frame <code>covid$data</code>:</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="apis.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(covid<span class="sc">$</span>data)</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="apis.html#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(covid<span class="sc">$</span>data)</span></code></pre></div>
 <pre><code>##         date newCases
-## 1 2022-07-01    20731
-## 2 2022-06-30    21732
-## 3 2022-06-29    21428
-## 4 2022-06-28    21415
-## 5 2022-06-27    47332
-## 6 2022-06-26        0</code></pre>
+## 1 2022-09-22    33497
+## 2 2022-09-21        0
+## 3 2022-09-20        0
+## 4 2022-09-19        0
+## 5 2022-09-18        0
+## 6 2022-09-17        0</code></pre>
 <p>To finish, we’ll plot the data. We can convert the <code>date</code> column from a character string to dates that R will understand using the <code>lubridate</code> package <span class="citation">(<a href="#ref-r-lubridate" role="doc-biblioref">Grolemund and Wickham 2011</a>)</span> and the function <code>lubridate::ymd()</code> (year, month, day):</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="apis.html#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> covid<span class="sc">$</span>data, </span>
-<span id="cb215-2"><a href="apis.html#cb215-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(date), <span class="at">y =</span> newCases)) <span class="sc">+</span></span>
-<span id="cb215-3"><a href="apis.html#cb215-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-177-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="apis.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> covid<span class="sc">$</span>data, </span>
+<span id="cb213-2"><a href="apis.html#cb213-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(date), <span class="at">y =</span> newCases)) <span class="sc">+</span></span>
+<span id="cb213-3"><a href="apis.html#cb213-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-156-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="exercise-1" class="section level2" number="16.3">
-<h2><span class="header-section-number">16.3</span> Exercise</h2>
-<hr>
-<div class="row">
-<div class="column">
-
+<div id="example-obtaining-an-.xlsx-file" class="section level2 hasAnchor" number="16.2">
+<h2><span class="header-section-number">16.2</span> Example: obtaining an .xlsx file<a href="apis.html#example-obtaining-an-.xlsx-file" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this example, we’ll obtain a spreadsheet provided by the Office for Students (OfS): the <a href="https://www.officeforstudents.org.uk/advice-and-guidance/the-register/the-ofs-register/#/">OfS Register</a> of all English higher education providers. This is provided by an API, but there is no API documentation.</p>
+<p>From inspecting the download link from the file, we can see that the link is to an API, rather than to the file directly. We try this link as the API address:</p>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="apis.html#cb214-1" aria-hidden="true" tabindex="-1"></a>endpoint <span class="ot">&lt;-</span> <span class="st">&quot;https://register-api.officeforstudents.org.uk/api/Download&quot;</span></span></code></pre></div>
+<p>We try the <code>httr::GET()</code> function with no additional arguments:</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="apis.html#cb215-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(<span class="at">url =</span> endpoint)</span></code></pre></div>
+<p>If we try</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="apis.html#cb216-1" aria-hidden="true" tabindex="-1"></a>httr<span class="sc">::</span><span class="fu">http_type</span>(response) </span></code></pre></div>
+<pre><code>## [1] &quot;application/octet-stream&quot;</code></pre>
+<p>then this tells us file type hasn’t been determined, but digging around with <code>str(response)</code> suggests there is an .xlsx file sitting in there somewhere!</p>
+<p><a href="">A post on stack overflow</a> suggests exporting an object to a temporary <code>.xlsx</code> file, and then reading it in again. The temporary file will be deleted once you close down your R session. We do</p>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="apis.html#cb218-1" aria-hidden="true" tabindex="-1"></a>raw_xlsx <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">content</span>(response)</span></code></pre></div>
+<p>and then</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="apis.html#cb219-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&#39;.xlsx&#39;</span>)</span></code></pre></div>
+<p>to set up the temporary file. Then to save it:</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="apis.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeBin</span>(raw_xlsx, tmp)</span></code></pre></div>
+<p>To read it back in again (where I already know I want to skip the first two rows)</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="apis.html#cb221-1" aria-hidden="true" tabindex="-1"></a>my_excel <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(tmp, <span class="at">skip =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>To check that we’ve got something:</p>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="apis.html#cb222-1" aria-hidden="true" tabindex="-1"></a>my_excel[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">14</span>) ]</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 2
+##   `Provider’s legal name`  `Highest level of degree awarding powers held`
+##   &lt;chr&gt;                    &lt;chr&gt;                                         
+## 1 Lamda Limited            Taught                                        
+## 2 The University of Surrey Research                                      
+## 3 University of York       Research                                      
+## 4 Aston University         Research                                      
+## 5 Royal College of Music   Research</code></pre>
+</div>
+<div id="exercise-1" class="section level2 hasAnchor" number="16.3">
+<h2><span class="header-section-number">16.3</span> Exercise<a href="apis.html#exercise-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="task">
 <div class="exercise">
-<span id="exr:unnamed-chunk-178" class="exercise"><strong>Exercise 16.1  </strong></span>
+<p><span id="exr:unlabeled-div-11" class="exercise"><strong>Exercise 16.1  </strong></span>Try using the API at <a href="http://open-notify.org/Open-Notify-API/People-In-Space/">http://open-notify.org/Open-Notify-API/People-In-Space/</a> to download a data set on who is currently in space. You can leave the <code>query</code> argument blank in <code>httr::GET()</code>, so you just need the API web address.</p>
 </div>
 </div>
-<div class="column">
-<img src="images/exercise.png" width="10%" style="display: block; margin: auto 0 auto auto;" />
 </div>
-</div>
-<p>Try using the API at (<a href="http://open-notify.org/Open-Notify-API/People-In-Space/" class="uri">http://open-notify.org/Open-Notify-API/People-In-Space/</a>){target="_blank"} to download a data set on who is currently in space. You can leave the <code>query</code> argument blank in <code>httr::GET()</code>, so you just need the API web address.</p>
-<hr>
-</div>
-<div id="acknowledgements-1" class="section level2" number="16.4">
-<h2><span class="header-section-number">16.4</span> Acknowledgements</h2>
+<div id="acknowledgements-1" class="section level2 hasAnchor" number="16.4">
+<h2><span class="header-section-number">16.4</span> Acknowledgements<a href="apis.html#acknowledgements-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><p>Data obtained from <a href="https://coronavirus.data.gov.uk/" target="_blank">https://coronavirus.data.gov.uk/</a>. Accessed 2022-07-04. Contains public sector information licensed under the Open Government Licence v3.0.</p></li>
+<li><p>Data obtained from <a href="https://coronavirus.data.gov.uk/" target="_blank">https://coronavirus.data.gov.uk/</a>. Accessed 2022-09-26. Contains public sector information licensed under the Open Government Licence v3.0.</p></li>
 <li><p>Thanks to Christian Pascual for providing <a href="https://www.dataquest.io/blog/r-api-tutorial/" target="_blank">this useful blog post on APIs</a>, hosted at Dataquest.</p></li>
 </ul>
 
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-r-lubridate" class="csl-entry">
 Grolemund, Garrett, and Hadley Wickham. 2011. <span>“Dates and Times Made Easy with <span class="nocase">lubridate</span>.”</span> <em>Journal of Statistical Software</em> 40 (3): 1–25. <a href="http://www.jstatsoft.org/v40/i03/">http://www.jstatsoft.org/v40/i03/</a>.
@@ -611,7 +632,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

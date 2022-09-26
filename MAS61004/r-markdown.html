@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 21 R Markdown | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 21 R Markdown | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="An introduction to R for students on MAS61004" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-07-04" />
+<meta name="date" content="2022-09-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="maps-with-leaflet.html"/>
 <link rel="next" href="referencing.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -60,9 +59,9 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -318,8 +317,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="16" data-path="apis.html"><a href="apis.html"><i class="fa fa-check"></i><b>16</b> APIs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#r-packages-for-apis"><i class="fa fa-check"></i><b>16.1</b> R packages for APIs</a></li>
-<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-daily-case-data"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining daily case data</a></li>
+<li class="chapter" data-level="16.1" data-path="apis.html"><a href="apis.html#example-obtaining-covid-19-case-data-data-in-json-format"><i class="fa fa-check"></i><b>16.1</b> Example: obtaining Covid-19 case data (data in JSON format)</a></li>
+<li class="chapter" data-level="16.2" data-path="apis.html"><a href="apis.html#example-obtaining-an-.xlsx-file"><i class="fa fa-check"></i><b>16.2</b> Example: obtaining an .xlsx file</a></li>
 <li class="chapter" data-level="16.3" data-path="apis.html"><a href="apis.html#exercise-1"><i class="fa fa-check"></i><b>16.3</b> Exercise</a></li>
 <li class="chapter" data-level="16.4" data-path="apis.html"><a href="apis.html#acknowledgements-1"><i class="fa fa-check"></i><b>16.4</b> Acknowledgements</a></li>
 </ul></li>
@@ -404,6 +403,7 @@ div.csl-indent {
 <li class="chapter" data-level="21.7" data-path="r-markdown.html"><a href="r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>21.7</b> The YAML header</a></li>
 <li class="chapter" data-level="21.8" data-path="r-markdown.html"><a href="r-markdown.html#latex-markdown-and-html"><i class="fa fa-check"></i><b>21.8</b> LaTeX, Markdown and html</a></li>
 <li class="chapter" data-level="21.9" data-path="r-markdown.html"><a href="r-markdown.html#bookdown"><i class="fa fa-check"></i><b>21.9</b> bookdown</a></li>
+<li class="chapter" data-level="21.10" data-path="r-markdown.html"><a href="r-markdown.html#quarto"><i class="fa fa-check"></i><b>21.10</b> Quarto</a></li>
 </ul></li>
 <li class="chapter" data-level="22" data-path="referencing.html"><a href="referencing.html"><i class="fa fa-check"></i><b>22</b> Referencing</a>
 <ul>
@@ -432,7 +432,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="23.5" data-path="shiny.html"><a href="shiny.html#reactivity"><i class="fa fa-check"></i><b>23.5</b> Reactivity</a></li>
 <li class="chapter" data-level="23.6" data-path="shiny.html"><a href="shiny.html#customising-the-appearance-of-your-app"><i class="fa fa-check"></i><b>23.6</b> Customising the appearance of your app</a></li>
-<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.7</b> Further reading</a></li>
+<li class="chapter" data-level="23.7" data-path="shiny.html"><a href="shiny.html#shiny-with-r-markdown"><i class="fa fa-check"></i><b>23.7</b> Shiny with R Markdown</a></li>
+<li class="chapter" data-level="23.8" data-path="shiny.html"><a href="shiny.html#further-reading-8"><i class="fa fa-check"></i><b>23.8</b> Further reading</a></li>
 </ul></li>
 <li class="part"><span><b>V Miscellaneous</b></span></li>
 <li class="chapter" data-level="24" data-path="eda-for-logistic-regression.html"><a href="eda-for-logistic-regression.html"><i class="fa fa-check"></i><b>24</b> EDA for logistic regression</a>
@@ -482,8 +483,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-markdown" class="section level1" number="21">
-<h1><span class="header-section-number">Section 21</span> R Markdown</h1>
+<div id="r-markdown" class="section level1 hasAnchor" number="21">
+<h1><span class="header-section-number">Section 21</span> R Markdown<a href="r-markdown.html#r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>R Markdown <span class="citation">(<a href="#ref-R-rmarkdown" role="doc-biblioref">Allaire et al. 2020</a>)</span>, <span class="citation">(<a href="#ref-rmarkdown2018" role="doc-biblioref">Xie, Allaire, and Grolemund 2018</a>)</span> is a system for producing reports. From a single R Markdown document, you can produce your report in a variety of formats including: PDF, Word document, web page (html), slides (including Powerpoint and Beamer).</p>
 <p><img src="images/rmarkdown_rockstar.png" width="60%" style="display: block; margin: auto;" />
 (Artwork by @allison_horst)</p>
@@ -493,34 +494,24 @@ div.csl-indent {
 <li>You will save a <em>lot</em> of time if you need to include plots in your report: you write the code to make your plot, and then R Markdown inserts the plot in your report automatically.</li>
 <li>If changes are made to the data, or if you make some change early on in your analysis, you can just recompile your report, and the code will be re-run with the new data, and all the new results will appear in the re-compiled report. (You may, of course, need to change your text commentary)</li>
 </ul>
-<div id="a-five-minute-video-tutorial" class="section level2" number="21.1">
-<h2><span class="header-section-number">21.1</span> A five minute video tutorial</h2>
+<div id="a-five-minute-video-tutorial" class="section level2 hasAnchor" number="21.1">
+<h2><span class="header-section-number">21.1</span> A five minute video tutorial<a href="r-markdown.html#a-five-minute-video-tutorial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><a href="https://www.youtube.com/embed/na9HM3Y9KXE">This video</a> illustrates the basics of how to work with an R Markdown document.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/na9HM3Y9KXE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 </div>
-<div id="working-directories-for-r-markdown-documents" class="section level2" number="21.2">
-<h2><span class="header-section-number">21.2</span> Working directories for R Markdown documents</h2>
+<div id="working-directories-for-r-markdown-documents" class="section level2 hasAnchor" number="21.2">
+<h2><span class="header-section-number">21.2</span> Working directories for R Markdown documents<a href="r-markdown.html#working-directories-for-r-markdown-documents" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>When we run a code chunk inside an R Markdown document, the working directory is set to be directory containing the document (check this by running the command <code>getwd()</code> inside a code chunk.) If you are using an RStudio project, you may wish your data and R Markdown documents to be in different folders, e.g., if the project directory is <code>myProject</code>, you may have folders</p>
 <pre><code>myProject/data
 myProject/reports</code></pre>
 <p>If your R Markdown document is in the folder <code>myProject/reports</code>, and you want to import a file <code>myData.csv</code> from <code>myProject/data</code>, specify the (relative) file path in your R Markdown document as</p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="r-markdown.html#cb284-1" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;../data/myData.csv&quot;</span>)</span></code></pre></div>
-<hr>
-<div class="row">
-<div class="column">
-
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="r-markdown.html#cb292-1" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;../data/myData.csv&quot;</span>)</span></code></pre></div>
+<div class="task">
 <div class="exercise">
-<span id="exr:ex1RMarkdown" class="exercise"><strong>Exercise 21.1  </strong></span>
-</div>
-</div>
-<div class="column">
-<img src="images/exercise.png" width="10%" style="display: block; margin: auto 0 auto auto;" />
-</div>
-</div>
-<p>Create an R Markdown document that presents some of your solutions to Exercise <a href="making-plots-with-ggplot2.html#exr:Brexit">18.1</a> on the Brexit data.</p>
+<p><span id="exr:unlabeled-div-16" class="exercise"><strong>Exercise 21.1  </strong></span>Create an R Markdown document that presents some of your solutions to Exercise <a href="#exr:Brexit"><strong>??</strong></a> on the Brexit data.</p>
 <p>You may need to install RMarkdown first, using the command</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="r-markdown.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="r-markdown.html#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)</span></code></pre></div>
 <ul>
 <li>For now, make a document that presents one plot only.</li>
 <li>Knit your document to html.
@@ -529,48 +520,40 @@ myProject/reports</code></pre>
 </ul></li>
 <li>The goal of this exercise is simply to produce a working document: <strong>do not worry about how your document looks</strong>. You will change the appearance of your document in later exercises.</li>
 </ul>
-<hr>
 </div>
-<div id="code-chunk-options" class="section level2" number="21.3">
-<h2><span class="header-section-number">21.3</span> Code chunk options</h2>
+</div>
+</div>
+<div id="code-chunk-options" class="section level2 hasAnchor" number="21.3">
+<h2><span class="header-section-number">21.3</span> Code chunk options<a href="r-markdown.html#code-chunk-options" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><a href="https://www.youtube.com/embed/xHVbtRhqnsY">This video</a> illustrates how to use code chunk options to change the appearance of a document</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xHVbtRhqnsY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 <p>(One useful option that I didn’t mention in the video is <code>include = FALSE</code>. This will run the code, but will not display the input or <em>any</em> output, including messages and warnings.)</p>
-<div id="code-chunk-options-for-figures" class="section level3" number="21.3.1">
-<h3><span class="header-section-number">21.3.1</span> Code chunk options for figures</h3>
+<div id="code-chunk-options-for-figures" class="section level3 hasAnchor" number="21.3.1">
+<h3><span class="header-section-number">21.3.1</span> Code chunk options for figures<a href="r-markdown.html#code-chunk-options-for-figures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For reference, here’s an example code chunk with the options you would typically need to use when making a plot.</p>
-<div class="sourceCode" id="cb286"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb286-1"><a href="r-markdown.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.align = &#39;center&#39;, fig.cap = &quot;My figure caption&quot;, fig.height = 3, fig.width = 3}</span></span>
-<span id="cb286-2"><a href="r-markdown.html#cb286-2" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(mtcars, aes(x = wt, y = mpg)) +</span></span>
-<span id="cb286-3"><a href="r-markdown.html#cb286-3" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point()</span></span>
-<span id="cb286-4"><a href="r-markdown.html#cb286-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="sourceCode" id="cb294"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb294-1"><a href="r-markdown.html#cb294-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.align = &#39;center&#39;, fig.cap = &quot;My figure caption&quot;, fig.height = 3, fig.width = 3}</span></span>
+<span id="cb294-2"><a href="r-markdown.html#cb294-2" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(mtcars, aes(x = wt, y = mpg)) +</span></span>
+<span id="cb294-3"><a href="r-markdown.html#cb294-3" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point()</span></span>
+<span id="cb294-4"><a href="r-markdown.html#cb294-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
 <p>Some trial and error may be needed to find values for <code>fig.height</code> and <code>fig.width</code> that give the figure size you want.</p>
 <p>If importing a figure rather than generating it in R, you may find the option <code>out.width = "60%"</code> easier to work with than <code>fig.height</code> and <code>fig.width</code>. Again, you may need trial and error to decide on the best percentage value.</p>
-<hr>
-<div class="row">
-<div class="column">
-
+<div class="task">
 <div class="exercise">
-<span id="exr:ex2RMarkdown" class="exercise"><strong>Exercise 21.2  </strong></span>
-</div>
-</div>
-<div class="column">
-<img src="images/exercise.png" width="10%" style="display: block; margin: auto 0 auto auto;" />
-</div>
-</div>
-<p>Use suitable code chunk options to change the appearance of your R Markdown document from Exercise <a href="r-markdown.html#exr:ex1RMarkdown">21.1</a></p>
+<p><span id="exr:unlabeled-div-17" class="exercise"><strong>Exercise 21.2  </strong></span>Use suitable code chunk options to change the appearance of your R Markdown document from Exercise <a href="#exr:ex1RMarkdown"><strong>??</strong></a></p>
 <ul>
 <li>Make sure no R code appears in your html/pdf document</li>
 <li>Include a figure caption, centre-align your figure, and manually set an appropriate figure size.</li>
 </ul>
-<hr>
 </div>
 </div>
-<div id="tables" class="section level2" number="21.4">
-<h2><span class="header-section-number">21.4</span> Tables</h2>
+</div>
+</div>
+<div id="tables" class="section level2 hasAnchor" number="21.4">
+<h2><span class="header-section-number">21.4</span> Tables<a href="r-markdown.html#tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are several options for producing tables in R Markdown. (For general advice on formatting tables, see <a href="https://serialmentor.com/dataviz/figure-titles-captions.html#tables" target="_blank">Section 22.3 of Wilke (2019)</a>.</p>
-<div id="using-markdown" class="section level3" number="21.4.1">
-<h3><span class="header-section-number">21.4.1</span> Using Markdown</h3>
+<div id="using-markdown" class="section level3 hasAnchor" number="21.4.1">
+<h3><span class="header-section-number">21.4.1</span> Using Markdown<a href="r-markdown.html#using-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here’s an example of making a table with the Markdown syntax. Note the use of <code>:</code> for specifying text alignment.</p>
 <pre><code>| column 1 | column 2 | column 3 |
 |:---------|:--------:|---------:|
@@ -605,12 +588,26 @@ myProject/reports</code></pre>
 </table>
 <p>Online tools are available for generating Markdown syntax, for example <a href="https://www.tablesgenerator.com/markdown_tables" target="_blank">https://www.tablesgenerator.com/markdown_tables</a>.</p>
 </div>
-<div id="using-knitrkable" class="section level3" number="21.4.2">
-<h3><span class="header-section-number">21.4.2</span> Using <code>knitr::kable()</code></h3>
+<div id="using-knitrkable" class="section level3 hasAnchor" number="21.4.2">
+<h3><span class="header-section-number">21.4.2</span> Using <code>knitr::kable()</code><a href="r-markdown.html#using-knitrkable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>knitr</code> package <span class="citation">(<a href="#ref-R-knitr" role="doc-biblioref">Xie 2020b</a>)</span>, <span class="citation">(<a href="#ref-knitr2014" role="doc-biblioref">Xie 2014</a>)</span>, <span class="citation">(<a href="#ref-knitr2015" role="doc-biblioref">Xie 2015</a>)</span> has the <code>kable()</code> function which can produce a table from a data frame. Here’s an example.</p>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="r-markdown.html#cb288-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(mtcars))</span></code></pre></div>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="r-markdown.html#cb296-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(mtcars))</span></code></pre></div>
 <p>which is rendered (in html) as follows:</p>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="26%" />
+<col width="7%" />
+<col width="5%" />
+<col width="7%" />
+<col width="5%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="4%" />
+<col width="4%" />
+<col width="7%" />
+<col width="7%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left"></th>
@@ -716,48 +713,43 @@ myProject/reports</code></pre>
 </table>
 </div>
 </div>
-<div id="caching-results-for-slow-running-code" class="section level2" number="21.5">
-<h2><span class="header-section-number">21.5</span> Caching results for slow-running code</h2>
+<div id="caching-results-for-slow-running-code" class="section level2 hasAnchor" number="21.5">
+<h2><span class="header-section-number">21.5</span> Caching results for slow-running code<a href="r-markdown.html#caching-results-for-slow-running-code" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If some of your code takes a long time to run, it is preferable not to re-run it every time you edit your R Markdown document and want to re-compile it. It you use the code chunk option <code>cache = TRUE</code>, R will store (‘cache’) the results, and will only re-run the code chunk if it <em>detects</em> that something has changed.</p>
 <div class="warning">
 <p>
-Be careful if you use caching. For example, if you import a file and cache the results, R will not detect if the file contents change. When you knit your final version of your document, switch off all caching.
+Be careful if you use caching. For example, if you import a file and
+cache the results, R will not detect if the file contents change. When
+you knit your final version of your document, switch off all
+caching.
 </p>
 </div>
-<hr>
-<div class="row">
-<div class="column">
-
+<div class="task">
 <div class="exercise">
-<span id="exr:ex3RMarkdown" class="exercise"><strong>Exercise 21.3  </strong></span>
+<p><span id="exr:unlabeled-div-18" class="exercise"><strong>Exercise 21.3  </strong></span>Add one table to your R Markdown document from Exercise <a href="#exr:ex2RMarkdown"><strong>??</strong></a>, to show mean percentage of the remain vote grouped by area. Use <code>knitr::kable()</code> to produce the table.</p>
 </div>
 </div>
-<div class="column">
-<img src="images/exercise.png" width="10%" style="display: block; margin: auto 0 auto auto;" />
 </div>
-</div>
-<p>Add one table to your R Markdown document from Exercise <a href="r-markdown.html#exr:ex2RMarkdown">21.2</a>, to show mean percentage of the remain vote grouped by area. Use <code>knitr::kable()</code> to produce the table.</p>
-<hr>
-</div>
-<div id="spell-checking" class="section level2" number="21.6">
-<h2><span class="header-section-number">21.6</span> Spell checking</h2>
+<div id="spell-checking" class="section level2 hasAnchor" number="21.6">
+<h2><span class="header-section-number">21.6</span> Spell checking<a href="r-markdown.html#spell-checking" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>RStudio has a spell checker. To use it, click the green tick (with ABC above) button, in the document window.</p>
 <p><img src="images/spellcheck.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>If you wish, you can go to <strong>Tools &gt; Global Options… &gt; Spelling</strong> and change the <strong>Main dictionary language</strong> to English (United Kingdom).</p>
 <div class="warning">
 <p>
-Using the spell checker will not identify all possible errors. Proofread your work carefully!
+Using the spell checker will not identify all possible errors.
+Proofread your work carefully!
 </p>
 </div>
 </div>
-<div id="the-yaml-header" class="section level2" number="21.7">
-<h2><span class="header-section-number">21.7</span> The YAML header</h2>
+<div id="the-yaml-header" class="section level2 hasAnchor" number="21.7">
+<h2><span class="header-section-number">21.7</span> The YAML header<a href="r-markdown.html#the-yaml-header" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The first part of an R Markdown document, the ‘header’ is used to specify information such as author and title, and can include extra commands to change the appearance of the document. These are commands are specified using another language
 called YAML. Here’s an example of a YAML header, with a few extra commands specified that you might find helpful.</p>
 <pre><code>---
 title: &quot;My Report Title&quot;
 author: &quot;Jeremy Oakley&quot;
-date: &quot;2022-07-04&quot;
+date: &quot;2022-09-26&quot;
 output:
   pdf_document: 
     number_sections: true
@@ -770,7 +762,8 @@ header-includes:
 ---</code></pre>
 <div class="warning">
 <p>
-Indenting of particular lines does matter in YAML. Keep this is mind when copying YAML examples.
+Indenting of particular lines does matter in YAML. Keep this is mind
+when copying YAML examples.
 </p>
 </div>
 <p>The command <code>Sys.Date()</code> is an R command which will insert today’s date (year-month-day format). The commands <code>fontsize</code> and <code>urlcolor</code> affect pdf output only. The final command</p>
@@ -778,14 +771,16 @@ Indenting of particular lines does matter in YAML. Keep this is mind when copyin
   - \usepackage{bm}</code></pre>
 <p>can be used to add commands (e.g. <code>\usepackage{bm}</code>) to the preamble in the LaTeX document for pdf output.</p>
 </div>
-<div id="latex-markdown-and-html" class="section level2" number="21.8">
-<h2><span class="header-section-number">21.8</span> LaTeX, Markdown and html</h2>
+<div id="latex-markdown-and-html" class="section level2 hasAnchor" number="21.8">
+<h2><span class="header-section-number">21.8</span> LaTeX, Markdown and html<a href="r-markdown.html#latex-markdown-and-html" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The Markdown language is <em>broadly</em> the same as LaTeX for typesetting equations/maths notation, and so you can use LaTeX as normal for typesetting maths.</p>
 <p>You can use any other LaTeX commands throughout your document. When producing pdf output, R Markdown will actually generate an intermediate .tex file, which is then compiled to pdf. However, these commands will be ignored if you knit to html or other formats.</p>
 <p>Similarly, you can include html commands in your document; these will only work if you knit to html.</p>
 <div class="rmdnote">
 <p>
-Try to keep to Markdown commands as far as possible. This will give you the most flexibility regarding your choice of output format (and you may wish to switch your output format in the future.)
+Try to keep to Markdown commands as far as possible. This will give
+you the most flexibility regarding your choice of output format (and you
+may wish to switch your output format in the future.)
 </p>
 </div>
 <p>For example, putting this in your document:</p>
@@ -794,31 +789,29 @@ Try to keep to Markdown commands as far as possible. This will give you the most
 <pre><code># Introduction</code></pre>
 <p>will give the desired section heading for any output format you produce.</p>
 </div>
-<div id="bookdown" class="section level2" number="21.9">
-<h2><span class="header-section-number">21.9</span> bookdown</h2>
+<div id="bookdown" class="section level2 hasAnchor" number="21.9">
+<h2><span class="header-section-number">21.9</span> bookdown<a href="r-markdown.html#bookdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>bookdown <span class="citation">(<a href="#ref-R-bookdown" role="doc-biblioref">Xie 2020a</a>)</span>, <span class="citation">(<a href="#ref-bookdown2016" role="doc-biblioref">Xie 2017</a>)</span> is an extension to R Markdown, that has extra features helpful for writing books, dissertations and longer reports/articles. (I used bookdown to produce this ‘gitbook’ that you are reading now.) You won’t need bookdown on this module, but we will provide a template and instructions for your dissertation.</p>
-<hr>
-<div class="row">
-<div class="column">
-
+<div class="task">
 <div class="exercise">
-<span id="exr:ex4RMarkdown" class="exercise"><strong>Exercise 21.4  </strong></span>
-</div>
-</div>
-<div class="column">
-<img src="images/exercise.png" width="10%" style="display: block; margin: auto 0 auto auto;" />
-</div>
-</div>
-<p>Using your document from Exercise <a href="r-markdown.html#exr:ex3RMarkdown">21.3</a>:</p>
+<p><span id="exr:unlabeled-div-19" class="exercise"><strong>Exercise 21.4  </strong></span>Using your document from the previous exercise:</p>
 <ul>
 <li>edit the YAML header to increase the font size for pdf output</li>
 <li>add a short amount of text to explain the subject of your document;</li>
 <li>use RStudio’s spell checker.</li>
 </ul>
+</div>
+</div>
+</div>
+<div id="quarto" class="section level2 hasAnchor" number="21.10">
+<h2><span class="header-section-number">21.10</span> Quarto<a href="r-markdown.html#quarto" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Quarto is a newer system for producing documents, and is described by its authors as <a href="https://www.rstudio.com/blog/announcing-quarto-a-new-scientific-and-technical-publishing-system/">“the next generation of R Markdown”</a>. Quarto is designed to work with a greater variety of languages and platforms; it can be used without an installation of R.</p>
+<p>If you use Quarto within RStudio, you will find it very similar to using R Markdown, and Quarto will render most .Rmd files without modification.</p>
+<p>R Markdown will be sufficient for this module, but you can use Quarto if you wish. For more details, <a href="https://quarto.org/">see the Quarto homepage</a>.</p>
 
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-R-rmarkdown" class="csl-entry">
 Allaire, JJ, Yihui Xie, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, Hadley Wickham, Joe Cheng, Winston Chang, and Richard Iannone. 2020. <em>Rmarkdown: Dynamic Documents for r</em>. <a href="https://CRAN.R-project.org/package=rmarkdown">https://CRAN.R-project.org/package=rmarkdown</a>.
@@ -895,7 +888,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
