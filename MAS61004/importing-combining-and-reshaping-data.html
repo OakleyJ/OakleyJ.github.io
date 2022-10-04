@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-26" />
+<meta name="date" content="2022-10-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -509,7 +509,7 @@ data file to the data you actually worked with in your analysis.
 <p>Use the command <code>read_csv()</code>, with the path to your target file in quotes (if you can, use the path relative to your project directory). This command is from the <code>readr</code> package <span class="citation">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, and Francois 2018</a>)</span>. We’ll import the <code>RIOolympics.csv</code> file and store it as a data frame called <code>medals</code>.</p>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="importing-combining-and-reshaping-data.html#cb99-1" aria-hidden="true" tabindex="-1"></a>medals <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/RIOolympics.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 87 Columns: 6
-## ── Column specification ────────────────────────────
+## ── Column specification ──────────────
 ## Delimiter: &quot;,&quot;
 ## chr (2): code, country
 ## dbl (4): gold, silver, bronze, total
@@ -565,7 +565,7 @@ data file to the data you actually worked with in your analysis.
 <p>We can import plain text files (typically files with a <code>.txt</code> extension) with the command <code>read_table()</code>. For example, in the MAS61004Data.zip file, there is a file <code>flintsdata.txt</code>. Although the file is a plain text file, the data appear formatted as a two-column table, with headers <code>breadth</code> and <code>length</code>. We import the data (and create a new data frame called <code>flints</code>) as follows.</p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="importing-combining-and-reshaping-data.html#cb105-1" aria-hidden="true" tabindex="-1"></a>flints <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">&quot;data/flintsdata.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## 
-## ── Column specification ────────────────────────────
+## ── Column specification ──────────────
 ## cols(
 ##   breadth = col_double(),
 ##   length = col_double()
@@ -585,8 +585,7 @@ data file to the data you actually worked with in your analysis.
 <div id="importing-online-data" class="section level2 hasAnchor" number="12.4">
 <h2><span class="header-section-number">12.4</span> Importing online data<a href="importing-combining-and-reshaping-data.html#importing-online-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If you are online, R can read in data directly from the web: you just give the full web address as the file name, e.g.</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="importing-combining-and-reshaping-data.html#cb109-1" aria-hidden="true" tabindex="-1"></a>maths <span class="ot">&lt;-</span> </span>
-<span id="cb109-2"><a href="importing-combining-and-reshaping-data.html#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">&quot;http://www.jeremy-oakley.staff.shef.ac.uk/mas113/maths.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="importing-combining-and-reshaping-data.html#cb109-1" aria-hidden="true" tabindex="-1"></a>maths <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://oakleyj.github.io/exampledata/maths.csv&quot;</span>)</span></code></pre></div>
 <p>This can be convenient, though it may slow down your code if the file is large, and there is a risk that your code won’t run in the future: you can’t be sure that the file will always be there!</p>
 <p>Nevertheless, downloading a data file via R (or another language) is preferable to clicking buttons/links on a website, as you will have a record of where you got the data from. We recommend that you download your data with R, but then save a copy on your computer, and that your analysis uses your copied version.</p>
 <p>We can export data from R to a external file, e.g. csv format with the <code>write_csv()</code> command, e.g.</p>
@@ -694,7 +693,7 @@ e.g. <code>code</code>, we could just use the argument
 <p>Sometimes a data set may be in the wrong ‘shape’ for the analysis or plot that we want to do. As an example, we’ll use an extended data set on populations, with observations in multiple years:</p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="importing-combining-and-reshaping-data.html#cb123-1" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/populationMultiple.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 264 Columns: 4
-## ── Column specification ────────────────────────────
+## ── Column specification ──────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): Country Name
 ## dbl (3): 2013, 2014, 2015
