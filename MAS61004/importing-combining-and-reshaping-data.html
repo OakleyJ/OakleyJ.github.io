@@ -591,7 +591,7 @@ data file to the data you actually worked with in your analysis.
 <p>We can export data from R to a external file, e.g. csv format with the <code>write_csv()</code> command, e.g.</p>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="importing-combining-and-reshaping-data.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(maths, <span class="at">path =</span> <span class="st">&quot;data/myCopyOfMaths.csv&quot;</span>)</span></code></pre></div>
 <p>We can also use the <code>download.file()</code> command, which downloads and saves the file, but doesn’t keep the data within R:</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="importing-combining-and-reshaping-data.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;http://www.jeremy-oakley.staff.shef.ac.uk/mas113/maths.csv&quot;</span>,</span>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="importing-combining-and-reshaping-data.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://oakleyj.github.io/exampledata/maths.csv&quot;</span>,</span>
 <span id="cb111-2"><a href="importing-combining-and-reshaping-data.html#cb111-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;data/myCopyOfMaths.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="working-with-column-names" class="section level2 hasAnchor" number="12.5">
