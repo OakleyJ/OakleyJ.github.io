@@ -98,7 +98,7 @@ data-frames-from-lists
 renaming-columns
 importing-data-from-other-statistical-packages
 reshaping-data-frames
-exercises
+exBrexit
 data-sources
 further-reading-2
 data-handling-with-dplyr
@@ -133,7 +133,7 @@ convert-the-list-to-a-data-frame
 exercise
 apis
 example-obtaining-covid-19-case-data-data-in-json-format
-example-obtaining-an-.xlsx-file
+exExcel
 exercise-1
 acknowledgements-1
 missing-data
@@ -158,7 +158,7 @@ adding-the-observations-to-a-box-plot
 violin-plots
 global-aesthetics
 facets
-exercises-1
+exercises
 further-reading-6
 presentation-of-plots
 the-basics
@@ -169,7 +169,7 @@ refining-a-plot-an-example
 the-data-to-plot
 a-first-attempt-four-histograms
 using-a-box-plot
-exercises-2
+exercises-1
 data-sources-1
 maps-with-leaflet
 a-basic-map
@@ -231,3 +231,8 @@ plotting-fitted-logistic-regression-lines
 plots-with-bernoulli-data
 plots-with-binomial-n1-data
 summary
+example-working-with-strings
+importing-the-two-data-files
+preliminary-tidying
+approximately-matching-strings
+assembling-the-target-data-frame

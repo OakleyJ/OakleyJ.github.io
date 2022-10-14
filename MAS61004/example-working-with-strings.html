@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 3 Using R as a calculator | Data handling, exploratory analysis, and reporting in R</title>
+  <title>Section 25 Example: working with strings | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 3 Using R as a calculator | Data handling, exploratory analysis, and reporting in R" />
+  <meta property="og:title" content="Section 25 Example: working with strings | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introduction to R for students on MAS61004" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 3 Using R as a calculator | Data handling, exploratory analysis, and reporting in R" />
+  <meta name="twitter:title" content="Section 25 Example: working with strings | Data handling, exploratory analysis, and reporting in R" />
   
   <meta name="twitter:description" content="An introduction to R for students on MAS61004" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="r-and-rstudio.html"/>
-<link rel="next" href="variables-and-vectors.html"/>
+<link rel="prev" href="eda-for-logistic-regression.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -490,43 +490,137 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="using-r-as-a-calculator" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">Section 3</span> Using R as a calculator<a href="using-r-as-a-calculator.html#using-r-as-a-calculator" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>To do addition, subtraction, multiplication and division, use the symbols <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> respectively. For example, if you type <code>5 * 6</code> at the command prompt, and press return, you will see</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="using-r-as-a-calculator.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="sc">*</span> <span class="dv">6</span></span></code></pre></div>
-<pre><code>## [1] 30</code></pre>
-<p>The symbol <code>^</code> is used for raising a number to a power. For example, to calculate <span class="math inline">\(2^4\)</span>, try the following</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="using-r-as-a-calculator.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">^</span> <span class="dv">4</span></span></code></pre></div>
-<pre><code>## [1] 16</code></pre>
-<div id="scientific-notation" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Scientific notation<a href="using-r-as-a-calculator.html#scientific-notation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Large numbers may be displayed using “scientific notation”. For example, if we calculate <span class="math inline">\(500^3\)</span> in R, instead of displaying <code>125000000</code> as the result, we see</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="using-r-as-a-calculator.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">500</span> <span class="sc">^</span> <span class="dv">3</span> </span></code></pre></div>
-<pre><code>## [1] 1.25e+08</code></pre>
-<p>When you see <code>e</code> appear within a number, read it as “multiplied by 10 to the power of”. So <code>1.25e+08</code> is read as “1.25 multiplied by 10 to the power of 8”.</p>
-<div class="task">
-<div class="exercise">
-<p><span id="exr:unlabeled-div-1" class="exercise"><strong>Exercise 3.1  </strong></span>Replace <code>x</code> with a suitable number in the following command</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="using-r-as-a-calculator.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> <span class="dv">1000</span> <span class="sc">^</span> x</span></code></pre></div>
-<p>to produce the output</p>
-<pre><code>## [1] 1e-09</code></pre>
-<p>Check your answer by trying the calculation in R.</p>
+<div id="example-working-with-strings" class="section level1 hasAnchor" number="25">
+<h1><span class="header-section-number">Section 25</span> Example: working with strings<a href="example-working-with-strings.html#example-working-with-strings" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this section we’ll discuss some code used to create the file <code>universities.csv</code> used in a Case Study. The main features of this example are as follows.</p>
+<ul>
+<li>We want to extract some data corresponding to universities from a larger dataset of many different employers.</li>
+<li>We can obtain a separate list of universities, but names in this list may not match precisely the names in the first dataset. For example, in one dataset, the name will be <code>UNIVERSITY OF SHEFFIELD</code>, but in another it will be <code>The University of Sheffield</code>.</li>
+</ul>
+<p>We’d also like to import all the data directly from the web. One of the files is accessed via an API at the <a href="https://www.officeforstudents.org.uk/advice-and-guidance/the-register/the-ofs-register/#/">OfS Register</a>, but we have already shown how to import it in Section <a href="apis.html#exExcel">16.2</a>.</p>
+<div id="importing-the-two-data-files" class="section level2 hasAnchor" number="25.1">
+<h2><span class="header-section-number">25.1</span> Importing the two data files<a href="example-working-with-strings.html#importing-the-two-data-files" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The main data set we are interested in is from the <a href="https://gender-pay-gap.service.gov.uk/">Gender pay gap service</a>. We import the data for the year 2021-22:</p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="example-working-with-strings.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb359-2"><a href="example-working-with-strings.html#cb359-2" aria-hidden="true" tabindex="-1"></a>pay22 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://gender-pay-gap.service.gov.uk/viewing/download-data/2021&quot;</span>)</span></code></pre></div>
+<p>This file has data for about 10,000 employers.</p>
+<p>Using the code from Section <a href="apis.html#exExcel">16.2</a>, we import the list of universities from the Office for Students. Note that I’ve looked at this file already, and know that I want to skip the first two rows.</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="example-working-with-strings.html#cb360-1" aria-hidden="true" tabindex="-1"></a>endpoint <span class="ot">&lt;-</span> <span class="st">&quot;https://register-api.officeforstudents.org.uk/api/Download&quot;</span></span>
+<span id="cb360-2"><a href="example-working-with-strings.html#cb360-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb360-3"><a href="example-working-with-strings.html#cb360-3" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
+<span id="cb360-4"><a href="example-working-with-strings.html#cb360-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> endpoint)</span>
+<span id="cb360-5"><a href="example-working-with-strings.html#cb360-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb360-6"><a href="example-working-with-strings.html#cb360-6" aria-hidden="true" tabindex="-1"></a>raw_xlsx <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">content</span>(response)</span>
+<span id="cb360-7"><a href="example-working-with-strings.html#cb360-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&#39;.xlsx&#39;</span>)</span>
+<span id="cb360-8"><a href="example-working-with-strings.html#cb360-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb360-9"><a href="example-working-with-strings.html#cb360-9" aria-hidden="true" tabindex="-1"></a><span class="fu">writeBin</span>(raw_xlsx, tmp)</span>
+<span id="cb360-10"><a href="example-working-with-strings.html#cb360-10" aria-hidden="true" tabindex="-1"></a>ofs <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(tmp, <span class="at">skip =</span> <span class="dv">2</span>)</span></code></pre></div>
 </div>
+<div id="preliminary-tidying" class="section level2 hasAnchor" number="25.2">
+<h2><span class="header-section-number">25.2</span> Preliminary tidying<a href="example-working-with-strings.html#preliminary-tidying" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We need to do a little tidying up of the <code>ofs</code> data frame, and we would also like to create a column to indicate whether a university is a pre-92 or a post-92.</p>
+<p>We are interested in four columns:</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="example-working-with-strings.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ofs)[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">18</span>, <span class="dv">19</span>)]</span></code></pre></div>
+<pre><code>## [1] &quot;Provider’s legal name&quot;                                             
+## [2] &quot;Provider’s trading name(s)&quot;                                        
+## [3] &quot;Does the provider have the right to use ‘university’ in its title?&quot;
+## [4] &quot;Date that use of &#39;university&#39; was granted&quot;</code></pre>
+<p>We will simplify the names:</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="example-working-with-strings.html#cb363-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ofs)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;legal&quot;</span></span>
+<span id="cb363-2"><a href="example-working-with-strings.html#cb363-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ofs)[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;trading&quot;</span></span>
+<span id="cb363-3"><a href="example-working-with-strings.html#cb363-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ofs)[<span class="dv">18</span>] <span class="ot">&lt;-</span> <span class="st">&quot;university&quot;</span></span>
+<span id="cb363-4"><a href="example-working-with-strings.html#cb363-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ofs)[<span class="dv">19</span>] <span class="ot">&lt;-</span> <span class="st">&quot;year&quot;</span></span></code></pre></div>
+<p>Now we extract the universities from the OfS register:</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="example-working-with-strings.html#cb364-1" aria-hidden="true" tabindex="-1"></a>ofs <span class="sc">%&gt;%</span></span>
+<span id="cb364-2"><a href="example-working-with-strings.html#cb364-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(university <span class="sc">==</span> <span class="st">&quot;Yes&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb364-3"><a href="example-working-with-strings.html#cb364-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(legal, trading, year) <span class="ot">-&gt;</span> universities</span></code></pre></div>
+<p>We clean up the year and legal (name) variable for Oxbridge:</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="example-working-with-strings.html#cb365-1" aria-hidden="true" tabindex="-1"></a>tempIndex <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">nchar</span>(universities<span class="sc">$</span>year) <span class="sc">&gt;</span> <span class="dv">4</span>)</span>
+<span id="cb365-2"><a href="example-working-with-strings.html#cb365-2" aria-hidden="true" tabindex="-1"></a>universities<span class="sc">$</span>year[tempIndex] <span class="ot">&lt;-</span> <span class="dv">1571</span></span>
+<span id="cb365-3"><a href="example-working-with-strings.html#cb365-3" aria-hidden="true" tabindex="-1"></a>universities<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(universities<span class="sc">$</span>year)</span></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="example-working-with-strings.html#cb366-1" aria-hidden="true" tabindex="-1"></a>universities<span class="sc">$</span>legal[tempIndex]</span></code></pre></div>
+<pre><code>## [1] &quot;The Chancellor, Masters, and Scholars of the University of Cambridge&quot;
+## [2] &quot;The Chancellor, Masters and Scholars of the University of Oxford&quot;</code></pre>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="example-working-with-strings.html#cb368-1" aria-hidden="true" tabindex="-1"></a>universities<span class="sc">$</span>legal[tempIndex] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;The University of Cambridge&quot;</span>,</span>
+<span id="cb368-2"><a href="example-working-with-strings.html#cb368-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;The University of Oxford&quot;</span>)</span></code></pre></div>
+<p>Now we create a column to record whether each university is a pre-92 or post-92:</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="example-working-with-strings.html#cb369-1" aria-hidden="true" tabindex="-1"></a>universities<span class="sc">$</span>pre92 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(universities<span class="sc">$</span>year <span class="sc">&lt;</span> <span class="dv">1992</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>)</span></code></pre></div>
 </div>
+<div id="approximately-matching-strings" class="section level2 hasAnchor" number="25.3">
+<h2><span class="header-section-number">25.3</span> Approximately matching strings<a href="example-working-with-strings.html#approximately-matching-strings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We want to find the universities in the data frame <code>pay22</code> according to the names in <code>universities</code> (we’ll look for both the <code>legal</code> and <code>trading</code> names), but these names may not match precisely in the two data frames. We’ll try the following:</p>
+<ul>
+<li>change all letters to lower case;</li>
+<li>remove ‘stop words’ (small ‘insignificant’ words such as ‘the’ and ‘of’) using the package <code>tm</code> <span class="citation">(<a href="#ref-R-tm" role="doc-biblioref">Feinerer, Hornik, and Meyer 2008</a>)</span>;</li>
+<li>arranging the words within a name in alphabetical order (thanks to <a href="https://stackoverflow.com/questions/45019584/r-how-to-sort-words-in-a-string">this post on Stack Overflow</a>);</li>
+<li>removing various characters such as brackets.</li>
+</ul>
+<p>We’ll write a function to do this:</p>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="example-working-with-strings.html#cb370-1" aria-hidden="true" tabindex="-1"></a>cleanUpNames <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb370-2"><a href="example-working-with-strings.html#cb370-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first change to lower case, then remove stopwords</span></span>
+<span id="cb370-3"><a href="example-working-with-strings.html#cb370-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tolower</span>(x) <span class="sc">%&gt;%</span></span>
+<span id="cb370-4"><a href="example-working-with-strings.html#cb370-4" aria-hidden="true" tabindex="-1"></a>    tm<span class="sc">::</span><span class="fu">removeWords</span>(tm<span class="sc">::</span><span class="fu">stopwords</span>()) <span class="ot">-&gt;</span> namesTemp</span>
+<span id="cb370-5"><a href="example-working-with-strings.html#cb370-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb370-6"><a href="example-working-with-strings.html#cb370-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Split string into separate words, sort</span></span>
+<span id="cb370-7"><a href="example-working-with-strings.html#cb370-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># words into alphabetical order, then collapse </span></span>
+<span id="cb370-8"><a href="example-working-with-strings.html#cb370-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># words back into single string</span></span>
+<span id="cb370-9"><a href="example-working-with-strings.html#cb370-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(<span class="fu">lapply</span>(<span class="fu">strsplit</span>(namesTemp, <span class="st">&quot; &quot;</span>),</span>
+<span id="cb370-10"><a href="example-working-with-strings.html#cb370-10" aria-hidden="true" tabindex="-1"></a>                      sort),</span>
+<span id="cb370-11"><a href="example-working-with-strings.html#cb370-11" aria-hidden="true" tabindex="-1"></a>               paste,</span>
+<span id="cb370-12"><a href="example-working-with-strings.html#cb370-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">collapse=</span><span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb370-13"><a href="example-working-with-strings.html#cb370-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">&quot;,&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb370-14"><a href="example-working-with-strings.html#cb370-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">&quot;&amp;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb370-15"><a href="example-working-with-strings.html#cb370-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">]&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb370-16"><a href="example-working-with-strings.html#cb370-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">(</span><span class="sc">\\</span><span class="st">)&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb370-17"><a href="example-working-with-strings.html#cb370-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_trim</span>()</span>
+<span id="cb370-18"><a href="example-working-with-strings.html#cb370-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Now we’ll use the function to clean up each column of names:</p>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="example-working-with-strings.html#cb371-1" aria-hidden="true" tabindex="-1"></a>uNamesLegalClean <span class="ot">&lt;-</span> <span class="fu">cleanUpNames</span>(universities<span class="sc">$</span>legal)</span>
+<span id="cb371-2"><a href="example-working-with-strings.html#cb371-2" aria-hidden="true" tabindex="-1"></a>uNamesTradingClean <span class="ot">&lt;-</span> <span class="fu">cleanUpNames</span>(universities<span class="sc">$</span>trading)</span>
+<span id="cb371-3"><a href="example-working-with-strings.html#cb371-3" aria-hidden="true" tabindex="-1"></a>pNamesClean <span class="ot">&lt;-</span> <span class="fu">cleanUpNames</span>(pay22<span class="sc">$</span>EmployerName)</span></code></pre></div>
+<p>We’ll see how many universities we can find in the pay gap data, using both the legal and trading names:</p>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="example-working-with-strings.html#cb372-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.element</span>(pNamesClean, uNamesLegalClean))</span></code></pre></div>
+<pre><code>## [1] 92</code></pre>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="example-working-with-strings.html#cb374-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.element</span>(pNamesClean, uNamesTradingClean))</span></code></pre></div>
+<pre><code>## [1] 25</code></pre>
 </div>
-<div id="order-of-operations" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Order of operations<a href="using-r-as-a-calculator.html#order-of-operations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>R will follow the BODMAS (<strong>B</strong>rackets, <strong>O</strong>rders (powers/roots), <strong>D</strong>ivision, <strong>M</strong>ultiplication, <strong>A</strong>ddition, <strong>S</strong>ubtraction) rule for the order in which it will carry out calculations.</p>
-<div class="task">
-<div class="exercise">
-<p><span id="exr:unlabeled-div-2" class="exercise"><strong>Exercise 3.2  </strong></span>First, predict what result you would get from each of these commands. Then try them in R.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="using-r-as-a-calculator.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">/</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">2</span></span>
-<span id="cb11-2"><a href="using-r-as-a-calculator.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">/</span> (<span class="dv">2</span><span class="sc">*</span><span class="dv">2</span>)</span>
-<span id="cb11-3"><a href="using-r-as-a-calculator.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span> <span class="sc">^</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb11-4"><a href="using-r-as-a-calculator.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span> <span class="sc">^</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span></code></pre></div>
-</div>
-</div>
+<div id="assembling-the-target-data-frame" class="section level2 hasAnchor" number="25.4">
+<h2><span class="header-section-number">25.4</span> Assembling the target data frame<a href="example-working-with-strings.html#assembling-the-target-data-frame" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We now add the vector of cleaned names to <code>pay22</code>, find all the universities we can, then extract the original and cleaned names, and also the <code>EmployerId</code> column:</p>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="example-working-with-strings.html#cb376-1" aria-hidden="true" tabindex="-1"></a>pay22 <span class="sc">%&gt;%</span></span>
+<span id="cb376-2"><a href="example-working-with-strings.html#cb376-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pNamesClean =</span> pNamesClean) <span class="sc">%&gt;%</span></span>
+<span id="cb376-3"><a href="example-working-with-strings.html#cb376-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pNamesClean <span class="sc">%in%</span> uNamesTradingClean <span class="sc">|</span></span>
+<span id="cb376-4"><a href="example-working-with-strings.html#cb376-4" aria-hidden="true" tabindex="-1"></a>           pNamesClean <span class="sc">%in%</span> uNamesLegalClean) <span class="sc">%&gt;%</span></span>
+<span id="cb376-5"><a href="example-working-with-strings.html#cb376-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pNamesClean, EmployerName, EmployerId) <span class="ot">-&gt;</span> pay22NameId</span></code></pre></div>
+<p>We’ll add the cleaned names to the <code>universities</code> data frame as well.</p>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="example-working-with-strings.html#cb377-1" aria-hidden="true" tabindex="-1"></a>universities <span class="sc">%&gt;%</span></span>
+<span id="cb377-2"><a href="example-working-with-strings.html#cb377-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">uNamesTradingClean =</span> uNamesTradingClean,</span>
+<span id="cb377-3"><a href="example-working-with-strings.html#cb377-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">uNamesLegalClean =</span> uNamesLegalClean) <span class="ot">-&gt;</span> universities</span></code></pre></div>
+<p>Finally, we’ll merge the two data frames, and get rid of any duplicate rows:</p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="example-working-with-strings.html#cb378-1" aria-hidden="true" tabindex="-1"></a>uni <span class="ot">&lt;-</span> <span class="fu">distinct</span>(</span>
+<span id="cb378-2"><a href="example-working-with-strings.html#cb378-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="fu">inner_join</span>(pay22NameId, universities, </span>
+<span id="cb378-3"><a href="example-working-with-strings.html#cb378-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;pNamesClean&quot;</span> <span class="ot">=</span> <span class="st">&quot;uNamesTradingClean&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb378-4"><a href="example-working-with-strings.html#cb378-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(EmployerName, EmployerId, pre92),</span>
+<span id="cb378-5"><a href="example-working-with-strings.html#cb378-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">inner_join</span>(pay22NameId, universities, </span>
+<span id="cb378-6"><a href="example-working-with-strings.html#cb378-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;pNamesClean&quot;</span> <span class="ot">=</span> <span class="st">&quot;uNamesLegalClean&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb378-7"><a href="example-working-with-strings.html#cb378-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(EmployerName, EmployerId, pre92)))</span></code></pre></div>
+<p>From inspection, we need to correct the pre-92 status for some London universities:</p>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="example-working-with-strings.html#cb379-1" aria-hidden="true" tabindex="-1"></a>uni[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">46</span>),]</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 3
+##   EmployerName                                     EmployerId pre92
+##   &lt;chr&gt;                                                 &lt;dbl&gt; &lt;chr&gt;
+## 1 Imperial College London                                6539 no   
+## 2 LONDON SCHOOL OF ECONOMICS AND POLITICAL SCIENCE       7818 no</code></pre>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="example-working-with-strings.html#cb381-1" aria-hidden="true" tabindex="-1"></a>uni[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">46</span>), <span class="st">&quot;pre92&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;yes&quot;</span></span></code></pre></div>
+<p>Finally, we can output the data to .csv</p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="example-working-with-strings.html#cb382-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(uni, <span class="st">&quot;universities.csv&quot;</span>)</span></code></pre></div>
 
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-tm" class="csl-entry">
+Feinerer, Ingo, Kurt Hornik, and David Meyer. 2008. <span>“Text Mining Infrastructure in r.”</span> <em>Journal of Statistical Software</em> 25 (5): 1–54. <a href="https://www.jstatsoft.org/v25/i05/">https://www.jstatsoft.org/v25/i05/</a>.
 </div>
 </div>
             </section>
@@ -534,8 +628,8 @@ div.csl-indent {
           </div>
         </div>
       </div>
-<a href="r-and-rstudio.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="variables-and-vectors.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="eda-for-logistic-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
