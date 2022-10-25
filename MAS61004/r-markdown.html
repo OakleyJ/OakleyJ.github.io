@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-10-14" />
+<meta name="date" content="2022-10-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -352,7 +352,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#global-aesthetics"><i class="fa fa-check"></i><b>18.5</b> ‘Global’ aesthetics</a></li>
 <li class="chapter" data-level="18.6" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#facets"><i class="fa fa-check"></i><b>18.6</b> Facets</a></li>
-<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exercises"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
+<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exBrexitPlots"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
 <li class="chapter" data-level="18.8" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#further-reading-6"><i class="fa fa-check"></i><b>18.8</b> Further reading</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html"><i class="fa fa-check"></i><b>19</b> Presentation of plots</a>
@@ -367,7 +367,7 @@ div.csl-indent {
 <li class="chapter" data-level="19.5.2" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#a-first-attempt-four-histograms"><i class="fa fa-check"></i><b>19.5.2</b> A first attempt: four histograms</a></li>
 <li class="chapter" data-level="19.5.3" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#using-a-box-plot"><i class="fa fa-check"></i><b>19.5.3</b> Using a box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises-1"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
+<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
 <li class="chapter" data-level="19.7" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#data-sources-1"><i class="fa fa-check"></i><b>19.7</b> Data sources</a></li>
 </ul></li>
 <li class="chapter" data-level="20" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html"><i class="fa fa-check"></i><b>20</b> Maps with <code>leaflet</code></a>
@@ -516,7 +516,7 @@ myProject/reports</code></pre>
 <div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="r-markdown.html#cb292-1" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;../data/myData.csv&quot;</span>)</span></code></pre></div>
 <div class="task">
 <div class="exercise">
-<p><span id="exr:unlabeled-div-17" class="exercise"><strong>Exercise 21.1  </strong></span>Create an R Markdown document that presents some of your solutions to Exercise <a href="#exr:Brexit"><strong>??</strong></a> on the Brexit data.</p>
+<p><span id="exr:unlabeled-div-17" class="exercise"><strong>Exercise 21.1  </strong></span>Create an R Markdown document that presents some of your solutions to the exercises in Section <a href="making-plots-with-ggplot2.html#exBrexitPlots">18.7</a> on the Brexit data.</p>
 <p>You may need to install RMarkdown first, using the command</p>
 <div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="r-markdown.html#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)</span></code></pre></div>
 <ul>
@@ -547,7 +547,7 @@ myProject/reports</code></pre>
 <p>If importing a figure rather than generating it in R, you may find the option <code>out.width = "60%"</code> easier to work with than <code>fig.height</code> and <code>fig.width</code>. Again, you may need trial and error to decide on the best percentage value.</p>
 <div class="task">
 <div class="exercise">
-<p><span id="exr:unlabeled-div-18" class="exercise"><strong>Exercise 21.2  </strong></span>Use suitable code chunk options to change the appearance of your R Markdown document from Exercise <a href="#exr:ex1RMarkdown"><strong>??</strong></a></p>
+<p><span id="exr:unlabeled-div-18" class="exercise"><strong>Exercise 21.2  </strong></span>Use suitable code chunk options to change the appearance of your R Markdown document from the previous exercise.</p>
 <ul>
 <li>Make sure no R code appears in your html/pdf document</li>
 <li>Include a figure caption, centre-align your figure, and manually set an appropriate figure size.</li>
@@ -733,7 +733,7 @@ caching.
 </div>
 <div class="task">
 <div class="exercise">
-<p><span id="exr:unlabeled-div-19" class="exercise"><strong>Exercise 21.3  </strong></span>Add one table to your R Markdown document from Exercise <a href="#exr:ex2RMarkdown"><strong>??</strong></a>, to show mean percentage of the remain vote grouped by area. Use <code>knitr::kable()</code> to produce the table.</p>
+<p><span id="exr:unlabeled-div-19" class="exercise"><strong>Exercise 21.3  </strong></span>Add one table to your R Markdown document from the previous exercise, to show the mean percentage of the remain vote grouped by area. Use <code>knitr::kable()</code> to produce the table.</p>
 </div>
 </div>
 </div>
@@ -756,7 +756,7 @@ called YAML. Here’s an example of a YAML header, with a few extra commands spe
 <pre><code>---
 title: &quot;My Report Title&quot;
 author: &quot;Jeremy Oakley&quot;
-date: &quot;2022-10-14&quot;
+date: &quot;2022-10-25&quot;
 output:
   pdf_document: 
     number_sections: true
