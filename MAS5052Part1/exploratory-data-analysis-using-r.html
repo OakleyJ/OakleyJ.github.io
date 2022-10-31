@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Exploratory Data Analysis using R | An Introduction to Data Science</title>
   <meta name="description" content="Lecture notes for MAS109 and MAS5052" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Exploratory Data Analysis using R | An Introduction to Data Science" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2022-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -505,7 +505,8 @@ The UK is included above, but we’ll give an example of selecting it anyway:</p
 ## [49]  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE
 ## [61]  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
 <p>this creates a new vector, in which the <span class="math inline">\(i\)</span>th element will be <code>TRUE</code> if the <code>gdp</code> value for country <span class="math inline">\(i\)</span> is greater than 17000, and <code>FALSE</code> otherwise. We will add this vector to the data frame, under the column name <code>wealthiest</code>. The command to create the new column is</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="exploratory-data-analysis-using-r.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">wealthiest =</span> maths<span class="sc">$</span>gdp <span class="sc">&gt;</span> <span class="dv">17000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="exploratory-data-analysis-using-r.html#cb25-1" aria-hidden="true" tabindex="-1"></a>maths <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="exploratory-data-analysis-using-r.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wealthiest =</span> maths<span class="sc">$</span>gdp <span class="sc">&gt;</span> <span class="dv">17000</span>)</span></code></pre></div>
 <p>but this doesn’t store the result. To put the new column in the <code>maths</code> dataframe, we do</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="exploratory-data-analysis-using-r.html#cb26-1" aria-hidden="true" tabindex="-1"></a>maths <span class="ot">&lt;-</span> maths <span class="sc">%&gt;%</span></span>
 <span id="cb26-2"><a href="exploratory-data-analysis-using-r.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wealthiest =</span> maths<span class="sc">$</span>gdp <span class="sc">&gt;</span> <span class="dv">17000</span>)</span></code></pre></div>
