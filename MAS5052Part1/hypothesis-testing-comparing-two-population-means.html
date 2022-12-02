@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Hypothesis testing: comparing two population means | An Introduction to Data Science</title>
   <meta name="description" content="Lecture notes for MAS109 and MAS5052" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Hypothesis testing: comparing two population means | An Introduction to Data Science" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2022-12-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -394,8 +394,8 @@ as we would be interested if imagining eating M&amp;Ms either resulted in the pa
 <p><span class="math display">\[t_{obs} = \frac{\bar{x} - \bar{y}}{\sqrt{\frac{s^2_X}{n} + \frac{s^2_Y}{m}}}\]</span>
 so that we scale the difference in means by how much variation there is in the amounts the individuals ate.</p>
 <p>In R, the observations are stored in the vectors <code>control</code> and <code>treatment</code>, and we compute <span class="math inline">\(t_{obs}\)</span> as follows</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb143-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">mean</span>(control) <span class="sc">-</span> <span class="fu">mean</span> (treatment))<span class="sc">/</span></span>
-<span id="cb143-2"><a href="hypothesis-testing-comparing-two-population-means.html#cb143-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">var</span>(control)<span class="sc">/</span><span class="dv">49</span> <span class="sc">+</span> <span class="fu">var</span>(treatment)<span class="sc">/</span><span class="dv">47</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb149-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">mean</span>(control) <span class="sc">-</span> <span class="fu">mean</span> (treatment))<span class="sc">/</span></span>
+<span id="cb149-2"><a href="hypothesis-testing-comparing-two-population-means.html#cb149-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">var</span>(control)<span class="sc">/</span><span class="dv">49</span> <span class="sc">+</span> <span class="fu">var</span>(treatment)<span class="sc">/</span><span class="dv">47</span>)</span></code></pre></div>
 <pre><code>## [1] 2.398</code></pre>
 <p>(We will round this to 2.4 from now on.)</p>
 </div>
@@ -404,16 +404,16 @@ so that we scale the difference in means by how much variation there is in the a
 <h2><span class="header-section-number">7.2</span> Hypothesis testing using simulation<a href="hypothesis-testing-comparing-two-population-means.html#hypothesis-testing-using-simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>All hypothesis testing problems involve understanding what sort of data could arise <em>purely by chance</em>, where “purely by chance” is described by the null hypothesis. In the current example, could the difference in mean consumption have arisen purely by chance?</p>
 <p>We will first use a computer simulation technique to investigate this. Let’s look at the first few observations in the treatment group</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb145-1" aria-hidden="true" tabindex="-1"></a>treatment[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb151-1" aria-hidden="true" tabindex="-1"></a>treatment[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## [1] 12  7  5  8</code></pre>
 <p>We see that person 1 ate 12g, person 2 ate 7g and so on. Suppose the null hypothesis is true, and treatment has no effect. We might then suppose that, had person 1 been allocated to the control group instead, <em>it would have made no difference</em> to how much person 1 ate: he/she would still have eaten 12g. So maybe the difference is purely because more ‘hungry’ volunteers were randomly allocated to the control group than the treatment group.</p>
 <p>Could this have happened by chance? We can investigate this as follows, bearing in mind that the randomness we are investigating here is the random allocation of volunteers to groups, and how that could produce unequal mean consumption.</p>
 <ol style="list-style-type: decimal">
 <li>We first combine all the treatment and control observations into a single vector called <code>everyone</code>.</li>
 </ol>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb147-1" aria-hidden="true" tabindex="-1"></a>everyone <span class="ot">&lt;-</span> <span class="fu">c</span>(treatment, control)</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb153-1" aria-hidden="true" tabindex="-1"></a>everyone <span class="ot">&lt;-</span> <span class="fu">c</span>(treatment, control)</span></code></pre></div>
 <p>so to see all the observations:</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb148-1" aria-hidden="true" tabindex="-1"></a>everyone</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb154-1" aria-hidden="true" tabindex="-1"></a>everyone</span></code></pre></div>
 <pre><code>##  [1] 12  7  5  8 40  4  4 11  7  5 13 11 10  4  7  2 13 12  2  2  9 10  3  2  1
 ## [26]  2  3  4  9  3  3 14  4  9  6  5  2 40  6 11 21  5  2  5  5  6 12  2  8 11
 ## [51]  0 40 12 40 11 15  2 12  4  9 11 11 13  8 12  9 10 12 10  4  7 10  8  9 14
@@ -422,9 +422,9 @@ so that we scale the difference in means by how much variation there is in the a
 <li>We now randomly allocate each person into either the treatment group or the control group.</li>
 </ol>
 <p>We first jumble up the order of the observations in <code>everyone</code>, using the <code>sample()</code> command</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb150-1" aria-hidden="true" tabindex="-1"></a>everyoneJumbled <span class="ot">&lt;-</span> <span class="fu">sample</span>(everyone)</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb156-1" aria-hidden="true" tabindex="-1"></a>everyoneJumbled <span class="ot">&lt;-</span> <span class="fu">sample</span>(everyone)</span></code></pre></div>
 <p>This is what we got:</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb151-1" aria-hidden="true" tabindex="-1"></a>everyoneJumbled</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-1" aria-hidden="true" tabindex="-1"></a>everyoneJumbled</span></code></pre></div>
 <pre><code>##  [1] 11  5  3 12 10 21 11  2 14  5 13  7 12  1  8  9  3 10 11  3  5  9  8 12  7
 ## [26] 11 12 10  8  2 10  6 40  4 40  4  2  6  9  2  3  9  9 28 14 40 12  9 10  2
 ## [51]  2 10 12  6 40  9  7 11 10  2  7  4  7 11 12  2 13  5  6 34  5  2  3 13 15
@@ -433,30 +433,30 @@ so that we scale the difference in means by how much variation there is in the a
 <ol start="3" style="list-style-type: decimal">
 <li>We now extract the first 47 elements to be a new set of random treatment observations:</li>
 </ol>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb153-1" aria-hidden="true" tabindex="-1"></a>newTreatment <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">1</span><span class="sc">:</span><span class="dv">47</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb159-1" aria-hidden="true" tabindex="-1"></a>newTreatment <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">1</span><span class="sc">:</span><span class="dv">47</span>]</span></code></pre></div>
 <p>and the remaining 49 elements to be a new set of random control observations:</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb154-1" aria-hidden="true" tabindex="-1"></a>newControl <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">48</span><span class="sc">:</span><span class="dv">96</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb160-1" aria-hidden="true" tabindex="-1"></a>newControl <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">48</span><span class="sc">:</span><span class="dv">96</span>]</span></code></pre></div>
 <p>We’ve reallocated each person into either the treatment group or the control group, and assuming <span class="math inline">\(H_0\)</span> is true, that the treatment has no effect, ‘switching’ someone from one group to the other <em>wouldn’t change how much that person would eat</em>.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Now we’ll see how different the mean consumptions would have been (scaled by the standard deviations)</li>
 </ol>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb155-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">mean</span>(newTreatment) <span class="sc">-</span> <span class="fu">mean</span>(newControl))<span class="sc">/</span></span>
-<span id="cb155-2"><a href="hypothesis-testing-comparing-two-population-means.html#cb155-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sqrt</span>(<span class="fu">var</span>(newTreatment)<span class="sc">/</span><span class="dv">47</span> <span class="sc">+</span> <span class="fu">var</span>(newControl)<span class="sc">/</span><span class="dv">49</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb161-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">mean</span>(newTreatment) <span class="sc">-</span> <span class="fu">mean</span>(newControl))<span class="sc">/</span></span>
+<span id="cb161-2"><a href="hypothesis-testing-comparing-two-population-means.html#cb161-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sqrt</span>(<span class="fu">var</span>(newTreatment)<span class="sc">/</span><span class="dv">47</span> <span class="sc">+</span> <span class="fu">var</span>(newControl)<span class="sc">/</span><span class="dv">49</span>)</span></code></pre></div>
 <pre><code>## [1] 0.2098</code></pre>
 <p>This gives a much smaller test statistic.</p>
 <p>Now we’ll repeat the process lots of times, and see how easy it is to generate a test statistic as large as the one we got (<span class="math inline">\(t_{obs}=2.4\)</span>):</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-1" aria-hidden="true" tabindex="-1"></a>testStatistics <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100000</span>)</span>
-<span id="cb157-2"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-2" aria-hidden="true" tabindex="-1"></a>everyone <span class="ot">&lt;-</span> <span class="fu">c</span>(treatment, control)</span>
-<span id="cb157-3"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb157-4"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100000</span>){</span>
-<span id="cb157-5"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-5" aria-hidden="true" tabindex="-1"></a>  everyoneJumbled <span class="ot">&lt;-</span> <span class="fu">sample</span>(everyone)</span>
-<span id="cb157-6"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-6" aria-hidden="true" tabindex="-1"></a>  newTreatment <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">1</span><span class="sc">:</span><span class="dv">47</span>]</span>
-<span id="cb157-7"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-7" aria-hidden="true" tabindex="-1"></a>  newControl <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">48</span><span class="sc">:</span><span class="dv">96</span>]</span>
-<span id="cb157-8"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-8" aria-hidden="true" tabindex="-1"></a>  testStatistics[i] <span class="ot">&lt;-</span> (<span class="fu">mean</span>(newTreatment) <span class="sc">-</span> <span class="fu">mean</span>(newControl))<span class="sc">/</span></span>
-<span id="cb157-9"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sqrt</span>(<span class="fu">var</span>(newTreatment)<span class="sc">/</span><span class="dv">47</span> <span class="sc">+</span> <span class="fu">var</span>(newControl)<span class="sc">/</span><span class="dv">49</span>)</span>
-<span id="cb157-10"><a href="hypothesis-testing-comparing-two-population-means.html#cb157-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-1" aria-hidden="true" tabindex="-1"></a>testStatistics <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100000</span>)</span>
+<span id="cb163-2"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-2" aria-hidden="true" tabindex="-1"></a>everyone <span class="ot">&lt;-</span> <span class="fu">c</span>(treatment, control)</span>
+<span id="cb163-3"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-4"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100000</span>){</span>
+<span id="cb163-5"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-5" aria-hidden="true" tabindex="-1"></a>  everyoneJumbled <span class="ot">&lt;-</span> <span class="fu">sample</span>(everyone)</span>
+<span id="cb163-6"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-6" aria-hidden="true" tabindex="-1"></a>  newTreatment <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">1</span><span class="sc">:</span><span class="dv">47</span>]</span>
+<span id="cb163-7"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-7" aria-hidden="true" tabindex="-1"></a>  newControl <span class="ot">&lt;-</span> everyoneJumbled[<span class="dv">48</span><span class="sc">:</span><span class="dv">96</span>]</span>
+<span id="cb163-8"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-8" aria-hidden="true" tabindex="-1"></a>  testStatistics[i] <span class="ot">&lt;-</span> (<span class="fu">mean</span>(newTreatment) <span class="sc">-</span> <span class="fu">mean</span>(newControl))<span class="sc">/</span></span>
+<span id="cb163-9"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sqrt</span>(<span class="fu">var</span>(newTreatment)<span class="sc">/</span><span class="dv">47</span> <span class="sc">+</span> <span class="fu">var</span>(newControl)<span class="sc">/</span><span class="dv">49</span>)</span>
+<span id="cb163-10"><a href="hypothesis-testing-comparing-two-population-means.html#cb163-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>We now count how many times we got a test statistic larger (in absolute) value than 2.4:</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(testStatistics) <span class="sc">&gt;=</span> <span class="fl">2.4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(testStatistics) <span class="sc">&gt;=</span> <span class="fl">2.4</span>)</span></code></pre></div>
 <pre><code>## [1] 1650</code></pre>
 <p>We see that about only 1650 times out of 100,000 did we generate test statistics (scaled differences between the sample means) as large as 2.4: the probability of producing a difference between the groups as large as this <em>purely by random chance</em> is about 2%.</p>
 <p>To visualise this, we’ll plot a histogram of our random test statistics:</p>
@@ -544,14 +544,14 @@ Figure 7.2: The observed test statistic (shown as the blue cross) was -2.4. For 
 &amp;= 2\times P(T\le -2.4)
 \end{align}\]</span>
 so the R command to get the <span class="math inline">\(p\)</span>-value is</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fl">2.4</span>, <span class="dv">93</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fl">2.4</span>, <span class="dv">93</span>)</span></code></pre></div>
 <pre><code>## [1] 0.01839</code></pre>
 <p>hence the <span class="math inline">\(p\)</span>-value approximately 0.02.</p>
 <p>To interpret this, we can say that the experiment has provide some evidence that imagining eating food can reduce how much you want to eat! The evidence is not very strong, but this experiment was a <em>replication</em> of an earlier study: two independent studies found the same effect, so taken together, the evidence is more convincing.</p>
 <div id="the-two-sample-t-test-with-the-neyman-pearson-method" class="section level3 hasAnchor" number="7.3.1">
 <h3><span class="header-section-number">7.3.1</span> The two-sample <span class="math inline">\(t\)</span>-test with the Neyman-Pearson method<a href="hypothesis-testing-comparing-two-population-means.html#the-two-sample-t-test-with-the-neyman-pearson-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If using the Neyman-Pearson method, we would instead (after choosing the size of the test) identify the critical region. For a test of size 0.05, and a two-sided alternative hypothesis, we would need the 2.5th and 97.5th percentiles of the <span class="math inline">\(t_\nu\)</span> distribution. Continuing the example, in R, we would do</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">93</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">93</span>)</span></code></pre></div>
 <pre><code>## [1] 1.986</code></pre>
 <p>so the critical region would be <span class="math inline">\((-\infty, -1.99]\cup [1.99, \infty)\)</span>, as shown below.</p>
 
@@ -603,7 +603,7 @@ simply look to see whether the confidence interval contains the value
 <div id="the-two-sample-t-test-in-r" class="section level2 hasAnchor" number="7.6">
 <h2><span class="header-section-number">7.6</span> The two-sample <span class="math inline">\(t\)</span> test in R<a href="hypothesis-testing-comparing-two-population-means.html#the-two-sample-t-test-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In R, we use the command <code>t.test()</code>. The two samples we want to compare are stored in the vectors <code>treatment</code> and <code>control</code>, so we do</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(control, treatment)</span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(control, treatment)</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -619,14 +619,14 @@ simply look to see whether the confidence interval contains the value
 <div id="t-tests-with-data-frames-in-r" class="section level3 hasAnchor" number="7.6.1">
 <h3><span class="header-section-number">7.6.1</span> <span class="math inline">\(t\)</span>-tests with data frames in R<a href="hypothesis-testing-comparing-two-population-means.html#t-tests-with-data-frames-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If your data are in a data frame, you can use a different syntax which is more convenient. Suppose the data are stored in a data frame called <code>eating</code>, with the first three and last three rows shown below</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(eating, <span class="at">n =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(eating, <span class="at">n =</span> <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 3 × 2
 ##   group   amount
 ##   &lt;chr&gt;    &lt;dbl&gt;
 ## 1 Control      2
 ## 2 Control      8
 ## 3 Control     11</code></pre>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(eating, <span class="at">n =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(eating, <span class="at">n =</span> <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 3 × 2
 ##   group     amount
 ##   &lt;chr&gt;      &lt;dbl&gt;
@@ -634,7 +634,7 @@ simply look to see whether the confidence interval contains the value
 ## 2 Treatment      6
 ## 3 Treatment     12</code></pre>
 <p>The column <code>group</code> indicated which group each participant was in. We can then use the command</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(amount <span class="sc">~</span> group, <span class="at">data =</span> eating)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(amount <span class="sc">~</span> group, <span class="at">data =</span> eating)</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -673,9 +673,9 @@ with</p>
 <li>In plain English, summarise your results.</li>
 </ol>
 <p>Some R output to help is as follows:</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">4.03</span>, <span class="dv">726</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb178-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">4.03</span>, <span class="dv">726</span>)</span></code></pre></div>
 <pre><code>## [1] 3.083e-05</code></pre>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">726</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">726</span>)</span></code></pre></div>
 <pre><code>## [1] 1.963</code></pre>
 <div class="fold">
 <p><strong>Solution</strong></p>
@@ -691,6 +691,7 @@ H_A: \mu_X &amp;\neq \mu_Y.
 <span class="math display">\[t_{obs} = \frac{\bar{x} - \bar{y}}{\sqrt{\frac{s^2_x}{516} + \frac{s^2_y}{372}}} = 4.03.\]</span>
 For the degrees of freedom parameter, we are given <span class="math inline">\(\nu\simeq726\)</span>, so under <span class="math inline">\(H_0\)</span>, the test statistic would have (approximately) a <span class="math inline">\(t_{726}\)</span> distribution.. The observed test statistic is right out in the tail of this distribution, so the <span class="math inline">\(p\)</span>-value will be small.</li>
 </ol>
+<p><img src="MAS109-5052-Data-Science_files/figure-html/unnamed-chunk-164-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>The <span class="math inline">\(p\)</span>-value is given by
 <span class="math display">\[
 2 \times P(T_{726} \le -4.03) \simeq 6\times 10^{-5}
@@ -741,7 +742,7 @@ s^2_Y &amp;= \frac{1}{91}\sum_{i=1}^{92}(y_i - \bar{y})^2= 1.4968.
 <li>Conduct an appropriate Neyman-Pearson test, of size 0.05, stating the conclusions clearly.</li>
 </ol>
 <p>Some R output to help is as follows.</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.95</span>, <span class="fl">0.975</span>, <span class="fl">0.99</span>), <span class="dv">185</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="hypothesis-testing-comparing-two-population-means.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.95</span>, <span class="fl">0.975</span>, <span class="fl">0.99</span>), <span class="dv">185</span>)</span></code></pre></div>
 <pre><code>## [1] 1.286 1.653 1.973 2.347</code></pre>
 <div class="fold">
 <p><strong>Solution</strong></p>
@@ -760,6 +761,12 @@ t_{obs}=\frac{\bar{x} - \bar{y}}{\sqrt{\frac{s^2_X}{95} + \frac{s^2_Y}{92}}} = -
             {\frac{(s_X^2/95)^2}{94} + \frac{(s_Y^2/92)^2}{91}} \simeq 185.
 \]</span>
 Hence, for a test of size 0.05, our critical region is anything above <span class="math inline">\(t_{185;\, 0.025}\)</span> or anything below <span class="math inline">\(t_{185;\, 0.975}\)</span> (anything above the 97.5th percentile, or anything below the 2.5th percentile, for the student-<span class="math inline">\(t\)</span> distribution with 185 degrees of freedom.) From the R output, we have <span class="math inline">\(t_{17.7;\, 0.025}=1.97\)</span> and so <span class="math inline">\(t_{17.7;\, 0.975}=-1.97\)</span>. The critical region and observed test statistic are plotted below.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-167"></span>
+<img src="MAS109-5052-Data-Science_files/figure-html/unnamed-chunk-167-1.png" alt="$t_{obs}$ for the observed data is calculated to be -5.655, and is shown as the blue cross. This does  lie in the critical region (the green shaded area), so we declare that 'we reject $H_0$ (at the 5\% level of significance)'." width="480" />
+<p class="caption">
+Figure 7.4: <span class="math inline">\(t_{obs}\)</span> for the observed data is calculated to be -5.655, and is shown as the blue cross. This does lie in the critical region (the green shaded area), so we declare that ‘we reject <span class="math inline">\(H_0\)</span> (at the 5% level of significance)’.
+</p>
+</div>
 <p>As <span class="math inline">\(t_{obs}\)</span> does lie in the critical region, we conclude that we reject <span class="math inline">\(H_0\)</span>. We say that there is evidence (at the 5% level of significance) that there is an effect of combining sitagliptin with metformin, and that this effect is an increased reduction in A1c (adding sitagliptin has a beneficial effect.)</p>
 <p>There have been other studies to test the effect of sitagliptin and metformin (the “Efficib” drug). Based on these studies, <a href="https://www.ema.europa.eu/en/medicines/human/EPAR/efficib">the European Medicines Agency approved Efficib for use in the European Union</a>.</p>
 </div>
@@ -829,7 +836,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

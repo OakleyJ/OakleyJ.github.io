@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Interval estimates and confidence intervals | An Introduction to Data Science</title>
   <meta name="description" content="Lecture notes for MAS109 and MAS5052" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Interval estimates and confidence intervals | An Introduction to Data Science" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2022-12-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -504,9 +504,15 @@ Given the corresponding observed values <span class="math inline">\(x_1,\ldots,x
 <div class="fold">
 <p><strong>Solution</strong></p>
 <p>First, we consider the R output for the <span class="math inline">\(t\)</span> and <span class="math inline">\(\chi^2\)</span> distributions. We have</p>
-<p>which means that <span class="math inline">\(t_{248,\, 0.025} = 1.97\)</span> (to 3 d.p.): the 97.5th percentile of the <span class="math inline">\(t_{248}\)</span> distribution is 1.97 (very similar to the normal distribution). This is displayed below: the red shaded region indicates a 2.5% probability of exceeding 1.97.</p>
-<p>We also have</p>
-<p>which means that <span class="math inline">\(\chi^2_{248,\, 0.975} = 206.3\)</span> and <span class="math inline">\(\chi^2_{248,\, 0.025} = 293.5\)</span> (to 1 d.p.): the 2.5th and 97.5th percentiles of the <span class="math inline">\(\chi^2_{248}\)</span> distribution are 206.3 and 293.5 respectively. These are displayed below: each red shaded region indicates a 2.5% probability, so the probability of lying outside the range (439, 293.5) is 5%.</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="interval-estimates-and-confidence-intervals.html#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">248</span>)</span></code></pre></div>
+<pre><code>## [1] 1.969576</code></pre>
+<p>which means that <span class="math inline">\(t_{248,\, 0.025} = 1.97\)</span> (to 3 d.p.): the 97.5th percentile of the <span class="math inline">\(t_{248}\)</span> distribution is 1.97 (very similar to the normal distribution). This is displayed below: the red shaded region indicates a 2.5% probability of exceeding 1.97.
+<img src="MAS109-5052-Data-Science_files/figure-html/unnamed-chunk-116-1.png" width="384" style="display: block; margin: auto;" />
+We also have</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="interval-estimates-and-confidence-intervals.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qchisq</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), <span class="dv">248</span>)</span></code></pre></div>
+<pre><code>## [1] 206.2736 293.5128</code></pre>
+<p>which means that <span class="math inline">\(\chi^2_{248,\, 0.975} = 206.3\)</span> and <span class="math inline">\(\chi^2_{248,\, 0.025} = 293.5\)</span> (to 1 d.p.): the 2.5th and 97.5th percentiles of the <span class="math inline">\(\chi^2_{248}\)</span> distribution are 206.3 and 293.5 respectively. These are displayed below: each red shaded region indicates a 2.5% probability, so the probability of lying outside the range (439, 293.5) is 5%.
+<img src="MAS109-5052-Data-Science_files/figure-html/unnamed-chunk-118-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Now, the 95% confidence interval for <span class="math inline">\(\mu\)</span> is
 <span class="math display">\[
 \bar{x}\pm t_{248,\,0.025}\sqrt{\frac{s^2}{249}}.
@@ -595,12 +601,12 @@ Hence <strong>before</strong> we get the data, there is a 95% chance that the in
 will contain <span class="math inline">\(\mu\)</span>. This is the justification for using <a href="interval-estimates-and-confidence-intervals.html#eq:meanCI">(5.1)</a> as our interval estimate for <span class="math inline">\(\mu\)</span>: the probability that this approach will result in an interval that contains <span class="math inline">\(\mu\)</span> is high: 0.95.</p>
 <hr>
 <p>We will illustrate this with the following simulation experiment. Using R, we will generate a sample of size 10 from a normal distribution with <em>known</em> parameters. We can then calculate the confidence interval for the mean, and see if it contains the true value or not. We will first do this once, using the <span class="math inline">\(N(30, 25)\)</span> distribution:</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="interval-estimates-and-confidence-intervals.html#cb133-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="dv">25</span>))</span>
-<span id="cb133-2"><a href="interval-estimates-and-confidence-intervals.html#cb133-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="interval-estimates-and-confidence-intervals.html#cb137-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="dv">25</span>))</span>
+<span id="cb137-2"><a href="interval-estimates-and-confidence-intervals.html#cb137-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
 <pre><code>##  [1] 25.19 28.54 31.29 24.24 30.98 30.15 30.43 35.58 23.91 36.34</code></pre>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="interval-estimates-and-confidence-intervals.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x) <span class="sc">-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">9</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(x) <span class="sc">/</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="interval-estimates-and-confidence-intervals.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x) <span class="sc">-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">9</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(x) <span class="sc">/</span> <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## [1] 26.57</code></pre>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="interval-estimates-and-confidence-intervals.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x) <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">9</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(x) <span class="sc">/</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="interval-estimates-and-confidence-intervals.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x) <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">9</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(x) <span class="sc">/</span> <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## [1] 32.76</code></pre>
 <p>This gave a 95% confidence interval of (26.57, 32.76), which does contain the true value (30) in this instance. Now we’ll repeat this 100 times, each time obtaining different random samples of size 10 from the <span class="math inline">\(N(30, 25)\)</span> distribution and each time calculating the confidence interval. The 100 confidence intervals are shown as horizontal lines in Figure <a href="interval-estimates-and-confidence-intervals.html#fig:t-intervals">5.5</a>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:t-intervals"></span>
@@ -666,9 +672,9 @@ p \pm  z_{\alpha/2}\sqrt{\frac{p(1-p)}{n}}.
 \end{equation}\]</span></p>
 <p>As we increase the confidence level (by decreasing <span class="math inline">\(\alpha\)</span>), the confidence intervals will become wider. The penalty for increasing the probability (before we get the data) that the interval will contain the true value is to report an interval that is less informative.</p>
 <div class="example">
-<p><span id="exm:exampleCI99" class="example"><strong>Example 5.3  (Confidence intervals: calculating a 99% confidence interval for a binomial probability parameter) </strong></span><br> Calculate a 99% confidence interval for the population proportion of yes voters from the previous example. (43% yes voters from a sample of 1067), using the R output below. Only one of the three output values is relevant: you have to decide which.</p>
+<p><span id="exm:exampleCI99" class="example"><strong>Example 5.3  (Confidence intervals: calculating a 99\% confidence interval for a binomial probability parameter) </strong></span><br> Calculate a 99% confidence interval for the population proportion of yes voters from the previous example. (43% yes voters from a sample of 1067), using the R output below. Only one of the three output values is relevant: you have to decide which.</p>
 </div>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="interval-estimates-and-confidence-intervals.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.95</span>, <span class="fl">0.99</span>, <span class="fl">0.995</span>), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="interval-estimates-and-confidence-intervals.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.95</span>, <span class="fl">0.99</span>, <span class="fl">0.995</span>), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## [1] 1.645 2.326 2.576</code></pre>
 <div class="fold">
 <p><strong>Solution</strong></p>
@@ -677,8 +683,16 @@ p \pm  z_{\alpha/2}\sqrt{\frac{p(1-p)}{n}}.
 0.43 \pm  z_{0.01/2}\sqrt{\frac{0.43(1-0.43)}{1067}}.
 \end{equation}\]</span>
 We just need to know the value of <span class="math inline">\(z_{0.01/2} = z_{0.005}\)</span>, which is the 99.5th percentile (not the 0.5th percentile!) of the standard normal distribution. From the R output above, this value is 2.576. Just to confirm this, we have</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="interval-estimates-and-confidence-intervals.html#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.995</span>)</span></code></pre></div>
+<pre><code>## [1] 2.576</code></pre>
 <p>We display this in the plot below.</p>
 
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-126"></span>
+<img src="MAS109-5052-Data-Science_files/figure-html/unnamed-chunk-126-1.png" alt="2.576 is the 99.5th percentile of the standard normal distribution. The total red shaded area adds up to 1%." width="384" />
+<p class="caption">
+Figure 5.6: 2.576 is the 99.5th percentile of the standard normal distribution. The total red shaded area adds up to 1%.
+</p>
+</div>
 <p>Substituting in 2.576 for <span class="math inline">\(z_{0.005}\)</span>, we obtain the 99% confidence interval as (39%, 47%): slightly wider than the 95% interval, as it has to be. The price to pay for being more ‘confident’ is that we are less ‘informative’: we have to report a wider interval.</p>
 </div>
 <div class="rmdnote">
@@ -751,7 +765,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

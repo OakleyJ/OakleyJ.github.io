@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 \(\chi^2\) tests for contingency tables | An Introduction to Data Science</title>
   <meta name="description" content="Lecture notes for MAS109 and MAS5052" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 \(\chi^2\) tests for contingency tables | An Introduction to Data Science" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2022-12-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -514,19 +514,19 @@ X^2_{obs}&amp;= \frac{(146 - 138.7)^2}{138.7} + \frac{(70 - 85.18)^2}{85.18}\\
 &amp; = 6.92
 \end{align}\]</span></p>
 <p>We’ll also do this calculation in R. We first set up the table of observed value in R using the <code>matrix()</code> command, specifying 2 rows (<code>nrow = 2</code>), 5 columns (<code>ncol = 5</code>), and that the provided values (<code>c(146, 70, ..., 52)</code>) are specified in order along the <strong>rows</strong> (<code>byrow = TRUE</code>).</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="chi2-tests-for-contingency-tables.html#cb204-1" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">146</span>, <span class="dv">70</span>, <span class="dv">33</span>, <span class="dv">24</span>, <span class="dv">25</span>,</span>
-<span id="cb204-2"><a href="chi2-tests-for-contingency-tables.html#cb204-2" aria-hidden="true" tabindex="-1"></a>                     <span class="dv">419</span>, <span class="dv">277</span>, <span class="dv">102</span>, <span class="dv">66</span>, <span class="dv">52</span>),</span>
-<span id="cb204-3"><a href="chi2-tests-for-contingency-tables.html#cb204-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="chi2-tests-for-contingency-tables.html#cb212-1" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">146</span>, <span class="dv">70</span>, <span class="dv">33</span>, <span class="dv">24</span>, <span class="dv">25</span>,</span>
+<span id="cb212-2"><a href="chi2-tests-for-contingency-tables.html#cb212-2" aria-hidden="true" tabindex="-1"></a>                     <span class="dv">419</span>, <span class="dv">277</span>, <span class="dv">102</span>, <span class="dv">66</span>, <span class="dv">52</span>),</span>
+<span id="cb212-3"><a href="chi2-tests-for-contingency-tables.html#cb212-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>To check this has worked:</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="chi2-tests-for-contingency-tables.html#cb205-1" aria-hidden="true" tabindex="-1"></a>observed</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="chi2-tests-for-contingency-tables.html#cb213-1" aria-hidden="true" tabindex="-1"></a>observed</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
 ## [1,]  146   70   33   24   25
 ## [2,]  419  277  102   66   52</code></pre>
 <p>Now we’ll compute a matrix of expected values, using the <code>outer(), rowSums</code> and <code>colSums()</code> commands. Don’t worry about how these work (though you might guess), just note where we’ve used the matrix <code>observed</code>.</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="chi2-tests-for-contingency-tables.html#cb207-1" aria-hidden="true" tabindex="-1"></a>expected <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">rowSums</span>(observed), <span class="fu">colSums</span>(observed),  <span class="st">&quot;*&quot;</span>) <span class="sc">/</span></span>
-<span id="cb207-2"><a href="chi2-tests-for-contingency-tables.html#cb207-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(observed)</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="chi2-tests-for-contingency-tables.html#cb215-1" aria-hidden="true" tabindex="-1"></a>expected <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">rowSums</span>(observed), <span class="fu">colSums</span>(observed),  <span class="st">&quot;*&quot;</span>) <span class="sc">/</span></span>
+<span id="cb215-2"><a href="chi2-tests-for-contingency-tables.html#cb215-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(observed)</span></code></pre></div>
 <p>Then to compute the test statistic:</p>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="chi2-tests-for-contingency-tables.html#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((observed <span class="sc">-</span> expected)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> expected)</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="chi2-tests-for-contingency-tables.html#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((observed <span class="sc">-</span> expected)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> expected)</span></code></pre></div>
 <pre><code>## [1] 6.922</code></pre>
 </div>
 <div id="a-simulation-method-1" class="section level2 hasAnchor" number="10.5">
@@ -540,34 +540,34 @@ Z &amp;\sim multinom(916; \frac{565}{1214}, \frac{347}{1214},
 \frac{135}{1214}, \frac{90}{1214}, \frac{77}{1214}).
 \end{align}\]</span></p>
 <p>We now get R to simulate a random <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span>, and assemble a new matrix of observed values, which we call <code>newObserved</code>.</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="chi2-tests-for-contingency-tables.html#cb210-1" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">298</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
-<span id="cb210-2"><a href="chi2-tests-for-contingency-tables.html#cb210-2" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">916</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
-<span id="cb210-3"><a href="chi2-tests-for-contingency-tables.html#cb210-3" aria-hidden="true" tabindex="-1"></a>newObserved <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(Y, Z),</span>
-<span id="cb210-4"><a href="chi2-tests-for-contingency-tables.html#cb210-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="chi2-tests-for-contingency-tables.html#cb218-1" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">298</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
+<span id="cb218-2"><a href="chi2-tests-for-contingency-tables.html#cb218-2" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">916</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
+<span id="cb218-3"><a href="chi2-tests-for-contingency-tables.html#cb218-3" aria-hidden="true" tabindex="-1"></a>newObserved <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(Y, Z),</span>
+<span id="cb218-4"><a href="chi2-tests-for-contingency-tables.html#cb218-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>and to see what we got:</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="chi2-tests-for-contingency-tables.html#cb211-1" aria-hidden="true" tabindex="-1"></a>newObserved</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="chi2-tests-for-contingency-tables.html#cb219-1" aria-hidden="true" tabindex="-1"></a>newObserved</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
 ## [1,]  167   75   24   17   15
 ## [2,]  436  252  100   76   52</code></pre>
 <p>Now we compute the test statistic on this simulated data:</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="chi2-tests-for-contingency-tables.html#cb213-1" aria-hidden="true" tabindex="-1"></a>newExpected <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">rowSums</span>(newObserved), <span class="fu">colSums</span>(newObserved),  <span class="st">&quot;*&quot;</span>) <span class="sc">/</span></span>
-<span id="cb213-2"><a href="chi2-tests-for-contingency-tables.html#cb213-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(newObserved)</span></code></pre></div>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="chi2-tests-for-contingency-tables.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((newObserved <span class="sc">-</span> newExpected)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> newExpected)</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="chi2-tests-for-contingency-tables.html#cb221-1" aria-hidden="true" tabindex="-1"></a>newExpected <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">rowSums</span>(newObserved), <span class="fu">colSums</span>(newObserved),  <span class="st">&quot;*&quot;</span>) <span class="sc">/</span></span>
+<span id="cb221-2"><a href="chi2-tests-for-contingency-tables.html#cb221-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(newObserved)</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="chi2-tests-for-contingency-tables.html#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((newObserved <span class="sc">-</span> newExpected)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> newExpected)</span></code></pre></div>
 <pre><code>## [1] 7.63</code></pre>
 <p>This has produced a larger test statistic: even though the probabilities of the different ratings were the same for the two restaurants, in the simulation, there was a bigger difference between the <em>observed</em> ratings for the two restaurants.</p>
 <p>Now we repeat the simulation a large number of times.</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="chi2-tests-for-contingency-tables.html#cb216-1" aria-hidden="true" tabindex="-1"></a>chisquared <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100000</span>)</span>
-<span id="cb216-2"><a href="chi2-tests-for-contingency-tables.html#cb216-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100000</span>){</span>
-<span id="cb216-3"><a href="chi2-tests-for-contingency-tables.html#cb216-3" aria-hidden="true" tabindex="-1"></a>   Y <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">298</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
-<span id="cb216-4"><a href="chi2-tests-for-contingency-tables.html#cb216-4" aria-hidden="true" tabindex="-1"></a>   Z <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">916</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
-<span id="cb216-5"><a href="chi2-tests-for-contingency-tables.html#cb216-5" aria-hidden="true" tabindex="-1"></a>   newObserved <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(Y, Z),</span>
-<span id="cb216-6"><a href="chi2-tests-for-contingency-tables.html#cb216-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb216-7"><a href="chi2-tests-for-contingency-tables.html#cb216-7" aria-hidden="true" tabindex="-1"></a>   newExpected <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">rowSums</span>(newObserved), </span>
-<span id="cb216-8"><a href="chi2-tests-for-contingency-tables.html#cb216-8" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">colSums</span>(newObserved),  <span class="st">&quot;*&quot;</span>) <span class="sc">/</span></span>
-<span id="cb216-9"><a href="chi2-tests-for-contingency-tables.html#cb216-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(newObserved)</span>
-<span id="cb216-10"><a href="chi2-tests-for-contingency-tables.html#cb216-10" aria-hidden="true" tabindex="-1"></a>   chisquared[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>((newObserved <span class="sc">-</span> newExpected)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> newExpected)</span>
-<span id="cb216-11"><a href="chi2-tests-for-contingency-tables.html#cb216-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb216-12"><a href="chi2-tests-for-contingency-tables.html#cb216-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(chisquared <span class="sc">&gt;=</span> <span class="fl">6.92</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="chi2-tests-for-contingency-tables.html#cb224-1" aria-hidden="true" tabindex="-1"></a>chisquared <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100000</span>)</span>
+<span id="cb224-2"><a href="chi2-tests-for-contingency-tables.html#cb224-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100000</span>){</span>
+<span id="cb224-3"><a href="chi2-tests-for-contingency-tables.html#cb224-3" aria-hidden="true" tabindex="-1"></a>   Y <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">298</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
+<span id="cb224-4"><a href="chi2-tests-for-contingency-tables.html#cb224-4" aria-hidden="true" tabindex="-1"></a>   Z <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="dv">916</span>, <span class="fu">c</span>(<span class="dv">565</span>, <span class="dv">347</span>, <span class="dv">135</span>, <span class="dv">90</span>, <span class="dv">77</span>)<span class="sc">/</span><span class="dv">1214</span>)</span>
+<span id="cb224-5"><a href="chi2-tests-for-contingency-tables.html#cb224-5" aria-hidden="true" tabindex="-1"></a>   newObserved <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(Y, Z),</span>
+<span id="cb224-6"><a href="chi2-tests-for-contingency-tables.html#cb224-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb224-7"><a href="chi2-tests-for-contingency-tables.html#cb224-7" aria-hidden="true" tabindex="-1"></a>   newExpected <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">rowSums</span>(newObserved), </span>
+<span id="cb224-8"><a href="chi2-tests-for-contingency-tables.html#cb224-8" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">colSums</span>(newObserved),  <span class="st">&quot;*&quot;</span>) <span class="sc">/</span></span>
+<span id="cb224-9"><a href="chi2-tests-for-contingency-tables.html#cb224-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(newObserved)</span>
+<span id="cb224-10"><a href="chi2-tests-for-contingency-tables.html#cb224-10" aria-hidden="true" tabindex="-1"></a>   chisquared[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>((newObserved <span class="sc">-</span> newExpected)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> newExpected)</span>
+<span id="cb224-11"><a href="chi2-tests-for-contingency-tables.html#cb224-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb224-12"><a href="chi2-tests-for-contingency-tables.html#cb224-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(chisquared <span class="sc">&gt;=</span> <span class="fl">6.92</span>)</span></code></pre></div>
 <pre><code>## [1] 14014</code></pre>
 <p>So about 14% of the time (14014/100000), we get test statistics larger than 6.92: if <span class="math inline">\(H_0\)</span> were true, there would be nothing ‘surprising’ about the observed differences in ratings between the two restaurants.</p>
 <div class="rmdnote">
@@ -610,7 +610,7 @@ for <span class="math inline">\(X^2\sim \chi^2_{\nu}\)</span>.</p>
 P(X^2\ge 6.92),
 \]</span>
 for <span class="math inline">\(X^2\sim \chi^2_{4}\)</span>. We obtain this from R with the <code>pchisq()</code> command:</p>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="chi2-tests-for-contingency-tables.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(<span class="fl">6.92</span>, <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="chi2-tests-for-contingency-tables.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(<span class="fl">6.92</span>, <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>## [1] 0.1402</code></pre>
 <p>Notice how close this is to the <span class="math inline">\(p\)</span>-value obtained in our simulation. This is because the <span class="math inline">\(\chi^2\)</span> approximation is good for this sample size. We illustrate this below.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-207"></span>
@@ -623,12 +623,12 @@ Figure 10.3: The <span class="math inline">\(\chi^2_4\)</span> distribution, tog
 <div id="chi2-tests-in-r" class="section level3 hasAnchor" number="10.6.1">
 <h3><span class="header-section-number">10.6.1</span> <span class="math inline">\(\chi^2\)</span> tests in R<a href="chi2-tests-for-contingency-tables.html#chi2-tests-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We can conduct a <span class="math inline">\(\chi^2\)</span> test in R using the command <code>chisq.test()</code>. Recall that we set up our data as a matrix in R:</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="chi2-tests-for-contingency-tables.html#cb220-1" aria-hidden="true" tabindex="-1"></a>observed</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="chi2-tests-for-contingency-tables.html#cb228-1" aria-hidden="true" tabindex="-1"></a>observed</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
 ## [1,]  146   70   33   24   25
 ## [2,]  419  277  102   66   52</code></pre>
 <p>We can then use the <code>chisq.test()</code> function:</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="chi2-tests-for-contingency-tables.html#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(observed)</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="chi2-tests-for-contingency-tables.html#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(observed)</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
 ## 
@@ -800,7 +800,7 @@ so that the probability of being a regular exerciser would be the same for each 
 <li>Under a hypothesis of no difference between the years, give the expected number of “definitely agree” responses in 2018.</li>
 <li>Given a <span class="math inline">\(\chi^2\)</span> statistic of 3.34, draw a sketch to indicate what the <span class="math inline">\(p\)</span>-value would represent, and give a conclusion for the test. Some of the R output below will help you.</li>
 </ol>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="chi2-tests-for-contingency-tables.html#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(<span class="fl">3.34</span>, <span class="at">df =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="chi2-tests-for-contingency-tables.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(<span class="fl">3.34</span>, <span class="at">df =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span></code></pre></div>
 <pre><code>## [1] 0.9324 0.8118 0.6579 0.4974</code></pre>
 <div class="fold">
 <p><strong>Solution</strong></p>
@@ -824,7 +824,15 @@ H_A &amp;:\theta_i \neq \phi_i,\quad \mbox{for at least one $i$}.
 \]</span></p></li>
 <li><p>Note that the <span class="math inline">\(X^2\)</span> statistic has 2 degrees of freedom, so the R output of interest is</p></li>
 </ol>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="chi2-tests-for-contingency-tables.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(<span class="fl">3.34</span>, <span class="at">df =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 0.8118</code></pre>
 <p>The <span class="math inline">\(p\)</span>-value is the probability of exceeding 3.34, i.e. <span class="math inline">\(1 - 0.81=0.19\)</span></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-216"></span>
+<img src="MAS109-5052-Data-Science_files/figure-html/unnamed-chunk-216-1.png" alt="The observed test statistic is shown as the red cross. For the $p$-value, we want the probability that a $\chi^2_2$ random variable would be larger than 6.92. From the R output, we know that this probability must be larger than 0.1, so the $p$-value is at least 0.1: the data are consistent with what we would expect to see if $H_0$ were true." width="384" />
+<p class="caption">
+Figure 10.4: The observed test statistic is shown as the red cross. For the <span class="math inline">\(p\)</span>-value, we want the probability that a <span class="math inline">\(\chi^2_2\)</span> random variable would be larger than 6.92. From the R output, we know that this probability must be larger than 0.1, so the <span class="math inline">\(p\)</span>-value is at least 0.1: the data are consistent with what we would expect to see if <span class="math inline">\(H_0\)</span> were true.
+</p>
+</div>
 <p>The <span class="math inline">\(p\)</span>-value is indicated by the shaded area: <span class="math inline">\(1 - 0.81=0.19\)</span>. Hence, if <span class="math inline">\(H_0\)</span> were true, the differences we observed between the years would be ‘unsurprising’: there is no evidence against the null hypothesis of no change in student satisfaction.</p>
 </div>
 
@@ -883,7 +891,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

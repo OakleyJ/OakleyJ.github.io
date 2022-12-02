@@ -52,6 +52,7 @@ thm:unnamed-chunk-119
 fig:t-intervals
 exm:exampleCIbin
 exm:exampleCI99
+fig:unnamed-chunk-126
 def:defTypeIerror
 fig:unnamed-chunk-128
 def:defTypeIIerror
@@ -67,6 +68,7 @@ fig:unnamed-chunk-152
 fig:unnamed-chunk-155
 exm:exampleFacebook
 exm:exampleNPttest
+fig:unnamed-chunk-167
 fig:unnamed-chunk-172
 fig:binomPval
 exm:exampleReoffending
@@ -75,6 +77,7 @@ fig:unnamed-chunk-187
 def:defPower
 eq:power
 exm:examplePower
+fig:unnamed-chunk-190
 tab:unnamed-chunk-193
 fig:tripFig
 eq:ChiSqrExpected
@@ -82,6 +85,7 @@ fig:unnamed-chunk-205
 fig:unnamed-chunk-207
 exm:exampleChisq
 tab:unnamed-chunk-212
+fig:unnamed-chunk-216
 exploratory-data-analysis-using-r
 case-study-what-makes-a-country-good-at-maths
 the-tidyverse
