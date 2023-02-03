@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Implementing HMC in Stan | MAS61006 Bayesian Statistics and Computational Methods</title>
+  <meta name="description" content="Chapter 3 Implementing HMC in Stan | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Implementing HMC in Stan | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Implementing HMC in Stan | MAS61006 Bayesian Statistics and Computational Methods" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2023-02-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="hamiltonian-monte-carlo-hmc.html"/>
+<link rel="next" href="bayesian-regression-in-stan.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script>
+  $(document).ready(function () {
+    process_solutions();
+  });
+function process_solutions() {
+  $("div.section[id^='solution']").each(function(i) {
+    var soln_wrapper_id = "cvxr_ex_" + i;
+    var solution_id = $(this).attr('id');
+    var button = $("<button onclick=\"toggle_solution('" + soln_wrapper_id + "')\">Show/Hide</button>");
+    var new_div = $("<div id='" + soln_wrapper_id + "' class='solution' style='display: none;'></div>");
+    var h = $(this).first();
+    var others = $(this).children().slice(1);
+    $(others).each(function() {
+      $(this).appendTo($(new_div));
+    });
+    $(button).insertAfter($(h));
+    $(new_div).insertAfter($(button));
+  })
+}
+function toggle_solution(el_id) {
+  $("#" + el_id).toggle();
+}
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS61006(Sem2)</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i>Literature</a></li>
+<li class="part"><span><b>I Inference using advanced samplers</b></span></li>
+<li class="chapter" data-level="1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html"><i class="fa fa-check"></i><b>1</b> MCMC Sampling Recap</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#bayesian-inference-continued"><i class="fa fa-check"></i><b>1.1</b> Bayesian inference continued</a></li>
+<li class="chapter" data-level="1.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#monte-carlo"><i class="fa fa-check"></i><b>1.2</b> Monte Carlo estimation</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate"><i class="fa fa-check"></i><b>1.2.1</b> Properties of the Monte Carlo estimate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations"><i class="fa fa-check"></i><b>1.2.2</b> Expressing quantities as expectations</a></li>
+<li class="chapter" data-level="1.2.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#estimation-of-general-integrals"><i class="fa fa-check"></i><b>1.2.3</b> Estimation of general integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc"><i class="fa fa-check"></i><b>1.3</b> Markov chain Monte Carlo (MCMC)</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#mhsection"><i class="fa fa-check"></i><b>1.3.1</b> The Metroplis-Hastings (MH) algorithm</a></li>
+<li class="chapter" data-level="1.3.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals"><i class="fa fa-check"></i><b>1.3.2</b> The problem with random walk proposals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-gibbs-algorithm"><i class="fa fa-check"></i><b>1.3.3</b> The Gibbs algorithm</a></li>
+<li class="chapter" data-level="1.3.4" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-gibbs"><i class="fa fa-check"></i><b>1.3.4</b> The problem with Gibbs</a></li>
+<li class="chapter" data-level="1.3.5" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#a-solution"><i class="fa fa-check"></i><b>1.3.5</b> A solution?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html"><i class="fa fa-check"></i><b>2</b> Hamiltonian Monte Carlo (HMC)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition"><i class="fa fa-check"></i><b>2.1</b> Generating proposals: intuition</a></li>
+<li class="chapter" data-level="2.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics"><i class="fa fa-check"></i><b>2.2</b> Hamiltonian dynamics</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy"><i class="fa fa-check"></i><b>2.2.1</b> Conservation of energy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals"><i class="fa fa-check"></i><b>2.3</b> Using Hamilton’s equations to generate proposals</a></li>
+<li class="chapter" data-level="2.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m"><i class="fa fa-check"></i><b>2.4</b> The joint distribution for <span class="math inline">\((\theta, m)\)</span></a></li>
+<li class="chapter" data-level="2.5" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm"><i class="fa fa-check"></i><b>2.5</b> The HMC algorithm</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations"><i class="fa fa-check"></i><b>2.5.1</b> Approximate solution of Hamilton’s equations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta"><i class="fa fa-check"></i><b>2.6</b> Multivariate <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="2.7" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters"><i class="fa fa-check"></i><b>2.7</b> Tuning parameters</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2"><i class="fa fa-check"></i><b>2.7.1</b> The tuning parameter <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="2.7.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon"><i class="fa fa-check"></i><b>2.7.2</b> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand"><i class="fa fa-check"></i><b>2.8</b> Implementing HMC ‘by hand’</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh"><i class="fa fa-check"></i><b>2.8.1</b> Random-walk MH</a></li>
+<li class="chapter" data-level="2.8.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#gibbs"><i class="fa fa-check"></i><b>2.8.2</b> Gibbs</a></li>
+<li class="chapter" data-level="2.8.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hmc"><i class="fa fa-check"></i><b>2.8.3</b> HMC</a></li>
+<li class="chapter" data-level="2.8.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers"><i class="fa fa-check"></i><b>2.8.4</b> Comparing random-walk and HMC samplers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#summary"><i class="fa fa-check"></i><b>2.9</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html"><i class="fa fa-check"></i><b>3</b> Implementing HMC in Stan</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#getting-set-up-with-stan"><i class="fa fa-check"></i><b>3.1</b> Getting set up with Stan</a></li>
+<li class="chapter" data-level="3.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#rstan-options"><i class="fa fa-check"></i><b>3.2</b> <code>rstan</code> options</a></li>
+<li class="chapter" data-level="3.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#an-example-model"><i class="fa fa-check"></i><b>3.3</b> An example model</a></li>
+<li class="chapter" data-level="3.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio"><i class="fa fa-check"></i><b>3.4</b> Specifying a model in RStudio</a></li>
+<li class="chapter" data-level="3.5" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#stan-code-blocks"><i class="fa fa-check"></i><b>3.5</b> Stan code blocks</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#data-block"><i class="fa fa-check"></i><b>3.5.1</b> <code>data</code> block</a></li>
+<li class="chapter" data-level="3.5.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>3.5.2</b> <code>parameters</code> block</a></li>
+<li class="chapter" data-level="3.5.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#model-block"><i class="fa fa-check"></i><b>3.5.3</b> <code>model</code> block</a></li>
+<li class="chapter" data-level="3.5.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>3.5.4</b> <code>generated quantities</code> block</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm"><i class="fa fa-check"></i><b>3.6</b> Running the HMC algorithm</a></li>
+<li class="chapter" data-level="3.7" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples"><i class="fa fa-check"></i><b>3.7</b> Extracting and analysing the samples</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs"><i class="fa fa-check"></i><b>3.7.1</b> R packages for plotting outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts"><i class="fa fa-check"></i><b>3.8</b> No U-Turn Sampler (NUTS)</a></li>
+<li class="chapter" data-level="3.9" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#further-reading"><i class="fa fa-check"></i><b>3.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html"><i class="fa fa-check"></i><b>4</b> Bayesian regression in Stan</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#holiday-hangover-cures"><i class="fa fa-check"></i><b>4.1.1</b> Holiday hangover cures</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#least-squares-fit"><i class="fa fa-check"></i><b>4.1.2</b> Least squares fit</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-in-stan"><i class="fa fa-check"></i><b>4.1.3</b> Bayesian approach in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#recap-of-logistic-regression"><i class="fa fa-check"></i><b>4.2</b> Recap of logistic regression</a></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#overview-of-mixed-effects"><i class="fa fa-check"></i><b>4.3</b> Overview of mixed effects</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-example-of-a-mixed-effects-model"><i class="fa fa-check"></i><b>4.3.1</b> Simple example of a mixed effects model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#fixed-or-random-effects"><i class="fa fa-check"></i><b>4.3.2</b> Fixed or random effects?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#mixed-effect-logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Mixed effect logistic regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#balance-experiment"><i class="fa fa-check"></i><b>4.4.1</b> Balance experiment</a></li>
+<li class="chapter" data-level="4.4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>4.4.2</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#maximum-likelihood-approach"><i class="fa fa-check"></i><b>4.4.3</b> Maximum likelihood approach</a></li>
+<li class="chapter" data-level="4.4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-using-stan"><i class="fa fa-check"></i><b>4.4.4</b> Bayesian approach using Stan</a></li>
+<li class="chapter" data-level="4.4.5" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#comparing-stan-and-lme4"><i class="fa fa-check"></i><b>4.4.5</b> Comparing Stan and lme4</a></li>
+<li class="chapter" data-level="4.4.6" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#easy-bayesian-approach-with-brms"><i class="fa fa-check"></i><b>4.4.6</b> ‘Easy’ Bayesian approach with <code>brms</code></a></li>
+<li class="chapter" data-level="4.4.7" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#what-have-we-found"><i class="fa fa-check"></i><b>4.4.7</b> What have we found?</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Inference with missing data</b></span></li>
+<li class="chapter" data-level="5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html"><i class="fa fa-check"></i><b>5</b> Multiple imputation for missing data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#example-nhanes-data"><i class="fa fa-check"></i><b>5.2</b> Example: <code>nhanes</code> data</a></li>
+<li class="chapter" data-level="5.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness"><i class="fa fa-check"></i><b>5.3</b> Mechanisms of missingness</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>5.3.1</b> Missing completely at random (MCAR)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>5.3.2</b> Missing at random (MAR)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar"><i class="fa fa-check"></i><b>5.3.3</b> Not missing at random (NMAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness"><i class="fa fa-check"></i><b>5.4</b> Ignoring information about missingness</a></li>
+<li class="chapter" data-level="5.5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#inference-via-imputation"><i class="fa fa-check"></i><b>5.5</b> Inference via imputation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#further-simplifications"><i class="fa fa-check"></i><b>5.5.1</b> Further simplifications</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#pooling"><i class="fa fa-check"></i><b>5.6</b> Pooling multiple imputations</a></li>
+<li class="chapter" data-level="5.7" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#simple-example"><i class="fa fa-check"></i><b>5.7</b> Simple example</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand"><i class="fa fa-check"></i><b>5.7.1</b> Multiple imputation by hand</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation"><i class="fa fa-check"></i><b>5.8</b> Imputing missing data: chained equation multiple imputation</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#how-many-iterations"><i class="fa fa-check"></i><b>5.8.1</b> How many iterations?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset"><i class="fa fa-check"></i><b>5.9</b> MICE example: the <code>nhanes</code> dataset</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#complete-case-analysis"><i class="fa fa-check"></i><b>5.9.1</b> Complete case analysis</a></li>
+<li class="chapter" data-level="5.9.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data"><i class="fa fa-check"></i><b>5.9.2</b> Imputing the missing data</a></li>
+<li class="chapter" data-level="5.9.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputation-analysis"><i class="fa fa-check"></i><b>5.9.3</b> Imputation analysis</a></li>
+<li class="chapter" data-level="5.9.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#analysis-pooling"><i class="fa fa-check"></i><b>5.9.4</b> Analysis pooling</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Resampling methods</b></span></li>
+<li class="chapter" data-level="6" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>6</b> Bootstrapping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrap-estimates-of-standard-errors"><i class="fa fa-check"></i><b>6.1</b> Bootstrap estimates of standard errors</a></li>
+<li class="chapter" data-level="6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function"><i class="fa fa-check"></i><b>6.2</b> Estimating a distribution using the empirical cumulative distribution function</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="bootstrapping.html"><a href="bootstrapping.html#sampling-from-an-ecdf"><i class="fa fa-check"></i><b>6.2.1</b> Sampling from an ECDF</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#notation-summary"><i class="fa fa-check"></i><b>6.3</b> Notation summary</a></li>
+<li class="chapter" data-level="6.4" data-path="bootstrapping.html"><a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance"><i class="fa fa-check"></i><b>6.4</b> Example: Bootstrap standard errors of a sample mean and sample variance</a></li>
+<li class="chapter" data-level="6.5" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals"><i class="fa fa-check"></i><b>6.5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error"><i class="fa fa-check"></i><b>6.5.1</b> Confidence intervals using the estimated standard error</a></li>
+<li class="chapter" data-level="6.5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>6.5.2</b> Confidence intervals using percentiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="bootstrapping.html"><a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf"><i class="fa fa-check"></i><b>6.6</b> Properties of samples from the empirical CDF</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#expectation-and-variance"><i class="fa fa-check"></i><b>6.6.1</b> Expectation and variance</a></li>
+<li class="chapter" data-level="6.6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-percentiles"><i class="fa fa-check"></i><b>6.6.2</b> Sample percentiles</a></li>
+<li class="chapter" data-level="6.6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping"><i class="fa fa-check"></i><b>6.6.3</b> Sources of error and sample sizes in bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="bootstrapping.html"><a href="bootstrapping.html#example-measuring-observer-agreement"><i class="fa fa-check"></i><b>6.7</b> Example: Measuring observer agreement</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-data"><i class="fa fa-check"></i><b>6.7.1</b> The data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-kappa-statistic"><i class="fa fa-check"></i><b>6.7.2</b> The kappa statistic</a></li>
+<li class="chapter" data-level="6.7.3" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrapping-bivariate-data"><i class="fa fa-check"></i><b>6.7.3</b> Bootstrapping bivariate data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="bootstrapping.html"><a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing"><i class="fa fa-check"></i><b>6.8</b> Parametric bootstrapping and hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-milk-data-set"><i class="fa fa-check"></i><b>6.8.1</b> The <code>Milk</code> data set</a></li>
+<li class="chapter" data-level="6.8.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-model-and-hypothesis"><i class="fa fa-check"></i><b>6.8.2</b> The model and hypothesis</a></li>
+<li class="chapter" data-level="6.8.3" data-path="bootstrapping.html"><a href="bootstrapping.html#the-generalized-likelihood-ratio-test"><i class="fa fa-check"></i><b>6.8.3</b> The generalized likelihood ratio test</a></li>
+<li class="chapter" data-level="6.8.4" data-path="bootstrapping.html"><a href="bootstrapping.html#the-parametric-bootstrap-test"><i class="fa fa-check"></i><b>6.8.4</b> The parametric bootstrap test</a></li>
+<li class="chapter" data-level="6.8.5" data-path="bootstrapping.html"><a href="bootstrapping.html#implementation-with-r"><i class="fa fa-check"></i><b>6.8.5</b> Implementation with R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cross-validation.html"><a href="cross-validation.html"><i class="fa fa-check"></i><b>7</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-classification"><i class="fa fa-check"></i><b>7.1</b> Cross-validation in classification</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="cross-validation.html"><a href="cross-validation.html#the-palmer-penguins-data"><i class="fa fa-check"></i><b>7.1.1</b> The Palmer penguins data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cross-validation.html"><a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn"><i class="fa fa-check"></i><b>7.1.2</b> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-knn"><i class="fa fa-check"></i><b>7.1.3</b> Implementing cross-validation in KNN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2</b> Cross-validation in regression</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="cross-validation.html"><a href="cross-validation.html#the-flint-tools-data"><i class="fa fa-check"></i><b>7.2.1</b> The flint tools data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2.2</b> Implementing cross-validation in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="cross-validation.html"><a href="cross-validation.html#parameter-estimation-with-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Parameter estimation with cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="cross-validation.html"><a href="cross-validation.html#example-choosing-the-value-k-in-knn"><i class="fa fa-check"></i><b>7.3.1</b> Example: choosing the value <span class="math inline">\(K\)</span> in KNN</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood"><i class="fa fa-check"></i><b>7.3.2</b> Cross-validation as an alternative to maximum likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cross-validation.html"><a href="cross-validation.html#computational-short-cuts"><i class="fa fa-check"></i><b>7.4</b> Computational short-cuts</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="cross-validation.html"><a href="cross-validation.html#example-returning-to-the-flint-data"><i class="fa fa-check"></i><b>7.4.1</b> Example: Returning to the flint data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="cross-validation.html"><a href="cross-validation.html#relationship-with-aic"><i class="fa fa-check"></i><b>7.5</b> Relationship with AIC</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="cross-validation.html"><a href="cross-validation.html#example-the-cars-data"><i class="fa fa-check"></i><b>7.5.1</b> Example: The cars data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cross-validation.html"><a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut"><i class="fa fa-check"></i><b>7.6</b> (Non-examinable) Proof of the computational short cut</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="cross-validation.html"><a href="cross-validation.html#helpful-results-we-will-use"><i class="fa fa-check"></i><b>7.6.1</b> Helpful results we will use</a></li>
+<li class="chapter" data-level="7.6.2" data-path="cross-validation.html"><a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models"><i class="fa fa-check"></i><b>7.6.2</b> Relate the estimated coefficients of full and reduced models</a></li>
+<li class="chapter" data-level="7.6.3" data-path="cross-validation.html"><a href="cross-validation.html#relating-the-residuals"><i class="fa fa-check"></i><b>7.6.3</b> Relating the residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Approximate inference without sampling</b></span></li>
+<li class="chapter" data-level="8" data-path="variational-inference.html"><a href="variational-inference.html"><i class="fa fa-check"></i><b>8</b> Variational inference</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="variational-inference.html"><a href="variational-inference.html#background-theory"><i class="fa fa-check"></i><b>8.1</b> Background theory</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="variational-inference.html"><a href="variational-inference.html#jensens-inequality"><i class="fa fa-check"></i><b>8.1.1</b> Jensen’s inequality</a></li>
+<li class="chapter" data-level="8.1.2" data-path="variational-inference.html"><a href="variational-inference.html#kullback-leibler-divergence"><i class="fa fa-check"></i><b>8.1.2</b> Kullback-Leibler Divergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="variational-inference.html"><a href="variational-inference.html#optimisation-with-coordinate-ascent"><i class="fa fa-check"></i><b>8.1.3</b> Optimisation with coordinate ascent</a></li>
+<li class="chapter" data-level="8.1.4" data-path="variational-inference.html"><a href="variational-inference.html#stochastic-optimisation"><i class="fa fa-check"></i><b>8.1.4</b> Stochastic optimisation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="variational-inference.html"><a href="variational-inference.html#motivation-for-approximate-inference-approaches"><i class="fa fa-check"></i><b>8.2</b> Motivation for approximate inference approaches</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="variational-inference.html"><a href="variational-inference.html#intractable-integrals"><i class="fa fa-check"></i><b>8.2.1</b> Intractable integrals</a></li>
+<li class="chapter" data-level="8.2.2" data-path="variational-inference.html"><a href="variational-inference.html#variational-approach-to-intractable-integrals"><i class="fa fa-check"></i><b>8.2.2</b> Variational approach to intractable integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="variational-inference.html"><a href="variational-inference.html#approximate-inference-as-an-optimisation-problem"><i class="fa fa-check"></i><b>8.3</b> Approximate inference as an optimisation problem</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="variational-inference.html"><a href="variational-inference.html#exploring-the-elbo"><i class="fa fa-check"></i><b>8.3.1</b> Exploring the ELBO</a></li>
+<li class="chapter" data-level="8.3.2" data-path="variational-inference.html"><a href="variational-inference.html#forward-and-reverse-variational-inference"><i class="fa fa-check"></i><b>8.3.2</b> Forward and reverse variational inference</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="variational-inference.html"><a href="variational-inference.html#the-variational-family-of-distributions"><i class="fa fa-check"></i><b>8.4</b> The variational family of distributions</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="variational-inference.html"><a href="variational-inference.html#mean-field-family"><i class="fa fa-check"></i><b>8.4.1</b> Mean-field family</a></li>
+<li class="chapter" data-level="8.4.2" data-path="variational-inference.html"><a href="variational-inference.html#correlation-cannot-be-replicated"><i class="fa fa-check"></i><b>8.4.2</b> Correlation cannot be replicated</a></li>
+<li class="chapter" data-level="8.4.3" data-path="variational-inference.html"><a href="variational-inference.html#why-mean-field-is-useful"><i class="fa fa-check"></i><b>8.4.3</b> Why mean-field is useful</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html"><i class="fa fa-check"></i><b>9</b> Coordinate ascent variational inference (CAVI)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-cavi-algorithm"><i class="fa fa-check"></i><b>9.1</b> The CAVI algorithm</a></li>
+<li class="chapter" data-level="9.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#example-mixture-of-gaussians"><i class="fa fa-check"></i><b>9.2</b> Example: Mixture of Gaussians</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-observation-model"><i class="fa fa-check"></i><b>9.2.1</b> The observation model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-prior"><i class="fa fa-check"></i><b>9.2.2</b> The prior</a></li>
+<li class="chapter" data-level="9.2.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-joint-likelihood"><i class="fa fa-check"></i><b>9.2.3</b> The joint likelihood</a></li>
+<li class="chapter" data-level="9.2.4" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-mean-field-family-approximation"><i class="fa fa-check"></i><b>9.2.4</b> The mean-field family approximation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#cavi"><i class="fa fa-check"></i><b>9.2.5</b> CAVI</a></li>
+<li class="chapter" data-level="9.2.6" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#implementing-cavi-in-r"><i class="fa fa-check"></i><b>9.2.6</b> Implementing CAVI in R</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#comment"><i class="fa fa-check"></i><b>9.3</b> Comment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS61006 Bayesian Statistics and Computational Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="implementing-hmc-in-stan" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Implementing HMC in Stan<a href="implementing-hmc-in-stan.html#implementing-hmc-in-stan" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --->
+<p><span class="math inline">\(\def \mb{\mathbb}\)</span>
+<span class="math inline">\(\def \E{\mb{E}}\)</span>
+<span class="math inline">\(\def \P{\mb{P}}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\var}{Var}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\cov}{Cov}\)</span></p>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aims of this chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Implement Hamiltonian Monte Carlo using Stan and gain confidence interpreting analyses.</td>
+</tr>
+</tbody>
+</table>
+<p>In this Chapter, we will take a first look at using Stan (implemented via the <code>rstan</code> package <span class="citation">(<a href="#ref-R-rstan" role="doc-biblioref">Stan Development Team 2021</a>)</span>) to implement HMC. We will also look at some additional R packages which are useful for working with output from <code>rstan</code>.</p>
+<p>This Chapter is only intended to introduce you to using Stan; it will not cover everything you might need to know. Further reading is discussed at the end of this Chapter.</p>
+<div id="getting-set-up-with-stan" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Getting set up with Stan<a href="implementing-hmc-in-stan.html#getting-set-up-with-stan" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this course we will use RStudio to write, edit and run Stan code. Please ensure that you have an up-to-date version of Rstudio and R itself on your machine.</p>
+<p>You can follow the installation steps at the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">RStan Getting Started</a> page, but we will also summarise these:</p>
+<ul>
+<li>You will need R version 3.4.0 or later (version 4.0.0 or later is strongly recommended)</li>
+<li>You will need RStudio version 1.2.x or later (version 1.4.x or later is strongly recommended. Note that version numbering system has changed! Version numbers now start with the year: anything starting with 2022 is newer than 1.4.x).</li>
+<li>You need to be able to compile C++ code in R. Windows users will need to install <a href="https://cran.r-project.org/bin/windows/Rtools/rtools40.html">RTools</a>. Mac users may be prompted to install/update Xcode. The above page links to the appropriate option for Windows, Mac and Linux users.</li>
+<li>You need to install the <code>RStan</code> package in RStudio.</li>
+</ul>
+</div>
+<div id="rstan-options" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> <code>rstan</code> options<a href="implementing-hmc-in-stan.html#rstan-options" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When you run the command</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="implementing-hmc-in-stan.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstan)</span></code></pre></div>
+<p>you will get some text recommending you set two options:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="implementing-hmc-in-stan.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
+<span id="cb6-2"><a href="implementing-hmc-in-stan.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rstan_options</span>(<span class="at">auto_write =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>We suggest you try both. The first will enable parallel processing on your computer. The second will save your Stan models to a temporary folder on your hard drive, which may save a little time if you find yourself recompiling models in the same session.</p>
+</div>
+<div id="an-example-model" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> An example model<a href="implementing-hmc-in-stan.html#an-example-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For our first implementation in Stan, we will introduce a simple model. We have <span class="math inline">\(n\)</span> random variables <span class="math inline">\(Y_1,\ldots,Y_n\)</span> that are assumed to be independent and identically distributed with
+<span class="math display">\[\begin{equation}
+Y_i |\mu, \sigma^2 \sim N(\mu,\sigma^2).
+\end{equation}\]</span>
+Prior distributions are specified by
+<span class="math display">\[\begin{align}
+\mu &amp;\sim N(1.5,0.1^2), \\
+\sigma &amp;\sim \Gamma(1,1).
+\end{align}\]</span>
+Denoting the observations by <span class="math inline">\(y_1,\ldots,y_n\)</span>, we wish to sample from two distributions:</p>
+<ul>
+<li>the posterior distribution of <span class="math inline">\(\mu,\sigma^2 | y_1,\ldots,y_n\)</span>;</li>
+<li>the predictive distribution of <span class="math inline">\(Y_{n+1},Y_{n+2}|y_1,\ldots,y_n\)</span>.</li>
+</ul>
+</div>
+<div id="specifying-a-model-in-rstudio" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Specifying a model in RStudio<a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In RStudio, we make a <code>stan</code> code block. The code block has an argument <code>output.var</code>, defined as a string: we will use the string <code>"ex1"</code>. When we click on the green arrow at the top right of the code chunk, the model will be compiled as a “stanmodel” object called <code>ex1</code>.</p>
+<p><img src="images/StanCodeBlock.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>The model code (that goes inside the code block) is as follows. Note that each commands needs to end in a semicolon.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb7-1"><a href="implementing-hmc-in-stan.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb7-2"><a href="implementing-hmc-in-stan.html#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n ; </span>
+<span id="cb7-3"><a href="implementing-hmc-in-stan.html#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">vector</span>[n] Y ; </span>
+<span id="cb7-4"><a href="implementing-hmc-in-stan.html#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-5"><a href="implementing-hmc-in-stan.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb7-6"><a href="implementing-hmc-in-stan.html#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">real</span> mu ; </span>
+<span id="cb7-7"><a href="implementing-hmc-in-stan.html#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma ;</span>
+<span id="cb7-8"><a href="implementing-hmc-in-stan.html#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-9"><a href="implementing-hmc-in-stan.html#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb7-10"><a href="implementing-hmc-in-stan.html#cb7-10" aria-hidden="true" tabindex="-1"></a>    mu ~ normal(<span class="fl">1.5</span>, <span class="fl">0.1</span>) ; </span>
+<span id="cb7-11"><a href="implementing-hmc-in-stan.html#cb7-11" aria-hidden="true" tabindex="-1"></a>    sigma ~ gamma(<span class="dv">1</span>, <span class="dv">1</span>) ; </span>
+<span id="cb7-12"><a href="implementing-hmc-in-stan.html#cb7-12" aria-hidden="true" tabindex="-1"></a>    Y ~ normal(mu, sigma) ; </span>
+<span id="cb7-13"><a href="implementing-hmc-in-stan.html#cb7-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-14"><a href="implementing-hmc-in-stan.html#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb7-15"><a href="implementing-hmc-in-stan.html#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[<span class="dv">2</span>] Ynew ;</span>
+<span id="cb7-16"><a href="implementing-hmc-in-stan.html#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:<span class="dv">2</span>)</span>
+<span id="cb7-17"><a href="implementing-hmc-in-stan.html#cb7-17" aria-hidden="true" tabindex="-1"></a>    Ynew[i] = normal_rng(mu, sigma) ;</span>
+<span id="cb7-18"><a href="implementing-hmc-in-stan.html#cb7-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="stan-code-blocks" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Stan code blocks<a href="implementing-hmc-in-stan.html#stan-code-blocks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The code is divided into Stan ‘code blocks’. We’ve used four different types (there are a few others) which we will discuss in turn.</p>
+<div id="data-block" class="section level3 hasAnchor" number="3.5.1">
+<h3><span class="header-section-number">3.5.1</span> <code>data</code> block<a href="implementing-hmc-in-stan.html#data-block" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>data {
+    int n ; 
+    vector[n] Y ; 
+}</code></pre>
+<p>This is where we declare the data we will pass to Stan for use in our statistical inference. We must declare all our data, and its type.</p>
+<ul>
+<li><p>Here, we have said that the variable <span class="math inline">\(Y\)</span> is vector, with each element an unbounded continuous variable. For flexibility here, we’ve also included the number of observations <span class="math inline">\(n\)</span> as an integer variable to let Stan know how large our vector of observations is. If we knew that we had, say 10, observations, we could have defined <code>vector[10] Y ;</code> directly.</p></li>
+<li><p>Common examples of data types include <code>real</code>, <code>int</code>, <code>vector</code>, and <code>matrix.</code> We can also attach modifiers, such as truncated variables as <code>real&lt;lower=0,upper=1&gt;</code>.</p></li>
+</ul>
+</div>
+<div id="parameters-block" class="section level3 hasAnchor" number="3.5.2">
+<h3><span class="header-section-number">3.5.2</span> <code>parameters</code> block<a href="implementing-hmc-in-stan.html#parameters-block" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>parameters {
+    real mu ; 
+    real&lt;lower=0&gt; sigma ;
+}</code></pre>
+<p>This is where we declare all the parameters of our model that we aim to infer. Here we have the two parameters:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span>, which is an unbounded continuous random variable, and<br />
+</li>
+<li><span class="math inline">\(\sigma\)</span>, which is a positive continuous random variable.</li>
+</ul>
+<p>In addition to the above data types, there are some additional useful parameter data types. This includes <code>simplex</code>, which is a vector of non-negative continuous variables whose sum is 1 and is useful for multinomial parameter sets or other probabilities. Also <code>corr_matrix</code> behaves as expected, and <code>ordered</code> allows the common constraint of <span class="math inline">\(Z[1]&gt;Z[2]&gt;\ldots&gt;Z[k]\)</span> to be described conveniently.</p>
+</div>
+<div id="model-block" class="section level3 hasAnchor" number="3.5.3">
+<h3><span class="header-section-number">3.5.3</span> <code>model</code> block<a href="implementing-hmc-in-stan.html#model-block" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>model {
+    mu ~ normal(1.5, 0.1) ; 
+    sigma ~ gamma(1, 1) ; 
+    Y ~ normal(mu, sigma) ; 
+}</code></pre>
+<p>This is where we specify our likelihood and priors. This block is essentially telling Stan how to calculate the negative log posterior probability density (up to proportionality) which would be used to calculate the energy.</p>
+<ul>
+<li><p>In the above you will see we have used what is called <em>sampling statements</em>, which are denoted with the <span class="math inline">\(\sim\)</span> symbol. These describe the sampling distribution of the variables, and is not an instruction to draw a sample from such a distribution.</p></li>
+<li><p>Though <code>mu</code> is a scalar and <code>Y</code> is a vector, we have used the same type of sampling statement: <code>mu ~ normal()</code> and <code>Y ~ normal()</code>. Stan will understand the difference and interpret the elements of Y to be i.i.d. with the specified distribution.</p></li>
+<li><p>Stan understands a wide range of standard families of distributions, including all those from your distribution table. Note that these begin with a capital letter only where appropriate (such as <code>Student-t</code> but not <code>gamma</code>).</p></li>
+</ul>
+<div id="improper-priors" class="section level4 hasAnchor" number="3.5.3.1">
+<h4><span class="header-section-number">3.5.3.1</span> Improper priors<a href="implementing-hmc-in-stan.html#improper-priors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We could leave out specification of prior distributions for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>:</p>
+<pre><code>model {
+    Y ~ normal(mu, sigma) ; 
+}</code></pre>
+<p>This will assume improper uniform priors (with the constraint that <code>sigma</code> is positive). As you have seen in semester 1, the data will dominate the prior as the sample size increases, so this specification may be convenient in such cases, but robustness to the choice of prior (whether informative or uninformative) should always be investigated.</p>
+</div>
+</div>
+<div id="generated-quantities-block" class="section level3 hasAnchor" number="3.5.4">
+<h3><span class="header-section-number">3.5.4</span> <code>generated quantities</code> block<a href="implementing-hmc-in-stan.html#generated-quantities-block" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>generated quantities {
+  vector[2] Ynew ;
+  for (i in 1:2)
+    Ynew[i] = normal_rng(mu, sigma) ;
+}</code></pre>
+<p>Here we define any quantities that we want Stan to simulate.</p>
+<ul>
+<li><p>We need to declare that <code>Ynew</code> is a <code>vector</code> with 2 elements, before we can assign randomly generated values to <code>Ynew</code>.</p></li>
+<li><p>We’ve used the function <code>normal_rng()</code> (rather than the function <code>normal()</code>) to generate a normally distributed random variable with mean <code>mu</code> and standard deviation <code>sigma</code>.</p></li>
+<li><p>The <code>normal_rng()</code> function generates a scalar random variable, so we’ve had to use a <code>for</code> loop to generate i.i.d. variables: the elements of the vector <code>Ynew</code>.</p></li>
+</ul>
+</div>
+</div>
+<div id="running-the-hmc-algorithm" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Running the HMC algorithm<a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We’ll first make up some data for the example:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="implementing-hmc-in-stan.html#cb13-1" aria-hidden="true" tabindex="-1"></a>exampleY <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>, <span class="fl">1.6</span>, <span class="fl">0.2</span>)</span></code></pre></div>
+<p>We then make a <code>list</code> with data specified in the Stan <code>data</code> code block:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="implementing-hmc-in-stan.html#cb14-1" aria-hidden="true" tabindex="-1"></a>exampleData <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">length</span>(exampleY), <span class="at">Y =</span> exampleY)</span></code></pre></div>
+<p>We are going to run a single chain sampler of 10000 iterations, but discard the first half as <em>burn-in</em>. We use the <code>sampling</code> function to carry out HMC sampling, using the definition of our Stan model that we assigned to the name <code>ex1</code> in the <code>stan</code> code chunk from above, and store this as <code>fit</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="implementing-hmc-in-stan.html#cb15-1" aria-hidden="true" tabindex="-1"></a>sampling_iterations <span class="ot">&lt;-</span> <span class="fl">1e4</span> </span>
+<span id="cb15-2"><a href="implementing-hmc-in-stan.html#cb15-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sampling</span>(ex1, </span>
+<span id="cb15-3"><a href="implementing-hmc-in-stan.html#cb15-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> exampleData,</span>
+<span id="cb15-4"><a href="implementing-hmc-in-stan.html#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">chains =</span> <span class="dv">1</span>, </span>
+<span id="cb15-5"><a href="implementing-hmc-in-stan.html#cb15-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">iter =</span> sampling_iterations, </span>
+<span id="cb15-6"><a href="implementing-hmc-in-stan.html#cb15-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">warmup =</span> sampling_iterations<span class="sc">/</span><span class="dv">2</span>)</span></code></pre></div>
+<p>Now we will explore the output samples that Stan has provided from a HMC sampler. There are many ways that we can view results, starting with a simple print-out of a summary, shown below.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="implementing-hmc-in-stan.html#cb16-1" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## Inference for Stan model: 72072a3a3945e2d4332cba14d76c3dd9.
+## 1 chains, each with iter=10000; warmup=5000; thin=1; 
+## post-warmup draws per chain=5000, total post-warmup draws=5000.
+## 
+##         mean se_mean   sd 2.5%  25%  50%  75% 97.5% n_eff Rhat
+## mu      1.62    0.00 0.06 1.50 1.59 1.63 1.66  1.73  2675    1
+## sigma   0.20    0.00 0.06 0.12 0.16 0.19 0.23  0.36  2252    1
+## Ynew[1] 1.62    0.00 0.22 1.17 1.49 1.63 1.75  2.03  4670    1
+## Ynew[2] 1.62    0.00 0.22 1.15 1.50 1.62 1.76  2.05  5063    1
+## lp__    9.03    0.03 1.08 6.12 8.63 9.37 9.81 10.09  1768    1
+## 
+## Samples were drawn using NUTS(diag_e) at Sun Mar 20 17:03:59 2022.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).</code></pre>
+<p>This includes:</p>
+<ul>
+<li>Information about our implementation, including the number of chains and their length.</li>
+<li>A table of the variables we have sampled (<span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>), and the log probability of the model (<code>lp</code>):
+<ul>
+<li>The posterior mean and standard deviation.<br />
+</li>
+<li>An estimate of effective sample size for each parameter, which can give us some indication about the autocorrelation in our chain.</li>
+</ul></li>
+<li>Information about the sampling algorithm, which includes an indication of the efficiency of the sampler.</li>
+</ul>
+</div>
+<div id="extracting-and-analysing-the-samples" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Extracting and analysing the samples<a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We extract the raw samples as follows</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="implementing-hmc-in-stan.html#cb18-1" aria-hidden="true" tabindex="-1"></a>chains <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">extract</span>(fit)</span>
+<span id="cb18-2"><a href="implementing-hmc-in-stan.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(chains)</span></code></pre></div>
+<pre><code>## [1] &quot;mu&quot;    &quot;sigma&quot; &quot;Ynew&quot;  &quot;lp__&quot;</code></pre>
+<p>Then we can do things such as:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="implementing-hmc-in-stan.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(chains<span class="sc">$</span>mu)</span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.382   1.588   1.625   1.622   1.661   1.804</code></pre>
+<div id="r-packages-for-plotting-outputs" class="section level3 hasAnchor" number="3.7.1">
+<h3><span class="header-section-number">3.7.1</span> R packages for plotting outputs<a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="ggmcmc" class="section level4 hasAnchor" number="3.7.1.1">
+<h4><span class="header-section-number">3.7.1.1</span> <code>ggmcmc</code><a href="implementing-hmc-in-stan.html#ggmcmc" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>An excellent package for exploring the output of an MCMC sample is <code>ggmcmc</code> <span class="citation">(<a href="#ref-R-ggmcmc" role="doc-biblioref">Fernández-i-Marín 2016</a>)</span>, which you can also use for the results of samplers that you have written yourself rather than merely Stan samplers. In the following we highlight some popular plots from this package that can be used to summaries our sampler.</p>
+<p>In Figure <a href="implementing-hmc-in-stan.html#fig:stan-post-dens">3.1</a>, we plot the posterior marginals as separate one-dimensional density estimates, alongside the two-dimensional samples themselves.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="implementing-hmc-in-stan.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the posterior groups in a format that ggmcmc likes</span></span>
+<span id="cb22-2"><a href="implementing-hmc-in-stan.html#cb22-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> ggmcmc<span class="sc">::</span><span class="fu">ggs</span>(fit)</span>
+<span id="cb22-3"><a href="implementing-hmc-in-stan.html#cb22-3" aria-hidden="true" tabindex="-1"></a>ggmcmc<span class="sc">::</span><span class="fu">ggs_pairs</span>(samples)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:stan-post-dens"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/stan-post-dens-1.png" alt="Posterior density estimate of the two parameters in the Gaussian example implemented in Stan." width="70%" />
+<p class="caption">
+Figure 3.1: Posterior density estimate of the two parameters in the Gaussian example implemented in Stan.
+</p>
+</div>
+<p>In Figure <a href="implementing-hmc-in-stan.html#fig:stan-caterpil">3.2</a>, we plot a <em>caterpillar plot</em>, which gives displays credible intervals for each parameter. Compare this with the information table provided in the summary table, above. This is extremely useful for cases with high numbers of estimated parameters (see the random effects regression model later in this course!).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="implementing-hmc-in-stan.html#cb23-1" aria-hidden="true" tabindex="-1"></a>ggmcmc<span class="sc">::</span><span class="fu">ggs_caterpillar</span>(samples, <span class="at">thick_ci =</span> <span class="fu">c</span>(<span class="fl">0.25</span>,<span class="fl">0.75</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:stan-caterpil"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/stan-caterpil-1.png" alt="Caterpillar plot of the two parameters in the Gaussian example implemented in Stan. The thick bars indicate a posterior quantiles at 0.25 and 0.75, and the thin bards indicate quantiles at 0.025 and 0.975." width="70%" />
+<p class="caption">
+Figure 3.2: Caterpillar plot of the two parameters in the Gaussian example implemented in Stan. The thick bars indicate a posterior quantiles at 0.25 and 0.75, and the thin bards indicate quantiles at 0.025 and 0.975.
+</p>
+</div>
+<p>Figure <a href="implementing-hmc-in-stan.html#fig:stan-trace">3.3</a> gives the trace plot of the two parameters, highlighting the autocorrelation in the sampled chain.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="implementing-hmc-in-stan.html#cb24-1" aria-hidden="true" tabindex="-1"></a>ggmcmc<span class="sc">::</span><span class="fu">ggs_traceplot</span>(samples)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:stan-trace"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/stan-trace-1.png" alt="Trace plot of the two parameters in the Gaussian example implemented in Stan." width="80%" />
+<p class="caption">
+Figure 3.3: Trace plot of the two parameters in the Gaussian example implemented in Stan.
+</p>
+</div>
+</div>
+<div id="bayesplot" class="section level4 hasAnchor" number="3.7.1.2">
+<h4><span class="header-section-number">3.7.1.2</span> <code>bayesplot</code><a href="implementing-hmc-in-stan.html#bayesplot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The package <code>bayesplot</code> <span class="citation">(<a href="#ref-R-bayesplot" role="doc-biblioref">Gabry and Mahr 2021</a>)</span> interfaces nicely with <code>stan</code>. Trace plots can be produced as follows. Note that vectors are specified within the <code>contains()</code> function.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="implementing-hmc-in-stan.html#cb25-1" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(fit, </span>
+<span id="cb25-2"><a href="implementing-hmc-in-stan.html#cb25-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">pars =</span> <span class="fu">vars</span>(<span class="fu">contains</span>(<span class="st">&quot;Ynew&quot;</span>),</span>
+<span id="cb25-3"><a href="implementing-hmc-in-stan.html#cb25-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">&quot;mu&quot;</span>,</span>
+<span id="cb25-4"><a href="implementing-hmc-in-stan.html#cb25-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">&quot;sigma&quot;</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/unnamed-chunk-15-1.png" alt="(ref:hier)" width="80%" />
+<p class="caption">
+Figure 3.4: (ref:hier)
+</p>
+</div>
+<p>The following is similar to the caterpillar plot, but shows density functions.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="implementing-hmc-in-stan.html#cb26-1" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">mcmc_areas</span>(fit, <span class="at">pars =</span> <span class="fu">vars</span>(<span class="fu">contains</span>(<span class="st">&quot;Ynew&quot;</span>),<span class="st">&quot;mu&quot;</span>,<span class="st">&quot;sigma&quot;</span>),</span>
+<span id="cb26-2"><a href="implementing-hmc-in-stan.html#cb26-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">prob_outer =</span> <span class="fl">0.95</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-16"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/unnamed-chunk-16-1.png" alt="(ref:hier)" width="60%" />
+<p class="caption">
+Figure 3.5: (ref:hier)
+</p>
+</div>
+</div>
+<div id="shinystan" class="section level4 hasAnchor" number="3.7.1.3">
+<h4><span class="header-section-number">3.7.1.3</span> <code>shinyStan</code><a href="implementing-hmc-in-stan.html#shinystan" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>An interactive approach for exploring the results of the sampler is using the <code>shinystan</code> package <span class="citation">(<a href="#ref-R-shinystan" role="doc-biblioref">Gabry 2018</a>)</span>, which launches a shiny application in your browser. To launch this, you would use the command:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="implementing-hmc-in-stan.html#cb27-1" aria-hidden="true" tabindex="-1"></a>ssfit <span class="ot">&lt;-</span> shinystan<span class="sc">::</span><span class="fu">as.shinystan</span>(fit)</span>
+<span id="cb27-2"><a href="implementing-hmc-in-stan.html#cb27-2" aria-hidden="true" tabindex="-1"></a>shinyStan<span class="sc">::</span><span class="fu">launch_shinystan</span>(ssfit)</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="no-u-turn-sampler-nuts" class="section level2 hasAnchor" number="3.8">
+<h2><span class="header-section-number">3.8</span> No U-Turn Sampler (NUTS)<a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You might have noticed that the information about the Stan sampler we implemented in this section said<br />
+<em>Samples were drawn using NUTS(diag_e).</em>
+This is because Stan does not actually use the base HMC algorithm that we have introduced, but an improvement to this known as the No U-Turn Sampler.</p>
+<p>The base HMC algorithm requires the specification of a tuning parameter, <span class="math inline">\(T\)</span>, which controls how much ‘time’ the fictitious ball rolls around the parameter space before being stopped in each iteration. The choice of <span class="math inline">\(T\)</span> is not an easy one. In Figure <a href="implementing-hmc-in-stan.html#fig:leapfrog-2">3.6</a> we show the proposed path from our earlier bivariate Gaussian example, but the difference here is that in the right panel the ball was left for twice the amount of time as the first. Although more time was allowed for the ball to move around, it has actually ended up closer to its original location than the left example. This is because it did a <em>U-turn</em>.</p>
+<p>The ideal implementation of HMC would be to choose a value for <span class="math inline">\(T\)</span> that allows large moves to be made, such as the left example in Figure <a href="implementing-hmc-in-stan.html#fig:leapfrog-2">3.6</a>. We could attempt to identify the ideal <span class="math inline">\(T\)</span> for a given analysis through pilot runs, similar to practices carried out for choosing the step variance in a random-walk MH. However, in a multi-modal parameter space, the ideal <span class="math inline">\(T\)</span> that avoids U-turns would differ depending upon the current location in that space.</p>
+<p>The NUTS algorithm is a modification of the original HMC algorithm that dynamically changes the tuning parameter <span class="math inline">\(T\)</span> in each iteration to produce efficient results. We will not go into the details of this, but intuitively, the path is being simulated until the particle is no longer moving further away from the starting point, at which point it is stopped. The specifics of the implementation of this in practice require additional considerations for the sampler to be a valid MCMC sampler.</p>
+<div class="figure"><span style="display:block;" id="fig:leapfrog-2"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/leapfrog-2-1.png" alt="Given a starting location of (-1.5,-1.55) and an initial momentum of (-1,1), the leapfrog algorithm is implemented. Left: for 5 time-units. Right: for 10 time-units. The resulting path is shown with initial position highlight by the dashed line, and the final position highlighted by the solid line." width="80%" />
+<p class="caption">
+Figure 3.6: Given a starting location of (-1.5,-1.55) and an initial momentum of (-1,1), the leapfrog algorithm is implemented. Left: for 5 time-units. Right: for 10 time-units. The resulting path is shown with initial position highlight by the dashed line, and the final position highlighted by the solid line.
+</p>
+</div>
+</div>
+<div id="further-reading" class="section level2 hasAnchor" number="3.9">
+<h2><span class="header-section-number">3.9</span> Further reading<a href="implementing-hmc-in-stan.html#further-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Several online guides are available from the <a href="https://mc-stan.org/">Stan home page</a>:</p>
+<ul>
+<li><a href="https://mc-stan.org/docs/2_28/stan-users-guide/index.html">The User’s Guide</a> has lots of examples for particular models. Try here if you know what model you want to fit.</li>
+<li><a href="https://mc-stan.org/docs/2_28/functions-reference/index.html">Stan Functions Reference</a> includes sections describing probability distributions you might want to use and how to implement them in Stan.</li>
+<li><a href="https://mc-stan.org/docs/2_28/reference-manual/index.html">Stan Reference Manual</a> includes information about writing Stan programs, in particular (Section 8) on the different types of code blocks.</li>
+</ul>
+
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-ggmcmc" class="csl-entry">
+Fernández-i-Marín, Xavier. 2016. <span>“<span class="nocase">ggmcmc</span>: Analysis of <span>MCMC</span> Samples and <span>B</span>ayesian Inference.”</span> <em>Journal of Statistical Software</em> 70 (9): 1–20. <a href="https://doi.org/10.18637/jss.v070.i09">https://doi.org/10.18637/jss.v070.i09</a>.
+</div>
+<div id="ref-R-shinystan" class="csl-entry">
+Gabry, Jonah. 2018. <em>Shinystan: Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models</em>. <a href="https://CRAN.R-project.org/package=shinystan">https://CRAN.R-project.org/package=shinystan</a>.
+</div>
+<div id="ref-R-bayesplot" class="csl-entry">
+Gabry, Jonah, and Tristan Mahr. 2021. <span>“Bayesplot: Plotting for Bayesian Models.”</span> <a href="https://mc-stan.org/bayesplot/">https://mc-stan.org/bayesplot/</a>.
+</div>
+<div id="ref-R-rstan" class="csl-entry">
+Stan Development Team. 2021. <span>“<span>RStan</span>: The <span>R</span> Interface to <span>Stan</span>.”</span> <a href="https://mc-stan.org/">https://mc-stan.org/</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="hamiltonian-monte-carlo-hmc.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bayesian-regression-in-stan.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["MAS61006-S2-Notes.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll-highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

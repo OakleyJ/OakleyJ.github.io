@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Hamiltonian Monte Carlo (HMC) | MAS61006 Bayesian Statistics and Computational Methods</title>
+  <meta name="description" content="Chapter 2 Hamiltonian Monte Carlo (HMC) | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Hamiltonian Monte Carlo (HMC) | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Hamiltonian Monte Carlo (HMC) | MAS61006 Bayesian Statistics and Computational Methods" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2023-02-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="mcmc-sampling-recap.html"/>
+<link rel="next" href="implementing-hmc-in-stan.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script>
+  $(document).ready(function () {
+    process_solutions();
+  });
+function process_solutions() {
+  $("div.section[id^='solution']").each(function(i) {
+    var soln_wrapper_id = "cvxr_ex_" + i;
+    var solution_id = $(this).attr('id');
+    var button = $("<button onclick=\"toggle_solution('" + soln_wrapper_id + "')\">Show/Hide</button>");
+    var new_div = $("<div id='" + soln_wrapper_id + "' class='solution' style='display: none;'></div>");
+    var h = $(this).first();
+    var others = $(this).children().slice(1);
+    $(others).each(function() {
+      $(this).appendTo($(new_div));
+    });
+    $(button).insertAfter($(h));
+    $(new_div).insertAfter($(button));
+  })
+}
+function toggle_solution(el_id) {
+  $("#" + el_id).toggle();
+}
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS61006(Sem2)</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i>Literature</a></li>
+<li class="part"><span><b>I Inference using advanced samplers</b></span></li>
+<li class="chapter" data-level="1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html"><i class="fa fa-check"></i><b>1</b> MCMC Sampling Recap</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#bayesian-inference-continued"><i class="fa fa-check"></i><b>1.1</b> Bayesian inference continued</a></li>
+<li class="chapter" data-level="1.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#monte-carlo"><i class="fa fa-check"></i><b>1.2</b> Monte Carlo estimation</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate"><i class="fa fa-check"></i><b>1.2.1</b> Properties of the Monte Carlo estimate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations"><i class="fa fa-check"></i><b>1.2.2</b> Expressing quantities as expectations</a></li>
+<li class="chapter" data-level="1.2.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#estimation-of-general-integrals"><i class="fa fa-check"></i><b>1.2.3</b> Estimation of general integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc"><i class="fa fa-check"></i><b>1.3</b> Markov chain Monte Carlo (MCMC)</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#mhsection"><i class="fa fa-check"></i><b>1.3.1</b> The Metroplis-Hastings (MH) algorithm</a></li>
+<li class="chapter" data-level="1.3.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals"><i class="fa fa-check"></i><b>1.3.2</b> The problem with random walk proposals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-gibbs-algorithm"><i class="fa fa-check"></i><b>1.3.3</b> The Gibbs algorithm</a></li>
+<li class="chapter" data-level="1.3.4" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-gibbs"><i class="fa fa-check"></i><b>1.3.4</b> The problem with Gibbs</a></li>
+<li class="chapter" data-level="1.3.5" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#a-solution"><i class="fa fa-check"></i><b>1.3.5</b> A solution?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html"><i class="fa fa-check"></i><b>2</b> Hamiltonian Monte Carlo (HMC)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition"><i class="fa fa-check"></i><b>2.1</b> Generating proposals: intuition</a></li>
+<li class="chapter" data-level="2.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics"><i class="fa fa-check"></i><b>2.2</b> Hamiltonian dynamics</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy"><i class="fa fa-check"></i><b>2.2.1</b> Conservation of energy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals"><i class="fa fa-check"></i><b>2.3</b> Using Hamilton’s equations to generate proposals</a></li>
+<li class="chapter" data-level="2.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m"><i class="fa fa-check"></i><b>2.4</b> The joint distribution for <span class="math inline">\((\theta, m)\)</span></a></li>
+<li class="chapter" data-level="2.5" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm"><i class="fa fa-check"></i><b>2.5</b> The HMC algorithm</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations"><i class="fa fa-check"></i><b>2.5.1</b> Approximate solution of Hamilton’s equations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta"><i class="fa fa-check"></i><b>2.6</b> Multivariate <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="2.7" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters"><i class="fa fa-check"></i><b>2.7</b> Tuning parameters</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2"><i class="fa fa-check"></i><b>2.7.1</b> The tuning parameter <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="2.7.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon"><i class="fa fa-check"></i><b>2.7.2</b> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand"><i class="fa fa-check"></i><b>2.8</b> Implementing HMC ‘by hand’</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh"><i class="fa fa-check"></i><b>2.8.1</b> Random-walk MH</a></li>
+<li class="chapter" data-level="2.8.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#gibbs"><i class="fa fa-check"></i><b>2.8.2</b> Gibbs</a></li>
+<li class="chapter" data-level="2.8.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hmc"><i class="fa fa-check"></i><b>2.8.3</b> HMC</a></li>
+<li class="chapter" data-level="2.8.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers"><i class="fa fa-check"></i><b>2.8.4</b> Comparing random-walk and HMC samplers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#summary"><i class="fa fa-check"></i><b>2.9</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html"><i class="fa fa-check"></i><b>3</b> Implementing HMC in Stan</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#getting-set-up-with-stan"><i class="fa fa-check"></i><b>3.1</b> Getting set up with Stan</a></li>
+<li class="chapter" data-level="3.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#rstan-options"><i class="fa fa-check"></i><b>3.2</b> <code>rstan</code> options</a></li>
+<li class="chapter" data-level="3.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#an-example-model"><i class="fa fa-check"></i><b>3.3</b> An example model</a></li>
+<li class="chapter" data-level="3.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio"><i class="fa fa-check"></i><b>3.4</b> Specifying a model in RStudio</a></li>
+<li class="chapter" data-level="3.5" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#stan-code-blocks"><i class="fa fa-check"></i><b>3.5</b> Stan code blocks</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#data-block"><i class="fa fa-check"></i><b>3.5.1</b> <code>data</code> block</a></li>
+<li class="chapter" data-level="3.5.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>3.5.2</b> <code>parameters</code> block</a></li>
+<li class="chapter" data-level="3.5.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#model-block"><i class="fa fa-check"></i><b>3.5.3</b> <code>model</code> block</a></li>
+<li class="chapter" data-level="3.5.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>3.5.4</b> <code>generated quantities</code> block</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm"><i class="fa fa-check"></i><b>3.6</b> Running the HMC algorithm</a></li>
+<li class="chapter" data-level="3.7" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples"><i class="fa fa-check"></i><b>3.7</b> Extracting and analysing the samples</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs"><i class="fa fa-check"></i><b>3.7.1</b> R packages for plotting outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts"><i class="fa fa-check"></i><b>3.8</b> No U-Turn Sampler (NUTS)</a></li>
+<li class="chapter" data-level="3.9" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#further-reading"><i class="fa fa-check"></i><b>3.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html"><i class="fa fa-check"></i><b>4</b> Bayesian regression in Stan</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#holiday-hangover-cures"><i class="fa fa-check"></i><b>4.1.1</b> Holiday hangover cures</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#least-squares-fit"><i class="fa fa-check"></i><b>4.1.2</b> Least squares fit</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-in-stan"><i class="fa fa-check"></i><b>4.1.3</b> Bayesian approach in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#recap-of-logistic-regression"><i class="fa fa-check"></i><b>4.2</b> Recap of logistic regression</a></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#overview-of-mixed-effects"><i class="fa fa-check"></i><b>4.3</b> Overview of mixed effects</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-example-of-a-mixed-effects-model"><i class="fa fa-check"></i><b>4.3.1</b> Simple example of a mixed effects model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#fixed-or-random-effects"><i class="fa fa-check"></i><b>4.3.2</b> Fixed or random effects?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#mixed-effect-logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Mixed effect logistic regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#balance-experiment"><i class="fa fa-check"></i><b>4.4.1</b> Balance experiment</a></li>
+<li class="chapter" data-level="4.4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>4.4.2</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#maximum-likelihood-approach"><i class="fa fa-check"></i><b>4.4.3</b> Maximum likelihood approach</a></li>
+<li class="chapter" data-level="4.4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-using-stan"><i class="fa fa-check"></i><b>4.4.4</b> Bayesian approach using Stan</a></li>
+<li class="chapter" data-level="4.4.5" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#comparing-stan-and-lme4"><i class="fa fa-check"></i><b>4.4.5</b> Comparing Stan and lme4</a></li>
+<li class="chapter" data-level="4.4.6" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#easy-bayesian-approach-with-brms"><i class="fa fa-check"></i><b>4.4.6</b> ‘Easy’ Bayesian approach with <code>brms</code></a></li>
+<li class="chapter" data-level="4.4.7" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#what-have-we-found"><i class="fa fa-check"></i><b>4.4.7</b> What have we found?</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Inference with missing data</b></span></li>
+<li class="chapter" data-level="5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html"><i class="fa fa-check"></i><b>5</b> Multiple imputation for missing data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#example-nhanes-data"><i class="fa fa-check"></i><b>5.2</b> Example: <code>nhanes</code> data</a></li>
+<li class="chapter" data-level="5.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness"><i class="fa fa-check"></i><b>5.3</b> Mechanisms of missingness</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>5.3.1</b> Missing completely at random (MCAR)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>5.3.2</b> Missing at random (MAR)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar"><i class="fa fa-check"></i><b>5.3.3</b> Not missing at random (NMAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness"><i class="fa fa-check"></i><b>5.4</b> Ignoring information about missingness</a></li>
+<li class="chapter" data-level="5.5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#inference-via-imputation"><i class="fa fa-check"></i><b>5.5</b> Inference via imputation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#further-simplifications"><i class="fa fa-check"></i><b>5.5.1</b> Further simplifications</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#pooling"><i class="fa fa-check"></i><b>5.6</b> Pooling multiple imputations</a></li>
+<li class="chapter" data-level="5.7" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#simple-example"><i class="fa fa-check"></i><b>5.7</b> Simple example</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand"><i class="fa fa-check"></i><b>5.7.1</b> Multiple imputation by hand</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation"><i class="fa fa-check"></i><b>5.8</b> Imputing missing data: chained equation multiple imputation</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#how-many-iterations"><i class="fa fa-check"></i><b>5.8.1</b> How many iterations?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset"><i class="fa fa-check"></i><b>5.9</b> MICE example: the <code>nhanes</code> dataset</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#complete-case-analysis"><i class="fa fa-check"></i><b>5.9.1</b> Complete case analysis</a></li>
+<li class="chapter" data-level="5.9.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data"><i class="fa fa-check"></i><b>5.9.2</b> Imputing the missing data</a></li>
+<li class="chapter" data-level="5.9.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputation-analysis"><i class="fa fa-check"></i><b>5.9.3</b> Imputation analysis</a></li>
+<li class="chapter" data-level="5.9.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#analysis-pooling"><i class="fa fa-check"></i><b>5.9.4</b> Analysis pooling</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Resampling methods</b></span></li>
+<li class="chapter" data-level="6" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>6</b> Bootstrapping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrap-estimates-of-standard-errors"><i class="fa fa-check"></i><b>6.1</b> Bootstrap estimates of standard errors</a></li>
+<li class="chapter" data-level="6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function"><i class="fa fa-check"></i><b>6.2</b> Estimating a distribution using the empirical cumulative distribution function</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="bootstrapping.html"><a href="bootstrapping.html#sampling-from-an-ecdf"><i class="fa fa-check"></i><b>6.2.1</b> Sampling from an ECDF</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#notation-summary"><i class="fa fa-check"></i><b>6.3</b> Notation summary</a></li>
+<li class="chapter" data-level="6.4" data-path="bootstrapping.html"><a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance"><i class="fa fa-check"></i><b>6.4</b> Example: Bootstrap standard errors of a sample mean and sample variance</a></li>
+<li class="chapter" data-level="6.5" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals"><i class="fa fa-check"></i><b>6.5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error"><i class="fa fa-check"></i><b>6.5.1</b> Confidence intervals using the estimated standard error</a></li>
+<li class="chapter" data-level="6.5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>6.5.2</b> Confidence intervals using percentiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="bootstrapping.html"><a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf"><i class="fa fa-check"></i><b>6.6</b> Properties of samples from the empirical CDF</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#expectation-and-variance"><i class="fa fa-check"></i><b>6.6.1</b> Expectation and variance</a></li>
+<li class="chapter" data-level="6.6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-percentiles"><i class="fa fa-check"></i><b>6.6.2</b> Sample percentiles</a></li>
+<li class="chapter" data-level="6.6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping"><i class="fa fa-check"></i><b>6.6.3</b> Sources of error and sample sizes in bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="bootstrapping.html"><a href="bootstrapping.html#example-measuring-observer-agreement"><i class="fa fa-check"></i><b>6.7</b> Example: Measuring observer agreement</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-data"><i class="fa fa-check"></i><b>6.7.1</b> The data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-kappa-statistic"><i class="fa fa-check"></i><b>6.7.2</b> The kappa statistic</a></li>
+<li class="chapter" data-level="6.7.3" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrapping-bivariate-data"><i class="fa fa-check"></i><b>6.7.3</b> Bootstrapping bivariate data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="bootstrapping.html"><a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing"><i class="fa fa-check"></i><b>6.8</b> Parametric bootstrapping and hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-milk-data-set"><i class="fa fa-check"></i><b>6.8.1</b> The <code>Milk</code> data set</a></li>
+<li class="chapter" data-level="6.8.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-model-and-hypothesis"><i class="fa fa-check"></i><b>6.8.2</b> The model and hypothesis</a></li>
+<li class="chapter" data-level="6.8.3" data-path="bootstrapping.html"><a href="bootstrapping.html#the-generalized-likelihood-ratio-test"><i class="fa fa-check"></i><b>6.8.3</b> The generalized likelihood ratio test</a></li>
+<li class="chapter" data-level="6.8.4" data-path="bootstrapping.html"><a href="bootstrapping.html#the-parametric-bootstrap-test"><i class="fa fa-check"></i><b>6.8.4</b> The parametric bootstrap test</a></li>
+<li class="chapter" data-level="6.8.5" data-path="bootstrapping.html"><a href="bootstrapping.html#implementation-with-r"><i class="fa fa-check"></i><b>6.8.5</b> Implementation with R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cross-validation.html"><a href="cross-validation.html"><i class="fa fa-check"></i><b>7</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-classification"><i class="fa fa-check"></i><b>7.1</b> Cross-validation in classification</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="cross-validation.html"><a href="cross-validation.html#the-palmer-penguins-data"><i class="fa fa-check"></i><b>7.1.1</b> The Palmer penguins data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cross-validation.html"><a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn"><i class="fa fa-check"></i><b>7.1.2</b> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-knn"><i class="fa fa-check"></i><b>7.1.3</b> Implementing cross-validation in KNN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2</b> Cross-validation in regression</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="cross-validation.html"><a href="cross-validation.html#the-flint-tools-data"><i class="fa fa-check"></i><b>7.2.1</b> The flint tools data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2.2</b> Implementing cross-validation in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="cross-validation.html"><a href="cross-validation.html#parameter-estimation-with-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Parameter estimation with cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="cross-validation.html"><a href="cross-validation.html#example-choosing-the-value-k-in-knn"><i class="fa fa-check"></i><b>7.3.1</b> Example: choosing the value <span class="math inline">\(K\)</span> in KNN</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood"><i class="fa fa-check"></i><b>7.3.2</b> Cross-validation as an alternative to maximum likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cross-validation.html"><a href="cross-validation.html#computational-short-cuts"><i class="fa fa-check"></i><b>7.4</b> Computational short-cuts</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="cross-validation.html"><a href="cross-validation.html#example-returning-to-the-flint-data"><i class="fa fa-check"></i><b>7.4.1</b> Example: Returning to the flint data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="cross-validation.html"><a href="cross-validation.html#relationship-with-aic"><i class="fa fa-check"></i><b>7.5</b> Relationship with AIC</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="cross-validation.html"><a href="cross-validation.html#example-the-cars-data"><i class="fa fa-check"></i><b>7.5.1</b> Example: The cars data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cross-validation.html"><a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut"><i class="fa fa-check"></i><b>7.6</b> (Non-examinable) Proof of the computational short cut</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="cross-validation.html"><a href="cross-validation.html#helpful-results-we-will-use"><i class="fa fa-check"></i><b>7.6.1</b> Helpful results we will use</a></li>
+<li class="chapter" data-level="7.6.2" data-path="cross-validation.html"><a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models"><i class="fa fa-check"></i><b>7.6.2</b> Relate the estimated coefficients of full and reduced models</a></li>
+<li class="chapter" data-level="7.6.3" data-path="cross-validation.html"><a href="cross-validation.html#relating-the-residuals"><i class="fa fa-check"></i><b>7.6.3</b> Relating the residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Approximate inference without sampling</b></span></li>
+<li class="chapter" data-level="8" data-path="variational-inference.html"><a href="variational-inference.html"><i class="fa fa-check"></i><b>8</b> Variational inference</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="variational-inference.html"><a href="variational-inference.html#background-theory"><i class="fa fa-check"></i><b>8.1</b> Background theory</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="variational-inference.html"><a href="variational-inference.html#jensens-inequality"><i class="fa fa-check"></i><b>8.1.1</b> Jensen’s inequality</a></li>
+<li class="chapter" data-level="8.1.2" data-path="variational-inference.html"><a href="variational-inference.html#kullback-leibler-divergence"><i class="fa fa-check"></i><b>8.1.2</b> Kullback-Leibler Divergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="variational-inference.html"><a href="variational-inference.html#optimisation-with-coordinate-ascent"><i class="fa fa-check"></i><b>8.1.3</b> Optimisation with coordinate ascent</a></li>
+<li class="chapter" data-level="8.1.4" data-path="variational-inference.html"><a href="variational-inference.html#stochastic-optimisation"><i class="fa fa-check"></i><b>8.1.4</b> Stochastic optimisation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="variational-inference.html"><a href="variational-inference.html#motivation-for-approximate-inference-approaches"><i class="fa fa-check"></i><b>8.2</b> Motivation for approximate inference approaches</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="variational-inference.html"><a href="variational-inference.html#intractable-integrals"><i class="fa fa-check"></i><b>8.2.1</b> Intractable integrals</a></li>
+<li class="chapter" data-level="8.2.2" data-path="variational-inference.html"><a href="variational-inference.html#variational-approach-to-intractable-integrals"><i class="fa fa-check"></i><b>8.2.2</b> Variational approach to intractable integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="variational-inference.html"><a href="variational-inference.html#approximate-inference-as-an-optimisation-problem"><i class="fa fa-check"></i><b>8.3</b> Approximate inference as an optimisation problem</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="variational-inference.html"><a href="variational-inference.html#exploring-the-elbo"><i class="fa fa-check"></i><b>8.3.1</b> Exploring the ELBO</a></li>
+<li class="chapter" data-level="8.3.2" data-path="variational-inference.html"><a href="variational-inference.html#forward-and-reverse-variational-inference"><i class="fa fa-check"></i><b>8.3.2</b> Forward and reverse variational inference</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="variational-inference.html"><a href="variational-inference.html#the-variational-family-of-distributions"><i class="fa fa-check"></i><b>8.4</b> The variational family of distributions</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="variational-inference.html"><a href="variational-inference.html#mean-field-family"><i class="fa fa-check"></i><b>8.4.1</b> Mean-field family</a></li>
+<li class="chapter" data-level="8.4.2" data-path="variational-inference.html"><a href="variational-inference.html#correlation-cannot-be-replicated"><i class="fa fa-check"></i><b>8.4.2</b> Correlation cannot be replicated</a></li>
+<li class="chapter" data-level="8.4.3" data-path="variational-inference.html"><a href="variational-inference.html#why-mean-field-is-useful"><i class="fa fa-check"></i><b>8.4.3</b> Why mean-field is useful</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html"><i class="fa fa-check"></i><b>9</b> Coordinate ascent variational inference (CAVI)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-cavi-algorithm"><i class="fa fa-check"></i><b>9.1</b> The CAVI algorithm</a></li>
+<li class="chapter" data-level="9.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#example-mixture-of-gaussians"><i class="fa fa-check"></i><b>9.2</b> Example: Mixture of Gaussians</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-observation-model"><i class="fa fa-check"></i><b>9.2.1</b> The observation model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-prior"><i class="fa fa-check"></i><b>9.2.2</b> The prior</a></li>
+<li class="chapter" data-level="9.2.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-joint-likelihood"><i class="fa fa-check"></i><b>9.2.3</b> The joint likelihood</a></li>
+<li class="chapter" data-level="9.2.4" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-mean-field-family-approximation"><i class="fa fa-check"></i><b>9.2.4</b> The mean-field family approximation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#cavi"><i class="fa fa-check"></i><b>9.2.5</b> CAVI</a></li>
+<li class="chapter" data-level="9.2.6" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#implementing-cavi-in-r"><i class="fa fa-check"></i><b>9.2.6</b> Implementing CAVI in R</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#comment"><i class="fa fa-check"></i><b>9.3</b> Comment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS61006 Bayesian Statistics and Computational Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="hamiltonian-monte-carlo-hmc" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Hamiltonian Monte Carlo (HMC)<a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-monte-carlo-hmc" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --->
+<p><span class="math inline">\(\def \mb{\mathbb}\)</span>
+<span class="math inline">\(\def \E{\mb{E}}\)</span>
+<span class="math inline">\(\def \P{\mb{P}}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\var}{Var}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\cov}{Cov}\)</span></p>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aims of this chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Introduce the Hamiltonian approach for Metropolis-Hastings proposals.</td>
+</tr>
+<tr class="even">
+<td>2. Have an appreciation for <em>why</em> Hamiltonian Monte Carlo can be more efficient than Random-walk Metropolis-Hastings.</td>
+</tr>
+<tr class="odd">
+<td>3. Implement simple examples of Hamiltonian Monte Carlo in R.</td>
+</tr>
+</tbody>
+</table>
+<p>Implementing MCMC can be difficult if we can’t construct a suitable proposal distribution. In this Chapter, we introduce Hamiltonian Monte Carlo (HMC), which can be thought of as a particular way to generate proposals in each iteration of the Metropolis-Hastings algorithm. The aim is to generate proposals <span class="math inline">\(\theta^*\)</span> which</p>
+<ol style="list-style-type: decimal">
+<li>can be far from the current values <span class="math inline">\(\theta^t\)</span> in the Markov chain;</li>
+<li>have high acceptance probability.</li>
+</ol>
+<p>These two properties should lead to quick and efficient exploration of the posterior distribution: we can produce representative samples from the posterior distribution quickly.</p>
+<p>The disadvantage of this method is that much more computational work is needed to obtain the proposed values at each iteration. However, HMC can be implemented using the language <code>Stan</code>, and so much of this work will be done for us. <code>Stan</code> can be run within R using the package <code>rstan</code> (<code>Stan</code> interfaces with many other languages such as Python and MATLAB.) <code>Stan</code> has a large user community and is very well supported and documented.</p>
+<div id="generating-proposals-intuition" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Generating proposals: intuition<a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As an example, suppose we are trying to sample from a posterior distribution that is a mixture of two normal distributions:
+<span class="math display">\[\theta|x\sim0.9 \times N(2, 0.25^2) + 0.1 \times N(6, 0.5^2).\]</span></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/unnamed-chunk-2-1.png" alt="Example: we wish to obtain samples from this posterior distribution." width="70%" />
+<p class="caption">
+Figure 2.1: Example: we wish to obtain samples from this posterior distribution.
+</p>
+</div>
+<p>This would be easy to sample from directly, but let’s think about how to sample from this using a Metropolis-Hastings sampler. In HMC, we use a physical analogy of a ball rolling over a frictionless surface.</p>
+<p>Consider the following plot of <span class="math inline">\(-\log f(\theta|x)\)</span>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/unnamed-chunk-3-1.png" alt="Negative log of our target posterior density. We imagine this function as a surface, with a ball rolling around on top of this surface. " width="70%" />
+<p class="caption">
+Figure 2.2: Negative log of our target posterior density. We imagine this function as a surface, with a ball rolling around on top of this surface.
+</p>
+</div>
+<p>Imagine that <span class="math inline">\(-\log f(\theta|x)\)</span> represents our frictionless surface. The value of <span class="math inline">\(\theta\)</span> describes the <strong>position</strong> of a ball on this surface; given <span class="math inline">\(\theta\)</span> the coordinates of the ball are known to be <span class="math inline">\((\theta, -\log f(\theta|x))\)</span>. We flick the ball with random force and direction: we give the ball <strong>momentum</strong>, and wait to see where it is after some duration <span class="math inline">\(T\)</span>.</p>
+<p>The ball could end up far from where it started, but gravity will pull the ball towards lower values of <span class="math inline">\(-\log f(\theta|x)\)</span>: higher values of posterior density. An occasional flick of sufficient force in the right direction will help the ball move from one ‘valley’ (mode of the posterior) to another. If the ball is travelling upwards at either edge (i.e. it is one of the tails of the distribution), it will eventually stop moving, and accelerate back towards the nearest posterior mode.</p>
+<p>This is the intuition behind how we will generate proposals, emphasising that we will keep changing the trajectory of the ball by giving it a random flick every <span class="math inline">\(T\)</span> units of time. (It is not yet apparent how this might give proposals with high acceptance probabilities; this will become clear later.)</p>
+</div>
+<div id="hamiltonian-dynamics" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Hamiltonian dynamics<a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In general, for a ball moving over a frictionless surface, given the ball’s starting position <span class="math inline">\(\theta\)</span> and momentum <span class="math inline">\(m\)</span>, <strong>Hamilton’s equations of motion</strong> to tell us how the ball’s position and momentum change over time:</p>
+<p><span class="math display" id="eq:hamiltonspdes">\[\begin{align}
+\frac{d\theta}{dt}&amp;=\frac{\partial H(\theta,m)}{\partial m}, \tag{2.1}\\
+\frac{dm}{dt}&amp;=-\frac{\partial H(\theta,m)}{\partial \theta},
+\end{align}\]</span></p>
+<p>where <span class="math inline">\(H(\theta,m)\)</span> is the <strong>Hamiltonian</strong> and gives the ball’s total energy as a function of its position and momentum. You do not need to know how these equations are derived. We will need to solve these equations numerically; we will discuss this shortly.</p>
+<p>We will consider Hamiltonians of the form</p>
+<p><span class="math display">\[
+H(\theta,m) = U(\theta) + K(m),
+\]</span>
+where <span class="math inline">\(U(\theta)\)</span> is the <strong>potential energy</strong> of a ball at location <span class="math inline">\(\theta\)</span> and encodes information about the surface the ball is travelling over: relatively large <span class="math inline">\(U(\theta)\)</span> means that at position <span class="math inline">\(\theta\)</span>, the ball is relatively high above the ground, and so has more potential energy. The term <span class="math inline">\(K(m)\)</span> is the <strong>kinetic energy</strong> of the ball given a momentum of <span class="math inline">\(m\)</span>.</p>
+<div id="conservation-of-energy" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Conservation of energy<a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Given an initial position <span class="math inline">\(\theta\)</span> and momentum <span class="math inline">\(m\)</span>, the Hamiltonian <span class="math inline">\(H(\theta,m)\)</span> is constant over time:
+<span class="math display">\[
+\frac{d H(\theta,m)}{dt} = 0,
+\]</span>
+i.e. total energy is conserved. This is the property we are going to exploit to get proposals with high acceptance probability.</p>
+</div>
+</div>
+<div id="using-hamiltons-equations-to-generate-proposals" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Using Hamilton’s equations to generate proposals<a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>An outline of what we will do is as follows.</p>
+<ol style="list-style-type: decimal">
+<li>Introduce a dummy variable <span class="math inline">\(m\)</span>, and jointly sample <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span>. (We will discard our samples of <span class="math inline">\(m\)</span> at the end.)</li>
+<li>Construct a joint probability distribution for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> based on the Hamiltonian <span class="math inline">\(H(\theta,m)\)</span>. Do this in such a way that the marginal distribution of <span class="math inline">\(\theta\)</span> will be the posterior that we wish to sample from.</li>
+<li>Within a Metropolis-Hastings sampler, make use of Hamilton’s equations to obtain a proposed value <span class="math inline">\(\theta^*, m^*\)</span> given the current state <span class="math inline">\((\theta^t, m^t)\)</span> in the Markov chain.</li>
+</ol>
+</div>
+<div id="the-joint-distribution-for-theta-m" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> The joint distribution for <span class="math inline">\((\theta, m)\)</span><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We set
+<span class="math display">\[
+p(\theta,m)\propto \exp(-H(\theta,m)),
+\]</span>
+where <span class="math inline">\(H(\theta,m)\)</span> is a Hamiltonian given by
+<span class="math display">\[
+H(\theta,m) = U(\theta) + K(m),
+\]</span>
+and where we set
+<span class="math display">\[
+U(\theta) = -\log f(\theta | x).
+\]</span>
+Note that when evaluating <span class="math inline">\(U(\theta)\)</span> HMC algorithm, it will be sufficient to evaluate <span class="math inline">\(-\log(f(\theta)f(x|\theta))\)</span> only: we only need to know the prior and likelihood.</p>
+<p>We also set
+<span class="math display">\[
+K(m) = \frac{m^2}{2\sigma^2}
+\]</span>
+It then follows that
+<span class="math display">\[
+p(\theta,m)\propto f(\theta|x) \exp\left(-\frac{m^2}{2\sigma^2}\right),
+\]</span>
+from which we see that</p>
+<ul>
+<li><span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> are independent;</li>
+<li>the marginal distribution of <span class="math inline">\(\theta\)</span> is the posterior distribution we want to sample from;</li>
+<li><span class="math inline">\(m\)</span> has the <span class="math inline">\(N(0,\sigma^2)\)</span> distribution.</li>
+</ul>
+</div>
+<div id="the-hmc-algorithm" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> The HMC algorithm<a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Suppose the current state of the Markov chain is <span class="math inline">\((\theta_t, m_t)\)</span></p>
+<div class="result">
+<ol style="list-style-type: decimal">
+<li>Discard the current value of the momentum and set <span class="math inline">\(m_t\)</span> to be a new randomly sampled value, sampled directly from its marginal distribution: <span class="math inline">\(N(0,\sigma^2)\)</span>.</li>
+<li>Given the pair <span class="math inline">\((\theta_t, m_t)\)</span>, solve (numerically) Hamilton’s equations, to obtain a new position and momentum <span class="math inline">\((\theta^*, m^{**})\)</span> after some fixed time <span class="math inline">\(T\)</span>.</li>
+<li>Multiply the new momentum by <span class="math inline">\(-1\)</span>: define <span class="math inline">\(m^* = -m^{**}\)</span></li>
+<li>Accept <span class="math inline">\((\theta^*,m^*)\)</span> as the new location and momentum <span class="math inline">\((\theta_{t+1},m_{t+1})\)</span>, with probability
+<span class="math display" id="eq:hmcacceptance">\[\begin{align}
+&amp;\min\left\lbrace 1, \exp\left\lbrace H(\theta_t,m_t) - H(\theta^*,m^*) \right\rbrace \right\rbrace, \\
+=&amp;\min\left\lbrace 1, \exp\left\lbrace U(\theta_t) - U(\theta^*) + K(m_t) - K(m^*) \right\rbrace \right\rbrace \\
+=&amp;\min\left\lbrace 1, \frac{f(\theta^*)f(x|\theta^*)p(m^{*})}{f(\theta_t)f(x|\theta_t)p(m_t)} \right\rbrace,
+\tag{2.2}
+\end{align}\]</span>
+otherwise set <span class="math inline">\((\theta_{t+1},m_{t+1})=(\theta_{t},m_t)\)</span>.</li>
+</ol>
+</div>
+<p>Some comments:</p>
+<ul>
+<li>In theory, the acceptance probability will be 1, because of conservation of energy: when we move from <span class="math inline">\((\theta_t, m_t)\)</span> to <span class="math inline">\((\theta^*,m^*)\)</span>, the Hamiltonian is unchanged. In practice, the acceptance probability may be slightly less than 1, because there may be numerical errors when we solve Hamilton’s equations - we may not find the correct position and momentum after time <span class="math inline">\(T\)</span>.</li>
+<li>We need step 1 to randomly change the momentum and consequently the trajectory of the ball at each iteration, thereby enabling random exploration of the parameter space. Without this step, we would just follow a deterministic trajectory specified by Hamilton’s equations.</li>
+<li>Multiplying the momentum by -1 gives proposals that are reversible: applying Hamilton’s equations to a starting point <span class="math inline">\((\theta^*,m^*) = (\theta^*,-m^{**})\)</span> for duration <span class="math inline">\(T\)</span> would get us back to <span class="math inline">\((\theta_t,m_t)\)</span>. (This is why there is no ratio of proposal densities in the formula for the acceptance probability: they cancel out.) We illustrate this in the following plots.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:mom-rev-plt"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/mom-rev-plt-1.png" alt="Intuition on why the final momentum is reversed to create a symmetric proposal distribution." width="70%" /><img src="MAS61006-S2-Notes_files/figure-html/mom-rev-plt-2.png" alt="Intuition on why the final momentum is reversed to create a symmetric proposal distribution." width="70%" /><img src="MAS61006-S2-Notes_files/figure-html/mom-rev-plt-3.png" alt="Intuition on why the final momentum is reversed to create a symmetric proposal distribution." width="70%" />
+<p class="caption">
+Figure 2.3: Intuition on why the final momentum is reversed to create a symmetric proposal distribution.
+</p>
+</div>
+<div id="approximate-solution-of-hamiltons-equations" class="section level3 hasAnchor" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Approximate solution of Hamilton’s equations<a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have a pair of simultaneous equations in Equation <a href="hamiltonian-monte-carlo-hmc.html#eq:hamiltonspdes">(2.1)</a> describing the location and momentum over time. Step (2) of the HMC algorithm says that given a current location and momentum, we simulate forwards according to our definition for total energy for a set time <span class="math inline">\(T\)</span>. To implement this simulation, we must discretise time, and perform a number of small steps of size <span class="math inline">\(\epsilon\)</span>.</p>
+<p>You may have previously seen the most common (and simple) approach for approximating the solution to a system of differential equations. This is <strong>Euler’s method</strong>, which says <span class="math inline">\(x(t+\epsilon)=x(t)+\epsilon\frac{dx(t)}{t}\)</span>. Therefore for our one dimensional scenario in HMC, we would have:
+<span class="math display">\[\begin{align}
+m_{t + \epsilon} &amp;= m_t - \epsilon \frac{dU(\theta_t)}{d\theta}, \\
+\theta_{t+\epsilon} &amp;= \theta_t + \epsilon \frac{m_t}{\sigma^2}.
+\end{align}\]</span></p>
+<p>The error associated with the Euler approach is of the order of <span class="math inline">\(\epsilon\)</span> globally, and so in practice for HMC, we use an approximation with error of order <span class="math inline">\(\epsilon^2\)</span> for more stable results. This is called the <strong>Leapfrog method</strong>. We give the details of this for completeness, but will not discuss it in detail. Notice, however, its similarity to the Euler method—we take steps of half the size, but rather than updating both momentum and location simultaneously, we <em>leapfrog</em> over the previous update each time. The leapfrog method is:
+<span class="math display">\[\begin{align}
+m_{t+ \frac{\epsilon}{2}} &amp;= m_t - \frac{\epsilon}{2} \frac{dU(\theta_t)}{d\theta}, \\
+\theta_{t+\epsilon} &amp;= \theta_t + \epsilon \frac{m_{t+\frac{\epsilon}{2}}}{\sigma^2}, \\
+m_{t+\epsilon} &amp;= m_{t+\frac{\epsilon}{2}} - \frac{\epsilon}{2} \frac{dU(\theta_{t+\epsilon})}{d\theta}.
+\end{align}\]</span></p>
+</div>
+</div>
+<div id="multivariate-theta" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Multivariate <span class="math inline">\(\theta\)</span><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The plots and description so far have all corresponded to a posterior distribution for a single parameter <span class="math inline">\(\theta\)</span>. The extension to multivariate <span class="math inline">\(\theta\)</span> is straightforward. For <span class="math inline">\(d\)</span>-dimensional <span class="math inline">\(\theta = (\theta_1,\ldots,\theta_d)\)</span>, we introduce a <span class="math inline">\(d\)</span>-dimensional momentum vector <span class="math inline">\(m=(m_1,\ldots,m_d)\)</span>. The elements of <span class="math inline">\(m\)</span> are typically chosen to be independent and normally distributed: <span class="math inline">\(m_i\sim N(0,\sigma^2_i)\)</span>.</p>
+<p>In step 1 of the HMC algorithm, we sample a new momentum vector <span class="math inline">\(m^t\)</span>, with element <span class="math inline">\(i\)</span> sampled from the <span class="math inline">\(N(0,\sigma^2_i)\)</span> distribution. In the Leapfrog method, the momentum and position vectors are updated component-wise:</p>
+<p><span class="math display">\[\begin{align}
+m_{i, t+ \frac{\epsilon}{2}} &amp;= m_{i,t} - \frac{\epsilon}{2} \frac{\partial U(\theta_t)}{\partial\theta_i}, \\
+\theta_{i, t+\epsilon} &amp;= \theta_{i,t} + \epsilon \frac{m_{i, t+\frac{\epsilon}{2}}}{\sigma_i^2}, \\
+m_{i,t+\epsilon} &amp;= m_{i,t+\frac{\epsilon}{2}} - \frac{\epsilon}{2} \frac{\partial U(\theta_{t+\epsilon})}{\partial\theta_i}.
+\end{align}\]</span></p>
+</div>
+<div id="tuning-parameters" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Tuning parameters<a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the HMC algorithm, we have to choose a variance parameter <span class="math inline">\(\sigma^2\)</span> for each momentum variable, the time duration <span class="math inline">\(T\)</span> over which we update the position and momentum using Hamilton’s equations, and the step size <span class="math inline">\(\epsilon\)</span> used in the Leapfrog method.</p>
+<div id="the-tuning-parameter-sigma2" class="section level3 hasAnchor" number="2.7.1">
+<h3><span class="header-section-number">2.7.1</span> The tuning parameter <span class="math inline">\(\sigma^2\)</span><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Recall that the definition of the kinetic energy is <span class="math inline">\(K(m)=\frac{m^2}{2\sigma^2}\)</span>, and that the marginal distribution of the kinetic energy is <span class="math inline">\(m\sim N(0,\sigma^2)\)</span>.</p>
+<p>The size of <span class="math inline">\(\sigma\)</span> therefore affects how variable the momentum will be, and because the mean is 0, we can think of this as how <em>large</em> a momentum we will allow. Returning to our intuitive introduction, if the ball is currently in a trough of the mountainous region that it is exploring, it will need a large momentum to get “up and over” the potential energy gain required to surpass a summit and be able to explore other parts of the parameter space.</p>
+</div>
+<div id="the-hamiltonian-movement-tuning-parameters-t-and-epsilon" class="section level3 hasAnchor" number="2.7.2">
+<h3><span class="header-section-number">2.7.2</span> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>These two parameters are closely linked.
+A large <span class="math inline">\(\epsilon\)</span> will result in increased errors in the approximation to the Hamiltonian system. Smaller values are therefore ideal, but come at a computational cost.</p>
+<p>The choice of <span class="math inline">\(T\)</span> is a more difficult decision that is not necessarily equal for every scenario, in a similar way to the step length variation parameter in the classic random-walk MH algorithm. Large <span class="math inline">\(T\)</span> can lead to us overshooting peaks in the posterior density and missing them entirely, whereas small <span class="math inline">\(T\)</span> may not allow the efficient exploration that we’re hoping for. See more on this below when we implement HMC in an example.</p>
+<p>Highly complex posteriors can cause problems for the approximation methods, and lead to <em>divergent iterations</em>. This is when sharp curvatures lead to poor approximations and can lead to biases in the posterior estimate because the parameter space was not explored in full. It’s important to remember that HMC is not a complete solution to difficulties posed by MCMC methods, and the benefits it provides in efficiency come at a computational cost. Further, there are situations where the system cannot be approximated at all, and so HMC cannot be applied.</p>
+</div>
+</div>
+<div id="implementing-hmc-by-hand" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Implementing HMC ‘by hand’<a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!--- 2D Gaussian example, with MH, Gibbs and HMC --->
+<p>In this section we will implement a two-dimensional parameter space example, implemented directly in <code>R</code> to explore the differences between the three MCMC samplers that you have seen: random-walk MH, Gibbs and HMC. In the next section, we will see how to implement HMC in more complex scenarios using pre-built software—this has a number of benefits such as helping with the issue of tuning parameters.</p>
+<p>We’ll attempt to sample from a standard distribution, so we can check the results. Suppose our posterior is a bivariate Gaussian:
+<span class="math display">\[
+\left. \begin{pmatrix} \theta_1 \\ \theta_2 \end{pmatrix}\right| x \sim N_2\left(
+\begin{pmatrix} 0 \\ 0 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 0.95 \\ 0.95 &amp; 1\end{pmatrix}\right).
+\]</span></p>
+<div id="random-walk-mh" class="section level3 hasAnchor" number="2.8.1">
+<h3><span class="header-section-number">2.8.1</span> Random-walk MH<a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will implement a random-walk MH approach to this sampling problem by using a proposal distribution
+<span class="math display">\[\begin{equation}
+\left.\begin{pmatrix} \theta_1^* \\ \theta_2^* \end{pmatrix} \right|
+\begin{pmatrix} \theta_{1, t} \\ \theta_{2, t} \end{pmatrix}
+\sim N_2\left(
+\begin{pmatrix} \theta_{1, t} \\ \theta_{2, t} \end{pmatrix},
+\begin{pmatrix} \sigma_1^2 &amp; 0 \\ 0 &amp; \sigma_2^2 \end{pmatrix}\right).
+\end{equation}\]</span></p>
+<p>A function to carry out random-walk MH for this scenario is given here:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="hamiltonian-monte-carlo-hmc.html#cb1-1" aria-hidden="true" tabindex="-1"></a>gaussian_2d_RW <span class="ot">&lt;-</span> <span class="cf">function</span>(n_iter, sigma, theta) { <span class="co"># sigma and theta 2d vectors</span></span>
+<span id="cb1-2"><a href="hamiltonian-monte-carlo-hmc.html#cb1-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1-3"><a href="hamiltonian-monte-carlo-hmc.html#cb1-3" aria-hidden="true" tabindex="-1"></a>   samples <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_iter, <span class="at">ncol =</span> <span class="dv">6</span>) </span>
+<span id="cb1-4"><a href="hamiltonian-monte-carlo-hmc.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="hamiltonian-monte-carlo-hmc.html#cb1-5" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_iter) {</span>
+<span id="cb1-6"><a href="hamiltonian-monte-carlo-hmc.html#cb1-6" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-7"><a href="hamiltonian-monte-carlo-hmc.html#cb1-7" aria-hidden="true" tabindex="-1"></a>      prop_theta <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="at">mean =</span> theta, <span class="at">sd =</span> sigma)</span>
+<span id="cb1-8"><a href="hamiltonian-monte-carlo-hmc.html#cb1-8" aria-hidden="true" tabindex="-1"></a>      m <span class="ot">&lt;-</span> mvtnorm<span class="sc">::</span><span class="fu">dmvnorm</span>(prop_theta,</span>
+<span id="cb1-9"><a href="hamiltonian-monte-carlo-hmc.html#cb1-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">mean =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1-10"><a href="hamiltonian-monte-carlo-hmc.html#cb1-10" aria-hidden="true" tabindex="-1"></a>                            <span class="at">sigma =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="fl">0.95</span>,<span class="fl">0.95</span>,<span class="dv">1</span>),</span>
+<span id="cb1-11"><a href="hamiltonian-monte-carlo-hmc.html#cb1-11" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">nrow =</span> <span class="dv">2</span>),</span>
+<span id="cb1-12"><a href="hamiltonian-monte-carlo-hmc.html#cb1-12" aria-hidden="true" tabindex="-1"></a>                            <span class="at">log =</span> T) <span class="sc">-</span></span>
+<span id="cb1-13"><a href="hamiltonian-monte-carlo-hmc.html#cb1-13" aria-hidden="true" tabindex="-1"></a>            mvtnorm<span class="sc">::</span><span class="fu">dmvnorm</span>(theta,</span>
+<span id="cb1-14"><a href="hamiltonian-monte-carlo-hmc.html#cb1-14" aria-hidden="true" tabindex="-1"></a>                             <span class="at">mean =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1-15"><a href="hamiltonian-monte-carlo-hmc.html#cb1-15" aria-hidden="true" tabindex="-1"></a>                             <span class="at">sigma =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="fl">0.95</span>,<span class="fl">0.95</span>,<span class="dv">1</span>),</span>
+<span id="cb1-16"><a href="hamiltonian-monte-carlo-hmc.html#cb1-16" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">nrow =</span> <span class="dv">2</span>),</span>
+<span id="cb1-17"><a href="hamiltonian-monte-carlo-hmc.html#cb1-17" aria-hidden="true" tabindex="-1"></a>                             <span class="at">log =</span> T)</span>
+<span id="cb1-18"><a href="hamiltonian-monte-carlo-hmc.html#cb1-18" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-19"><a href="hamiltonian-monte-carlo-hmc.html#cb1-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> <span class="fu">exp</span>(m)) {</span>
+<span id="cb1-20"><a href="hamiltonian-monte-carlo-hmc.html#cb1-20" aria-hidden="true" tabindex="-1"></a>         theta <span class="ot">&lt;-</span> prop_theta</span>
+<span id="cb1-21"><a href="hamiltonian-monte-carlo-hmc.html#cb1-21" aria-hidden="true" tabindex="-1"></a>         samples[i, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(theta, prop_theta, <span class="fu">min</span>(<span class="fu">exp</span>(m),<span class="dv">1</span>), <span class="dv">1</span>)</span>
+<span id="cb1-22"><a href="hamiltonian-monte-carlo-hmc.html#cb1-22" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb1-23"><a href="hamiltonian-monte-carlo-hmc.html#cb1-23" aria-hidden="true" tabindex="-1"></a>         samples[i, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(theta, prop_theta, <span class="fu">min</span>(<span class="fu">exp</span>(m),<span class="dv">1</span>), <span class="dv">0</span>)</span>
+<span id="cb1-24"><a href="hamiltonian-monte-carlo-hmc.html#cb1-24" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb1-25"><a href="hamiltonian-monte-carlo-hmc.html#cb1-25" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb1-26"><a href="hamiltonian-monte-carlo-hmc.html#cb1-26" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1-27"><a href="hamiltonian-monte-carlo-hmc.html#cb1-27" aria-hidden="true" tabindex="-1"></a>   <span class="fu">colnames</span>(samples) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;theta1&quot;</span>,<span class="st">&quot;theta2&quot;</span>,<span class="st">&quot;ptheta1&quot;</span>,</span>
+<span id="cb1-28"><a href="hamiltonian-monte-carlo-hmc.html#cb1-28" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;ptheta2&quot;</span>,<span class="st">&quot;m&quot;</span>,<span class="st">&quot;accept&quot;</span>)</span>
+<span id="cb1-29"><a href="hamiltonian-monte-carlo-hmc.html#cb1-29" aria-hidden="true" tabindex="-1"></a>   <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">as_tibble</span>(samples))</span>
+<span id="cb1-30"><a href="hamiltonian-monte-carlo-hmc.html#cb1-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Here, we will use a random walk perturbation variance of <span class="math inline">\(\sigma^2=0.5^2\)</span>, begin our chain at <span class="math inline">\((\theta_{1,0},\theta_{2,0})=(-1,1)\)</span> and run the chain for 1,000 iterations. This gives an acceptance rate of 0.457 in the instance implemented here.</p>
+<p>The results of this sampler are shown over Figures <a href="hamiltonian-monte-carlo-hmc.html#fig:MH-results">2.4</a>-<a href="hamiltonian-monte-carlo-hmc.html#fig:MH-caterpillar">2.6</a>. We see from the bivariate scatter/density plot in Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:MH-results">2.4</a> that the target distribution is being captured reasonably well.</p>
+<p>We gain insight into the process of the MH algorithm with Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:MH-accept-prob">2.5</a>, which shows both the accepted and rejected proposed values. For each proposal, the colour quantifies the acceptance probability, and the shape of the point indicates whether it was accepted in reality. From this plot we can see the guaranteed proposals which lie along the ridge of high density according to the target distribution, but we also see how occasionally we get a proposal accepted that had low probability (e.g. a dark blue circle). We also get an impression of the efficiency of our sampler from such a plot. The high volume of proposed parameter pairs that are shown as having been rejected highlights the wasted computational efforts here.</p>
+<p>Finally, in Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:MH-caterpillar">2.6</a> we see the trace plot of <span class="math inline">\(\theta_1\)</span>. We see the autocorrelation that exists from an MCMC sampler, and that this particular example is moving around the parameter space slowly. This figure also shows the proposed parameter value at each iteration, which gives an indication of the size of steps that can be taken in this particular random walk.</p>
+<div class="figure"><span style="display:block;" id="fig:MH-results"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/MH-results-1.png" alt="Bivariate Gaussian sampled using a random-walk Metropolis-Hastings algorithm. The true Gaussian density is shown in blue, and overlaid in black with both the samples and estimated density." width="50%" />
+<p class="caption">
+Figure 2.4: Bivariate Gaussian sampled using a random-walk Metropolis-Hastings algorithm. The true Gaussian density is shown in blue, and overlaid in black with both the samples and estimated density.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:MH-accept-prob"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/MH-accept-prob-1.png" alt="The proposed parameter values during a random-walk Metropolis-Hastings algorithm to sample from a bivariate Gaussian. The true density is shown in blue. The proposed values are coloured according to their acceptance probability when proposed, and the point character gives the resulting acceptance decision." width="70%" />
+<p class="caption">
+Figure 2.5: The proposed parameter values during a random-walk Metropolis-Hastings algorithm to sample from a bivariate Gaussian. The true density is shown in blue. The proposed values are coloured according to their acceptance probability when proposed, and the point character gives the resulting acceptance decision.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:MH-caterpillar"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/MH-caterpillar-1.png" alt="The trace plot for samples of the first dimension of a bivariate Gaussian. Obtained using a random-walk Metropolis-Hastings algorithm. Black points give the accepted sample trace, with the proposed parameter value at each iteration also highlighted in red." width="70%" />
+<p class="caption">
+Figure 2.6: The trace plot for samples of the first dimension of a bivariate Gaussian. Obtained using a random-walk Metropolis-Hastings algorithm. Black points give the accepted sample trace, with the proposed parameter value at each iteration also highlighted in red.
+</p>
+</div>
+</div>
+<div id="gibbs" class="section level3 hasAnchor" number="2.8.2">
+<h3><span class="header-section-number">2.8.2</span> Gibbs<a href="hamiltonian-monte-carlo-hmc.html#gibbs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This particular example is easy to implement as a Gibbs sampler, due to conditional distributions of the multivariate Gaussian being Gaussian themselves. Here we show the approach for sampling from the bivariate Gaussian using Gibbs, with 1,000 iterations.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="hamiltonian-monte-carlo-hmc.html#cb2-1" aria-hidden="true" tabindex="-1"></a>gaussian_2d_Gibbs <span class="ot">&lt;-</span> <span class="cf">function</span>(n_iter, theta) { <span class="co"># theta 2d vectors</span></span>
+<span id="cb2-2"><a href="hamiltonian-monte-carlo-hmc.html#cb2-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb2-3"><a href="hamiltonian-monte-carlo-hmc.html#cb2-3" aria-hidden="true" tabindex="-1"></a>   samples <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_iter, <span class="at">ncol =</span> <span class="dv">2</span>) </span>
+<span id="cb2-4"><a href="hamiltonian-monte-carlo-hmc.html#cb2-4" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb2-5"><a href="hamiltonian-monte-carlo-hmc.html#cb2-5" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_iter) {</span>
+<span id="cb2-6"><a href="hamiltonian-monte-carlo-hmc.html#cb2-6" aria-hidden="true" tabindex="-1"></a>      theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="fl">0.95</span> <span class="sc">*</span> theta[<span class="dv">2</span>], <span class="at">sd =</span> <span class="fu">sqrt</span>((<span class="dv">1</span><span class="fl">-0.95</span><span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb2-7"><a href="hamiltonian-monte-carlo-hmc.html#cb2-7" aria-hidden="true" tabindex="-1"></a>      theta[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="fl">0.95</span> <span class="sc">*</span> theta[<span class="dv">1</span>], <span class="at">sd =</span> <span class="fu">sqrt</span>((<span class="dv">1</span><span class="fl">-0.95</span><span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb2-8"><a href="hamiltonian-monte-carlo-hmc.html#cb2-8" aria-hidden="true" tabindex="-1"></a>      samples[i, ] <span class="ot">&lt;-</span> theta</span>
+<span id="cb2-9"><a href="hamiltonian-monte-carlo-hmc.html#cb2-9" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb2-10"><a href="hamiltonian-monte-carlo-hmc.html#cb2-10" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb2-11"><a href="hamiltonian-monte-carlo-hmc.html#cb2-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">colnames</span>(samples) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;theta1&quot;</span>,<span class="st">&quot;theta2&quot;</span>)</span>
+<span id="cb2-12"><a href="hamiltonian-monte-carlo-hmc.html#cb2-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">return</span>(<span class="fu">as_tibble</span>(samples))</span>
+<span id="cb2-13"><a href="hamiltonian-monte-carlo-hmc.html#cb2-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Figures <a href="hamiltonian-monte-carlo-hmc.html#fig:Gibbs-results">2.7</a> and <a href="hamiltonian-monte-carlo-hmc.html#fig:Gibbs-trace">2.8</a> show the results of applying Gibbs. We can see this provides a good approximation to the target distribution. In Gibbs sampling, all proposals are accepted, and so we do not waste computational time. However, note that the ease of sampling from the conditional distribution is fairly rare in practice.</p>
+<div class="figure"><span style="display:block;" id="fig:Gibbs-results"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/Gibbs-results-1.png" alt="Bivariate Gaussian sampled using a Gibbs algorithm. The true Gaussian density is shown in blue, and overlaid in black with both the samples and estimated density." width="50%" />
+<p class="caption">
+Figure 2.7: Bivariate Gaussian sampled using a Gibbs algorithm. The true Gaussian density is shown in blue, and overlaid in black with both the samples and estimated density.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:Gibbs-trace"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/Gibbs-trace-1.png" alt="The trace plot for samples of the first dimension of a bivariate Gaussian. Obtained using a Gibbs algorithm." width="70%" />
+<p class="caption">
+Figure 2.8: The trace plot for samples of the first dimension of a bivariate Gaussian. Obtained using a Gibbs algorithm.
+</p>
+</div>
+</div>
+<div id="hmc" class="section level3 hasAnchor" number="2.8.3">
+<h3><span class="header-section-number">2.8.3</span> HMC<a href="hamiltonian-monte-carlo-hmc.html#hmc" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We now show an implementation to this sampling exercise using HMC. The following code implements HMC for our simple, bivariate Gaussian example. Note that we make use of the function <code>Deriv::Deriv()</code> for differentiating the log posterior: this makes a new function which will return the derivatives.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="hamiltonian-monte-carlo-hmc.html#cb3-1" aria-hidden="true" tabindex="-1"></a>sigma_inv <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.95</span>, <span class="fl">0.95</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb3-2"><a href="hamiltonian-monte-carlo-hmc.html#cb3-2" aria-hidden="true" tabindex="-1"></a>U <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y) (<span class="fu">matrix</span>(<span class="fu">c</span>(x,y), <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">%*%</span> </span>
+<span id="cb3-3"><a href="hamiltonian-monte-carlo-hmc.html#cb3-3" aria-hidden="true" tabindex="-1"></a>                      sigma_inv <span class="sc">%*%</span> </span>
+<span id="cb3-4"><a href="hamiltonian-monte-carlo-hmc.html#cb3-4" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">matrix</span>(<span class="fu">c</span>(x,y), <span class="at">nrow =</span> <span class="dv">2</span>)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb3-5"><a href="hamiltonian-monte-carlo-hmc.html#cb3-5" aria-hidden="true" tabindex="-1"></a>U_grad <span class="ot">&lt;-</span> Deriv<span class="sc">::</span><span class="fu">Deriv</span>(U)</span>
+<span id="cb3-6"><a href="hamiltonian-monte-carlo-hmc.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="hamiltonian-monte-carlo-hmc.html#cb3-7" aria-hidden="true" tabindex="-1"></a>gaussian_2d_HMC <span class="ot">&lt;-</span> <span class="cf">function</span>(n_iter, epsilon, L, current_theta) {</span>
+<span id="cb3-8"><a href="hamiltonian-monte-carlo-hmc.html#cb3-8" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-9"><a href="hamiltonian-monte-carlo-hmc.html#cb3-9" aria-hidden="true" tabindex="-1"></a>   samples <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_iter, <span class="at">ncol =</span> <span class="dv">6</span>) </span>
+<span id="cb3-10"><a href="hamiltonian-monte-carlo-hmc.html#cb3-10" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-11"><a href="hamiltonian-monte-carlo-hmc.html#cb3-11" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_iter) {</span>
+<span id="cb3-12"><a href="hamiltonian-monte-carlo-hmc.html#cb3-12" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb3-13"><a href="hamiltonian-monte-carlo-hmc.html#cb3-13" aria-hidden="true" tabindex="-1"></a>      theta <span class="ot">&lt;-</span> current_theta</span>
+<span id="cb3-14"><a href="hamiltonian-monte-carlo-hmc.html#cb3-14" aria-hidden="true" tabindex="-1"></a>      m <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>) </span>
+<span id="cb3-15"><a href="hamiltonian-monte-carlo-hmc.html#cb3-15" aria-hidden="true" tabindex="-1"></a>      current_m <span class="ot">&lt;-</span> m</span>
+<span id="cb3-16"><a href="hamiltonian-monte-carlo-hmc.html#cb3-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-17"><a href="hamiltonian-monte-carlo-hmc.html#cb3-17" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Make a half step for momentum at the beginning</span></span>
+<span id="cb3-18"><a href="hamiltonian-monte-carlo-hmc.html#cb3-18" aria-hidden="true" tabindex="-1"></a>      m <span class="ot">&lt;-</span> m <span class="sc">-</span> epsilon <span class="sc">*</span> <span class="fu">U_grad</span>(theta[<span class="dv">1</span>], theta[<span class="dv">2</span>]) <span class="sc">/</span> <span class="dv">2</span> </span>
+<span id="cb3-19"><a href="hamiltonian-monte-carlo-hmc.html#cb3-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">floor</span>(L<span class="sc">/</span>epsilon)) {</span>
+<span id="cb3-20"><a href="hamiltonian-monte-carlo-hmc.html#cb3-20" aria-hidden="true" tabindex="-1"></a>         <span class="co"># Make a full step for the position</span></span>
+<span id="cb3-21"><a href="hamiltonian-monte-carlo-hmc.html#cb3-21" aria-hidden="true" tabindex="-1"></a>         theta <span class="ot">&lt;-</span> theta <span class="sc">+</span> epsilon <span class="sc">*</span> m </span>
+<span id="cb3-22"><a href="hamiltonian-monte-carlo-hmc.html#cb3-22" aria-hidden="true" tabindex="-1"></a>         <span class="co"># Make a full step for the momentum, except at end of trajectory</span></span>
+<span id="cb3-23"><a href="hamiltonian-monte-carlo-hmc.html#cb3-23" aria-hidden="true" tabindex="-1"></a>         <span class="cf">if</span> (i <span class="sc">!=</span> <span class="fu">floor</span>(L<span class="sc">/</span>epsilon)) m <span class="ot">&lt;-</span> m <span class="sc">-</span> epsilon <span class="sc">*</span> <span class="fu">U_grad</span>(theta[<span class="dv">1</span>], theta[<span class="dv">2</span>]) </span>
+<span id="cb3-24"><a href="hamiltonian-monte-carlo-hmc.html#cb3-24" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb3-25"><a href="hamiltonian-monte-carlo-hmc.html#cb3-25" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Make a half step for momentum at the end</span></span>
+<span id="cb3-26"><a href="hamiltonian-monte-carlo-hmc.html#cb3-26" aria-hidden="true" tabindex="-1"></a>      m <span class="ot">&lt;-</span> m <span class="sc">-</span> epsilon <span class="sc">*</span> <span class="fu">U_grad</span>(theta[<span class="dv">1</span>], theta[<span class="dv">2</span>])  <span class="sc">/</span> <span class="dv">2</span> </span>
+<span id="cb3-27"><a href="hamiltonian-monte-carlo-hmc.html#cb3-27" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-28"><a href="hamiltonian-monte-carlo-hmc.html#cb3-28" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Negate momentum at end of trajectory to make the proposal symmetric</span></span>
+<span id="cb3-29"><a href="hamiltonian-monte-carlo-hmc.html#cb3-29" aria-hidden="true" tabindex="-1"></a>      m <span class="ot">&lt;-</span> <span class="sc">-</span>m</span>
+<span id="cb3-30"><a href="hamiltonian-monte-carlo-hmc.html#cb3-30" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-31"><a href="hamiltonian-monte-carlo-hmc.html#cb3-31" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Evaluate potential and kinetic energies at start and end of trajectory</span></span>
+<span id="cb3-32"><a href="hamiltonian-monte-carlo-hmc.html#cb3-32" aria-hidden="true" tabindex="-1"></a>      current_U <span class="ot">&lt;-</span> <span class="fu">U</span>(current_theta[<span class="dv">1</span>], current_theta[<span class="dv">2</span>])</span>
+<span id="cb3-33"><a href="hamiltonian-monte-carlo-hmc.html#cb3-33" aria-hidden="true" tabindex="-1"></a>      current_K <span class="ot">&lt;-</span> <span class="fu">sum</span>(current_m<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb3-34"><a href="hamiltonian-monte-carlo-hmc.html#cb3-34" aria-hidden="true" tabindex="-1"></a>      proposed_U <span class="ot">&lt;-</span> <span class="fu">U</span>(theta[<span class="dv">1</span>], theta[<span class="dv">2</span>])</span>
+<span id="cb3-35"><a href="hamiltonian-monte-carlo-hmc.html#cb3-35" aria-hidden="true" tabindex="-1"></a>      proposed_K <span class="ot">&lt;-</span> <span class="fu">sum</span>(m<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb3-36"><a href="hamiltonian-monte-carlo-hmc.html#cb3-36" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-37"><a href="hamiltonian-monte-carlo-hmc.html#cb3-37" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Accept or reject the state at end of trajectory</span></span>
+<span id="cb3-38"><a href="hamiltonian-monte-carlo-hmc.html#cb3-38" aria-hidden="true" tabindex="-1"></a>      accept_prob <span class="ot">&lt;-</span> <span class="fu">exp</span>(current_U <span class="sc">-</span> proposed_U <span class="sc">+</span> current_K <span class="sc">-</span> proposed_K)</span>
+<span id="cb3-39"><a href="hamiltonian-monte-carlo-hmc.html#cb3-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> accept_prob) {</span>
+<span id="cb3-40"><a href="hamiltonian-monte-carlo-hmc.html#cb3-40" aria-hidden="true" tabindex="-1"></a>         current_theta <span class="ot">&lt;-</span> theta</span>
+<span id="cb3-41"><a href="hamiltonian-monte-carlo-hmc.html#cb3-41" aria-hidden="true" tabindex="-1"></a>         samples[j, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(current_theta, current_theta, <span class="fu">min</span>(accept_prob,<span class="dv">1</span>), <span class="dv">1</span>)</span>
+<span id="cb3-42"><a href="hamiltonian-monte-carlo-hmc.html#cb3-42" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb3-43"><a href="hamiltonian-monte-carlo-hmc.html#cb3-43" aria-hidden="true" tabindex="-1"></a>         samples[j, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(current_theta, theta, <span class="fu">min</span>(accept_prob,<span class="dv">1</span>), <span class="dv">0</span>)</span>
+<span id="cb3-44"><a href="hamiltonian-monte-carlo-hmc.html#cb3-44" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb3-45"><a href="hamiltonian-monte-carlo-hmc.html#cb3-45" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb3-46"><a href="hamiltonian-monte-carlo-hmc.html#cb3-46" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-47"><a href="hamiltonian-monte-carlo-hmc.html#cb3-47" aria-hidden="true" tabindex="-1"></a>   <span class="fu">colnames</span>(samples) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;theta1&quot;</span>,<span class="st">&quot;theta2&quot;</span>,<span class="st">&quot;ptheta1&quot;</span>,<span class="st">&quot;ptheta2&quot;</span>,<span class="st">&quot;acceptprob&quot;</span>,<span class="st">&quot;accept&quot;</span>)</span>
+<span id="cb3-48"><a href="hamiltonian-monte-carlo-hmc.html#cb3-48" aria-hidden="true" tabindex="-1"></a>   <span class="fu">return</span>(<span class="fu">as_tibble</span>(samples))</span>
+<span id="cb3-49"><a href="hamiltonian-monte-carlo-hmc.html#cb3-49" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Here we have implemented HMC with a momentum proposal variance of <span class="math inline">\(\sigma^2=1\)</span>, a leapfrog step duration of <span class="math inline">\(L=5\)</span>, and a leapfrog step size of <span class="math inline">\(\epsilon=0.25\)</span>. Note that this means our leapfrog method will involve simulating 20 locations to reach the proposal location in each step of the HMC algorithm. The sampler was run for 1,000 iterations, and had an acceptance rate of 0.892. Note that, although not 1 as in Gibbs sampling, this is a very high acceptance rate and about double that of the random-walk MH algorithm we have implemented here.</p>
+<p>The HMC sample is shown in Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:HMC-results">2.9</a>, and in Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:HMC-accept-prob">2.10</a> all proposals are shown, with both their acceptance probability and final outcome. Because of the high acceptance rate, there are very few rejected parameter values. However, we do see that the algorithm is able to explore extreme, low density regions in the parameter space. If this were a multi-modal example, we can imagine this would be useful for moving between modes.</p>
+<p>Finally, Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:HMC-caterpillar">2.11</a>, the trace plot for <span class="math inline">\(\theta_1\)</span> is shown, with sampled values in black, and any rejected proposals shown in red.</p>
+<div class="figure"><span style="display:block;" id="fig:HMC-results"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/HMC-results-1.png" alt="Bivariate Gaussian sampled using a HMC algorithm. The true Gaussian density is shown in blue, and overlaid in black with both the samples and estimated density." width="50%" />
+<p class="caption">
+Figure 2.9: Bivariate Gaussian sampled using a HMC algorithm. The true Gaussian density is shown in blue, and overlaid in black with both the samples and estimated density.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:HMC-accept-prob"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/HMC-accept-prob-1.png" alt="The proposed parameter values during a HMC algorithm to sample from a bivariate Gaussian. The true density is shown in blue. The proposed values are coloured according to their acceptance probability when proposed, and the point character gives the resulting acceptance decision." width="70%" />
+<p class="caption">
+Figure 2.10: The proposed parameter values during a HMC algorithm to sample from a bivariate Gaussian. The true density is shown in blue. The proposed values are coloured according to their acceptance probability when proposed, and the point character gives the resulting acceptance decision.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:HMC-caterpillar"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/HMC-caterpillar-1.png" alt="The trace plot for samples of the first dimension of a bivariate Gaussian. Obtained using a HMC algorithm. Black points give the accepted sample trace, with the proposed parameter value at each iteration also highlighted in red." width="70%" />
+<p class="caption">
+Figure 2.11: The trace plot for samples of the first dimension of a bivariate Gaussian. Obtained using a HMC algorithm. Black points give the accepted sample trace, with the proposed parameter value at each iteration also highlighted in red.
+</p>
+</div>
+<p>The autocorrelation here is much lower than for the random-walk MH approach. Given that the marginal distribution of <span class="math inline">\(\theta_1\)</span> is a standard normal, this trace plot looks similar to a random sample from this marginal (which would be our gold-standard sampling approach).</p>
+<p>We will confirm this with some autocorrelation plots (for <span class="math inline">\(\theta_1\)</span> only)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="hamiltonian-monte-carlo-hmc.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(MH<span class="sc">$</span>theta1)</span>
+<span id="cb4-2"><a href="hamiltonian-monte-carlo-hmc.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(Gibbs<span class="sc">$</span>theta1)</span>
+<span id="cb4-3"><a href="hamiltonian-monte-carlo-hmc.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(HMC<span class="sc">$</span>theta1)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:acfPlots"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/acfPlots-1.png" alt="Comparing autocorrelations in the Markov chains produced by random walk MH, Gibbs, and HMC" width="70%" /><img src="MAS61006-S2-Notes_files/figure-html/acfPlots-2.png" alt="Comparing autocorrelations in the Markov chains produced by random walk MH, Gibbs, and HMC" width="70%" /><img src="MAS61006-S2-Notes_files/figure-html/acfPlots-3.png" alt="Comparing autocorrelations in the Markov chains produced by random walk MH, Gibbs, and HMC" width="70%" />
+<p class="caption">
+Figure 2.12: Comparing autocorrelations in the Markov chains produced by random walk MH, Gibbs, and HMC
+</p>
+</div>
+<div id="the-leapfrog-proposals" class="section level4 hasAnchor" number="2.8.3.1">
+<h4><span class="header-section-number">2.8.3.1</span> The leapfrog proposals<a href="hamiltonian-monte-carlo-hmc.html#the-leapfrog-proposals" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To gain a deeper understanding of the HMC proposal steps, we can implement the leapfrog movement algorithm to view proposals.</p>
+<p>For example, Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:leapfrog-1">2.13</a> shows the path of the Hamiltonian movement, given an initial location of <span class="math inline">\((-1.5,-1.55)\)</span>, shown in green. The bivariate Gaussian density of the target distribution is shown in blue, and we can see how the concept of an item under gravity applies here. Remember that this is not the path of the HMC algorithm itself, but is the path of the leapfrog algorithm used to generate the next proposal in the HMC algorithm. So here, the current sampled value is that in green, and the value in red will be the proposed parameter value for this iteration.</p>
+<p>Note that the resulting path is dependent upon the initial momentum (which we re-sample at the start of each HMC iteration). Here, the initial momentum was (-1,1), which relates to moving left and up in the location space. We see that this is the initial course that the location trajectory takes.</p>
+<p>The value of the Hamiltonian is shown, along with its breakdown into the kinetic and potential energy components (remember that <span class="math inline">\(H=U+K\)</span>). The constant trade-off between potential and kinetic energy is obvious here. We also see the error we are introducing through implementing the leapfrog algorithm. If our simulation of Hamiltonian movement was exact, the Hamiltonian would be constant. This leapfrog error is why an MH acceptance step must take place.</p>
+<p>The bottom panel shows what this MH acceptance probability would be, were we to stop the leapfrog movement at any of these intermediate points and consider them as a proposed location in the HMC algorithm. In this example, the leapfrog path covers a wide range of possible parameter values, yet we can see that the acceptance probability remains above 0.7 throughout. It’s important to remember that the acceptance of a proposed location in HMC is not related to its distance from the current location, but is only related to the discrepancy in energy brought about by the leapfrog approximation.</p>
+<p>If we repeat this simulation with a smaller <span class="math inline">\(\epsilon\)</span>, we get a better approximation to the true Hamiltonian movement. This is shown in Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:leapfrog-finer">2.14</a>, where it is clear that given the initial location and momentum, the path is deterministic. At this better approximation, the HMC acceptance probability is much higher (over 0.97) at any location along this trajectory. Remember that HMC is still a Metropolis-Hastings sampler, it just has a different way (the leapfrog trajectory such as in Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:leapfrog-1">2.13</a>) of proposing locations to the random-walk approach. Although this has a higher acceptance probability than we would likely expect from a random-walk proposal, this is clearly much more computationally expensive than a single draw from a bivariate normal proposal distribution.</p>
+<p>Note that we can also relate the energy to the leapfrog location path. About halfway along the path is at the mode of the bivariate normal (square, magenta coloured point), and if we consider the potential energy at this time, it is at a minimum (as potential energy is the negative log density).</p>
+<div class="figure"><span style="display:block;" id="fig:leapfrog-1"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/leapfrog-1-1.png" alt="Given a starting location of (-1.5,-1.55) and an initial momentum of (-1,1), the leapfrog algorithm is implemented for 5 'time-units'. This is achieved by using an L of 5 and an epsilon of 0.1, which results in 50 intermediate simulated locations. Note that this is the same 'length' of time as our HMC implementation used, but a smaller step size in the leapfrog algorith, as we used an epsilon of 0.25 there. The resulting path is shown in the parameter space, the momentum space, and the Hamiltonian is also given. The initial location is shown in green and the final location in red in the top set of panels. In the middle panel, the Hamiltonian is shown (black), along with the potential (red) and kinetic (blue) energies. The point in magenta is highlighted, showing its location near the mode of the bivariate normal, and that the corresponding potential energy is low. The bottom panel shows what the acceptance probability would be for each point along the leapfrog path, were that to be the stopping point chosen for the HMC proposal." width="80%" />
+<p class="caption">
+Figure 2.13: Given a starting location of (-1.5,-1.55) and an initial momentum of (-1,1), the leapfrog algorithm is implemented for 5 ‘time-units’. This is achieved by using an L of 5 and an epsilon of 0.1, which results in 50 intermediate simulated locations. Note that this is the same ‘length’ of time as our HMC implementation used, but a smaller step size in the leapfrog algorith, as we used an epsilon of 0.25 there. The resulting path is shown in the parameter space, the momentum space, and the Hamiltonian is also given. The initial location is shown in green and the final location in red in the top set of panels. In the middle panel, the Hamiltonian is shown (black), along with the potential (red) and kinetic (blue) energies. The point in magenta is highlighted, showing its location near the mode of the bivariate normal, and that the corresponding potential energy is low. The bottom panel shows what the acceptance probability would be for each point along the leapfrog path, were that to be the stopping point chosen for the HMC proposal.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:leapfrog-finer"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/leapfrog-finer-1.png" alt="The previous figure re-produced but with an epsilon of 0.01 rather than 0.1, i.e. the Hamiltonian movement is simulated at a closer approximation to the exact process." width="80%" />
+<p class="caption">
+Figure 2.14: The previous figure re-produced but with an epsilon of 0.01 rather than 0.1, i.e. the Hamiltonian movement is simulated at a closer approximation to the exact process.
+</p>
+</div>
+<p>We can also compare the importance of the initial, re-sampled momentum on the resulting path using Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:leapfrog-fast">2.15</a>. This shows the leapfrog path from the same initial location, and for the same length of time, but with an initial starting momentum of (2,2). This equates to moving up and to the right at a higher speed than the previous example. Rather than ‘bouncing’ back and forth across the space, the imaginary ball has lots of energy to shoot across the space.</p>
+<div class="figure"><span style="display:block;" id="fig:leapfrog-fast"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/leapfrog-fast-1.png" alt="A repeat of the above simulation, but with an initial momentum of (2,2)." width="80%" />
+<p class="caption">
+Figure 2.15: A repeat of the above simulation, but with an initial momentum of (2,2).
+</p>
+</div>
+</div>
+</div>
+<div id="comparing-random-walk-and-hmc-samplers" class="section level3 hasAnchor" number="2.8.4">
+<h3><span class="header-section-number">2.8.4</span> Comparing random-walk and HMC samplers<a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In Figure <a href="hamiltonian-monte-carlo-hmc.html#fig:MH-HMC-comparison">2.16</a> we compare the movement around the sample space of the random-walk MH and HMC algorithms. Here we have thinned the random-walk samples, only showing every 20 iterations of the random-walk sampler. Recall that the HMC implementation here involved the tuning parameters <span class="math inline">\(L=5,\epsilon=0.25\)</span> and so there are 20 intermediate steps taken as part of the leapfrog location proposal. This is still not a direct comparison between the likely change in locations at each step for the two approaches, but is a fair comparison.</p>
+<p>We see the key differences in how the proposal processes of the two algorithms produce different sampling schemes. The HMC approach can traverse back and forth across the entire sample space in fewer iterations than the random walk and displays lower autocorrelation in the sampled locations.</p>
+<div class="figure"><span style="display:block;" id="fig:MH-HMC-comparison"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/MH-HMC-comparison-1.png" alt="Left: A sample from the random walk MH algorithm, thinned to every 20 samples to give 50 values. Right: A sample of 50 values (not thinned) from the HMC algorithm." width="80%" />
+<p class="caption">
+Figure 2.16: Left: A sample from the random walk MH algorithm, thinned to every 20 samples to give 50 values. Right: A sample of 50 values (not thinned) from the HMC algorithm.
+</p>
+</div>
+</div>
+</div>
+<div id="summary" class="section level2 hasAnchor" number="2.9">
+<h2><span class="header-section-number">2.9</span> Summary<a href="hamiltonian-monte-carlo-hmc.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this chapter we’ve introduced the HMC algorithm as an improvement to the difficulties that random walk MCMC algorithms can pose. In HMC, we use the curvature of the posterior density at our current location to inform on a sensible direction to move in, rather than randomly stepping like in MH. This additional information can often lead to more efficient samplers, but this comes at a computational cost—we must evaluate the derivative of the log posterior density. <strong>There are situations where this will be computationally burdensome, or even impossible.</strong></p>
+
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="mcmc-sampling-recap.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="implementing-hmc-in-stan.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["MAS61006-S2-Notes.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll-highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

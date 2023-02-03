@@ -1,0 +1,35 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+div.result {
+    padding: 1em;
+    margin: 1em 0;
+    background-size: 70px;
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    min-height: 120px;
+    background-color: #dfedff;
+    border: solid 5px #bed3ec;
+  }
+div.exbox {
+    padding: 1em;
+    margin: 1em 0;
+    background-size: 70px;
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    min-height: 120px;
+    background-color: #EAEAFF;
+    border: solid 5px #B3B3FF;
+  }
+

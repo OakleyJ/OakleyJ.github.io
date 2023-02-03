@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Bootstrapping | MAS61006 Bayesian Statistics and Computational Methods</title>
+  <meta name="description" content="Chapter 6 Bootstrapping | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Bootstrapping | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Bootstrapping | MAS61006 Bayesian Statistics and Computational Methods" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2023-02-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="multiple-imputation-for-missing-data.html"/>
+<link rel="next" href="cross-validation.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script>
+  $(document).ready(function () {
+    process_solutions();
+  });
+function process_solutions() {
+  $("div.section[id^='solution']").each(function(i) {
+    var soln_wrapper_id = "cvxr_ex_" + i;
+    var solution_id = $(this).attr('id');
+    var button = $("<button onclick=\"toggle_solution('" + soln_wrapper_id + "')\">Show/Hide</button>");
+    var new_div = $("<div id='" + soln_wrapper_id + "' class='solution' style='display: none;'></div>");
+    var h = $(this).first();
+    var others = $(this).children().slice(1);
+    $(others).each(function() {
+      $(this).appendTo($(new_div));
+    });
+    $(button).insertAfter($(h));
+    $(new_div).insertAfter($(button));
+  })
+}
+function toggle_solution(el_id) {
+  $("#" + el_id).toggle();
+}
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS61006(Sem2)</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i>Literature</a></li>
+<li class="part"><span><b>I Inference using advanced samplers</b></span></li>
+<li class="chapter" data-level="1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html"><i class="fa fa-check"></i><b>1</b> MCMC Sampling Recap</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#bayesian-inference-continued"><i class="fa fa-check"></i><b>1.1</b> Bayesian inference continued</a></li>
+<li class="chapter" data-level="1.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#monte-carlo"><i class="fa fa-check"></i><b>1.2</b> Monte Carlo estimation</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate"><i class="fa fa-check"></i><b>1.2.1</b> Properties of the Monte Carlo estimate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations"><i class="fa fa-check"></i><b>1.2.2</b> Expressing quantities as expectations</a></li>
+<li class="chapter" data-level="1.2.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#estimation-of-general-integrals"><i class="fa fa-check"></i><b>1.2.3</b> Estimation of general integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc"><i class="fa fa-check"></i><b>1.3</b> Markov chain Monte Carlo (MCMC)</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#mhsection"><i class="fa fa-check"></i><b>1.3.1</b> The Metroplis-Hastings (MH) algorithm</a></li>
+<li class="chapter" data-level="1.3.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals"><i class="fa fa-check"></i><b>1.3.2</b> The problem with random walk proposals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-gibbs-algorithm"><i class="fa fa-check"></i><b>1.3.3</b> The Gibbs algorithm</a></li>
+<li class="chapter" data-level="1.3.4" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-gibbs"><i class="fa fa-check"></i><b>1.3.4</b> The problem with Gibbs</a></li>
+<li class="chapter" data-level="1.3.5" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#a-solution"><i class="fa fa-check"></i><b>1.3.5</b> A solution?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html"><i class="fa fa-check"></i><b>2</b> Hamiltonian Monte Carlo (HMC)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition"><i class="fa fa-check"></i><b>2.1</b> Generating proposals: intuition</a></li>
+<li class="chapter" data-level="2.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics"><i class="fa fa-check"></i><b>2.2</b> Hamiltonian dynamics</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy"><i class="fa fa-check"></i><b>2.2.1</b> Conservation of energy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals"><i class="fa fa-check"></i><b>2.3</b> Using Hamilton’s equations to generate proposals</a></li>
+<li class="chapter" data-level="2.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m"><i class="fa fa-check"></i><b>2.4</b> The joint distribution for <span class="math inline">\((\theta, m)\)</span></a></li>
+<li class="chapter" data-level="2.5" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm"><i class="fa fa-check"></i><b>2.5</b> The HMC algorithm</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations"><i class="fa fa-check"></i><b>2.5.1</b> Approximate solution of Hamilton’s equations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta"><i class="fa fa-check"></i><b>2.6</b> Multivariate <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="2.7" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters"><i class="fa fa-check"></i><b>2.7</b> Tuning parameters</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2"><i class="fa fa-check"></i><b>2.7.1</b> The tuning parameter <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="2.7.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon"><i class="fa fa-check"></i><b>2.7.2</b> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand"><i class="fa fa-check"></i><b>2.8</b> Implementing HMC ‘by hand’</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh"><i class="fa fa-check"></i><b>2.8.1</b> Random-walk MH</a></li>
+<li class="chapter" data-level="2.8.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#gibbs"><i class="fa fa-check"></i><b>2.8.2</b> Gibbs</a></li>
+<li class="chapter" data-level="2.8.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hmc"><i class="fa fa-check"></i><b>2.8.3</b> HMC</a></li>
+<li class="chapter" data-level="2.8.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers"><i class="fa fa-check"></i><b>2.8.4</b> Comparing random-walk and HMC samplers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#summary"><i class="fa fa-check"></i><b>2.9</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html"><i class="fa fa-check"></i><b>3</b> Implementing HMC in Stan</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#getting-set-up-with-stan"><i class="fa fa-check"></i><b>3.1</b> Getting set up with Stan</a></li>
+<li class="chapter" data-level="3.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#rstan-options"><i class="fa fa-check"></i><b>3.2</b> <code>rstan</code> options</a></li>
+<li class="chapter" data-level="3.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#an-example-model"><i class="fa fa-check"></i><b>3.3</b> An example model</a></li>
+<li class="chapter" data-level="3.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio"><i class="fa fa-check"></i><b>3.4</b> Specifying a model in RStudio</a></li>
+<li class="chapter" data-level="3.5" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#stan-code-blocks"><i class="fa fa-check"></i><b>3.5</b> Stan code blocks</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#data-block"><i class="fa fa-check"></i><b>3.5.1</b> <code>data</code> block</a></li>
+<li class="chapter" data-level="3.5.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>3.5.2</b> <code>parameters</code> block</a></li>
+<li class="chapter" data-level="3.5.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#model-block"><i class="fa fa-check"></i><b>3.5.3</b> <code>model</code> block</a></li>
+<li class="chapter" data-level="3.5.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>3.5.4</b> <code>generated quantities</code> block</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm"><i class="fa fa-check"></i><b>3.6</b> Running the HMC algorithm</a></li>
+<li class="chapter" data-level="3.7" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples"><i class="fa fa-check"></i><b>3.7</b> Extracting and analysing the samples</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs"><i class="fa fa-check"></i><b>3.7.1</b> R packages for plotting outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts"><i class="fa fa-check"></i><b>3.8</b> No U-Turn Sampler (NUTS)</a></li>
+<li class="chapter" data-level="3.9" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#further-reading"><i class="fa fa-check"></i><b>3.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html"><i class="fa fa-check"></i><b>4</b> Bayesian regression in Stan</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#holiday-hangover-cures"><i class="fa fa-check"></i><b>4.1.1</b> Holiday hangover cures</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#least-squares-fit"><i class="fa fa-check"></i><b>4.1.2</b> Least squares fit</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-in-stan"><i class="fa fa-check"></i><b>4.1.3</b> Bayesian approach in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#recap-of-logistic-regression"><i class="fa fa-check"></i><b>4.2</b> Recap of logistic regression</a></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#overview-of-mixed-effects"><i class="fa fa-check"></i><b>4.3</b> Overview of mixed effects</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-example-of-a-mixed-effects-model"><i class="fa fa-check"></i><b>4.3.1</b> Simple example of a mixed effects model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#fixed-or-random-effects"><i class="fa fa-check"></i><b>4.3.2</b> Fixed or random effects?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#mixed-effect-logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Mixed effect logistic regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#balance-experiment"><i class="fa fa-check"></i><b>4.4.1</b> Balance experiment</a></li>
+<li class="chapter" data-level="4.4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>4.4.2</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#maximum-likelihood-approach"><i class="fa fa-check"></i><b>4.4.3</b> Maximum likelihood approach</a></li>
+<li class="chapter" data-level="4.4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-using-stan"><i class="fa fa-check"></i><b>4.4.4</b> Bayesian approach using Stan</a></li>
+<li class="chapter" data-level="4.4.5" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#comparing-stan-and-lme4"><i class="fa fa-check"></i><b>4.4.5</b> Comparing Stan and lme4</a></li>
+<li class="chapter" data-level="4.4.6" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#easy-bayesian-approach-with-brms"><i class="fa fa-check"></i><b>4.4.6</b> ‘Easy’ Bayesian approach with <code>brms</code></a></li>
+<li class="chapter" data-level="4.4.7" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#what-have-we-found"><i class="fa fa-check"></i><b>4.4.7</b> What have we found?</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Inference with missing data</b></span></li>
+<li class="chapter" data-level="5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html"><i class="fa fa-check"></i><b>5</b> Multiple imputation for missing data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#example-nhanes-data"><i class="fa fa-check"></i><b>5.2</b> Example: <code>nhanes</code> data</a></li>
+<li class="chapter" data-level="5.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness"><i class="fa fa-check"></i><b>5.3</b> Mechanisms of missingness</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>5.3.1</b> Missing completely at random (MCAR)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>5.3.2</b> Missing at random (MAR)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar"><i class="fa fa-check"></i><b>5.3.3</b> Not missing at random (NMAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness"><i class="fa fa-check"></i><b>5.4</b> Ignoring information about missingness</a></li>
+<li class="chapter" data-level="5.5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#inference-via-imputation"><i class="fa fa-check"></i><b>5.5</b> Inference via imputation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#further-simplifications"><i class="fa fa-check"></i><b>5.5.1</b> Further simplifications</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#pooling"><i class="fa fa-check"></i><b>5.6</b> Pooling multiple imputations</a></li>
+<li class="chapter" data-level="5.7" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#simple-example"><i class="fa fa-check"></i><b>5.7</b> Simple example</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand"><i class="fa fa-check"></i><b>5.7.1</b> Multiple imputation by hand</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation"><i class="fa fa-check"></i><b>5.8</b> Imputing missing data: chained equation multiple imputation</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#how-many-iterations"><i class="fa fa-check"></i><b>5.8.1</b> How many iterations?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset"><i class="fa fa-check"></i><b>5.9</b> MICE example: the <code>nhanes</code> dataset</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#complete-case-analysis"><i class="fa fa-check"></i><b>5.9.1</b> Complete case analysis</a></li>
+<li class="chapter" data-level="5.9.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data"><i class="fa fa-check"></i><b>5.9.2</b> Imputing the missing data</a></li>
+<li class="chapter" data-level="5.9.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputation-analysis"><i class="fa fa-check"></i><b>5.9.3</b> Imputation analysis</a></li>
+<li class="chapter" data-level="5.9.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#analysis-pooling"><i class="fa fa-check"></i><b>5.9.4</b> Analysis pooling</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Resampling methods</b></span></li>
+<li class="chapter" data-level="6" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>6</b> Bootstrapping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrap-estimates-of-standard-errors"><i class="fa fa-check"></i><b>6.1</b> Bootstrap estimates of standard errors</a></li>
+<li class="chapter" data-level="6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function"><i class="fa fa-check"></i><b>6.2</b> Estimating a distribution using the empirical cumulative distribution function</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="bootstrapping.html"><a href="bootstrapping.html#sampling-from-an-ecdf"><i class="fa fa-check"></i><b>6.2.1</b> Sampling from an ECDF</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#notation-summary"><i class="fa fa-check"></i><b>6.3</b> Notation summary</a></li>
+<li class="chapter" data-level="6.4" data-path="bootstrapping.html"><a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance"><i class="fa fa-check"></i><b>6.4</b> Example: Bootstrap standard errors of a sample mean and sample variance</a></li>
+<li class="chapter" data-level="6.5" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals"><i class="fa fa-check"></i><b>6.5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error"><i class="fa fa-check"></i><b>6.5.1</b> Confidence intervals using the estimated standard error</a></li>
+<li class="chapter" data-level="6.5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>6.5.2</b> Confidence intervals using percentiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="bootstrapping.html"><a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf"><i class="fa fa-check"></i><b>6.6</b> Properties of samples from the empirical CDF</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#expectation-and-variance"><i class="fa fa-check"></i><b>6.6.1</b> Expectation and variance</a></li>
+<li class="chapter" data-level="6.6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-percentiles"><i class="fa fa-check"></i><b>6.6.2</b> Sample percentiles</a></li>
+<li class="chapter" data-level="6.6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping"><i class="fa fa-check"></i><b>6.6.3</b> Sources of error and sample sizes in bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="bootstrapping.html"><a href="bootstrapping.html#example-measuring-observer-agreement"><i class="fa fa-check"></i><b>6.7</b> Example: Measuring observer agreement</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-data"><i class="fa fa-check"></i><b>6.7.1</b> The data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-kappa-statistic"><i class="fa fa-check"></i><b>6.7.2</b> The kappa statistic</a></li>
+<li class="chapter" data-level="6.7.3" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrapping-bivariate-data"><i class="fa fa-check"></i><b>6.7.3</b> Bootstrapping bivariate data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="bootstrapping.html"><a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing"><i class="fa fa-check"></i><b>6.8</b> Parametric bootstrapping and hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-milk-data-set"><i class="fa fa-check"></i><b>6.8.1</b> The <code>Milk</code> data set</a></li>
+<li class="chapter" data-level="6.8.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-model-and-hypothesis"><i class="fa fa-check"></i><b>6.8.2</b> The model and hypothesis</a></li>
+<li class="chapter" data-level="6.8.3" data-path="bootstrapping.html"><a href="bootstrapping.html#the-generalized-likelihood-ratio-test"><i class="fa fa-check"></i><b>6.8.3</b> The generalized likelihood ratio test</a></li>
+<li class="chapter" data-level="6.8.4" data-path="bootstrapping.html"><a href="bootstrapping.html#the-parametric-bootstrap-test"><i class="fa fa-check"></i><b>6.8.4</b> The parametric bootstrap test</a></li>
+<li class="chapter" data-level="6.8.5" data-path="bootstrapping.html"><a href="bootstrapping.html#implementation-with-r"><i class="fa fa-check"></i><b>6.8.5</b> Implementation with R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cross-validation.html"><a href="cross-validation.html"><i class="fa fa-check"></i><b>7</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-classification"><i class="fa fa-check"></i><b>7.1</b> Cross-validation in classification</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="cross-validation.html"><a href="cross-validation.html#the-palmer-penguins-data"><i class="fa fa-check"></i><b>7.1.1</b> The Palmer penguins data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cross-validation.html"><a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn"><i class="fa fa-check"></i><b>7.1.2</b> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-knn"><i class="fa fa-check"></i><b>7.1.3</b> Implementing cross-validation in KNN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2</b> Cross-validation in regression</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="cross-validation.html"><a href="cross-validation.html#the-flint-tools-data"><i class="fa fa-check"></i><b>7.2.1</b> The flint tools data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2.2</b> Implementing cross-validation in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="cross-validation.html"><a href="cross-validation.html#parameter-estimation-with-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Parameter estimation with cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="cross-validation.html"><a href="cross-validation.html#example-choosing-the-value-k-in-knn"><i class="fa fa-check"></i><b>7.3.1</b> Example: choosing the value <span class="math inline">\(K\)</span> in KNN</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood"><i class="fa fa-check"></i><b>7.3.2</b> Cross-validation as an alternative to maximum likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cross-validation.html"><a href="cross-validation.html#computational-short-cuts"><i class="fa fa-check"></i><b>7.4</b> Computational short-cuts</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="cross-validation.html"><a href="cross-validation.html#example-returning-to-the-flint-data"><i class="fa fa-check"></i><b>7.4.1</b> Example: Returning to the flint data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="cross-validation.html"><a href="cross-validation.html#relationship-with-aic"><i class="fa fa-check"></i><b>7.5</b> Relationship with AIC</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="cross-validation.html"><a href="cross-validation.html#example-the-cars-data"><i class="fa fa-check"></i><b>7.5.1</b> Example: The cars data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cross-validation.html"><a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut"><i class="fa fa-check"></i><b>7.6</b> (Non-examinable) Proof of the computational short cut</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="cross-validation.html"><a href="cross-validation.html#helpful-results-we-will-use"><i class="fa fa-check"></i><b>7.6.1</b> Helpful results we will use</a></li>
+<li class="chapter" data-level="7.6.2" data-path="cross-validation.html"><a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models"><i class="fa fa-check"></i><b>7.6.2</b> Relate the estimated coefficients of full and reduced models</a></li>
+<li class="chapter" data-level="7.6.3" data-path="cross-validation.html"><a href="cross-validation.html#relating-the-residuals"><i class="fa fa-check"></i><b>7.6.3</b> Relating the residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Approximate inference without sampling</b></span></li>
+<li class="chapter" data-level="8" data-path="variational-inference.html"><a href="variational-inference.html"><i class="fa fa-check"></i><b>8</b> Variational inference</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="variational-inference.html"><a href="variational-inference.html#background-theory"><i class="fa fa-check"></i><b>8.1</b> Background theory</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="variational-inference.html"><a href="variational-inference.html#jensens-inequality"><i class="fa fa-check"></i><b>8.1.1</b> Jensen’s inequality</a></li>
+<li class="chapter" data-level="8.1.2" data-path="variational-inference.html"><a href="variational-inference.html#kullback-leibler-divergence"><i class="fa fa-check"></i><b>8.1.2</b> Kullback-Leibler Divergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="variational-inference.html"><a href="variational-inference.html#optimisation-with-coordinate-ascent"><i class="fa fa-check"></i><b>8.1.3</b> Optimisation with coordinate ascent</a></li>
+<li class="chapter" data-level="8.1.4" data-path="variational-inference.html"><a href="variational-inference.html#stochastic-optimisation"><i class="fa fa-check"></i><b>8.1.4</b> Stochastic optimisation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="variational-inference.html"><a href="variational-inference.html#motivation-for-approximate-inference-approaches"><i class="fa fa-check"></i><b>8.2</b> Motivation for approximate inference approaches</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="variational-inference.html"><a href="variational-inference.html#intractable-integrals"><i class="fa fa-check"></i><b>8.2.1</b> Intractable integrals</a></li>
+<li class="chapter" data-level="8.2.2" data-path="variational-inference.html"><a href="variational-inference.html#variational-approach-to-intractable-integrals"><i class="fa fa-check"></i><b>8.2.2</b> Variational approach to intractable integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="variational-inference.html"><a href="variational-inference.html#approximate-inference-as-an-optimisation-problem"><i class="fa fa-check"></i><b>8.3</b> Approximate inference as an optimisation problem</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="variational-inference.html"><a href="variational-inference.html#exploring-the-elbo"><i class="fa fa-check"></i><b>8.3.1</b> Exploring the ELBO</a></li>
+<li class="chapter" data-level="8.3.2" data-path="variational-inference.html"><a href="variational-inference.html#forward-and-reverse-variational-inference"><i class="fa fa-check"></i><b>8.3.2</b> Forward and reverse variational inference</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="variational-inference.html"><a href="variational-inference.html#the-variational-family-of-distributions"><i class="fa fa-check"></i><b>8.4</b> The variational family of distributions</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="variational-inference.html"><a href="variational-inference.html#mean-field-family"><i class="fa fa-check"></i><b>8.4.1</b> Mean-field family</a></li>
+<li class="chapter" data-level="8.4.2" data-path="variational-inference.html"><a href="variational-inference.html#correlation-cannot-be-replicated"><i class="fa fa-check"></i><b>8.4.2</b> Correlation cannot be replicated</a></li>
+<li class="chapter" data-level="8.4.3" data-path="variational-inference.html"><a href="variational-inference.html#why-mean-field-is-useful"><i class="fa fa-check"></i><b>8.4.3</b> Why mean-field is useful</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html"><i class="fa fa-check"></i><b>9</b> Coordinate ascent variational inference (CAVI)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-cavi-algorithm"><i class="fa fa-check"></i><b>9.1</b> The CAVI algorithm</a></li>
+<li class="chapter" data-level="9.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#example-mixture-of-gaussians"><i class="fa fa-check"></i><b>9.2</b> Example: Mixture of Gaussians</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-observation-model"><i class="fa fa-check"></i><b>9.2.1</b> The observation model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-prior"><i class="fa fa-check"></i><b>9.2.2</b> The prior</a></li>
+<li class="chapter" data-level="9.2.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-joint-likelihood"><i class="fa fa-check"></i><b>9.2.3</b> The joint likelihood</a></li>
+<li class="chapter" data-level="9.2.4" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-mean-field-family-approximation"><i class="fa fa-check"></i><b>9.2.4</b> The mean-field family approximation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#cavi"><i class="fa fa-check"></i><b>9.2.5</b> CAVI</a></li>
+<li class="chapter" data-level="9.2.6" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#implementing-cavi-in-r"><i class="fa fa-check"></i><b>9.2.6</b> Implementing CAVI in R</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#comment"><i class="fa fa-check"></i><b>9.3</b> Comment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS61006 Bayesian Statistics and Computational Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bootstrapping" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Bootstrapping<a href="bootstrapping.html#bootstrapping" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --->
+<p><span class="math inline">\(\def \mb{\mathbb}\)</span>
+<span class="math inline">\(\def \E{\mb{E}}\)</span>
+<span class="math inline">\(\def \P{\mb{P}}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\var}{Var}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\cov}{Cov}\)</span></p>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aims of this chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Introduce bootstrapping: a Monte Carlo method for obtaining standard errors and confidence intervals, and performing hypothesis tests.</td>
+</tr>
+<tr class="even">
+<td>2. Understand sampling from the empirical distribution function, or equivalently, resampling observations with replacement, as the key step in the bootstrapping method.</td>
+</tr>
+<tr class="odd">
+<td>3. Explain the difference between nonparametric and parametric bootstrapping, and show how the latter can be used for hypothesis testing.</td>
+</tr>
+</tbody>
+</table>
+<div id="bootstrap-estimates-of-standard-errors" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Bootstrap estimates of standard errors<a href="bootstrapping.html#bootstrap-estimates-of-standard-errors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will first consider the problem of obtaining standard errors and confidence intervals for parameter estimates.</p>
+<p>Suppose we want to estimate a parameter <span class="math inline">\(\theta\)</span> in some statistical model given a sample of data <span class="math inline">\(\mathbf{x}=\{x_1,\ldots,x_n\}\)</span>. We will use an estimate
+<span class="math display">\[
+\hat{\theta}(\mathbf{x}),
+\]</span>
+where <span class="math inline">\(\hat{\theta}(.)\)</span> is some function of the data <span class="math inline">\(\mathbf{x}\)</span>. The standard
+error of the estimator, denoted by <span class="math inline">\(s.e.(\hat{\theta})\)</span> is
+defined as
+<span class="math display">\[
+s.e.(\hat{\theta})=\sqrt{Var\{\hat{\theta}(\mathbf{X})\}}
+\]</span>
+for a random sample of data <span class="math inline">\(\mathbf{X}=\{X_1,\ldots,X_n\}\)</span>. In other words, before we get the data, we think of <span class="math inline">\(\hat{\theta}(\mathbf{X})\)</span> as a random variable, and the standard error is the standard deviation of this random variable. For simple problems, we can derive formulae for standard errors.</p>
+<p>For example, if we have
+<span class="math display">\[X_1,\ldots,X_n \stackrel{i.i.d}{\sim}N(\theta, \sigma^2),\]</span>
+and our estimator for <span class="math inline">\(\theta\)</span> is <span class="math inline">\(\hat{\theta}(\mathbf{X}) =\bar{X}\)</span>, then we can show that
+<span class="math display">\[
+s.e.(\hat{\theta}) = \frac{\sigma}{\sqrt{n}}.
+\]</span>
+What can we do when we have more complicated models, and we can’t derive formulae such as that above?</p>
+<div class="result">
+<p>Suppose we knew the distribution <span class="math inline">\(F\)</span> of the data. We could then use a Monte Carlo procedure to estimate a standard error:</p>
+<ol style="list-style-type: decimal">
+<li>Sample <span class="math inline">\(N\)</span> independent data sets <span class="math inline">\(\mathbf{x}^*_1,\ldots,\mathbf{x}^*_N \sim F(\cdot)\)</span>, each of size <span class="math inline">\(n\)</span>;</li>
+<li>For each data set <span class="math inline">\(i\)</span>, calculate the corresponding estimate <span class="math inline">\(\hat{\theta}(\mathbf{x}_i^*)\)</span> of the parameter <span class="math inline">\(\theta\)</span>;</li>
+<li>Estimate the standard error <span class="math inline">\(s.e.(\hat{\theta})\)</span> by
+<span class="math display">\[
+\widehat{s.e.}(\hat{\theta})=\left[\frac{1}{N-1}\sum_{i=1}^N\left\{\hat{\theta}(\mathbf{x}^*_i)-\bar{\hat{\theta}}\right\}^2\right]^{0.5},
+\]</span>
+with <span class="math inline">\(\bar{\hat{\theta}}=\sum_{i=1}^N \hat{\theta}(\mathbf{x}^*_i)/N\)</span>.</li>
+</ol>
+</div>
+<p>This is the bootstrap estimate of the standard error. As long as we can sample datasets in step (1), and then actually calculate a parameter estimate given a data set, it doesn’t matter how complicated the model is. This makes the bootstrapping method widely applicable.</p>
+<p>We don’t actually know what <span class="math inline">\(F\)</span> is (if we did, we would already know all the corresponding parameters), but if we could estimate it, we could do an approximation of the Monte Carlo procedure above, where we instead sample random data sets from our estimate of <span class="math inline">\(F\)</span>. This may seem like a somewhat circular argument: normally it’s the parameter estimates that give us our estimate of the distribution <span class="math inline">\(F\)</span>, but in bootstrapping, we can estimate <span class="math inline">\(F\)</span> without reference to any particular model; we can estimate <span class="math inline">\(F\)</span> <em>without</em> having to first estimate any parameters.</p>
+</div>
+<div id="estimating-a-distribution-using-the-empirical-cumulative-distribution-function" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Estimating a distribution using the empirical cumulative distribution function<a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="result">
+<p>In (<em>nonparametric</em>) bootstrapping we estimate the distribution <span class="math inline">\(F\)</span> given
+observations <span class="math inline">\(\{x_1,\ldots,x_n\}\)</span> by the <strong>empirical cumulative distribution function</strong> (ECDF). We denote the ECDF by <span class="math inline">\(F_n\)</span> and define it as
+<span class="math display">\[
+F_n(x) := \frac{1}{n}\sum_{i=1}^n I(x_i \le x),
+\]</span>
+where <span class="math inline">\(I(\cdot)\)</span> is the indicator function.</p>
+</div>
+<p>We illustrate this for <span class="math inline">\(X_1,\ldots,X_5 \sim N(0, 1)\)</span>. Let our observations be
+<span class="math display">\[(x_1,\ldots,x_5) = (-0.897, 0.185, 1.59, -1.13, -0.0803),\]</span>
+then the ECDF is given by that in Figure <a href="bootstrapping.html#fig:ecdf1">6.1</a> along with the true distribution function. We can see that this is not a particularly good estimate of the true cumulative distribution function, and so for small sample sizes, we may not expect bootstrapping to work well.</p>
+<div class="figure"><span style="display:block;" id="fig:ecdf1"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/ecdf1-1.png" alt="The ECDF for five observations drawn independently from a standard normal (black). The true distribution function for the standard normal is shown in red." width="60%" />
+<p class="caption">
+Figure 6.1: The ECDF for five observations drawn independently from a standard normal (black). The true distribution function for the standard normal is shown in red.
+</p>
+</div>
+<p>However, the estimate will be better for larger sample sizes, e.g. we repeat this process for observations <span class="math inline">\(x_1,\ldots,x_{50}\)</span> of the i.i.d. random variables <span class="math inline">\(X_i\sim N(0,1)\)</span>, for <span class="math inline">\(i=1,\ldots,50\)</span> and show this in Figure <a href="bootstrapping.html#fig:ecdf2">6.2</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:ecdf2"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/ecdf2-1.png" alt="The ECDF for 50 observations drawn independently from a standard normal (black). The true distribution function for the standard normal is shown in red." width="60%" />
+<p class="caption">
+Figure 6.2: The ECDF for 50 observations drawn independently from a standard normal (black). The true distribution function for the standard normal is shown in red.
+</p>
+</div>
+<div id="sampling-from-an-ecdf" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Sampling from an ECDF<a href="bootstrapping.html#sampling-from-an-ecdf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To produce a bootstrap sample of data, we need to generate a sample of size <span class="math inline">\(n\)</span> (the same size as the original data set) from the ECDF. Sampling from an ECDF is equivalent to sampling randomly from <span class="math inline">\(\{x_1,\ldots,x_n \}\)</span> with replacement (i.e. where each observation is equally likely to be chosen each time). We therefore don’t actually need to explicitly specify the ECDF! We will demonstrate this shortly, but there are two ways in which we can see that this is valid.</p>
+<p>Firstly, if a random variable <span class="math inline">\(X\)</span> has probability distribution specified by the empirical distribution function for the sample <span class="math inline">\(\{x_1,\ldots,x_n\}\)</span>, then for <span class="math inline">\(i=1,\ldots,n\)</span> we have
+<span class="math display">\[\begin{align}
+P(X = x) &amp;= P(X \le x) - P(X &lt; x) \\
+&amp;= \frac{1}{n} \sum_{i=1}^n I(x_i \le x) - \frac{1}{n} \sum_{i=1}^n I(x_i &lt; x) \\
+&amp; = \frac{1}{n}\sum_{i=1}^n \left(I(x_i \le x) - I(x_i &lt; x)\right) \\
+&amp;= \begin{cases}
+    \frac{1}{n} &amp; \text{for } x \in \{x_1,\ldots,x_n\};\\
+    0 &amp; \text{otherwise}.
+\end{cases}
+\end{align}\]</span>
+as <span class="math inline">\(I(x_i \le x) - I(x_i &lt; x) = 1\)</span> if <span class="math inline">\(x= x_i\)</span> and 0 otherwise.</p>
+<p>Secondly, the process can be understood via the <em>inversion</em> method of sampling. Let <span class="math inline">\(X\)</span> be any random variable with distribution function (CDF) <span class="math inline">\(F_X(x)\)</span>. If we transform <span class="math inline">\(X\)</span> using its own CDF, i.e. if we define a new random variable <span class="math inline">\(Y\)</span> as <span class="math inline">\(Y=F_X(X)\)</span>, then it can be shown that <span class="math inline">\(Y\sim U[0, 1]\)</span>. Hence if we can sample <span class="math inline">\(Y\)</span> from the <span class="math inline">\(U[0, 1]\)</span> distribution, we can obtain a random draw from the distribution of <span class="math inline">\(X\)</span> by setting <span class="math inline">\(X=F_X^{-1}(Y)\)</span>.</p>
+<p>Now, if <span class="math inline">\(F_X(x)\)</span> is an ECDF, the function consists of <span class="math inline">\(n\)</span> ‘steps’ of height all equal <span class="math inline">\(1/n\)</span>, and so when we apply the inversion of a uniform random variable, any point in <span class="math inline">\(\{x_1,\ldots,x_n\}\)</span> has the same probability of being selected. We see this process in Figure <a href="bootstrapping.html#fig:ecdf3">6.3</a>, where we show the ECDF of five standard uniform samples. If we draw the value <span class="math inline">\(u\)</span> from a uniform distribution, we apply the inverse function <span class="math inline">\(F_X^{-1}(u)=x_3\)</span> and so we set <span class="math inline">\(x_3\)</span> as our random draw.</p>
+<div class="figure"><span style="display:block;" id="fig:ecdf3"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/ecdf3-1.png" alt="The ECDF for five observations drawn independently from a standard normal (black). We sample a value $u$ from a uniform distribution and apply an inverse transformation $F_X^{-1}(u)$ to yield the corresponding value of $x$, which here is given by $x_3$." width="60%" />
+<p class="caption">
+Figure 6.3: The ECDF for five observations drawn independently from a standard normal (black). We sample a value <span class="math inline">\(u\)</span> from a uniform distribution and apply an inverse transformation <span class="math inline">\(F_X^{-1}(u)\)</span> to yield the corresponding value of <span class="math inline">\(x\)</span>, which here is given by <span class="math inline">\(x_3\)</span>.
+</p>
+</div>
+<p>To give an indication that the process of sampling with replacement does indeed work, we illustrate this in Figure <a href="bootstrapping.html#fig:replacement-sampling">6.4</a>. We sample with replacement from a sample of standard normals 1000 times to obtain the histogram shown in the figure. We can see it is a fair approximation to the true density of the standard normal, which is shown in red.</p>
+<div class="figure"><span style="display:block;" id="fig:replacement-sampling"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/replacement-sampling-1.png" alt="Given a sample of 50 independent draws from a standard normal, we sample with replacement 1000 times. This sample is represented by the histogram, and the true density function of the standard normal is shown in red." width="60%" />
+<p class="caption">
+Figure 6.4: Given a sample of 50 independent draws from a standard normal, we sample with replacement 1000 times. This sample is represented by the histogram, and the true density function of the standard normal is shown in red.
+</p>
+</div>
+</div>
+</div>
+<div id="notation-summary" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Notation summary<a href="bootstrapping.html#notation-summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We need to be careful with notation here, as there are various different types of random variables and samples to keep track of. In particular, watch for the ‘big <span class="math inline">\(X\)</span> random, little <span class="math inline">\(x\)</span> observed’ distinction, and the use of the <span class="math inline">\(*\)</span> superscript to indicate the use of bootstrapping. To summarise, we have:</p>
+<ul>
+<li><span class="math inline">\(\theta\)</span>: a parameter in a model we wish to estimate;</li>
+<li><span class="math inline">\(\mathbf{X}=\{X_1,\ldots,X_n\}\)</span>: independent and identically distributed random variables, with a probability distribution dependent on <span class="math inline">\(\theta\)</span>;</li>
+<li><span class="math inline">\(\mathbf{x}=\{x_1,\ldots,x_n\}\)</span>: our observed sample of data;</li>
+<li><span class="math inline">\(\mathbf{X^*}=\{X_1^*,\ldots,X_n^*\}\)</span>: <span class="math inline">\(n\)</span> ‘bootstrapped’ random variables, defined by resampling from <span class="math inline">\(\{x_1,\ldots,x_n\}\)</span> independently and with replacement;</li>
+<li><span class="math inline">\(\mathbf{x^*}=\{x_1^*,\ldots,x_n^*\}\)</span>: an observed bootstrapped sample</li>
+<li><span class="math inline">\(\hat{\theta}(.)\)</span>: a function of the data used to estimate <span class="math inline">\(\theta\)</span>;</li>
+<li><span class="math inline">\(\hat{\theta}(\mathbf{X})\)</span>: an <strong>estimator</strong>. A random variable, defined as a transformation of the random variables <span class="math inline">\(\mathbf{X}=\{X_1,\ldots,X_n\}\)</span>;</li>
+<li><span class="math inline">\(\hat{\theta}(\mathbf{x})\)</span>: the <strong>estimate</strong> we have obtained given the observed data; and</li>
+<li><span class="math inline">\(\hat{\theta}(\mathbf{x}^*)\)</span>: a bootstrapped estimate of <span class="math inline">\(\theta\)</span> obtained from a bootstrapped sample of data.</li>
+</ul>
+</div>
+<div id="example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Example: Bootstrap standard errors of a sample mean and sample variance<a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We’ll first try bootstrapping in a simple example where we actually know what the true standard errors are, so we can check the method works. We’ll consider normally distributed data
+<span class="math display">\[X_1,\ldots,X_{30}\stackrel{i.i.d}{\sim}N(\mu,\sigma^2).\]</span></p>
+<p>We can use the sample mean <span class="math inline">\(\bar{X}\)</span> and sample variance <span class="math inline">\(S^2\)</span> as estimators of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>, and these have standard errors <span class="math inline">\(\frac{\sigma}{\sqrt{30}}\)</span> and <span class="math inline">\(\sqrt{\frac{2\sigma^4}{(30 - 1)}}\)</span> respectively. Let’s see if we can recover these known standard errors using a bootstrapping estimate.</p>
+<p>We’ll first choose <span class="math inline">\(\mu=0\)</span> and <span class="math inline">\(\sigma=1\)</span>, and generate a sample of data:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="bootstrapping.html#cb86-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>)</span></code></pre></div>
+<p>Now, to obtain a bootstrap sample of data, we just sample the vector <code>x</code> 30 times with replacement, e.g.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="bootstrapping.html#cb87-1" aria-hidden="true" tabindex="-1"></a>bootSample <span class="ot">&lt;-</span> <span class="fu">sample</span>(x, <span class="at">size =</span> <span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>and then we would calculate the sample mean and sample variance of <code>bootSample</code>. We repeat this a large number of times to get our sample of estimators:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="bootstrapping.html#cb88-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb88-2"><a href="bootstrapping.html#cb88-2" aria-hidden="true" tabindex="-1"></a>bootMeans <span class="ot">&lt;-</span> bootVars <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N)</span>
+<span id="cb88-3"><a href="bootstrapping.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb88-4"><a href="bootstrapping.html#cb88-4" aria-hidden="true" tabindex="-1"></a>  bootSample <span class="ot">&lt;-</span> <span class="fu">sample</span>(x, <span class="at">size =</span> <span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-5"><a href="bootstrapping.html#cb88-5" aria-hidden="true" tabindex="-1"></a>  bootMeans[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(bootSample)</span>
+<span id="cb88-6"><a href="bootstrapping.html#cb88-6" aria-hidden="true" tabindex="-1"></a>  bootVars[i] <span class="ot">&lt;-</span> <span class="fu">var</span>(bootSample)</span>
+<span id="cb88-7"><a href="bootstrapping.html#cb88-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Now let’s compare the sample standard deviations of our bootstrapped sample of estimators (first value in the pairs calculated below) with the true standard errors that we know from distributional theory (second value in the pairs below). For the sample mean:</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="bootstrapping.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">sd</span>(bootMeans), <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">30</span>))</span></code></pre></div>
+<pre><code>## [1] 0.1667101 0.1825742</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="bootstrapping.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">sd</span>(bootVars), <span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">/</span><span class="dv">29</span>))</span></code></pre></div>
+<pre><code>## [1] 0.2298253 0.2626129</code></pre>
+<p>In both cases, the bootstrap standard errors are fairly close to the true standard errors.</p>
+</div>
+<div id="confidence-intervals" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Confidence intervals<a href="bootstrapping.html#confidence-intervals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="confidence-intervals-using-the-estimated-standard-error" class="section level3 hasAnchor" number="6.5.1">
+<h3><span class="header-section-number">6.5.1</span> Confidence intervals using the estimated standard error<a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="result">
+<p>If we assume the estimator <span class="math inline">\(\hat{\theta}\)</span> is normally distributed and unbiased, then once we have the bootstrap estimate of the standard error, <span class="math inline">\(\widehat{s.e.}(\hat{\theta})\)</span>, we can report
+<span class="math display">\[\hat{\theta} \pm 2 \widehat{s.e.}(\hat{\theta}),\]</span>
+as an approximate 95% confidence interval.</p>
+</div>
+<p>Continuing our example from the previous section, we can compare bootstrap confidence intervals with the exact confidence interval because we can derive that here. We know the distributions of the sample mean
+<span class="math display">\[\bar{X}\sim t_{n-1} \left(\mu,\frac{S}{\sqrt{n}}\right),\]</span>
+and variance
+<span class="math display">\[S^2\sim \frac{\sigma^2}{n-1}\chi^2_{n-1}.\]</span></p>
+<p>Starting with the mean, the 95% confidence interval for <span class="math inline">\(\mu\)</span> using the bootstrap approach would be:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="bootstrapping.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">mean</span>(x) <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(bootMeans), <span class="fu">mean</span>(x) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(bootMeans))</span></code></pre></div>
+<pre><code>## [1] -0.2509621  0.4158785</code></pre>
+<p>and the exact interval would be calculated as <span class="math inline">\(\bar{x}\pm t_{19;0.025}\sqrt(s^2/20)\)</span>:</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="bootstrapping.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">qt</span>(<span class="fl">0.975</span>,<span class="dv">29</span>) <span class="sc">*</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">30</span>)</span></code></pre></div>
+<pre><code>## [1] -0.2626142  0.4275306</code></pre>
+<p>Actually, we can get this interval a little easier in R by fitting a linear model with an intercept only:</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="bootstrapping.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">lm</span>(x<span class="sc">~</span><span class="dv">1</span>))</span></code></pre></div>
+<pre><code>##                  2.5 %    97.5 %
+## (Intercept) -0.2626142 0.4275306</code></pre>
+<p>Similarly, for the variance parameter, the 95% confidence interval for <span class="math inline">\(\sigma^2\)</span> using the bootstrapping approach would be</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="bootstrapping.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">var</span>(x) <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(bootVars), <span class="fu">var</span>(x) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(bootVars))</span></code></pre></div>
+<pre><code>## [1] 0.3943486 1.3136500</code></pre>
+<p>which we can compare with the exact confidence interval <span class="math inline">\((29s^2/\chi^2_{29;0.025}, \, 29s^2/\chi^2_{29;0.975})\)</span>:</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="bootstrapping.html#cb101-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">29</span>)<span class="sc">*</span><span class="fu">var</span>(x) <span class="sc">/</span> <span class="fu">qchisq</span>(<span class="fu">c</span>(<span class="fl">0.975</span>, <span class="fl">0.025</span>), <span class="dv">29</span>)</span></code></pre></div>
+<pre><code>## [1] 0.541661 1.543333</code></pre>
+<p>The bootstrap interval for the mean is fairly close to the exact interval. The bootstrap interval for the variance is slightly off (though in the right ballpark); we might expect this, as we know that the sample variance <span class="math inline">\(S^2\)</span> isn’t normally distributed.</p>
+</div>
+<div id="confidence-intervals-using-percentiles" class="section level3 hasAnchor" number="6.5.2">
+<h3><span class="header-section-number">6.5.2</span> Confidence intervals using percentiles<a href="bootstrapping.html#confidence-intervals-using-percentiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If we think the distribution of the estimator deviates substantially from a normal distribution, we could derive an interval based on percentiles instead. Suppose we could find <span class="math inline">\(l\)</span> and <span class="math inline">\(u\)</span> such that</p>
+<p><span class="math display">\[\P(\hat{\theta} &gt; \theta + u) = \P(\hat{\theta} &lt; \theta - l) = 0.025,\]</span>
+then we have
+<span class="math display">\[\P(\hat{\theta} - u&lt;\theta &lt;  \hat{\theta} +l)= 0.95.\]</span></p>
+<div class="result">
+<p>A 95% confidence interval for <span class="math inline">\(\theta\)</span> would be
+<span class="math display">\[(\hat{\theta} - u,\quad \hat{\theta} +l).\]</span></p>
+<p>We can estimate <span class="math inline">\(l\)</span> and <span class="math inline">\(u\)</span> from our bootstrap sample: we estimate these as the 2.5th and 97.5th percentiles from our sample of <span class="math inline">\(\hat{\theta}(\mathbf{x}^*_i) - \hat{\theta}(\mathbf{x})\)</span> (for <span class="math inline">\(i=1,\ldots,n\)</span>).</p>
+</div>
+<p>The assumptions here are that:</p>
+<ol style="list-style-type: decimal">
+<li>The distribution of <span class="math inline">\(\hat{\theta}(\mathbf{X}) - \theta\)</span> would be the same for any value of <span class="math inline">\(\theta\)</span>, including <span class="math inline">\(\theta = \hat{\theta}(\mathbf{x})\)</span>; and</li>
+<li>The distribution of a randomly generated estimator <span class="math inline">\(\hat{\theta}(\mathbf{X}^*)\)</span> obtained via bootstrapping is (approximately) the same as the distribution of <span class="math inline">\(\hat{\theta}(\mathbf{X})\)</span>.</li>
+</ol>
+<p>In our example, we obtain the confidence interval for <span class="math inline">\(\sigma^2\)</span> using</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="bootstrapping.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x) <span class="sc">-</span> <span class="fu">quantile</span>(bootVars <span class="sc">-</span> <span class="fu">var</span>(x), <span class="fu">c</span>(<span class="fl">0.975</span>, <span class="fl">0.025</span>))</span></code></pre></div>
+<pre><code>##     97.5%      2.5% 
+## 0.4068962 1.2967503</code></pre>
+<p>In this case, this is not noticeably different from the standard error-based interval. If we plot a histogram of bootstrap estimates, as in Figure <a href="bootstrapping.html#fig:histogram-boot-estimates">6.5</a> although the distribution is skewed, the 2.5th and 97.5th percentiles are similar distances from <span class="math inline">\(\hat{\theta}(\mathbf{x})\)</span>.</p>
+<div class="figure"><span style="display:block;" id="fig:histogram-boot-estimates"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/histogram-boot-estimates-1.png" alt="A histogram of bootstrapped estimates of the variance. The red solid line shows the sample variance of the observed data, and the dashed lines indicate 2.5th and 97.5th percentiles from the bootstrapped sample of estimates. Although the distribution of bootstrapped estimates is skewed, these percentiles are roughly the same distance from the sample variance." width="60%" />
+<p class="caption">
+Figure 6.5: A histogram of bootstrapped estimates of the variance. The red solid line shows the sample variance of the observed data, and the dashed lines indicate 2.5th and 97.5th percentiles from the bootstrapped sample of estimates. Although the distribution of bootstrapped estimates is skewed, these percentiles are roughly the same distance from the sample variance.
+</p>
+</div>
+</div>
+</div>
+<div id="properties-of-samples-from-the-empirical-cdf" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Properties of samples from the empirical CDF<a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="expectation-and-variance" class="section level3 hasAnchor" number="6.6.1">
+<h3><span class="header-section-number">6.6.1</span> Expectation and variance<a href="bootstrapping.html#expectation-and-variance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Following on from the discussion above, it is helpful to understand a little more about what the implications are when we sample from an ECDF. Denote the sample by <span class="math inline">\(x_1,\ldots,x_n\)</span>, and let <span class="math inline">\(X\)</span> be a random variable sampled from the corresponding ECDF. Then we have
+<span class="math display">\[\begin{align}
+E(X) &amp;= \sum_{i=1}^n x_i \P(X = x_i) \\
+&amp;= \sum_{i=1}^n x_i \frac{1}{n} \\
+&amp;= \bar{x},
+\end{align}\]</span>
+and similarly
+<span class="math display">\[E(X^2) = \sum_{i=1}^n x_i^2\frac{1}{n},\]</span>
+so that
+<span class="math display">\[\var(X) = \frac{n-1}{n}s^2,\]</span>
+where <span class="math inline">\(s^2\)</span> is the sample variance.</p>
+<p>Hence for a bootstrapped sample mean, we would have
+<span class="math display">\[\var(\bar{X^*}) = \frac{n-1}{n^2}s^2\simeq \frac{s^2}{n}.\]</span>
+So, for a large enough <span class="math inline">\(N\)</span>, the bootstrap estimate of the standard error of a sample mean would just be (approximately) the usual estimate <span class="math inline">\(s^2/n\)</span>. Therefore, bootstrapping doesn’t add anything to the story here! But, again, the motivation for bootstrapping comes from problems where we could not easily derive standard errors directly rather than the problem of estimating <span class="math inline">\(\bar{X}\)</span>.</p>
+</div>
+<div id="sample-percentiles" class="section level3 hasAnchor" number="6.6.2">
+<h3><span class="header-section-number">6.6.2</span> Sample percentiles<a href="bootstrapping.html#sample-percentiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose we wanted to estimate the standard error of a sample percentile, e.g., the 95th percentile. For a small <span class="math inline">\(n\)</span>, we wouldn’t expect the ECDF to approximate the tails of a distribution particularly well.</p>
+<p>Consider, for example, <span class="math inline">\(n=21\)</span>, and denote the ordered sample by <span class="math inline">\(x_{(1)},\ldots,x_{(21)}\)</span>, so that the sample estimate of the 95th percentile (obtained via default algorithm in the <code>quantile()</code> function in R) would be <span class="math inline">\(x_{(20)}\)</span>. In any bootstrap sample, we would frequently obtain <span class="math inline">\(x_{(20)}\)</span> as the bootstrapped 95th percentile, and we couldn’t get a value larger than <span class="math inline">\(x_{(21)}\)</span>. Therefore, we would likely underestimate the standard error of the sampled 95th percentile (regardless of how many bootstrap samples we take).</p>
+<p>We illustrate this as follows. Suppose we have
+<span class="math display">\[X_1,\ldots,X_{21}\stackrel{i.i.d}{\sim}N(\mu, \sigma^2),\]</span>
+and given the observations <span class="math inline">\(x_1,\ldots,x_{21}\)</span>, we want to give an estimated standard error for the sample 95th percentile. We’ll estimate this with bootstrapping, and in parallel, we’ll also use Monte Carlo to estimate the standard error, using multiple samples of size 21 from the correct distribution.</p>
+<p>Here is our approach to estimate the 95th percentile using Bootstrapping and Monte Carlo:</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="bootstrapping.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb105-2"><a href="bootstrapping.html#cb105-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">rnorm</span>(<span class="dv">21</span>)) <span class="co"># obs</span></span>
+<span id="cb105-3"><a href="bootstrapping.html#cb105-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># number of bootstrap samples</span></span>
+<span id="cb105-4"><a href="bootstrapping.html#cb105-4" aria-hidden="true" tabindex="-1"></a>boot95th <span class="ot">&lt;-</span> sampled95th <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N)</span>
+<span id="cb105-5"><a href="bootstrapping.html#cb105-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-6"><a href="bootstrapping.html#cb105-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb105-7"><a href="bootstrapping.html#cb105-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-8"><a href="bootstrapping.html#cb105-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># make a bootstrap sample of observations</span></span>
+<span id="cb105-9"><a href="bootstrapping.html#cb105-9" aria-hidden="true" tabindex="-1"></a>  bootSample <span class="ot">&lt;-</span> <span class="fu">sample</span>(x, <span class="dv">21</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb105-10"><a href="bootstrapping.html#cb105-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate the bootstrap estimator</span></span>
+<span id="cb105-11"><a href="bootstrapping.html#cb105-11" aria-hidden="true" tabindex="-1"></a>  boot95th[i] <span class="ot">&lt;-</span> <span class="fu">quantile</span>(bootSample, <span class="fl">0.95</span>)</span>
+<span id="cb105-12"><a href="bootstrapping.html#cb105-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-13"><a href="bootstrapping.html#cb105-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sample from underlying distribution</span></span>
+<span id="cb105-14"><a href="bootstrapping.html#cb105-14" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">21</span>)</span>
+<span id="cb105-15"><a href="bootstrapping.html#cb105-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate the estimator</span></span>
+<span id="cb105-16"><a href="bootstrapping.html#cb105-16" aria-hidden="true" tabindex="-1"></a>  sampled95th[i] <span class="ot">&lt;-</span> <span class="fu">quantile</span>(z, <span class="fl">0.95</span>)</span>
+<span id="cb105-17"><a href="bootstrapping.html#cb105-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We compare the standard errors of our samples of the estimator:</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="bootstrapping.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(boot95th)</span></code></pre></div>
+<pre><code>## [1] 0.2629693</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="bootstrapping.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(sampled95th)</span></code></pre></div>
+<pre><code>## [1] 0.3981949</code></pre>
+<p>We see that the bootstrap estimate of the standard error is noticeably smaller than that obtained via Monte Carlo. We can see the problem clearer when we compare histograms of the percentile estimates, as in Figure <a href="bootstrapping.html#fig:tail-plot">6.6</a>. We see that there is a limited range of values that can be obtained for the percentile estimate in bootstrapping, and that the standard error of this estimate is an under-approximation.</p>
+<div class="figure"><span style="display:block;" id="fig:tail-plot"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/tail-plot-1.png" alt="Comparison of bootstrapping and Monte Carlo when estimating the 95th percentile from a set of 21 observations. Both methods implemented 10000 samples." width="80%" />
+<p class="caption">
+Figure 6.6: Comparison of bootstrapping and Monte Carlo when estimating the 95th percentile from a set of 21 observations. Both methods implemented 10000 samples.
+</p>
+</div>
+</div>
+<div id="sources-of-error-and-sample-sizes-in-bootstrapping" class="section level3 hasAnchor" number="6.6.3">
+<h3><span class="header-section-number">6.6.3</span> Sources of error and sample sizes in bootstrapping<a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="result">
+<p>There are two sources of error to consider in bootstrapping, related to two sample sizes:</p>
+<ol style="list-style-type: decimal">
+<li>Error in approximating the distribution of the data by the empirical distribution function, based on <span class="math inline">\(n\)</span> observations;</li>
+<li>Monte Carlo error in estimating a standard error (or some other summary), based on a random sample of <span class="math inline">\(N\)</span> bootstrapped data sets.</li>
+</ol>
+</div>
+<p>We can usually make <span class="math inline">\(N\)</span> as large as we want, so that any Monte Carlo error will be negligibly small, but this won’t have any effect on the first source of error. So if the original sample size <span class="math inline">\(n\)</span> is too small, then by making <span class="math inline">\(N\)</span> large, we may simply be obtaining a precise Monte Carlo estimate of a poor approximation.</p>
+</div>
+</div>
+<div id="example-measuring-observer-agreement" class="section level2 hasAnchor" number="6.7">
+<h2><span class="header-section-number">6.7</span> Example: Measuring observer agreement<a href="bootstrapping.html#example-measuring-observer-agreement" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So far, we’ve only illustrated bootstrapping in an example where we don’t really need to use it; standard errors and confidence intervals could be obtained analytically. We’ll now consider an example where it’s not so straightforward to derive a confidence interval (although an asymptotic approximation is available).</p>
+<div id="the-data" class="section level3 hasAnchor" number="6.7.1">
+<h3><span class="header-section-number">6.7.1</span> The data<a href="bootstrapping.html#the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We consider the <code>diagnoses</code> data set in the <code>irr</code> package <span class="citation">(<a href="#ref-R-irr" role="doc-biblioref">Gamer, Lemon, and &lt;puspendra.pusp22@gmail.com&gt; 2019</a>)</span>. We have psychiatric diagnoses for 30 patients. Each patient has been diagnosed separately by 6 different ‘raters’, and the interest is in the extent to which the raters agree with each other. There are five possible diagnoses: depression; personality disorder, schizophrenia, neurosis, “other”.</p>
+<p>We’ll just consider diagnoses made by the first two raters, an extract of this data is shown in Table <a href="bootstrapping.html#tab:diag-head">6.1</a>. These two raters agreed on five out of their first six diagnoses.</p>
+<table>
+<caption><span id="tab:diag-head">Table 6.1: </span>Extract of the first 6 rows of the diagnosis dataset, only considering the first two raters.</caption>
+<thead>
+<tr class="header">
+<th align="left">rater1</th>
+<th align="left">rater2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">4. Neurosis</td>
+<td align="left">4. Neurosis</td>
+</tr>
+<tr class="even">
+<td align="left">2. Personality Disorder</td>
+<td align="left">2. Personality Disorder</td>
+</tr>
+<tr class="odd">
+<td align="left">2. Personality Disorder</td>
+<td align="left">3. Schizophrenia</td>
+</tr>
+<tr class="even">
+<td align="left">5. Other</td>
+<td align="left">5. Other</td>
+</tr>
+<tr class="odd">
+<td align="left">2. Personality Disorder</td>
+<td align="left">2. Personality Disorder</td>
+</tr>
+<tr class="even">
+<td align="left">1. Depression</td>
+<td align="left">1. Depression</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="the-kappa-statistic" class="section level3 hasAnchor" number="6.7.2">
+<h3><span class="header-section-number">6.7.2</span> The kappa statistic<a href="bootstrapping.html#the-kappa-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One way to measure agreement between raters is to use Cohen’s kappa statistic, defined as
+<span class="math display">\[\kappa := \frac{p_o - p_e}{1 - p_e},\]</span>
+where <span class="math inline">\(p_o\)</span> is the observed proportion of times two raters agreed, and <span class="math inline">\(p_e\)</span> is the estimated probability the raters would agree purely by chance (i.e. the diagnosis given by rater 1 is probabilistically independent of the diagnosis given by rater 2). In our example, we would obtain <span class="math inline">\(p_e\)</span> as
+<span class="math display">\[p_e = \sum_{j=1}^5 p_{1,j}p_{2,j},\]</span>
+where <span class="math inline">\(p_{i,j}\)</span> is the observed proportion of times rater <span class="math inline">\(i\)</span> gave diagnosis <span class="math inline">\(j\)</span>.</p>
+<p>A kappa of 1 would correspond to perfect agreement, and a kappa of 0 would correspond to agreement no better than chance. Note that kappa can be negative if the agreement is worse than that expected by chance.</p>
+<p>In R, we can compute kappa using the function <code>irr::kappa2()</code>:</p>
+<pre><code>##  Cohen&#39;s Kappa for 2 Raters (Weights: unweighted)
+## 
+##  Subjects = 30 
+##    Raters = 2 
+##     Kappa = 0.651 
+## 
+##         z = 7 
+##   p-value = 2.63e-12</code></pre>
+<p>We obtained <span class="math inline">\(\kappa = 0.651\)</span> in this example: interpreting the actual value can be hard, but comparing relative values may be helpful for comparing how well different pairs of raters agree with each other. And since we calculated kappa using 30 observations only, it may be helpful to obtain a confidence interval, to assess uncertainty in this value.</p>
+</div>
+<div id="bootstrapping-bivariate-data" class="section level3 hasAnchor" number="6.7.3">
+<h3><span class="header-section-number">6.7.3</span> Bootstrapping bivariate data<a href="bootstrapping.html#bootstrapping-bivariate-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the two raters, denote the data by
+<span class="math display">\[\begin{align}
+(r_{1, 1}&amp;, r_{2, 1}) \\
+&amp;\vdots \\
+(r_{1,30}&amp;, r_{2,30}),
+\end{align}\]</span>
+where <span class="math inline">\(r_{i,j}\)</span> is the diagnosis given by rater <span class="math inline">\(i\)</span> for observation <span class="math inline">\(j\)</span>. To get a bootstrap sample, we resample <em>pairs</em> of diagnoses, with replacement, which we can do by sampling from the indices 1-30 of our data:</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="bootstrapping.html#cb111-1" aria-hidden="true" tabindex="-1"></a>indices <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span></span>
+<span id="cb111-2"><a href="bootstrapping.html#cb111-2" aria-hidden="true" tabindex="-1"></a>(bootIndex <span class="ot">&lt;-</span> <span class="fu">sample</span>(indices, <span class="at">size =</span> <span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>##  [1] 25  4  7  1  2 29 23 11 14 18 27 19  1 21 21 10 22 14 10  7  9 15 21  5  9
+## [26] 25 14  5  5  2</code></pre>
+<p>so the first element of our bootstrap sample is <span class="math inline">\((r_{1,25}, r_{2,25})\)</span>, the second element is <span class="math inline">\((r_{1,4}, r_{2,4})\)</span> and so on. We then recompute kappa for each bootstrap sample. For example:</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="bootstrapping.html#cb113-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb113-2"><a href="bootstrapping.html#cb113-2" aria-hidden="true" tabindex="-1"></a>bootKappa <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, N)</span>
+<span id="cb113-3"><a href="bootstrapping.html#cb113-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb113-4"><a href="bootstrapping.html#cb113-4" aria-hidden="true" tabindex="-1"></a>  bootIndex <span class="ot">&lt;-</span> <span class="fu">sample</span>(indices,</span>
+<span id="cb113-5"><a href="bootstrapping.html#cb113-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">size =</span> <span class="dv">30</span>,</span>
+<span id="cb113-6"><a href="bootstrapping.html#cb113-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb113-7"><a href="bootstrapping.html#cb113-7" aria-hidden="true" tabindex="-1"></a>  bootData <span class="ot">&lt;-</span> diag2[bootIndex, ]</span>
+<span id="cb113-8"><a href="bootstrapping.html#cb113-8" aria-hidden="true" tabindex="-1"></a>  bootKappa[i] <span class="ot">&lt;-</span> irr<span class="sc">::</span><span class="fu">kappa2</span>(bootData)<span class="sc">$</span>value</span>
+<span id="cb113-9"><a href="bootstrapping.html#cb113-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We can now extract sample quantiles from our bootstrapped sample of kappa values, to get our approximate confidence interval:</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="bootstrapping.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(bootKappa, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
+<pre><code>##      2.5%     97.5% 
+## 0.4451596 0.8516323</code></pre>
+<p>Although we have only considered the first two raters here, to give these numbers a little more context, we show the range of observed kappa statistics between rater 1 and each of the other four raters: 0.384, 0.258, 0.188, and 0.0809, so these range from 0.08-0.38. We may therefore conclude that there is evidence of agreement between the first two raters.</p>
+</div>
+</div>
+<div id="parametric-bootstrapping-and-hypothesis-testing" class="section level2 hasAnchor" number="6.8">
+<h2><span class="header-section-number">6.8</span> Parametric bootstrapping and hypothesis testing<a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So far in this chapter we have considered nonparametric bootstrapping.</p>
+<div class="result">
+<p>In parametric bootstrapping, we first fit a parametric distribution to our data, and then sample new data sets from this distribution, rather than the nonparametric approach of resampling our observed data. This can be useful in hypothesis testing problems in which it is difficult to work out the distribution of the test statistic under the null hypothesis; we can use Monte Carlo instead.</p>
+</div>
+<p>We illustrate this with an example in mixed effects modelling.</p>
+<div id="the-milk-data-set" class="section level3 hasAnchor" number="6.8.1">
+<h3><span class="header-section-number">6.8.1</span> The <code>Milk</code> data set<a href="bootstrapping.html#the-milk-data-set" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Our example will use the <code>Milk</code> data from the <code>nlme</code> package <span class="citation">(<a href="#ref-R-nlme" role="doc-biblioref">Pinheiro et al. 2021</a>)</span>, an extract of which is given in Table <a href="bootstrapping.html#tab:milk-extract">6.2</a>.</p>
+<table>
+<caption><span id="tab:milk-extract">Table 6.2: </span>Extract of the milk dataset.</caption>
+<thead>
+<tr class="header">
+<th align="right">protein</th>
+<th align="right">Time</th>
+<th align="left">Cow</th>
+<th align="left">Diet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">3.63</td>
+<td align="right">1</td>
+<td align="left">B01</td>
+<td align="left">barley</td>
+</tr>
+<tr class="even">
+<td align="right">3.57</td>
+<td align="right">2</td>
+<td align="left">B01</td>
+<td align="left">barley</td>
+</tr>
+<tr class="odd">
+<td align="right">3.47</td>
+<td align="right">3</td>
+<td align="left">B01</td>
+<td align="left">barley</td>
+</tr>
+<tr class="even">
+<td align="right">3.65</td>
+<td align="right">4</td>
+<td align="left">B01</td>
+<td align="left">barley</td>
+</tr>
+<tr class="odd">
+<td align="right">3.89</td>
+<td align="right">5</td>
+<td align="left">B01</td>
+<td align="left">barley</td>
+</tr>
+<tr class="even">
+<td align="right">3.73</td>
+<td align="right">6</td>
+<td align="left">B01</td>
+<td align="left">barley</td>
+</tr>
+</tbody>
+</table>
+<p>This data features the following variables:</p>
+<ul>
+<li><code>protein</code> is the dependent variable: the protein content of in a sample of cow milk;</li>
+<li><code>Cow</code> labels the cow from which the sample was taken;</li>
+<li><code>Time</code> is the number of weeks since calving for the corresponding <code>Cow</code>; and</li>
+<li><code>Diet</code> is one of three possible diets the cow was on (<code>barley</code>, <code>lupins</code>, <code>barley+lupins</code>).</li>
+</ul>
+<p>Multiple samples are taken from each cow, and we might expect correlation between observations taken on the same cow. The plot in Figure <a href="bootstrapping.html#fig:cow-protein">6.7</a> confirms this.</p>
+<div class="figure"><span style="display:block;" id="fig:cow-protein"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/cow-protein-1.png" alt="Protein content of milk from repeated measures across different cows from the milk dataset." width="80%" />
+<p class="caption">
+Figure 6.7: Protein content of milk from repeated measures across different cows from the milk dataset.
+</p>
+</div>
+<p>Each cow is assigned to one diet only, so we could not model the effects of both cow and diet as fixed effects. Assuming the interest is really in the ‘population’ of cows, rather than the cows in this particular data set, it makes sense to model the effects of the cows as random effects.</p>
+<p>Plotting protein against time in Figure <a href="bootstrapping.html#fig:milk-time-effect">6.8</a>, we see a clear drop after week 1. We’ll introduce an indicator variable for whether the sample was taken in week 1, but otherwise not model the effect of time.</p>
+<div class="figure"><span style="display:block;" id="fig:milk-time-effect"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/milk-time-effect-1.png" alt="Milk yields observed at different weeks after calving. A simple approach to model the effect of time would be to assume yields change after week 1, but are constant, on average thereafter." width="60%" />
+<p class="caption">
+Figure 6.8: Milk yields observed at different weeks after calving. A simple approach to model the effect of time would be to assume yields change after week 1, but are constant, on average thereafter.
+</p>
+</div>
+<p>We’ll create a new data frame <code>milkDF</code>, with the indicator variable added:</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="bootstrapping.html#cb116-1" aria-hidden="true" tabindex="-1"></a>milkDF <span class="ot">&lt;-</span> nlme<span class="sc">::</span>Milk <span class="sc">%&gt;%</span></span>
+<span id="cb116-2"><a href="bootstrapping.html#cb116-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">weekOne =</span> Time <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+</div>
+<div id="the-model-and-hypothesis" class="section level3 hasAnchor" number="6.8.2">
+<h3><span class="header-section-number">6.8.2</span> The model and hypothesis<a href="bootstrapping.html#the-model-and-hypothesis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We consider the model
+<span class="math display">\[
+Y_{ijt} = \mu + \tau_i + \beta I(t=1) + b_{ij} + \varepsilon_{ijt},
+\]</span>
+with</p>
+<ul>
+<li><span class="math inline">\(Y_{ijt}\)</span>: the protein content at time <span class="math inline">\(t = 1,\ldots,19\)</span>, for cow <span class="math inline">\(j=1,\ldots,n_i\)</span> within group (diet) <span class="math inline">\(i=1,2,3\)</span>;</li>
+<li><span class="math inline">\(\mu\)</span>: the expected protein content for a cow on diet 1 at time <span class="math inline">\(t&gt;1\)</span>;</li>
+<li><span class="math inline">\(\tau_i\)</span>: a fixed effect for diet <span class="math inline">\(i\)</span>, with <span class="math inline">\(\tau_1\)</span> constrained to be 0;</li>
+<li><span class="math inline">\(\beta\)</span>: the increase in expected protein content at time <span class="math inline">\(t=1\)</span>;</li>
+<li><span class="math inline">\(b_{ij}\sim N(0, \sigma^2_b)\)</span>, a random effect for each cow;</li>
+<li><span class="math inline">\(\varepsilon_{ijt}\sim N(0, \sigma^2)\)</span> a random error term.</li>
+</ul>
+<p>We suppose the null hypothesis of interest is
+<span class="math display">\[
+H_0: \tau_2=\tau_3=0,
+\]</span>
+so that diet has no effect on protein levels. The alternative hypothesis is that at least one <span class="math inline">\(\tau_i\)</span> is non-zero. One way to do this test would be to use the generalised likelihood ratio test, which we recap in the following section.</p>
+</div>
+<div id="the-generalized-likelihood-ratio-test" class="section level3 hasAnchor" number="6.8.3">
+<h3><span class="header-section-number">6.8.3</span> The generalized likelihood ratio test<a href="bootstrapping.html#the-generalized-likelihood-ratio-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We use the following notation. Suppose observations are independent and the <span class="math inline">\(i^\text{th}\)</span> observation is drawn from
+the density (or probability function, if discrete) <span class="math inline">\(f(y; x, \psi)\)</span> where <span class="math inline">\(\psi\)</span>
+is a vector of unknown parameters, and <span class="math inline">\(x\)</span> is a vector of any corresponding independent variables Then the likelihood and log-likelihood of
+the observations are
+<span class="math display">\[\begin{align*}
+L(\mathbf{y};\,\mathbf{x},\, \psi)&amp;= \prod_i f(y_i;\, x_i, \psi),\\ \ell(\mathbf{y};\,\mathbf{x},\, \psi)&amp;:= \log L(\mathbf{y};\,\mathbf{x},\, \psi)=
+\sum_i \log f(y_i; x_i, \psi),
+\end{align*}\]</span>
+respectively.</p>
+<p>Now suppose that a simplification is proposed that entails imposing <span class="math inline">\(r\)</span>
+restrictions, <span class="math inline">\(s_i(\psi)=0\)</span> for <span class="math inline">\(i=1,\ldots, r\)</span>, on the elements of <span class="math inline">\(\psi\)</span>,
+where <span class="math inline">\(r\)</span> is less than the number of components in <span class="math inline">\(\psi\)</span>. These restrictions must be functionally independent, which is another way of saying all <span class="math inline">\(r\)</span> of
+them are needed. In our example, we have two restrictions: <span class="math inline">\(\tau_2=0\)</span> and <span class="math inline">\(\tau_3 = 0\)</span>. Suppose the maximum likelihood for the restricted situation is
+<span class="math inline">\(\widehat{\psi}_s\)</span>, which is obtained by maximising <span class="math inline">\(\ell\)</span> subject to the
+constraints. When the simpler model is correct, approximately
+<span class="math display">\[
+- 2 \left(  \ell(\mathbf{y};\,\mathbf{x},\, \widehat{\psi}_s)- \ell(\mathbf{y};\,\mathbf{x},\, \widehat{\psi}) \right) \sim
+\chi^{2}_{r}
+\]</span>
+That is, twice the difference between the maximised value of the log-likelihood
+from the simpler model and that for the more complex one is approximately
+<span class="math inline">\(\chi^{2}_{r}\)</span>. On the other hand, if the simpler model is false the difference
+between these two is expected to be large; hence this theory can be used as the
+basis of a test, called the generalized likelihood ratio test (GLRT).</p>
+<p>To summarise, to conduct a GLRT, we do the following:</p>
+<ol style="list-style-type: decimal">
+<li>Evaluate the maximised log-likelihood <span class="math inline">\(\ell(\mathbf{y};\,\mathbf{x},\,\hat{\psi})\)</span>.</li>
+<li>Evaluate the maximised log-likelihood <span class="math inline">\(\ell(\mathbf{y};\,\mathbf{x},\,\hat{\psi}_s)\)</span> with <span class="math inline">\(\psi\)</span> constrained according to the null hypothesis.</li>
+<li>Evaluate the test statistic
+<span class="math display">\[
+L=-2\left(\ell(\mathbf{y};\,\mathbf{x},\,\hat{\psi}_s)-\ell(\mathbf{y};\,\mathbf{x},\,\hat{\psi})\right).
+\]</span>
+and compare with the <span class="math inline">\(\chi^2_r\)</span> distribution, where <span class="math inline">\(r\)</span> is the number of constraints specified by the null hypothesis. So, if for example we find <span class="math inline">\(L&gt;\chi^2_{r;0.95}\)</span>, we would reject <span class="math inline">\(H_0\)</span> at the 5% level.</li>
+</ol>
+<p>Various standard hypothesis tests can be constructed from the GLRT. In some cases we can derive the exact distribution of <span class="math inline">\(L\)</span>, rather than using the <span class="math inline">\(\chi^2\)</span> approximation, and in some other cases, the distribution of <span class="math inline">\(L\)</span> is <span class="math inline">\(\chi^2_r\)</span> anyway.</p>
+<p>However, for mixed effects models, and when testing fixed effects Pinheiro and Bates (2005, Section 2.4.2) say that this test can sometimes be badly anti-conservative, that is, it can produce p-values that are too small. Parametric bootstrapping gives us another way to do the test, without relying on the <span class="math inline">\(\chi^2_r\)</span> approximation.</p>
+</div>
+<div id="the-parametric-bootstrap-test" class="section level3 hasAnchor" number="6.8.4">
+<h3><span class="header-section-number">6.8.4</span> The parametric bootstrap test<a href="bootstrapping.html#the-parametric-bootstrap-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We need to simulate values of <span class="math inline">\(L\)</span> <em>under the condition that <span class="math inline">\(H_0\)</span> is true</em>. One way to do this is to fit the reduced model to the data, then simulate new values of the dependent variables, keeping the independent variables the same, and assuming the parameters are equal to their estimated values. The algorithm is therefore:</p>
+<ol style="list-style-type: decimal">
+<li>Calculate the GLRT statistic for the observed data. Denote the value of the statistic by <span class="math inline">\(L_{obs}\)</span>.</li>
+<li>Fit the reduced model under <span class="math inline">\(H_0\)</span> to the data (i.e. leave out the <code>Diet</code> variable in our example).</li>
+<li>Simulate new values of <span class="math inline">\(Y_{ijt}\)</span> for <span class="math inline">\(i=1,2,3\)</span>, <span class="math inline">\(j=1,\ldots,n_i\)</span> and <span class="math inline">\(t=1,\ldots,19\)</span> from the reduced model. This is our bootstrapped data set, but generated from a parametric model, rather than from an ECDF.</li>
+<li>For the simulated data <span class="math inline">\(\mathbf{y}^*\)</span>, calculate the GLRT statistic
+<span class="math display">\[
+L=-2\left(\ell(\mathbf{y}^*;\,\mathbf{x},\,\hat{\psi}_s)-\ell(\mathbf{y}^*;\,\mathbf{x},\,\hat{\psi})\right).
+\]</span></li>
+<li>Repeat steps 3-4 <span class="math inline">\(N\)</span> times, to get a sample of GLRT statistics <span class="math inline">\(L_1,\ldots,L_N\)</span>.</li>
+<li>Estimate the <span class="math inline">\(p\)</span>-value by
+<span class="math display">\[\frac{1}{N}\sum_{i=1}^N I (L_i\ge L_{obs}).\]</span></li>
+</ol>
+</div>
+<div id="implementation-with-r" class="section level3 hasAnchor" number="6.8.5">
+<h3><span class="header-section-number">6.8.5</span> Implementation with R<a href="bootstrapping.html#implementation-with-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We first do the standard GLRT in R, using the <code>lme4</code> package <span class="citation">(<a href="#ref-R-lme4" role="doc-biblioref">Bates et al. 2015</a>)</span> to fit the models. One technical detail that we won’t worry too much about here is that we need to use ‘ordinary’ maximum likelihood rather than ‘restricted’ maximum likelihood (REML) for this test, even though the latter is preferred for model fitting.</p>
+<p>We fit the full model and extract the maximised log likelihood:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="bootstrapping.html#cb117-1" aria-hidden="true" tabindex="-1"></a>fmFull <span class="ot">&lt;-</span> <span class="fu">lmer</span>(protein <span class="sc">~</span> Diet  <span class="sc">+</span> weekOne <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Cow),</span>
+<span id="cb117-2"><a href="bootstrapping.html#cb117-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">REML =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb117-3"><a href="bootstrapping.html#cb117-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> milkDF)</span>
+<span id="cb117-4"><a href="bootstrapping.html#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fmFull)</span></code></pre></div>
+<pre><code>## &#39;log Lik.&#39; -147.7877 (df=6)</code></pre>
+<p>We then fit our reduced model under <span class="math inline">\(H_0\)</span>, and extract the maximised log likelihood:</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="bootstrapping.html#cb119-1" aria-hidden="true" tabindex="-1"></a>fmReduced <span class="ot">&lt;-</span> <span class="fu">lmer</span>(protein <span class="sc">~</span> weekOne <span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>Cow),</span>
+<span id="cb119-2"><a href="bootstrapping.html#cb119-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">REML =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb119-3"><a href="bootstrapping.html#cb119-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> milkDF)</span>
+<span id="cb119-4"><a href="bootstrapping.html#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fmReduced)</span></code></pre></div>
+<pre><code>## &#39;log Lik.&#39; -155.5944 (df=4)</code></pre>
+<p>We can now compute an observed test statistic, and calculate a <span class="math inline">\(p\)</span>-value, using the <span class="math inline">\(\chi^2_r\)</span> distribution, here with <span class="math inline">\(r=2\)</span>.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="bootstrapping.html#cb121-1" aria-hidden="true" tabindex="-1"></a>obsTestStat<span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>(<span class="fu">logLik</span>(fmReduced)</span>
+<span id="cb121-2"><a href="bootstrapping.html#cb121-2" aria-hidden="true" tabindex="-1"></a>                              <span class="sc">-</span><span class="fu">logLik</span>(fmFull))) </span>
+<span id="cb121-3"><a href="bootstrapping.html#cb121-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(obsTestStat, <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 7.770794e-05</code></pre>
+<p>Here, <code>obsTestStat</code> is step (1) of our approach listed above.</p>
+<p>Now we simulate test statistics using parametric bootstrapping; we simulate new data sets from the reduced model (step 3 in the above). We can use the <code>simulate()</code> function to do this:</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="bootstrapping.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb123-2"><a href="bootstrapping.html#cb123-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb123-3"><a href="bootstrapping.html#cb123-3" aria-hidden="true" tabindex="-1"></a>sampleTestStat<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="cn">NA</span>, N)</span>
+<span id="cb123-4"><a href="bootstrapping.html#cb123-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-5"><a href="bootstrapping.html#cb123-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb123-6"><a href="bootstrapping.html#cb123-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb123-7"><a href="bootstrapping.html#cb123-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulate new data (step 3)</span></span>
+<span id="cb123-8"><a href="bootstrapping.html#cb123-8" aria-hidden="true" tabindex="-1"></a>  newY <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">simulate</span>(fmReduced))</span>
+<span id="cb123-9"><a href="bootstrapping.html#cb123-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb123-10"><a href="bootstrapping.html#cb123-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate the test statistic under the simulated data (step 4)</span></span>
+<span id="cb123-11"><a href="bootstrapping.html#cb123-11" aria-hidden="true" tabindex="-1"></a>  fmReducedNew<span class="ot">&lt;-</span><span class="fu">lmer</span>(newY <span class="sc">~</span> milkDF<span class="sc">$</span>weekOne  <span class="sc">+</span> </span>
+<span id="cb123-12"><a href="bootstrapping.html#cb123-12" aria-hidden="true" tabindex="-1"></a>                       (<span class="dv">1</span><span class="sc">|</span>milkDF<span class="sc">$</span>Cow),</span>
+<span id="cb123-13"><a href="bootstrapping.html#cb123-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb123-14"><a href="bootstrapping.html#cb123-14" aria-hidden="true" tabindex="-1"></a>  fmFullNew <span class="ot">&lt;-</span> <span class="fu">lmer</span>(newY <span class="sc">~</span> milkDF<span class="sc">$</span>Diet <span class="sc">+</span> milkDF<span class="sc">$</span>weekOne  <span class="sc">+</span> </span>
+<span id="cb123-15"><a href="bootstrapping.html#cb123-15" aria-hidden="true" tabindex="-1"></a>                      (<span class="dv">1</span><span class="sc">|</span>milkDF<span class="sc">$</span>Cow),</span>
+<span id="cb123-16"><a href="bootstrapping.html#cb123-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb123-17"><a href="bootstrapping.html#cb123-17" aria-hidden="true" tabindex="-1"></a>  sampleTestStat[i] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>(<span class="fu">logLik</span>(fmReducedNew) <span class="sc">-</span> <span class="fu">logLik</span>(fmFullNew)) </span>
+<span id="cb123-18"><a href="bootstrapping.html#cb123-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Now we’ll count the proportion of bootstrapped test statistics greater than or equal to our observed one (step 6):</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="bootstrapping.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sampleTestStat <span class="sc">&gt;=</span> obsTestStat)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>We didn’t actually generate any test statistics as large as the observed one, so we’d need to generate more to get an estimated <span class="math inline">\(p\)</span>-value. But if we compare the distribution of sampled test statistics with the <span class="math inline">\(\chi^2_2\)</span> distribution, they are fairly similar. This is shown in Figure <a href="bootstrapping.html#fig:milk-chisq">6.9</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:milk-chisq"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/milk-chisq-1.png" alt="Comparing the distribution of the test statistic from bootstrapping (histogram) with the $\chi^2_2$ approximation used in the generalised likelihood ratio test. The agreement looks fairly good here. The blue dot indicates the observed test statistic." width="60%" />
+<p class="caption">
+Figure 6.9: Comparing the distribution of the test statistic from bootstrapping (histogram) with the <span class="math inline">\(\chi^2_2\)</span> approximation used in the generalised likelihood ratio test. The agreement looks fairly good here. The blue dot indicates the observed test statistic.
+</p>
+</div>
+<p>So the use of bootstrapping hasn’t changed our conclusion here, but has given us a means of checking whether the distribution assumed in the GLRT is appropriate.</p>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-lme4" class="csl-entry">
+Bates, Douglas, Martin Mächler, Ben Bolker, and Steve Walker. 2015. <span>“Fitting Linear Mixed-Effects Models Using <span class="nocase">lme4</span>.”</span> <em>Journal of Statistical Software</em> 67 (1): 1–48. <a href="https://doi.org/10.18637/jss.v067.i01">https://doi.org/10.18637/jss.v067.i01</a>.
+</div>
+<div id="ref-R-irr" class="csl-entry">
+Gamer, Matthias, Jim Lemon, and Ian Fellows Puspendra Singh &lt;puspendra.pusp22@gmail.com&gt;. 2019. <em>Irr: Various Coefficients of Interrater Reliability and Agreement</em>. <a href="https://CRAN.R-project.org/package=irr">https://CRAN.R-project.org/package=irr</a>.
+</div>
+<div id="ref-R-nlme" class="csl-entry">
+Pinheiro, Jose, Douglas Bates, Saikat DebRoy, Deepayan Sarkar, and R Core Team. 2021. <em><span class="nocase">nlme</span>: Linear and Nonlinear Mixed Effects Models</em>. <a href="https://CRAN.R-project.org/package=nlme">https://CRAN.R-project.org/package=nlme</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="multiple-imputation-for-missing-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cross-validation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["MAS61006-S2-Notes.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll-highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

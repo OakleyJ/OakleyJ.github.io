@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Variational inference | MAS61006 Bayesian Statistics and Computational Methods</title>
+  <meta name="description" content="Chapter 8 Variational inference | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Variational inference | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Variational inference | MAS61006 Bayesian Statistics and Computational Methods" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2023-02-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="cross-validation.html"/>
+<link rel="next" href="coordinate-ascent-variational-inference-cavi.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script>
+  $(document).ready(function () {
+    process_solutions();
+  });
+function process_solutions() {
+  $("div.section[id^='solution']").each(function(i) {
+    var soln_wrapper_id = "cvxr_ex_" + i;
+    var solution_id = $(this).attr('id');
+    var button = $("<button onclick=\"toggle_solution('" + soln_wrapper_id + "')\">Show/Hide</button>");
+    var new_div = $("<div id='" + soln_wrapper_id + "' class='solution' style='display: none;'></div>");
+    var h = $(this).first();
+    var others = $(this).children().slice(1);
+    $(others).each(function() {
+      $(this).appendTo($(new_div));
+    });
+    $(button).insertAfter($(h));
+    $(new_div).insertAfter($(button));
+  })
+}
+function toggle_solution(el_id) {
+  $("#" + el_id).toggle();
+}
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS61006(Sem2)</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i>Literature</a></li>
+<li class="part"><span><b>I Inference using advanced samplers</b></span></li>
+<li class="chapter" data-level="1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html"><i class="fa fa-check"></i><b>1</b> MCMC Sampling Recap</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#bayesian-inference-continued"><i class="fa fa-check"></i><b>1.1</b> Bayesian inference continued</a></li>
+<li class="chapter" data-level="1.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#monte-carlo"><i class="fa fa-check"></i><b>1.2</b> Monte Carlo estimation</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate"><i class="fa fa-check"></i><b>1.2.1</b> Properties of the Monte Carlo estimate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations"><i class="fa fa-check"></i><b>1.2.2</b> Expressing quantities as expectations</a></li>
+<li class="chapter" data-level="1.2.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#estimation-of-general-integrals"><i class="fa fa-check"></i><b>1.2.3</b> Estimation of general integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc"><i class="fa fa-check"></i><b>1.3</b> Markov chain Monte Carlo (MCMC)</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#mhsection"><i class="fa fa-check"></i><b>1.3.1</b> The Metroplis-Hastings (MH) algorithm</a></li>
+<li class="chapter" data-level="1.3.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals"><i class="fa fa-check"></i><b>1.3.2</b> The problem with random walk proposals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-gibbs-algorithm"><i class="fa fa-check"></i><b>1.3.3</b> The Gibbs algorithm</a></li>
+<li class="chapter" data-level="1.3.4" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-gibbs"><i class="fa fa-check"></i><b>1.3.4</b> The problem with Gibbs</a></li>
+<li class="chapter" data-level="1.3.5" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#a-solution"><i class="fa fa-check"></i><b>1.3.5</b> A solution?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html"><i class="fa fa-check"></i><b>2</b> Hamiltonian Monte Carlo (HMC)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition"><i class="fa fa-check"></i><b>2.1</b> Generating proposals: intuition</a></li>
+<li class="chapter" data-level="2.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics"><i class="fa fa-check"></i><b>2.2</b> Hamiltonian dynamics</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy"><i class="fa fa-check"></i><b>2.2.1</b> Conservation of energy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals"><i class="fa fa-check"></i><b>2.3</b> Using Hamilton’s equations to generate proposals</a></li>
+<li class="chapter" data-level="2.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m"><i class="fa fa-check"></i><b>2.4</b> The joint distribution for <span class="math inline">\((\theta, m)\)</span></a></li>
+<li class="chapter" data-level="2.5" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm"><i class="fa fa-check"></i><b>2.5</b> The HMC algorithm</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations"><i class="fa fa-check"></i><b>2.5.1</b> Approximate solution of Hamilton’s equations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta"><i class="fa fa-check"></i><b>2.6</b> Multivariate <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="2.7" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters"><i class="fa fa-check"></i><b>2.7</b> Tuning parameters</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2"><i class="fa fa-check"></i><b>2.7.1</b> The tuning parameter <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="2.7.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon"><i class="fa fa-check"></i><b>2.7.2</b> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand"><i class="fa fa-check"></i><b>2.8</b> Implementing HMC ‘by hand’</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh"><i class="fa fa-check"></i><b>2.8.1</b> Random-walk MH</a></li>
+<li class="chapter" data-level="2.8.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#gibbs"><i class="fa fa-check"></i><b>2.8.2</b> Gibbs</a></li>
+<li class="chapter" data-level="2.8.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hmc"><i class="fa fa-check"></i><b>2.8.3</b> HMC</a></li>
+<li class="chapter" data-level="2.8.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers"><i class="fa fa-check"></i><b>2.8.4</b> Comparing random-walk and HMC samplers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#summary"><i class="fa fa-check"></i><b>2.9</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html"><i class="fa fa-check"></i><b>3</b> Implementing HMC in Stan</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#getting-set-up-with-stan"><i class="fa fa-check"></i><b>3.1</b> Getting set up with Stan</a></li>
+<li class="chapter" data-level="3.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#rstan-options"><i class="fa fa-check"></i><b>3.2</b> <code>rstan</code> options</a></li>
+<li class="chapter" data-level="3.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#an-example-model"><i class="fa fa-check"></i><b>3.3</b> An example model</a></li>
+<li class="chapter" data-level="3.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio"><i class="fa fa-check"></i><b>3.4</b> Specifying a model in RStudio</a></li>
+<li class="chapter" data-level="3.5" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#stan-code-blocks"><i class="fa fa-check"></i><b>3.5</b> Stan code blocks</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#data-block"><i class="fa fa-check"></i><b>3.5.1</b> <code>data</code> block</a></li>
+<li class="chapter" data-level="3.5.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>3.5.2</b> <code>parameters</code> block</a></li>
+<li class="chapter" data-level="3.5.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#model-block"><i class="fa fa-check"></i><b>3.5.3</b> <code>model</code> block</a></li>
+<li class="chapter" data-level="3.5.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>3.5.4</b> <code>generated quantities</code> block</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm"><i class="fa fa-check"></i><b>3.6</b> Running the HMC algorithm</a></li>
+<li class="chapter" data-level="3.7" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples"><i class="fa fa-check"></i><b>3.7</b> Extracting and analysing the samples</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs"><i class="fa fa-check"></i><b>3.7.1</b> R packages for plotting outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts"><i class="fa fa-check"></i><b>3.8</b> No U-Turn Sampler (NUTS)</a></li>
+<li class="chapter" data-level="3.9" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#further-reading"><i class="fa fa-check"></i><b>3.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html"><i class="fa fa-check"></i><b>4</b> Bayesian regression in Stan</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#holiday-hangover-cures"><i class="fa fa-check"></i><b>4.1.1</b> Holiday hangover cures</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#least-squares-fit"><i class="fa fa-check"></i><b>4.1.2</b> Least squares fit</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-in-stan"><i class="fa fa-check"></i><b>4.1.3</b> Bayesian approach in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#recap-of-logistic-regression"><i class="fa fa-check"></i><b>4.2</b> Recap of logistic regression</a></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#overview-of-mixed-effects"><i class="fa fa-check"></i><b>4.3</b> Overview of mixed effects</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-example-of-a-mixed-effects-model"><i class="fa fa-check"></i><b>4.3.1</b> Simple example of a mixed effects model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#fixed-or-random-effects"><i class="fa fa-check"></i><b>4.3.2</b> Fixed or random effects?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#mixed-effect-logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Mixed effect logistic regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#balance-experiment"><i class="fa fa-check"></i><b>4.4.1</b> Balance experiment</a></li>
+<li class="chapter" data-level="4.4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>4.4.2</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#maximum-likelihood-approach"><i class="fa fa-check"></i><b>4.4.3</b> Maximum likelihood approach</a></li>
+<li class="chapter" data-level="4.4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-using-stan"><i class="fa fa-check"></i><b>4.4.4</b> Bayesian approach using Stan</a></li>
+<li class="chapter" data-level="4.4.5" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#comparing-stan-and-lme4"><i class="fa fa-check"></i><b>4.4.5</b> Comparing Stan and lme4</a></li>
+<li class="chapter" data-level="4.4.6" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#easy-bayesian-approach-with-brms"><i class="fa fa-check"></i><b>4.4.6</b> ‘Easy’ Bayesian approach with <code>brms</code></a></li>
+<li class="chapter" data-level="4.4.7" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#what-have-we-found"><i class="fa fa-check"></i><b>4.4.7</b> What have we found?</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Inference with missing data</b></span></li>
+<li class="chapter" data-level="5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html"><i class="fa fa-check"></i><b>5</b> Multiple imputation for missing data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#example-nhanes-data"><i class="fa fa-check"></i><b>5.2</b> Example: <code>nhanes</code> data</a></li>
+<li class="chapter" data-level="5.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness"><i class="fa fa-check"></i><b>5.3</b> Mechanisms of missingness</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>5.3.1</b> Missing completely at random (MCAR)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>5.3.2</b> Missing at random (MAR)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar"><i class="fa fa-check"></i><b>5.3.3</b> Not missing at random (NMAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness"><i class="fa fa-check"></i><b>5.4</b> Ignoring information about missingness</a></li>
+<li class="chapter" data-level="5.5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#inference-via-imputation"><i class="fa fa-check"></i><b>5.5</b> Inference via imputation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#further-simplifications"><i class="fa fa-check"></i><b>5.5.1</b> Further simplifications</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#pooling"><i class="fa fa-check"></i><b>5.6</b> Pooling multiple imputations</a></li>
+<li class="chapter" data-level="5.7" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#simple-example"><i class="fa fa-check"></i><b>5.7</b> Simple example</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand"><i class="fa fa-check"></i><b>5.7.1</b> Multiple imputation by hand</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation"><i class="fa fa-check"></i><b>5.8</b> Imputing missing data: chained equation multiple imputation</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#how-many-iterations"><i class="fa fa-check"></i><b>5.8.1</b> How many iterations?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset"><i class="fa fa-check"></i><b>5.9</b> MICE example: the <code>nhanes</code> dataset</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#complete-case-analysis"><i class="fa fa-check"></i><b>5.9.1</b> Complete case analysis</a></li>
+<li class="chapter" data-level="5.9.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data"><i class="fa fa-check"></i><b>5.9.2</b> Imputing the missing data</a></li>
+<li class="chapter" data-level="5.9.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputation-analysis"><i class="fa fa-check"></i><b>5.9.3</b> Imputation analysis</a></li>
+<li class="chapter" data-level="5.9.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#analysis-pooling"><i class="fa fa-check"></i><b>5.9.4</b> Analysis pooling</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Resampling methods</b></span></li>
+<li class="chapter" data-level="6" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>6</b> Bootstrapping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrap-estimates-of-standard-errors"><i class="fa fa-check"></i><b>6.1</b> Bootstrap estimates of standard errors</a></li>
+<li class="chapter" data-level="6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function"><i class="fa fa-check"></i><b>6.2</b> Estimating a distribution using the empirical cumulative distribution function</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="bootstrapping.html"><a href="bootstrapping.html#sampling-from-an-ecdf"><i class="fa fa-check"></i><b>6.2.1</b> Sampling from an ECDF</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#notation-summary"><i class="fa fa-check"></i><b>6.3</b> Notation summary</a></li>
+<li class="chapter" data-level="6.4" data-path="bootstrapping.html"><a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance"><i class="fa fa-check"></i><b>6.4</b> Example: Bootstrap standard errors of a sample mean and sample variance</a></li>
+<li class="chapter" data-level="6.5" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals"><i class="fa fa-check"></i><b>6.5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error"><i class="fa fa-check"></i><b>6.5.1</b> Confidence intervals using the estimated standard error</a></li>
+<li class="chapter" data-level="6.5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>6.5.2</b> Confidence intervals using percentiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="bootstrapping.html"><a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf"><i class="fa fa-check"></i><b>6.6</b> Properties of samples from the empirical CDF</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#expectation-and-variance"><i class="fa fa-check"></i><b>6.6.1</b> Expectation and variance</a></li>
+<li class="chapter" data-level="6.6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-percentiles"><i class="fa fa-check"></i><b>6.6.2</b> Sample percentiles</a></li>
+<li class="chapter" data-level="6.6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping"><i class="fa fa-check"></i><b>6.6.3</b> Sources of error and sample sizes in bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="bootstrapping.html"><a href="bootstrapping.html#example-measuring-observer-agreement"><i class="fa fa-check"></i><b>6.7</b> Example: Measuring observer agreement</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-data"><i class="fa fa-check"></i><b>6.7.1</b> The data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-kappa-statistic"><i class="fa fa-check"></i><b>6.7.2</b> The kappa statistic</a></li>
+<li class="chapter" data-level="6.7.3" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrapping-bivariate-data"><i class="fa fa-check"></i><b>6.7.3</b> Bootstrapping bivariate data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="bootstrapping.html"><a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing"><i class="fa fa-check"></i><b>6.8</b> Parametric bootstrapping and hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-milk-data-set"><i class="fa fa-check"></i><b>6.8.1</b> The <code>Milk</code> data set</a></li>
+<li class="chapter" data-level="6.8.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-model-and-hypothesis"><i class="fa fa-check"></i><b>6.8.2</b> The model and hypothesis</a></li>
+<li class="chapter" data-level="6.8.3" data-path="bootstrapping.html"><a href="bootstrapping.html#the-generalized-likelihood-ratio-test"><i class="fa fa-check"></i><b>6.8.3</b> The generalized likelihood ratio test</a></li>
+<li class="chapter" data-level="6.8.4" data-path="bootstrapping.html"><a href="bootstrapping.html#the-parametric-bootstrap-test"><i class="fa fa-check"></i><b>6.8.4</b> The parametric bootstrap test</a></li>
+<li class="chapter" data-level="6.8.5" data-path="bootstrapping.html"><a href="bootstrapping.html#implementation-with-r"><i class="fa fa-check"></i><b>6.8.5</b> Implementation with R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cross-validation.html"><a href="cross-validation.html"><i class="fa fa-check"></i><b>7</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-classification"><i class="fa fa-check"></i><b>7.1</b> Cross-validation in classification</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="cross-validation.html"><a href="cross-validation.html#the-palmer-penguins-data"><i class="fa fa-check"></i><b>7.1.1</b> The Palmer penguins data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cross-validation.html"><a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn"><i class="fa fa-check"></i><b>7.1.2</b> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-knn"><i class="fa fa-check"></i><b>7.1.3</b> Implementing cross-validation in KNN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2</b> Cross-validation in regression</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="cross-validation.html"><a href="cross-validation.html#the-flint-tools-data"><i class="fa fa-check"></i><b>7.2.1</b> The flint tools data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2.2</b> Implementing cross-validation in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="cross-validation.html"><a href="cross-validation.html#parameter-estimation-with-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Parameter estimation with cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="cross-validation.html"><a href="cross-validation.html#example-choosing-the-value-k-in-knn"><i class="fa fa-check"></i><b>7.3.1</b> Example: choosing the value <span class="math inline">\(K\)</span> in KNN</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood"><i class="fa fa-check"></i><b>7.3.2</b> Cross-validation as an alternative to maximum likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cross-validation.html"><a href="cross-validation.html#computational-short-cuts"><i class="fa fa-check"></i><b>7.4</b> Computational short-cuts</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="cross-validation.html"><a href="cross-validation.html#example-returning-to-the-flint-data"><i class="fa fa-check"></i><b>7.4.1</b> Example: Returning to the flint data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="cross-validation.html"><a href="cross-validation.html#relationship-with-aic"><i class="fa fa-check"></i><b>7.5</b> Relationship with AIC</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="cross-validation.html"><a href="cross-validation.html#example-the-cars-data"><i class="fa fa-check"></i><b>7.5.1</b> Example: The cars data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cross-validation.html"><a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut"><i class="fa fa-check"></i><b>7.6</b> (Non-examinable) Proof of the computational short cut</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="cross-validation.html"><a href="cross-validation.html#helpful-results-we-will-use"><i class="fa fa-check"></i><b>7.6.1</b> Helpful results we will use</a></li>
+<li class="chapter" data-level="7.6.2" data-path="cross-validation.html"><a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models"><i class="fa fa-check"></i><b>7.6.2</b> Relate the estimated coefficients of full and reduced models</a></li>
+<li class="chapter" data-level="7.6.3" data-path="cross-validation.html"><a href="cross-validation.html#relating-the-residuals"><i class="fa fa-check"></i><b>7.6.3</b> Relating the residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Approximate inference without sampling</b></span></li>
+<li class="chapter" data-level="8" data-path="variational-inference.html"><a href="variational-inference.html"><i class="fa fa-check"></i><b>8</b> Variational inference</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="variational-inference.html"><a href="variational-inference.html#background-theory"><i class="fa fa-check"></i><b>8.1</b> Background theory</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="variational-inference.html"><a href="variational-inference.html#jensens-inequality"><i class="fa fa-check"></i><b>8.1.1</b> Jensen’s inequality</a></li>
+<li class="chapter" data-level="8.1.2" data-path="variational-inference.html"><a href="variational-inference.html#kullback-leibler-divergence"><i class="fa fa-check"></i><b>8.1.2</b> Kullback-Leibler Divergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="variational-inference.html"><a href="variational-inference.html#optimisation-with-coordinate-ascent"><i class="fa fa-check"></i><b>8.1.3</b> Optimisation with coordinate ascent</a></li>
+<li class="chapter" data-level="8.1.4" data-path="variational-inference.html"><a href="variational-inference.html#stochastic-optimisation"><i class="fa fa-check"></i><b>8.1.4</b> Stochastic optimisation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="variational-inference.html"><a href="variational-inference.html#motivation-for-approximate-inference-approaches"><i class="fa fa-check"></i><b>8.2</b> Motivation for approximate inference approaches</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="variational-inference.html"><a href="variational-inference.html#intractable-integrals"><i class="fa fa-check"></i><b>8.2.1</b> Intractable integrals</a></li>
+<li class="chapter" data-level="8.2.2" data-path="variational-inference.html"><a href="variational-inference.html#variational-approach-to-intractable-integrals"><i class="fa fa-check"></i><b>8.2.2</b> Variational approach to intractable integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="variational-inference.html"><a href="variational-inference.html#approximate-inference-as-an-optimisation-problem"><i class="fa fa-check"></i><b>8.3</b> Approximate inference as an optimisation problem</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="variational-inference.html"><a href="variational-inference.html#exploring-the-elbo"><i class="fa fa-check"></i><b>8.3.1</b> Exploring the ELBO</a></li>
+<li class="chapter" data-level="8.3.2" data-path="variational-inference.html"><a href="variational-inference.html#forward-and-reverse-variational-inference"><i class="fa fa-check"></i><b>8.3.2</b> Forward and reverse variational inference</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="variational-inference.html"><a href="variational-inference.html#the-variational-family-of-distributions"><i class="fa fa-check"></i><b>8.4</b> The variational family of distributions</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="variational-inference.html"><a href="variational-inference.html#mean-field-family"><i class="fa fa-check"></i><b>8.4.1</b> Mean-field family</a></li>
+<li class="chapter" data-level="8.4.2" data-path="variational-inference.html"><a href="variational-inference.html#correlation-cannot-be-replicated"><i class="fa fa-check"></i><b>8.4.2</b> Correlation cannot be replicated</a></li>
+<li class="chapter" data-level="8.4.3" data-path="variational-inference.html"><a href="variational-inference.html#why-mean-field-is-useful"><i class="fa fa-check"></i><b>8.4.3</b> Why mean-field is useful</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html"><i class="fa fa-check"></i><b>9</b> Coordinate ascent variational inference (CAVI)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-cavi-algorithm"><i class="fa fa-check"></i><b>9.1</b> The CAVI algorithm</a></li>
+<li class="chapter" data-level="9.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#example-mixture-of-gaussians"><i class="fa fa-check"></i><b>9.2</b> Example: Mixture of Gaussians</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-observation-model"><i class="fa fa-check"></i><b>9.2.1</b> The observation model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-prior"><i class="fa fa-check"></i><b>9.2.2</b> The prior</a></li>
+<li class="chapter" data-level="9.2.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-joint-likelihood"><i class="fa fa-check"></i><b>9.2.3</b> The joint likelihood</a></li>
+<li class="chapter" data-level="9.2.4" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-mean-field-family-approximation"><i class="fa fa-check"></i><b>9.2.4</b> The mean-field family approximation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#cavi"><i class="fa fa-check"></i><b>9.2.5</b> CAVI</a></li>
+<li class="chapter" data-level="9.2.6" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#implementing-cavi-in-r"><i class="fa fa-check"></i><b>9.2.6</b> Implementing CAVI in R</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#comment"><i class="fa fa-check"></i><b>9.3</b> Comment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS61006 Bayesian Statistics and Computational Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="variational-inference" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Variational inference<a href="variational-inference.html#variational-inference" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --->
+<p><span class="math inline">\(\def \mb{\mathbb}\)</span>
+<span class="math inline">\(\def \E{\mb{E}}\)</span>
+<span class="math inline">\(\def \P{\mb{P}}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\var}{Var}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\cov}{Cov}\)</span></p>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aims of this section</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Appreciate the limitations of inference via sampling schemes, and that approximate inference can be a useful alternative in some situations.</td>
+</tr>
+<tr class="even">
+<td>2. Understand the need to assess ‘agreement’ between distributions as part of this approximation process, and the role that KL divergence and ELBO play in this.</td>
+</tr>
+<tr class="odd">
+<td>3. Have an awareness of how approximate inference is practically implemented, including the choice of approximation using the mean field family and the optimisation process using coordinate ascent.</td>
+</tr>
+</tbody>
+</table>
+<p>In this chapter we are going to introduce variational inference: an approach to approximating probability distributions that can be used in Bayesian inference, as an alternative to MCMC. Variational methods are popular for implementing Bayesian approaches in machine learning, and work well with large and complex data sets.</p>
+<p>This and the following chapter are based on a review article <span class="citation">(<a href="#ref-VI-stats" role="doc-biblioref">Blei, Kucukelbir, and McAuliffe 2017</a>)</span>.</p>
+<div id="background-theory" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Background theory<a href="variational-inference.html#background-theory" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="jensens-inequality" class="section level3 hasAnchor" number="8.1.1">
+<h3><span class="header-section-number">8.1.1</span> Jensen’s inequality<a href="variational-inference.html#jensens-inequality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Although not necessary for understanding the concepts in this chapter, they hinge on this important result. Jensen’s inequality relates to the integrals of convex functions, and we are interested in this applied to expectations of logarithms (because <span class="math inline">\(\log\)</span> is a concave function):
+<span class="math display">\[\log ( \E (f(x)))\geq \E(\log(f(x))),\]</span>
+for <span class="math inline">\(f(x)&gt;0\)</span>.</p>
+</div>
+<div id="kullback-leibler-divergence" class="section level3 hasAnchor" number="8.1.2">
+<h3><span class="header-section-number">8.1.2</span> Kullback-Leibler Divergence<a href="variational-inference.html#kullback-leibler-divergence" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Kullback-Leibler (KL) divergence is a measure of how one probability distribution is different from a second. Often we might compare distributions, such as two choices of prior distribution, by looking at summaries such as moments (mean/variance) or quantiles. However, these can only give snapshots of the similarity between two distributions. The KL divergence is a summary that takes into account the entire functional form of the distributions across all real values.</p>
+<p>We will define KL divergence only in terms of continuous distributions, but note that this can similarly be defined for discrete distributions. The KL divergence between the distribution <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> is given by
+<span class="math display">\[\begin{align}
+KL(p \ || \ q) &amp;= \int_{\mathbb{R}} p(x) \log \left( \frac{p(x)}{q(x)} \right) dx \\
+&amp;= \E_{p(x)} \left[ \log \left( \frac{p(x)}{q(x)} \right) \right] \\
+&amp;= \E_{p(x)} \left[ \log p(x) \right] - \E_{p(x)} \left[\log q(x)  \right].
+\end{align}\]</span>
+Note the the KL divergence is defined only if <span class="math inline">\(q(x)=0\)</span> implies that <span class="math inline">\(p(x)=0\)</span>, for all <span class="math inline">\(x\)</span>, and the contribution of such to the KL measure is interpreted as 0.</p>
+<p>Important properties of the KL divergence include:</p>
+<ul>
+<li>Non-symmetry, i.e. <span class="math inline">\(KL(p \ || \ q) \neq KL(q \ || \ p)\)</span>.</li>
+<li>Non-negative, i.e. <span class="math inline">\(KL(p \ || \ q) \geq 0\)</span> for all <span class="math inline">\(p,q\)</span>. Note that this result is proven based on Jensen’s inequality.</li>
+<li>Equality identifying, i.e. <span class="math inline">\(KL(p \ || \ q)=0\)</span> if and only if <span class="math inline">\(p(x)=q(x)\)</span> for all <span class="math inline">\(x\)</span>.</li>
+</ul>
+<div class="figure"><span style="display:block;" id="fig:kl-examp"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/kl-examp-1.png" alt="Example of the KL divergence between two Gaussian distributions. The contribution to the KL divergence is shown by the green region, with the KL figure being the area of this region." width="50%" />
+<p class="caption">
+Figure 8.1: Example of the KL divergence between two Gaussian distributions. The contribution to the KL divergence is shown by the green region, with the KL figure being the area of this region.
+</p>
+</div>
+<p>The KL divergence is depicted in Figure <a href="variational-inference.html#fig:kl-examp">8.1</a>, showing the densities of two Gaussian distributions, <span class="math inline">\(p\)</span> (black) and <span class="math inline">\(q\)</span> (blue). The contribution to the KL divergence, <span class="math inline">\(KL(p \ || \ q)\)</span>, is shown by the green region, and the actual value of the KL divergence is the area of this region. We see that the disagreement between distributions is not handled uniformly by the KL divergence. In this example the contribution to the KL divergence of <span class="math inline">\(p\)</span> from <span class="math inline">\(q\)</span> is not symmetric, it has higher penalty for <span class="math inline">\(p\)</span> having density where <span class="math inline">\(q\)</span> has little and less penalty for not having significant density where <span class="math inline">\(q\)</span> has high density. We will return to this behaviour of the KL divergence later, as it plays an important role as to the use of <span class="math inline">\(KL(p \ || \ q)\)</span> versus <span class="math inline">\(KL(q \ || \ p)\)</span>, which will produce different values. In this example, <span class="math inline">\(KL(p \ || \ q)=0.42\)</span> and <span class="math inline">\(KL(q \ || \ p) = 0.51\)</span>.</p>
+</div>
+<div id="optimisation-with-coordinate-ascent" class="section level3 hasAnchor" number="8.1.3">
+<h3><span class="header-section-number">8.1.3</span> Optimisation with coordinate ascent<a href="variational-inference.html#optimisation-with-coordinate-ascent" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Coordinate ascent is an optimisation procedure to find
+<span class="math display">\[\underset{\mathbf{x}\in \mathbb{R}^n}{\arg\max} \ f(\mathbf{x}).\]</span>
+The main idea is to find the maximum of <span class="math inline">\(f(\cdot)\)</span> by maximising along one dimension at a time, holding all other dimensions constant—it being much easier to deal with one-dimensional problems. We therefore loop through each dimension <span class="math inline">\(i \in 1,\ldots,n\)</span> over a number of steps <span class="math inline">\(k\)</span>, setting
+<span class="math display">\[x_i^{k+1} = \underset{y \in \mathbb{R}}{\arg\max} \ f(x_1^{k},\ldots, x_{i-1}^k,y,x_{i+1}^k,\ldots,x_n^k).\]</span>
+An optimal update scheme involves using the gradient of the above function and setting
+<span class="math display">\[x_i^{k+1} = x_i^{k} + \epsilon \frac{\partial f(\mathbf{x})}{\partial x_i},\]</span>
+for <span class="math inline">\(i=1,\ldots,n\)</span>. Usually, a threshold will be set to monitor that convergence has been met, stopping the coordinate ascent algorithm once the difference between <span class="math inline">\(x_i^{k+1}\)</span> and <span class="math inline">\(x_i^k\)</span> is under such threshold.</p>
+<p>We will not concern ourselves with the details of why this works, but it is enough to know the algorithm and that we end up moving in one dimension at a time, iteratively climbing the function to the maximum. We will be using this approach in the next chapter.</p>
+</div>
+<div id="stochastic-optimisation" class="section level3 hasAnchor" number="8.1.4">
+<h3><span class="header-section-number">8.1.4</span> Stochastic optimisation<a href="variational-inference.html#stochastic-optimisation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Another option for optimisation that we will look at in this part is stochastic optimisation. Here, the idea is to introduce <span class="math inline">\(h^k(\mathbf{x})\sim H(\mathbf{x})\)</span>, where <span class="math inline">\(\E\left[h^k(\mathbf{x})\right]=\frac{df(\mathbf{x})}{d\mathbf{x}}\)</span>. Similarly to the above we update in each dimension with
+<span class="math display">\[x_i^{k+1} = x_i^k + \epsilon^k h^k(x_i^k),\]</span>
+where there are some conditions that we will not cover on the choice of <span class="math inline">\(\epsilon\)</span>. Again, we won’t concern ourselves too much with the underlying theory here—but will show you this implementation in practice at the end of this part of the course.</p>
+</div>
+</div>
+<div id="motivation-for-approximate-inference-approaches" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Motivation for approximate inference approaches<a href="variational-inference.html#motivation-for-approximate-inference-approaches" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="intractable-integrals" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Intractable integrals<a href="variational-inference.html#intractable-integrals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When we implement Bayesian inference, our goal is evaluate the posterior distribution
+<span class="math display">\[p(\theta | x)= \frac{p(\theta)p(x|\theta)}{p(x)} = \frac{p(x, \theta)}{p(x)},\]</span>
+to learn about some parameters of interest <span class="math inline">\(\theta\)</span>, given observations <span class="math inline">\(x\)</span>. For conciseness, we will write <span class="math inline">\(p(x,\theta)\)</span> instead of <span class="math inline">\(p(\theta)p(x|\theta)\)</span>, but you should be thinking of multiplying a prior <span class="math inline">\(p(\theta)\)</span> and a likelihood <span class="math inline">\(p(x|\theta)\)</span> any time you see the joint density <span class="math inline">\(p(x,\theta)\)</span>.</p>
+<p>The numerator in the above is often tractable and easily evaluated. The difficulty in evaluating the posterior arises from the denominator, which we often refer to as the <em>normalising constant</em> and is also often called the <em>evidence</em>. This is given by
+<span class="math display">\[p(x)=\int_\Theta p(x, \theta) d \theta.\]</span></p>
+<p>Previously, we used MCMC to get around this problem, as it was only necessary to be able to evaluate <span class="math inline">\(p(x, \theta)\)</span> and not <span class="math inline">\(p(x)\)</span>. As we will see shortly, variational inference has the same feature.</p>
+</div>
+<div id="variational-approach-to-intractable-integrals" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Variational approach to intractable integrals<a href="variational-inference.html#variational-approach-to-intractable-integrals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Variational inference is an <strong>approximation</strong> to the posterior. Unlike MCMC, the main computational effort is in constructing the approximation. We approximate <span class="math inline">\(p(\theta|x)\)</span> by an alternative distribution, <span class="math inline">\(q^*(\theta)\)</span>. This distribution will be simple enough to be tractable, so that we can evaluate quantities of interest such as <span class="math inline">\(\E_{q^*}(\theta)\)</span> directly, or obtain i.i.d. samples very easily.</p>
+<p>The aim of variational inference therefore is to find the particular form of <span class="math inline">\(q^*(\cdot)\)</span> so that it is both tractable, and <em>it is a good approximation to <span class="math inline">\(p(\theta|x)\)</span></em>, which is intractable. We will assume that we have a family of candidate distributions, which we refer to as <span class="math inline">\(\mathcal{Q}\)</span>. We will return to exactly what form this family will take later, but for now you can imagine that <span class="math inline">\(\theta\)</span> is one-dimensional, and <span class="math inline">\(\mathcal{Q}\)</span> could be the family of all Gaussian distributions. The process of variational inference in such a scenario would be choosing the value of the mean and variance of the Gaussian distribution that is most similar to the posterior we are interested in.</p>
+<p>The benefit of variational inference is that it tends to be very fast, and this is the reason for its choice over MCMC. Note that this is a trade-off situation: you are trading having a solution quickly in exchange for it no longer being the exact posterior. The speed makes it more appealing in problems involving large data sets. Note that it is generally the case that variational inference underestimates the variance of the posterior, and so it is better suited for problems where this uncertainty estimate is not the primary interest.</p>
+<p>In the next sections we will cover the details of variational inference, which is ultimately the process of choosing which <span class="math inline">\(q(\theta) \in \mathcal{Q}\)</span> is the ‘best’ approximation to <span class="math inline">\(p(\theta|x)\)</span>. Note here that although we write <span class="math inline">\(q(\theta)\)</span>, this is a simplification. There will be some parameters involved in this distributional definition—the one-dimensional Gaussian example would involve there being a choice of the value of the mean and variance of such a Gaussian, and these would be the variational parameters. We do not include these in our notation to allow flexibility in the form of the distributions in the family <span class="math inline">\(\mathcal{Q}\)</span>. Further, the values that these variational parameters will take will depend on the observed data <span class="math inline">\(x\)</span> in some way. We could therefore write <span class="math inline">\(q(\theta | \phi,x)\)</span> to explicitly state this, where <span class="math inline">\(\phi\)</span> are the variational parameters. However, for readability throughout the following we will drop this and only use <span class="math inline">\(q(\theta)\)</span>.</p>
+</div>
+</div>
+<div id="approximate-inference-as-an-optimisation-problem" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Approximate inference as an optimisation problem<a href="variational-inference.html#approximate-inference-as-an-optimisation-problem" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have stated that variational inference involves approximating the posterior of interest, <span class="math inline">\(p(\theta|x)\)</span>, with a tractable distribution <span class="math inline">\(q^*(\theta)\)</span>. This approximate distribution, <span class="math inline">\(q^*(\theta)\)</span>, is chosen as the ‘best’ candidate from a family of distributions <span class="math inline">\(q(\theta)\in \mathcal{Q}\)</span>. In this context, by ‘best’ candidate, we mean the distribution in <span class="math inline">\(\mathcal{Q}\)</span> that is most similar in functional form to the posterior. We will use the Kullback-Leibler divergence to quantitatively measure the ‘similarity’ between the candidate distributions and the posterior of interest. To formalise the choice of the approximate distribution, this is
+<span class="math display">\[\begin{equation}
+q^*(\theta) = \underset{q(\theta)\in \mathcal{Q}}{\arg\min}  \
+KL(q(\theta) \ || \ p(\theta|x)).
+\end{equation}\]</span> ||  p(|x)).
+\end{equation}</p>
+<p>So, our inference approach would be to calculate the KL divergence from <span class="math inline">\(p(\theta|x)\)</span> for each <span class="math inline">\(q(\theta)\in \mathcal{Q}\)</span> and then choosing the distribution with the smallest divergence. We’ll now examine how we deal with the unknown normalising constant <span class="math inline">\(p(x)\)</span>. First note that
+<span class="math display">\[\begin{align}
+KL(q(\theta) \ || \ p(\theta|x))
+&amp;= \E_q\left[ \log q(\theta) \right] - \E_q \left[ \log p(\theta|x) \right] \\
+&amp;= \E_q\left[ \log q(\theta) \right] - \E_q \left[ \log \left( \frac{p(x,\theta)}{p(x)} \right) \right] \\
+&amp;= \E_q\left[ \log q(\theta) \right] - \E_q \left[ \log p(x,\theta) \right] + \E_q \left[ \log p(x) \right] \\
+&amp;= \E_q\left[ \log q(\theta) \right] - \E_q \left[ \log p(x,\theta) \right] + \log p(x).
+\end{align}\]</span>
+Where we obtain the final line in the above because <span class="math inline">\(p(x)\)</span> is a constant with respect to <span class="math inline">\(q\)</span>, so <span class="math inline">\(E_q(\log p(x))=\log p(x)\)</span>. So our issue is that we cannot actually calculate the KL divergence for each <span class="math inline">\(q(\theta)\in \mathcal{Q}\)</span>, because we cannot evaluate the final term in the above involving <span class="math inline">\(p(x)\)</span>.</p>
+<p>We define another measure, which is an element of the KL divergence calculation:
+<span class="math display">\[KL(q(\theta) \ || \ p(\theta|x)) = \underbrace{\E_q\left[ \log q(\theta) \right] - \E_q \left[ \log p(x,\theta) \right]}_{-ELBO(q)} + \log p(x).\]</span>
+This is the <strong>evidence lower bound</strong>, or <strong>variational lower bound</strong>, given by
+<span class="math display">\[\begin{align}
+ELBO(q) &amp;= \E_q \left[ \log p(x,\theta) \right] - \E_q\left[ \log q(\theta) \right] \\
+&amp;= \E_q \left[ \log \left ( \frac{p(x,\theta)}{q(\theta)} \right) \right].
+\end{align}\]</span>
+Again, we are simplifying things somewhat by referring to ELBO as being a function of <span class="math inline">\(q\)</span> alone, but we do this to highlight that <span class="math inline">\(q(\theta) \in \mathcal{Q}\)</span> will be the only varying input to the ELBO in practice (as our <span class="math inline">\(x\)</span> have been observed). Therefore
+<span class="math display">\[KL(q(\theta) \ || \ p(\theta|x)) = \log p(x) - ELBO(q).\]</span>
+The good news is that <span class="math inline">\(ELBO(q)\)</span> is something that we can calculate, as we are assuming that <span class="math inline">\(p(x,\theta)\)</span> is tractable. If the approach of variational inference was to choose the <span class="math inline">\(q(\theta) \in \mathcal{Q}\)</span> which minimises <span class="math inline">\(KL(q(\theta) \ || \ p(\theta|x))\)</span>, then because <span class="math inline">\(\log p(x)\)</span> is constant with respect to <span class="math inline">\(q\)</span>, this is equivalent to maximising <span class="math inline">\(ELBO(q)\)</span>.</p>
+<p>Variational inference therefore approximates <span class="math inline">\(p(\theta|x)\)</span> with
+<span class="math display">\[\begin{equation}
+q^*(\theta) = \underset{q(\theta)\in \mathcal{Q}}{\arg\max}  \
+ELBO(q(\theta)).
+\end{equation}\]</span>).
+\end{equation}
+The inference approach is an optimisation problem because once we have a chosen family of candidate distributions, <span class="math inline">\(\mathcal{Q}\)</span>, we merely need to find the optimal candidate for the ELBO.</p>
+<div id="exploring-the-elbo" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> Exploring the ELBO<a href="variational-inference.html#exploring-the-elbo" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have seen that variational inference is all about finding a distribution function that maximises the ELBO. Let us explore this further to gain an understanding of what this means for our chosen approximation to the posterior. We manipulate the above expression for the ELBO:
+<span class="math display">\[\begin{align}
+ELBO(q) &amp;= \E_q \left[ \log \left ( \frac{p(x,\theta)}{q(\theta)} \right) \right] \\
+&amp;= \E_q \left[ \log \left ( \frac{p(\theta)p(x|\theta)}{q(\theta)} \right) \right] \\
+&amp;= \E_q \left[ \log p(x|\theta) \right] + \E_q \left[ \log \left ( \frac{p(\theta)}{q(\theta)} \right) \right] \\
+&amp;= \E_q \left[ \log p(x|\theta) \right] - \E_q \left[ \log \left ( \frac{q(\theta)}{p(\theta)} \right) \right] \\
+&amp;= \E_q \left[ \log p(x|\theta) \right] - KL(q(\theta) \ || \ p(\theta)).
+\end{align}\]</span>
+By choosing the <span class="math inline">\(q\)</span> that maximising this expression:</p>
+<ul>
+<li><span class="math inline">\(\E_q \left[ \log p(x|\theta) \right]\)</span> is the expectation with respect to <span class="math inline">\(q\)</span> of the likelihood of the data. Maximising this means finding the function <span class="math inline">\(q\)</span> that explains the data.</li>
+<li><span class="math inline">\(KL(q(\theta) \ || \ p(\theta))\)</span> is the divergence from the prior. Minimising this (because of the minus sign in the ELBO expression above) means finding the function <span class="math inline">\(q\)</span> that is similar to the prior.
+So intuitively, maximising the ELBO makes sense as we have the delicate balance that we would expect between remaining similar to our prior distribution, whilst matching the observed data.</li>
+</ul>
+<p>We perform inference by finding the <span class="math inline">\(q\)</span> that maximises the ELBO, but the value of the ELBO for this function can also be a useful measure in itself. Recall from above that
+<span class="math display">\[KL(q(\theta) \ || \ p(\theta|x)) = \log p(x) - ELBO(q),\]</span>
+and also that <span class="math inline">\(KL(\cdot || \cdot) \geq 0\)</span>. Therefore
+<span class="math display">\[ELBO(q) \leq \log p(x),\]</span>
+with equality if and only if <span class="math inline">\(q(\theta)=p(\theta|x)\)</span>. This expression is where ELBO gets its name—it is the lower bound of the evidence (we said at the start of this chapter that a common name for the normalising constant is the evidence). Because of this relation, <span class="math inline">\(ELBO(q^*)\)</span> has been used as a model selection tool, under the assumption that equality has almost been reached. We won’t discuss this further, as there is no justification from theory that this is the case.</p>
+</div>
+<div id="forward-and-reverse-variational-inference" class="section level3 hasAnchor" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> Forward and reverse variational inference<a href="variational-inference.html#forward-and-reverse-variational-inference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We defined the variational approach as approximating the posterior with the distribution
+<span class="math display">\[q^*(\theta) = \underset{q(\theta)\in \mathcal{Q}}{\arg\min}  \
+KL(q(\theta) \ || \ p(\theta|x)),\]</span>
+so that we choose the distribution from the candidate family with smallest KL divergence from the posterior. You might have questioned whether this is the only choice. Recall that the KL divergence is not symmetric so that
+<span class="math display">\[KL(q(\theta) \ || \ p(\theta|x)) \neq KL(p(\theta|x) \ || \ q(\theta)),\]</span>
+and so it’s not immediately obvious why we have made the decision to use the KL divergence that we have done. Our decision of using <span class="math inline">\(KL(q(\theta) \ || \ p(\theta|x))\)</span> is known as <em>reverse KL</em>, and the alternative option of using <span class="math inline">\(KL(p(\theta|x) \ || \ q(\theta))\)</span> is known as <em>forward KL</em>. Here we will discuss briefly how inference is affected by the two approaches.</p>
+<div id="forward-kl" class="section level4 hasAnchor" number="8.3.2.1">
+<h4><span class="header-section-number">8.3.2.1</span> Forward KL<a href="variational-inference.html#forward-kl" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In forward KL we find the <span class="math inline">\(q\)</span> that minimises
+<span class="math display">\[KL(p(\theta|x) \ || \ q(\theta))=\int p(\theta|x) \log \left( \frac{p(\theta|x)}{q(\theta)} \right)d\theta,\]</span>
+and this ordering is referred to as weighting the difference between <span class="math inline">\(p(\theta|x)\)</span> and <span class="math inline">\(q(\theta)\)</span> by <span class="math inline">\(p(\theta|x)\)</span>.</p>
+<p>Consider the values of <span class="math inline">\(\theta\)</span> such that <span class="math inline">\(p(\theta|x)=0\)</span>. In the above, it does not matter what the value of <span class="math inline">\(q(\theta)\)</span> is in terms of the contribution to the KL divergence. So there is no consequence for there being large disagreement between the two functions at these values of <span class="math inline">\(\theta\)</span>. Minimising the forward KL divergence therefore optimises <span class="math inline">\(q\)</span> to be non-zero wherever <span class="math inline">\(p(\theta|x)\)</span> is non-zero, and penalises most heavily at the values of <span class="math inline">\(\theta\)</span> with high density in <span class="math inline">\(p(\theta|x)\)</span>. This leads to a good global fit, and this approach being known as <strong>moment matching</strong> (because the <em>mean</em> of the posterior is mimicked with highest importance) or <strong>zero avoiding</strong> (because we are avoiding <span class="math inline">\(q(\theta)=0\)</span> when <span class="math inline">\(p(\theta|x)&gt;0\)</span>).</p>
+<p>To see the outcome of this approach visually, we show a one-dimensional posterior in Figure <a href="variational-inference.html#fig:kl-forw">8.2</a> that has two modes. If the candidate distribution family was Gaussian, then two possibilities for the approximate distribution are shown in the two panels, with the optimal choice under forward KL divergence being the right hand panel. You can see from the contribution to the KL divergence in green that not placing density where there is density in the posterior is highly penalised by the forward KL, which forces the optimal choice to be the right have option, even though the approximate distribution has its mode in a region of very low density in the posterior.</p>
+<div class="figure"><span style="display:block;" id="fig:kl-forw"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/kl-forw-1.png" alt="Example of the forward KL divergence when the target posterior is multi-modal. Target posterior is shown in black, and the two panels show two alternative candidate distributions from a Gaussian family (blue). The contribution to the KL divergence is shown by the green region, with the KL figure itself being the area of this region." width="45%" /><img src="MAS61006-S2-Notes_files/figure-html/kl-forw-2.png" alt="Example of the forward KL divergence when the target posterior is multi-modal. Target posterior is shown in black, and the two panels show two alternative candidate distributions from a Gaussian family (blue). The contribution to the KL divergence is shown by the green region, with the KL figure itself being the area of this region." width="45%" />
+<p class="caption">
+Figure 8.2: Example of the forward KL divergence when the target posterior is multi-modal. Target posterior is shown in black, and the two panels show two alternative candidate distributions from a Gaussian family (blue). The contribution to the KL divergence is shown by the green region, with the KL figure itself being the area of this region.
+</p>
+</div>
+</div>
+<div id="reverse-kl" class="section level4 hasAnchor" number="8.3.2.2">
+<h4><span class="header-section-number">8.3.2.2</span> Reverse KL<a href="variational-inference.html#reverse-kl" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In reverse KL (the version that is most commonly used in practice and that we have introduced as our approach for variational inference) we find the <span class="math inline">\(q\)</span> that minimises
+<span class="math display">\[KL(q(\theta) \ || \ p(\theta|x))=\int q(\theta) \log \left( \frac{q(\theta)}{p(\theta|x)} \right)d\theta,\]</span>
+and so now <span class="math inline">\(q(\theta)\)</span> is the ‘weight’.</p>
+<p>In this scenario, values of <span class="math inline">\(\theta\)</span> that lead to <span class="math inline">\(q(\theta)=0\)</span> have no penalty. So there is no penalty for ignoring the region where the posterior has density. Instead, it is the region where <span class="math inline">\(q(\theta)&gt;0\)</span> that contributes large penalties to the KL divergence. Therefore, it does not matter if <span class="math inline">\(q(\theta)\)</span> fails to place density on areas of the posterior that have density, as long as the region where we do place density very closely mimics the posterior. The optimal approximation will avoid spreading density widely and will have good local fits to the posterior. This approach is known as <strong>mode seeking</strong> (because the <em>mode</em> of the posterior is mimicked with highest importance) or <strong>zero forcing</strong> (because we are often forced to allow <span class="math inline">\(q(\theta)=0\)</span> in some areas even if the posterior is not).</p>
+<p>To see the outcome of this approach visually, we show the same scenario as Figure <a href="variational-inference.html#fig:kl-forw">8.2</a> for the reverse KL in Figure <a href="variational-inference.html#fig:kl-rev">8.3</a>. Now the optimal choice under has switched and is the distribution on the left. You can see from the contribution to the KL divergence in green that not placing density where there is density in the posterior is not penalised at all in reverse KL (the right mode is ignored by the approximate distribution in the left panel), but that matching is highly penalised where we do choose to put density.</p>
+<div class="figure"><span style="display:block;" id="fig:kl-rev"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/kl-rev-1.png" alt="Example of the reverse KL divergence when the target posterior is multi-modal. Target posterior is shown in black, and the two panels show two alternative candidate distributions from a Gaussian family (blue). The contribution to the KL divergence is shown by the green region, with the KL figure itself being the area of this region." width="45%" /><img src="MAS61006-S2-Notes_files/figure-html/kl-rev-2.png" alt="Example of the reverse KL divergence when the target posterior is multi-modal. Target posterior is shown in black, and the two panels show two alternative candidate distributions from a Gaussian family (blue). The contribution to the KL divergence is shown by the green region, with the KL figure itself being the area of this region." width="45%" />
+<p class="caption">
+Figure 8.3: Example of the reverse KL divergence when the target posterior is multi-modal. Target posterior is shown in black, and the two panels show two alternative candidate distributions from a Gaussian family (blue). The contribution to the KL divergence is shown by the green region, with the KL figure itself being the area of this region.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="the-variational-family-of-distributions" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> The variational family of distributions<a href="variational-inference.html#the-variational-family-of-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have now seen the main concept of variational inference. This involves specifying a family of candidate distributions from which we will choose our approximate distribution from, referred to as <span class="math inline">\(\mathcal{Q}\)</span> in the above. In practice, a decision needs to be made about this. The family of distributions needs to be flexible enough that we believe it will contain distributions able to closely mimic our true posterior, whilst being simple enough that we can calculate the ELBO and maximise it.</p>
+<div id="mean-field-family" class="section level3 hasAnchor" number="8.4.1">
+<h3><span class="header-section-number">8.4.1</span> Mean-field family<a href="variational-inference.html#mean-field-family" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here we will discuss the current most popular choice in practice, known as the <strong>mean-field variational family</strong>. For a general distribution <span class="math inline">\(q(\theta)\in\mathcal{Q}\)</span>, we assume that the dimensions of <span class="math inline">\(\theta\)</span> are mutually independent and therefore the density of a general distribution can be simplified as
+<span class="math display">\[q(\theta) = \prod_{i=1}^m q_i(\theta_i),\]</span>
+where <span class="math inline">\(\theta=(\theta_1,\ldots,\theta_m)\)</span>. Each <span class="math inline">\(q_i(\cdot)\)</span> can be specified as generally as needed, dependent upon the parameter it is describing, i.e. we might have a two-dimensional parameter set and assume that <span class="math inline">\(q_1\)</span> comes from the family of Gaussians and <span class="math inline">\(q_2\)</span> comes from the family of gammas.</p>
+</div>
+<div id="correlation-cannot-be-replicated" class="section level3 hasAnchor" number="8.4.2">
+<h3><span class="header-section-number">8.4.2</span> Correlation cannot be replicated<a href="variational-inference.html#correlation-cannot-be-replicated" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The mean-field family cannot capture correlations between parameters because our family of candidate distributions are defined to have independent components. As an example, see Figure <a href="variational-inference.html#fig:correl">8.4</a>, which shows a two-dimensional true posterior in blue with high correlation. The best approximation from a mean-field family will take the form of that in green. As the name of the family suggests, the approximation picks out moments of the underlying distribution, so that the estimate of the mean in both dimensions will be a good approximation to the true posterior.</p>
+<p>The correlation cannot be replicated as the candidate family enforces independence. Further, note that the consequence of this is that the variance in the marginals is under-estimated significantly—this was noted at the start of this chapter that variational inference commonly suffers from this problem and this is main reason for this.</p>
+<div class="figure"><span style="display:block;" id="fig:correl"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/correl-1.png" alt="Example of how correlations between parameters are handled using a mean-field approximation in variational inference. Here we have a two-dimensional parameter set, and if the true distribution was highly correlated (blue), this cannot be captured by the optimal mean-field approximation (green)." width="50%" />
+<p class="caption">
+Figure 8.4: Example of how correlations between parameters are handled using a mean-field approximation in variational inference. Here we have a two-dimensional parameter set, and if the true distribution was highly correlated (blue), this cannot be captured by the optimal mean-field approximation (green).
+</p>
+</div>
+</div>
+<div id="why-mean-field-is-useful" class="section level3 hasAnchor" number="8.4.3">
+<h3><span class="header-section-number">8.4.3</span> Why mean-field is useful<a href="variational-inference.html#why-mean-field-is-useful" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>So if the mean-field family means we cannot reproduce correlations between parameters, why is it used? Variational inference involves us being able to maximise the ELBO and finding the <span class="math inline">\(q\in\mathcal{Q}\)</span> which does this. Recall that the ELBO is an expectation, so that
+<span class="math display">\[ELBO(q) = \E_q \left[ \log \left ( \frac{p(x,\theta)}{q(\theta)} \right) \right] = \int_\Theta q(\theta) \log \left ( \frac{p(x,\theta)}{q(\theta)} \right) d\theta.\]</span>
+If <span class="math inline">\(\theta\)</span> is multi-dimensional, so that <span class="math inline">\(\theta = (\theta_1,\ldots,\theta_m)\)</span> then this integral is explicitly
+<span class="math display">\[\int_{\Theta_1} \ldots \int_{\Theta_m} q(\theta_1,\ldots,\theta_m) \log \left ( \frac{p(x,\theta_1,\ldots,\theta_m)}{q(\theta_1,\ldots,\theta_m)} \right) d\theta_1\ldots d\theta_m,\]</span>
+which is going to very easily enter the realm of being intractable, which is what we need to avoid here! This is the reason that the mean-field approximation is commonly used in practice, the independence between dimensions means that this integral can be simplified significantly into a product of integrals.</p>
+<p>Remember: variational inference is a trade-off where we are having to make simplifications (and thus loss of precision) in exchange for speed.</p>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-VI-stats" class="csl-entry">
+Blei, David M., Alp Kucukelbir, and Jon D. McAuliffe. 2017. <span>“Variational Inference: A Review for Statisticians.”</span> <em>Journal of the American Statistical Association</em> 112 (518): 859–77. <a href="https://doi.org/10.1080/01621459.2017.1285773">https://doi.org/10.1080/01621459.2017.1285773</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="cross-validation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="coordinate-ascent-variational-inference-cavi.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["MAS61006-S2-Notes.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll-highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

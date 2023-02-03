@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Multiple imputation for missing data | MAS61006 Bayesian Statistics and Computational Methods</title>
+  <meta name="description" content="Chapter 5 Multiple imputation for missing data | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Multiple imputation for missing data | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Multiple imputation for missing data | MAS61006 Bayesian Statistics and Computational Methods" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2023-02-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bayesian-regression-in-stan.html"/>
+<link rel="next" href="bootstrapping.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script>
+  $(document).ready(function () {
+    process_solutions();
+  });
+function process_solutions() {
+  $("div.section[id^='solution']").each(function(i) {
+    var soln_wrapper_id = "cvxr_ex_" + i;
+    var solution_id = $(this).attr('id');
+    var button = $("<button onclick=\"toggle_solution('" + soln_wrapper_id + "')\">Show/Hide</button>");
+    var new_div = $("<div id='" + soln_wrapper_id + "' class='solution' style='display: none;'></div>");
+    var h = $(this).first();
+    var others = $(this).children().slice(1);
+    $(others).each(function() {
+      $(this).appendTo($(new_div));
+    });
+    $(button).insertAfter($(h));
+    $(new_div).insertAfter($(button));
+  })
+}
+function toggle_solution(el_id) {
+  $("#" + el_id).toggle();
+}
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS61006(Sem2)</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i>Literature</a></li>
+<li class="part"><span><b>I Inference using advanced samplers</b></span></li>
+<li class="chapter" data-level="1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html"><i class="fa fa-check"></i><b>1</b> MCMC Sampling Recap</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#bayesian-inference-continued"><i class="fa fa-check"></i><b>1.1</b> Bayesian inference continued</a></li>
+<li class="chapter" data-level="1.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#monte-carlo"><i class="fa fa-check"></i><b>1.2</b> Monte Carlo estimation</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate"><i class="fa fa-check"></i><b>1.2.1</b> Properties of the Monte Carlo estimate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations"><i class="fa fa-check"></i><b>1.2.2</b> Expressing quantities as expectations</a></li>
+<li class="chapter" data-level="1.2.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#estimation-of-general-integrals"><i class="fa fa-check"></i><b>1.2.3</b> Estimation of general integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc"><i class="fa fa-check"></i><b>1.3</b> Markov chain Monte Carlo (MCMC)</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#mhsection"><i class="fa fa-check"></i><b>1.3.1</b> The Metroplis-Hastings (MH) algorithm</a></li>
+<li class="chapter" data-level="1.3.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals"><i class="fa fa-check"></i><b>1.3.2</b> The problem with random walk proposals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-gibbs-algorithm"><i class="fa fa-check"></i><b>1.3.3</b> The Gibbs algorithm</a></li>
+<li class="chapter" data-level="1.3.4" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-gibbs"><i class="fa fa-check"></i><b>1.3.4</b> The problem with Gibbs</a></li>
+<li class="chapter" data-level="1.3.5" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#a-solution"><i class="fa fa-check"></i><b>1.3.5</b> A solution?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html"><i class="fa fa-check"></i><b>2</b> Hamiltonian Monte Carlo (HMC)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition"><i class="fa fa-check"></i><b>2.1</b> Generating proposals: intuition</a></li>
+<li class="chapter" data-level="2.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics"><i class="fa fa-check"></i><b>2.2</b> Hamiltonian dynamics</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy"><i class="fa fa-check"></i><b>2.2.1</b> Conservation of energy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals"><i class="fa fa-check"></i><b>2.3</b> Using Hamilton’s equations to generate proposals</a></li>
+<li class="chapter" data-level="2.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m"><i class="fa fa-check"></i><b>2.4</b> The joint distribution for <span class="math inline">\((\theta, m)\)</span></a></li>
+<li class="chapter" data-level="2.5" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm"><i class="fa fa-check"></i><b>2.5</b> The HMC algorithm</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations"><i class="fa fa-check"></i><b>2.5.1</b> Approximate solution of Hamilton’s equations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta"><i class="fa fa-check"></i><b>2.6</b> Multivariate <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="2.7" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters"><i class="fa fa-check"></i><b>2.7</b> Tuning parameters</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2"><i class="fa fa-check"></i><b>2.7.1</b> The tuning parameter <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="2.7.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon"><i class="fa fa-check"></i><b>2.7.2</b> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand"><i class="fa fa-check"></i><b>2.8</b> Implementing HMC ‘by hand’</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh"><i class="fa fa-check"></i><b>2.8.1</b> Random-walk MH</a></li>
+<li class="chapter" data-level="2.8.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#gibbs"><i class="fa fa-check"></i><b>2.8.2</b> Gibbs</a></li>
+<li class="chapter" data-level="2.8.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hmc"><i class="fa fa-check"></i><b>2.8.3</b> HMC</a></li>
+<li class="chapter" data-level="2.8.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers"><i class="fa fa-check"></i><b>2.8.4</b> Comparing random-walk and HMC samplers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#summary"><i class="fa fa-check"></i><b>2.9</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html"><i class="fa fa-check"></i><b>3</b> Implementing HMC in Stan</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#getting-set-up-with-stan"><i class="fa fa-check"></i><b>3.1</b> Getting set up with Stan</a></li>
+<li class="chapter" data-level="3.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#rstan-options"><i class="fa fa-check"></i><b>3.2</b> <code>rstan</code> options</a></li>
+<li class="chapter" data-level="3.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#an-example-model"><i class="fa fa-check"></i><b>3.3</b> An example model</a></li>
+<li class="chapter" data-level="3.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio"><i class="fa fa-check"></i><b>3.4</b> Specifying a model in RStudio</a></li>
+<li class="chapter" data-level="3.5" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#stan-code-blocks"><i class="fa fa-check"></i><b>3.5</b> Stan code blocks</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#data-block"><i class="fa fa-check"></i><b>3.5.1</b> <code>data</code> block</a></li>
+<li class="chapter" data-level="3.5.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>3.5.2</b> <code>parameters</code> block</a></li>
+<li class="chapter" data-level="3.5.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#model-block"><i class="fa fa-check"></i><b>3.5.3</b> <code>model</code> block</a></li>
+<li class="chapter" data-level="3.5.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>3.5.4</b> <code>generated quantities</code> block</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm"><i class="fa fa-check"></i><b>3.6</b> Running the HMC algorithm</a></li>
+<li class="chapter" data-level="3.7" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples"><i class="fa fa-check"></i><b>3.7</b> Extracting and analysing the samples</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs"><i class="fa fa-check"></i><b>3.7.1</b> R packages for plotting outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts"><i class="fa fa-check"></i><b>3.8</b> No U-Turn Sampler (NUTS)</a></li>
+<li class="chapter" data-level="3.9" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#further-reading"><i class="fa fa-check"></i><b>3.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html"><i class="fa fa-check"></i><b>4</b> Bayesian regression in Stan</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#holiday-hangover-cures"><i class="fa fa-check"></i><b>4.1.1</b> Holiday hangover cures</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#least-squares-fit"><i class="fa fa-check"></i><b>4.1.2</b> Least squares fit</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-in-stan"><i class="fa fa-check"></i><b>4.1.3</b> Bayesian approach in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#recap-of-logistic-regression"><i class="fa fa-check"></i><b>4.2</b> Recap of logistic regression</a></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#overview-of-mixed-effects"><i class="fa fa-check"></i><b>4.3</b> Overview of mixed effects</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-example-of-a-mixed-effects-model"><i class="fa fa-check"></i><b>4.3.1</b> Simple example of a mixed effects model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#fixed-or-random-effects"><i class="fa fa-check"></i><b>4.3.2</b> Fixed or random effects?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#mixed-effect-logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Mixed effect logistic regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#balance-experiment"><i class="fa fa-check"></i><b>4.4.1</b> Balance experiment</a></li>
+<li class="chapter" data-level="4.4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>4.4.2</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#maximum-likelihood-approach"><i class="fa fa-check"></i><b>4.4.3</b> Maximum likelihood approach</a></li>
+<li class="chapter" data-level="4.4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-using-stan"><i class="fa fa-check"></i><b>4.4.4</b> Bayesian approach using Stan</a></li>
+<li class="chapter" data-level="4.4.5" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#comparing-stan-and-lme4"><i class="fa fa-check"></i><b>4.4.5</b> Comparing Stan and lme4</a></li>
+<li class="chapter" data-level="4.4.6" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#easy-bayesian-approach-with-brms"><i class="fa fa-check"></i><b>4.4.6</b> ‘Easy’ Bayesian approach with <code>brms</code></a></li>
+<li class="chapter" data-level="4.4.7" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#what-have-we-found"><i class="fa fa-check"></i><b>4.4.7</b> What have we found?</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Inference with missing data</b></span></li>
+<li class="chapter" data-level="5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html"><i class="fa fa-check"></i><b>5</b> Multiple imputation for missing data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#example-nhanes-data"><i class="fa fa-check"></i><b>5.2</b> Example: <code>nhanes</code> data</a></li>
+<li class="chapter" data-level="5.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness"><i class="fa fa-check"></i><b>5.3</b> Mechanisms of missingness</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>5.3.1</b> Missing completely at random (MCAR)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>5.3.2</b> Missing at random (MAR)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar"><i class="fa fa-check"></i><b>5.3.3</b> Not missing at random (NMAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness"><i class="fa fa-check"></i><b>5.4</b> Ignoring information about missingness</a></li>
+<li class="chapter" data-level="5.5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#inference-via-imputation"><i class="fa fa-check"></i><b>5.5</b> Inference via imputation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#further-simplifications"><i class="fa fa-check"></i><b>5.5.1</b> Further simplifications</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#pooling"><i class="fa fa-check"></i><b>5.6</b> Pooling multiple imputations</a></li>
+<li class="chapter" data-level="5.7" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#simple-example"><i class="fa fa-check"></i><b>5.7</b> Simple example</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand"><i class="fa fa-check"></i><b>5.7.1</b> Multiple imputation by hand</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation"><i class="fa fa-check"></i><b>5.8</b> Imputing missing data: chained equation multiple imputation</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#how-many-iterations"><i class="fa fa-check"></i><b>5.8.1</b> How many iterations?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset"><i class="fa fa-check"></i><b>5.9</b> MICE example: the <code>nhanes</code> dataset</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#complete-case-analysis"><i class="fa fa-check"></i><b>5.9.1</b> Complete case analysis</a></li>
+<li class="chapter" data-level="5.9.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data"><i class="fa fa-check"></i><b>5.9.2</b> Imputing the missing data</a></li>
+<li class="chapter" data-level="5.9.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputation-analysis"><i class="fa fa-check"></i><b>5.9.3</b> Imputation analysis</a></li>
+<li class="chapter" data-level="5.9.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#analysis-pooling"><i class="fa fa-check"></i><b>5.9.4</b> Analysis pooling</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Resampling methods</b></span></li>
+<li class="chapter" data-level="6" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>6</b> Bootstrapping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrap-estimates-of-standard-errors"><i class="fa fa-check"></i><b>6.1</b> Bootstrap estimates of standard errors</a></li>
+<li class="chapter" data-level="6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function"><i class="fa fa-check"></i><b>6.2</b> Estimating a distribution using the empirical cumulative distribution function</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="bootstrapping.html"><a href="bootstrapping.html#sampling-from-an-ecdf"><i class="fa fa-check"></i><b>6.2.1</b> Sampling from an ECDF</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#notation-summary"><i class="fa fa-check"></i><b>6.3</b> Notation summary</a></li>
+<li class="chapter" data-level="6.4" data-path="bootstrapping.html"><a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance"><i class="fa fa-check"></i><b>6.4</b> Example: Bootstrap standard errors of a sample mean and sample variance</a></li>
+<li class="chapter" data-level="6.5" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals"><i class="fa fa-check"></i><b>6.5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error"><i class="fa fa-check"></i><b>6.5.1</b> Confidence intervals using the estimated standard error</a></li>
+<li class="chapter" data-level="6.5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>6.5.2</b> Confidence intervals using percentiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="bootstrapping.html"><a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf"><i class="fa fa-check"></i><b>6.6</b> Properties of samples from the empirical CDF</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#expectation-and-variance"><i class="fa fa-check"></i><b>6.6.1</b> Expectation and variance</a></li>
+<li class="chapter" data-level="6.6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-percentiles"><i class="fa fa-check"></i><b>6.6.2</b> Sample percentiles</a></li>
+<li class="chapter" data-level="6.6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping"><i class="fa fa-check"></i><b>6.6.3</b> Sources of error and sample sizes in bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="bootstrapping.html"><a href="bootstrapping.html#example-measuring-observer-agreement"><i class="fa fa-check"></i><b>6.7</b> Example: Measuring observer agreement</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-data"><i class="fa fa-check"></i><b>6.7.1</b> The data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-kappa-statistic"><i class="fa fa-check"></i><b>6.7.2</b> The kappa statistic</a></li>
+<li class="chapter" data-level="6.7.3" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrapping-bivariate-data"><i class="fa fa-check"></i><b>6.7.3</b> Bootstrapping bivariate data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="bootstrapping.html"><a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing"><i class="fa fa-check"></i><b>6.8</b> Parametric bootstrapping and hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-milk-data-set"><i class="fa fa-check"></i><b>6.8.1</b> The <code>Milk</code> data set</a></li>
+<li class="chapter" data-level="6.8.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-model-and-hypothesis"><i class="fa fa-check"></i><b>6.8.2</b> The model and hypothesis</a></li>
+<li class="chapter" data-level="6.8.3" data-path="bootstrapping.html"><a href="bootstrapping.html#the-generalized-likelihood-ratio-test"><i class="fa fa-check"></i><b>6.8.3</b> The generalized likelihood ratio test</a></li>
+<li class="chapter" data-level="6.8.4" data-path="bootstrapping.html"><a href="bootstrapping.html#the-parametric-bootstrap-test"><i class="fa fa-check"></i><b>6.8.4</b> The parametric bootstrap test</a></li>
+<li class="chapter" data-level="6.8.5" data-path="bootstrapping.html"><a href="bootstrapping.html#implementation-with-r"><i class="fa fa-check"></i><b>6.8.5</b> Implementation with R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cross-validation.html"><a href="cross-validation.html"><i class="fa fa-check"></i><b>7</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-classification"><i class="fa fa-check"></i><b>7.1</b> Cross-validation in classification</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="cross-validation.html"><a href="cross-validation.html#the-palmer-penguins-data"><i class="fa fa-check"></i><b>7.1.1</b> The Palmer penguins data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cross-validation.html"><a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn"><i class="fa fa-check"></i><b>7.1.2</b> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-knn"><i class="fa fa-check"></i><b>7.1.3</b> Implementing cross-validation in KNN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2</b> Cross-validation in regression</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="cross-validation.html"><a href="cross-validation.html#the-flint-tools-data"><i class="fa fa-check"></i><b>7.2.1</b> The flint tools data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2.2</b> Implementing cross-validation in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="cross-validation.html"><a href="cross-validation.html#parameter-estimation-with-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Parameter estimation with cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="cross-validation.html"><a href="cross-validation.html#example-choosing-the-value-k-in-knn"><i class="fa fa-check"></i><b>7.3.1</b> Example: choosing the value <span class="math inline">\(K\)</span> in KNN</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood"><i class="fa fa-check"></i><b>7.3.2</b> Cross-validation as an alternative to maximum likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cross-validation.html"><a href="cross-validation.html#computational-short-cuts"><i class="fa fa-check"></i><b>7.4</b> Computational short-cuts</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="cross-validation.html"><a href="cross-validation.html#example-returning-to-the-flint-data"><i class="fa fa-check"></i><b>7.4.1</b> Example: Returning to the flint data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="cross-validation.html"><a href="cross-validation.html#relationship-with-aic"><i class="fa fa-check"></i><b>7.5</b> Relationship with AIC</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="cross-validation.html"><a href="cross-validation.html#example-the-cars-data"><i class="fa fa-check"></i><b>7.5.1</b> Example: The cars data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cross-validation.html"><a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut"><i class="fa fa-check"></i><b>7.6</b> (Non-examinable) Proof of the computational short cut</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="cross-validation.html"><a href="cross-validation.html#helpful-results-we-will-use"><i class="fa fa-check"></i><b>7.6.1</b> Helpful results we will use</a></li>
+<li class="chapter" data-level="7.6.2" data-path="cross-validation.html"><a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models"><i class="fa fa-check"></i><b>7.6.2</b> Relate the estimated coefficients of full and reduced models</a></li>
+<li class="chapter" data-level="7.6.3" data-path="cross-validation.html"><a href="cross-validation.html#relating-the-residuals"><i class="fa fa-check"></i><b>7.6.3</b> Relating the residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Approximate inference without sampling</b></span></li>
+<li class="chapter" data-level="8" data-path="variational-inference.html"><a href="variational-inference.html"><i class="fa fa-check"></i><b>8</b> Variational inference</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="variational-inference.html"><a href="variational-inference.html#background-theory"><i class="fa fa-check"></i><b>8.1</b> Background theory</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="variational-inference.html"><a href="variational-inference.html#jensens-inequality"><i class="fa fa-check"></i><b>8.1.1</b> Jensen’s inequality</a></li>
+<li class="chapter" data-level="8.1.2" data-path="variational-inference.html"><a href="variational-inference.html#kullback-leibler-divergence"><i class="fa fa-check"></i><b>8.1.2</b> Kullback-Leibler Divergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="variational-inference.html"><a href="variational-inference.html#optimisation-with-coordinate-ascent"><i class="fa fa-check"></i><b>8.1.3</b> Optimisation with coordinate ascent</a></li>
+<li class="chapter" data-level="8.1.4" data-path="variational-inference.html"><a href="variational-inference.html#stochastic-optimisation"><i class="fa fa-check"></i><b>8.1.4</b> Stochastic optimisation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="variational-inference.html"><a href="variational-inference.html#motivation-for-approximate-inference-approaches"><i class="fa fa-check"></i><b>8.2</b> Motivation for approximate inference approaches</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="variational-inference.html"><a href="variational-inference.html#intractable-integrals"><i class="fa fa-check"></i><b>8.2.1</b> Intractable integrals</a></li>
+<li class="chapter" data-level="8.2.2" data-path="variational-inference.html"><a href="variational-inference.html#variational-approach-to-intractable-integrals"><i class="fa fa-check"></i><b>8.2.2</b> Variational approach to intractable integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="variational-inference.html"><a href="variational-inference.html#approximate-inference-as-an-optimisation-problem"><i class="fa fa-check"></i><b>8.3</b> Approximate inference as an optimisation problem</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="variational-inference.html"><a href="variational-inference.html#exploring-the-elbo"><i class="fa fa-check"></i><b>8.3.1</b> Exploring the ELBO</a></li>
+<li class="chapter" data-level="8.3.2" data-path="variational-inference.html"><a href="variational-inference.html#forward-and-reverse-variational-inference"><i class="fa fa-check"></i><b>8.3.2</b> Forward and reverse variational inference</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="variational-inference.html"><a href="variational-inference.html#the-variational-family-of-distributions"><i class="fa fa-check"></i><b>8.4</b> The variational family of distributions</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="variational-inference.html"><a href="variational-inference.html#mean-field-family"><i class="fa fa-check"></i><b>8.4.1</b> Mean-field family</a></li>
+<li class="chapter" data-level="8.4.2" data-path="variational-inference.html"><a href="variational-inference.html#correlation-cannot-be-replicated"><i class="fa fa-check"></i><b>8.4.2</b> Correlation cannot be replicated</a></li>
+<li class="chapter" data-level="8.4.3" data-path="variational-inference.html"><a href="variational-inference.html#why-mean-field-is-useful"><i class="fa fa-check"></i><b>8.4.3</b> Why mean-field is useful</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html"><i class="fa fa-check"></i><b>9</b> Coordinate ascent variational inference (CAVI)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-cavi-algorithm"><i class="fa fa-check"></i><b>9.1</b> The CAVI algorithm</a></li>
+<li class="chapter" data-level="9.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#example-mixture-of-gaussians"><i class="fa fa-check"></i><b>9.2</b> Example: Mixture of Gaussians</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-observation-model"><i class="fa fa-check"></i><b>9.2.1</b> The observation model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-prior"><i class="fa fa-check"></i><b>9.2.2</b> The prior</a></li>
+<li class="chapter" data-level="9.2.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-joint-likelihood"><i class="fa fa-check"></i><b>9.2.3</b> The joint likelihood</a></li>
+<li class="chapter" data-level="9.2.4" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-mean-field-family-approximation"><i class="fa fa-check"></i><b>9.2.4</b> The mean-field family approximation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#cavi"><i class="fa fa-check"></i><b>9.2.5</b> CAVI</a></li>
+<li class="chapter" data-level="9.2.6" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#implementing-cavi-in-r"><i class="fa fa-check"></i><b>9.2.6</b> Implementing CAVI in R</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#comment"><i class="fa fa-check"></i><b>9.3</b> Comment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS61006 Bayesian Statistics and Computational Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="multiple-imputation-for-missing-data" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Multiple imputation for missing data<a href="multiple-imputation-for-missing-data.html#multiple-imputation-for-missing-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --->
+<p><span class="math inline">\(\def \mb{\mathbb}\)</span> <span class="math inline">\(\def \E{\mb{E}}\)</span> <span class="math inline">\(\def \P{\mb{P}}\)</span> <span class="math inline">\(\def \R{\mb{R}}\)</span> <span class="math inline">\(\DeclareMathOperator{\var}{Var}\)</span> <span class="math inline">\(\DeclareMathOperator{\cov}{Cov}\)</span></p>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aims of this chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Introduce and discuss statistical issues with missing data.</td>
+</tr>
+<tr class="even">
+<td>2. Understand the multiple imputation approach.</td>
+</tr>
+<tr class="odd">
+<td>3. Implement and interpret the results of multiple imputation in
+practice using the R package <code>mice</code>.</td>
+</tr>
+</tbody>
+</table>
+<div id="introduction" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Introduction<a href="multiple-imputation-for-missing-data.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It is common to encounter data sets where some of the values are
+missing, for example, in a sample survey if a respondent does not answer
+all the questions, or if a process for recording data wasn’t working on
+a particular day. Some scenarios are as follows.</p>
+<ol style="list-style-type: decimal">
+<li>Missing data we may choose to ignore.</li>
+</ol>
+<p>Consider, for example, the <code>airquality</code> data frame in R:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="multiple-imputation-for-missing-data.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airquality)</span></code></pre></div>
+<pre><code>##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6</code></pre>
+<p>Each <code>NA</code> indicates a missing value. If we fit a linear model in R using
+these data, R will ignore any row with a missing value. This is
+sometimes referred to as a <strong>complete case</strong> analysis.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Censored data</li>
+</ol>
+<p>In a clinical trial, we may observe ‘survival data’: the time <span class="math inline">\(T\)</span> taken
+for some event to occur for a patient. Suppose, for example, a trial lasts for two years, and that for a particular patient, the event hasn’t occurred by the end of the trial. For this patient, we have a
+censored observation: we only know <span class="math inline">\(T&gt;2\)</span>; the actual value of <span class="math inline">\(T\)</span> is not
+observed. Here, we can incorporate this observation into our analysis
+through appropriate specification of the likelihood function. The
+contribution to the likelihood from this patient’s observation would be
+of the form <span class="math inline">\(P(T&gt;2|\theta)\)</span>, rather than a density <span class="math inline">\(f_T(t|\theta)\)</span>, had
+we observed <span class="math inline">\(T=t\)</span>.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Bias</li>
+</ol>
+<p>In a sample survey, the probability of a participant answering a
+question may depend on the answer the participant would give. For
+example, in a political opinion poll, participants with particular views
+may be less likely to answer certain questions. This is perhaps the
+hardest type of missing data to deal with; ignoring it could lead to
+biased results. We may have to make strong modelling assumptions, or
+seek additional data that would help us understand potential biases.</p>
+<p>In this chapter, we will study one particular technique for dealing with
+missing data: multiple imputation. We’ll consider this from a Bayesian
+perspective, so the aim will be to derive posterior distributions in
+situations with missing data.</p>
+</div>
+<div id="example-nhanes-data" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Example: <code>nhanes</code> data<a href="multiple-imputation-for-missing-data.html#example-nhanes-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will be using an example with a dataset <code>nhanes</code> from the <code>mice</code>
+package <span class="citation">(<a href="#ref-R-mice" role="doc-biblioref">van Buuren and Groothuis-Oudshoorn 2011</a>)</span>, which comprises 25 observations of 4 variables. An extract of
+this data is shown in Table <a href="multiple-imputation-for-missing-data.html#tab:nhanes-head">5.1</a>, which includes a
+number of missing cells.</p>
+<table>
+<caption><span id="tab:nhanes-head">Table 5.1: </span>Extract of the nhanes dataset.</caption>
+<thead>
+<tr class="header">
+<th align="right">age</th>
+<th align="right">bmi</th>
+<th align="right">hyp</th>
+<th align="right">chl</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">22.7</td>
+<td align="right">1</td>
+<td align="right">187</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+<td align="right">187</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">20.4</td>
+<td align="right">1</td>
+<td align="right">113</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">184</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">22.5</td>
+<td align="right">1</td>
+<td align="right">118</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">30.1</td>
+<td align="right">1</td>
+<td align="right">187</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">22.0</td>
+<td align="right">1</td>
+<td align="right">238</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<p>Using the <code>mice</code> package, we can investigate the missing data pattern of
+our dataset. Our classic tools for exploratory data analysis do still
+stand and are somewhat informative, such as <code>summary</code> will tell us the
+number of missing observations per variable. However, the pattern
+between variables does not come across here:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="multiple-imputation-for-missing-data.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mice<span class="sc">::</span>nhanes)</span></code></pre></div>
+<pre><code>##       age            bmi             hyp             chl       
+##  Min.   :1.00   Min.   :20.40   Min.   :1.000   Min.   :113.0  
+##  1st Qu.:1.00   1st Qu.:22.65   1st Qu.:1.000   1st Qu.:185.0  
+##  Median :2.00   Median :26.75   Median :1.000   Median :187.0  
+##  Mean   :1.76   Mean   :26.56   Mean   :1.235   Mean   :191.4  
+##  3rd Qu.:2.00   3rd Qu.:28.93   3rd Qu.:1.000   3rd Qu.:212.0  
+##  Max.   :3.00   Max.   :35.30   Max.   :2.000   Max.   :284.0  
+##                 NA&#39;s   :9       NA&#39;s   :8       NA&#39;s   :10</code></pre>
+<p>In the below, we use <code>md.pattern()</code> to obtain this information, which
+can both print out this missing pattern, and display it with an image,
+as given in Figure <a href="multiple-imputation-for-missing-data.html#fig:nhanes-pattern">5.1</a>.</p>
+<p>Each column represents one variable in the data, but each row is not a
+subject. Each row is a missingness pattern across the set of variables,
+that is present in the data. The left column of figures gives the number
+of subjects with that missing pattern, and the right column of figures
+gives the number of missing data that pattern involves (i.e. how many
+red squares are in that row). The bottom row of numbers therefore counts
+how many subjects have missing data for each variable.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="multiple-imputation-for-missing-data.html#cb60-1" aria-hidden="true" tabindex="-1"></a>mice<span class="sc">::</span><span class="fu">md.pattern</span>(mice<span class="sc">::</span>nhanes)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:nhanes-pattern"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/nhanes-pattern-1.png" alt="Missing data pattern of the nhanes dataset." width="50%" />
+<p class="caption">
+Figure 5.1: Missing data pattern of the nhanes dataset.
+</p>
+</div>
+<pre><code>##    age hyp bmi chl   
+## 13   1   1   1   1  0
+## 3    1   1   1   0  1
+## 1    1   1   0   1  1
+## 1    1   0   0   1  2
+## 7    1   0   0   0  3
+##      0   8   9  10 27</code></pre>
+<p>For the <code>nhanes</code> data, we have 13 subjects with full information, 4
+subjects who have one variable out of the four missing, 1 subject with
+two variables missing, and finally 7 subjects who have the same set of
+the three variables missing. Note that all 25 subjects have observations
+of the variable <code>age</code>.</p>
+</div>
+<div id="mechanisms-of-missingness" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Mechanisms of missingness<a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="result">
+<p>Suppose we have data <span class="math inline">\(Y = (y_{ij})\)</span> given by the <span class="math inline">\(n \times k\)</span> matrix,
+which will typically contain information about <span class="math inline">\(k\)</span> variables from <span class="math inline">\(n\)</span>
+subjects. We distinguish the <em>pattern</em> of the missing data by
+introducing the <strong>missing-data indicator matrix</strong>, <span class="math inline">\(R = (r_{ij})\)</span>, such
+that <span class="math inline">\(r_{ij}=1\)</span> if <span class="math inline">\(y_{ij}\)</span> is missing and <span class="math inline">\(r_{ij}=0\)</span> if <span class="math inline">\(y_{ij}\)</span> is
+present.</p>
+</div>
+<p>The pattern of missing data arises due to the <em>mechanism</em> of
+missingness. This is characterised by the conditional distribution of
+<span class="math inline">\(R\)</span> given <span class="math inline">\(Y\)</span> and two sets of parameters:</p>
+<ul>
+<li><span class="math inline">\(\theta\)</span>: the parameters of interest, i.e. parameters in a
+likelihood <span class="math inline">\(f(Y|\theta)\)</span>;</li>
+<li><span class="math inline">\(\phi\)</span>: nuisances parameters that are related to the missing data
+mechanism only, e.g. a probability of non-response in a sample
+survey.</li>
+</ul>
+<p>In the following discussion, we will assume <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\phi\)</span> are
+independent, and that conditional on <span class="math inline">\(Y\)</span>, we have independence between <span class="math inline">\(R\)</span>
+and <span class="math inline">\(\theta\)</span>: given <span class="math inline">\(Y\)</span>, missingness is not dependent on the parameters
+in the distribution of <span class="math inline">\(Y\)</span>. We will therefore consider missingness
+mechanisms in terms of the distribution <span class="math inline">\(f(R|Y, \phi)\)</span>.</p>
+<p>Three possible mechanisms are as follows.</p>
+<div id="missing-completely-at-random-mcar" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Missing completely at random (MCAR)<a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Missingness does not depend on the value of the data, so
+<span class="math display">\[f(R | Y, \phi) = f(R | \phi),\]</span> for all <span class="math inline">\(Y,\phi\)</span>. This is the ideal
+situation. Note that this name is slightly confusing—the pattern of
+missing data given by <span class="math inline">\(R\)</span> need not be random, but merely that it is
+independent of the data values themselves.</p>
+</div>
+<div id="missing-at-random-mar" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Missing at random (MAR)<a href="multiple-imputation-for-missing-data.html#missing-at-random-mar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Missingness depends only on the components of <span class="math inline">\(Y\)</span> that are observed,
+denoted <span class="math inline">\(Y_\text{obs}\)</span>, and not on the components that are unobserved,
+denoted <span class="math inline">\(Y_\text{mis}\)</span>. So
+<span class="math display">\[f(R | Y, \phi) = f(R | Y_\text{obs}, \phi),\]</span> for all
+<span class="math inline">\(Y_\text{mis},\phi\)</span>. Here, the probability of a data point being missing
+can depend on the value of other variables that are not missing. For
+example, in a questionnaire there may be a question on salary that older
+age groups are more likely to not answer in comparison with younger age
+groups.</p>
+<p>Note that MCAR implies MAR.</p>
+</div>
+<div id="not-missing-at-random-nmar" class="section level3 hasAnchor" number="5.3.3">
+<h3><span class="header-section-number">5.3.3</span> Not missing at random (NMAR)<a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Missingness can depend both on the missing and observed variables, so
+that <span class="math inline">\(f(R | Y, \phi)\)</span> cannot be simplified. For example, respondents to
+a questionnaire may be more likely to leave a question on salary
+unanswered dependent upon their actual salary. This is the hardest
+mechanism of missing data to handle and can lead to serious biases.</p>
+</div>
+</div>
+<div id="ignoring-information-about-missingness" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Ignoring information about missingness<a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When we have missing data, the observed data should be thought of as
+both <span class="math inline">\(Y_\text{obs}\)</span> <em>and</em> <span class="math inline">\(R\)</span>: the target posterior is
+<span class="math inline">\(f(\theta|Y_\text{obs}, R)\)</span>. We can ignore <span class="math inline">\(R\)</span> if we assume that the data are
+missing at random (and hence also if the data are MCAR). For the joint
+posterior distribution of <span class="math inline">\(\theta, \phi\)</span> we have</p>
+<p><span class="math display">\[\begin{align}
+f(\theta,\phi | Y_\text{obs},R)&amp;\propto \pi(\theta)\pi(\phi)f(Y_\text{obs},R|\theta,
+\phi),\\ &amp;=\pi(\theta)\pi(\phi)f(Y_\text{obs}|\theta)f(R|Y_\text{obs}, \phi),
+\end{align}\]</span>
+assuming the data are MAR. Hence for the marginal
+posterior of <span class="math inline">\(\theta\)</span> we have <span class="math display">\[
+f(\theta|Y_\text{obs},R)\propto\pi(\theta)f(Y_\text{obs}|\theta),
+\]</span> i.e. the posterior obtained if we ignore <span class="math inline">\(R\)</span>.</p>
+</div>
+<div id="inference-via-imputation" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Inference via imputation<a href="multiple-imputation-for-missing-data.html#inference-via-imputation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>From now on, we will assume our data are MAR, so that <span class="math inline">\(R\)</span> can be
+ignored.</p>
+<p>Returning to the <code>nhanes</code> data, suppose we want to fit a regression
+model with <code>bmi</code> as the dependent variable, and the other three
+variables as the independent variables. Amongst the missing data, we
+note one observation where <code>bmi</code> is observed, but <code>chl</code> is not:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="multiple-imputation-for-missing-data.html#cb62-1" aria-hidden="true" tabindex="-1"></a>mice<span class="sc">::</span>nhanes[<span class="dv">24</span>, ]</span></code></pre></div>
+<pre><code>##    age  bmi hyp chl
+## 24   3 24.9   1  NA</code></pre>
+<p>Should observations like this be ignored? As <code>age</code> and <code>hyp</code> were still
+observed, wouldn’t there still be <em>some</em> information about the
+relationship between dependent and independent variables from this
+observation? In general, we may have a dataset where the proportion of
+<em>complete cases</em> (observations with no missing variables) is relatively
+small; if we only conduct a “complete case analysis” (where any
+incomplete rows are discarded), we may be ignoring a lot of data.</p>
+<p>Here, we define</p>
+<ul>
+<li><span class="math inline">\(Y_\text{obs}\)</span>: all the observed individual observations, including any
+observed variables within rows containing missing data.</li>
+<li><span class="math inline">\(Y_\text{mis}\)</span>: all the individual missing observations. (Together,
+<span class="math inline">\((Y_\text{obs}, Y_\text{mis})\)</span> would give a complete data frame in R).</li>
+<li><span class="math inline">\(\theta\)</span>: the model parameters of interest.</li>
+</ul>
+<p>If we are to make use of all the data we have, we want to derive
+<span class="math inline">\(f(\theta|Y_\text{obs})\)</span>. But this will involve a likelihood
+<span class="math inline">\(f(Y_\text{obs}|\theta)\)</span> that we can’t easily write down (how would we fit a
+linear model where some of the independent variables are missing?) The
+main idea of multiple imputation is to derive the posterior via</p>
+<p><span class="math display">\[
+f(\theta|Y_\text{obs}) = \int f(\theta|Y_\text{obs}, Y_\text{mis})f(Y_\text{mis}|Y_\text{obs})dY_\text{mis}
+\]</span>
+The posterior <span class="math inline">\(f(\theta|Y_\text{obs}, Y_\text{mis})\)</span> is the posterior of
+<span class="math inline">\(\theta\)</span> given a complete data set, and so will be easier to deal with.
+We do, however, have a new problem, which is to consider a distribution
+of the missing data conditional on the observed data; we discuss this later.</p>
+<p>Rather than trying to evaluate the integral analytically, we will use a
+Monte Carlo approach. In outline:</p>
+<ol style="list-style-type: decimal">
+<li>we sample a set of missing data <span class="math inline">\(Y_\text{mis}^{(i)}\)</span>;</li>
+<li>we derive a posterior <span class="math inline">\(f(\theta|Y_\text{obs}, Y_\text{mis}^{(i)})\)</span>;</li>
+<li>we repeat steps (1) and (2) <span class="math inline">\(m\)</span> times, and then average over our
+distributions
+<span class="math inline">\(f(\theta|Y_\text{obs}, Y_\text{mis}^{(1)}), \ldots f(\theta|Y_\text{obs}, Y_\text{mis}^{(m)}).\)</span>.</li>
+</ol>
+<p>In effect, we are approximating the posterior of interest with
+<span class="math display">\[f(\theta \ | \ Y_\text{obs}) \approx \frac{1}{m} \sum_{i=1}^m f(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs}),\]</span>
+where <span class="math inline">\(Y_\text{mis}^{(i)} \sim f(Y_\text{mis} \ | \ Y_\text{obs})\)</span>.</p>
+<p>The process of filling in the missing values is known as imputation, and
+because we do this multiple times, we refer to it as multiple
+imputation.</p>
+<div id="further-simplifications" class="section level3 hasAnchor" number="5.5.1">
+<h3><span class="header-section-number">5.5.1</span> Further simplifications<a href="multiple-imputation-for-missing-data.html#further-simplifications" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Although deriving <span class="math inline">\(f(\theta|Y_\text{obs}, Y_\text{mis}^{(i)})\)</span> is simpler than
+deriving <span class="math inline">\(f(\theta|Y_\text{obs})\)</span>, it still may be difficult, or involve
+substantial computational effort. We may choose to make two further
+simplifications:</p>
+<ol style="list-style-type: decimal">
+<li>Instead of obtaining the full posterior distribution
+<span class="math inline">\(f(\theta \ | \ Y_\text{obs})\)</span>, we may just obtain the
+posterior mean and variance of <span class="math inline">\(\theta\)</span>, using only
+<span class="math inline">\(E(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs})\)</span> and
+<span class="math inline">\(Var(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs})\)</span> for
+<span class="math inline">\(i=1,\ldots,m\)</span></li>
+<li>We may choose to obtain quick approximations of
+<span class="math inline">\(E(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs})\)</span> and
+<span class="math inline">\(Var(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs})\)</span>, for example
+(in a linear models setting) using a least squares estimate to approximate <span class="math inline">\(E(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs})\)</span> and the associated standard error (squared) to approximate <span class="math inline">\(Var(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs})\)</span>.</li>
+</ol>
+</div>
+</div>
+<div id="pooling" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Pooling multiple imputations<a href="multiple-imputation-for-missing-data.html#pooling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Suppose we have already we have already obtained <span class="math inline">\(m\)</span> imputed datasets <span class="math inline">\((Y_\text{mis}^{(1)}, Y_\text{obs}), \ldots, (Y_\text{mis}^{(m)}, Y_\text{obs})\)</span>. We will use the simplification of obtaining approximate expressions for the posterior mean and variance <span class="math inline">\(\theta|Y_\text{obs}\)</span>; we will not attempt to derive the full posterior <span class="math inline">\(f(\theta|Y_\text{obs})\)</span></p>
+<div class="result">
+<p>We estimate <span class="math inline">\(E(\theta|Y_\text{obs})\)</span> by noting that
+<span class="math display">\[
+\E(\theta \ | \ Y_\text{obs}) = \E(\E(\theta \ | \ Y_\text{mis}, Y_\text{obs}) \ | \ Y_\text{obs})
+\]</span>
+and then using the estimate
+<span class="math display" id="eq:MIestimate">\[\begin{equation}
+\bar{\theta} := \frac{1}{m}\sum_{i=1}^m \hat{\theta}^{(i)},
+\tag{5.1}
+\end{equation}\]</span>
+where
+<span class="math display">\[
+\hat{\theta}^{(i)} = \E(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs})
+\]</span></p>
+</div>
+<p>In the above, the first line uses the tower property of expectation.
+This equality says that the posterior mean is the average of the
+posterior means over repeatedly imputed data. The approach for combining
+the results of multiple imputation therefore arises by approximating the
+average by a sample mean of the estimator from our <span class="math inline">\(m\)</span> imputations.</p>
+<div class="result">
+<p>We estimate <span class="math inline">\(\var(\theta|Y_\text{obs})\)</span> by first noting that
+<span class="math display">\[
+\var(\theta \ | \ Y_\text{obs}) = \E(\var(\theta \ | \ Y_\text{mis}, Y_\text{obs}) \ | \ Y_\text{obs}) + \var(\E(\theta \ | \ Y_\text{mis}, Y_\text{obs}) \ | \ Y_\text{obs}) ,
+\]</span>
+and then using the estimate</p>
+<p><span class="math display" id="eq:MIuncertainty">\[\begin{equation}
+T := \bar{U} + \left(1 + \frac{1}{m} \right)B,
+\tag{5.2}
+\end{equation}\]</span>
+where <span class="math inline">\(\bar{U}\)</span> is an estimate of <span class="math inline">\(\E(\var(\theta \ | \ Y_\text{mis}, Y_\text{obs}) \ | \ Y_\text{obs})\)</span>, given by
+<span class="math display">\[
+\bar{U}:= \frac{1}{m}\sum_{i=1}^m U^{(i)}, \quad U^{(i)}:=\var(\theta \ | \ Y_\text{mis}^{(i)}, Y_\text{obs}),
+\]</span>
+and <span class="math inline">\(B\)</span> is an estimate of <span class="math inline">\(\var(\E(\theta | Y_\text{mis}, Y_\text{obs}) | Y_\text{obs})\)</span>, given by
+<span class="math display">\[
+B:=\frac{1}{m-1} \sum_{i=1}^m \left(\hat{\theta}^{(i)} - \bar{\theta} \right)^2,
+\]</span>
+and the factor <span class="math inline">\((1 + 1/m)\)</span> is a correction for bias, the details of which we won’t consider here.</p>
+</div>
+<p>Writing
+<span class="math display">\[\begin{equation}
+T = \bar{U} + B + \frac{B}{m},
+\end{equation}\]</span>
+we can summarise this as the posterior uncertainty of
+<span class="math inline">\(\theta\)</span> comprising of three sources:</p>
+<ol style="list-style-type: decimal">
+<li>The uncertainty caused by the fact that we are taking a sample of
+observations <span class="math inline">\(Y\)</span> and estimating <span class="math inline">\(\theta\)</span> from this. This is the
+uncertainty that we would always have surrounding an estimate from
+complete data, as <span class="math inline">\(Y\)</span> is still only a sample and not the entire
+population of interest. This contribution is <span class="math inline">\(\bar{U}\)</span>.</li>
+<li>The uncertainty caused by the missing data. This contribution to the
+uncertainty is given by <span class="math inline">\(B\)</span>. Each imputed dataset represents a
+sample from the possible range of <span class="math inline">\(Y_\text{mis}\)</span>, so <span class="math inline">\(B\)</span> is the
+variability in the parameter estimates resulting from the range of
+possible missing data values.</li>
+<li>The uncertainty caused by the fact that we have only implemented <span class="math inline">\(m\)</span>
+imputed datasets and not the actual full set of possible
+<span class="math inline">\(Y_\text{mis}\)</span>. The contribution to the uncertainty from this aspect
+is <span class="math inline">\(\frac{B}{m}\)</span>.</li>
+</ol>
+<p>Because any analysis will contain uncertainty of the type described in
+point (1), it is useful for us to evaluate the uncertainty that is
+arising because of the missing data and our imputation efforts. The proportion of the variance attributable to missing data and imputation out of the total variance can be expressed as
+<span class="math display">\[\lambda_m := \frac{\left(1 + \frac{1}{m} \right)B}{\bar{U}+\left(1 + \frac{1}{m} \right)B}.\]</span></p>
+</div>
+<div id="simple-example" class="section level2 hasAnchor" number="5.7">
+<h2><span class="header-section-number">5.7</span> Simple example<a href="multiple-imputation-for-missing-data.html#simple-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have the data in Table <a href="multiple-imputation-for-missing-data.html#tab:simpledata">5.2</a>, which contains
+the three variables <span class="math inline">\(Y, X_1, X_2\)</span>, and there is one missing observation
+of <span class="math inline">\(X_1\)</span>.</p>
+<table>
+<caption><span id="tab:simpledata">Table 5.2: </span>Simple dataset with one missing value.</caption>
+<thead>
+<tr class="header">
+<th align="right">Y</th>
+<th align="right">X1</th>
+<th align="right">X2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2.86</td>
+<td align="right">1.78</td>
+<td align="right">0.02</td>
+</tr>
+<tr class="even">
+<td align="right">5.77</td>
+<td align="right">2.39</td>
+<td align="right">2.52</td>
+</tr>
+<tr class="odd">
+<td align="right">0.24</td>
+<td align="right">-2.68</td>
+<td align="right">1.06</td>
+</tr>
+<tr class="even">
+<td align="right">2.71</td>
+<td align="right">-0.11</td>
+<td align="right">0.61</td>
+</tr>
+<tr class="odd">
+<td align="right">-3.67</td>
+<td align="right">NA</td>
+<td align="right">-1.67</td>
+</tr>
+<tr class="even">
+<td align="right">-2.99</td>
+<td align="right">1.59</td>
+<td align="right">-2.26</td>
+</tr>
+</tbody>
+</table>
+<p>The aim of this analysis is to build a regression model to predict <span class="math inline">\(Y\)</span>
+from the two remaining variables
+<span class="math display">\[Y_i=\beta_0+\beta_1 X_{1i}+\beta_2 X_{2i}+\epsilon_i,\]</span> where
+<span class="math inline">\(\epsilon\sim N(0, \sigma^2)\)</span>.</p>
+<div id="multiple-imputation-by-hand" class="section level3 hasAnchor" number="5.7.1">
+<h3><span class="header-section-number">5.7.1</span> Multiple imputation by hand<a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The multiple imputation work-flow consists of three steps:</p>
+<ol style="list-style-type: decimal">
+<li>Imputing <span class="math inline">\(Y^{(1)},\ldots,Y^{(m)}\)</span> from
+<span class="math inline">\(f(Y_\text{mis} | Y_\text{obs})\)</span>;</li>
+<li>Calculating the statistic of interest from the imputations,
+<span class="math inline">\(\hat{\theta}_1,\ldots,\hat{\theta}_m\)</span>; and</li>
+<li>Combining the imputations as <span class="math inline">\(\bar{\theta}\)</span>.</li>
+</ol>
+<p>We have not yet discussed sophisticated methods for imputing datasets. For now, we will use a
+simple imputation method that imputes a missing value as equal to a
+randomly selected observation from that variable. In this example, this corresponds to a simple choice for the distribution <span class="math inline">\(f(Y_\text{mis} | Y_\text{obs})\)</span>, in which the missing data (a single missing value of <code>X1</code>) has a discrete uniform distribution, constructed from the observed values of <code>X1</code>.</p>
+<p>Our statistic of interest here will be the estimates of the parameters
+<span class="math inline">\(\beta_0,\beta_1,\beta_2\)</span>. We will therefore store the estimate of these
+coefficients by fitting the proposed linear model to each imputed
+dataset. This forms our <span class="math inline">\(\hat{\theta}_1,\ldots,\hat{\theta}_m\)</span>.</p>
+<p>For our estimates of uncertainty—see Equation
+<a href="multiple-imputation-for-missing-data.html#eq:MIuncertainty">(5.2)</a>—we will also need the variance of our
+parameter estimates. For a linear model we access the covariance matrix
+with <code>vcov()</code>. For simplicity here, we’ll just store the diagonal
+elements of these and not consider the covariances between the
+parameters.</p>
+<p>Our imputation ‘by hand’ is given by the below (note that this has not
+been optimised in any way, but rather written for clarity of the
+process):</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="multiple-imputation-for-missing-data.html#cb64-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb64-2"><a href="multiple-imputation-for-missing-data.html#cb64-2" aria-hidden="true" tabindex="-1"></a>imputations <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, m)</span>
+<span id="cb64-3"><a href="multiple-imputation-for-missing-data.html#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co"># store the imputed coefficients beta0, beta1, beta2</span></span>
+<span id="cb64-4"><a href="multiple-imputation-for-missing-data.html#cb64-4" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> <span class="dv">3</span>) </span>
+<span id="cb64-5"><a href="multiple-imputation-for-missing-data.html#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co"># store the variance of each coefficient</span></span>
+<span id="cb64-6"><a href="multiple-imputation-for-missing-data.html#cb64-6" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> <span class="dv">3</span>) </span>
+<span id="cb64-7"><a href="multiple-imputation-for-missing-data.html#cb64-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-8"><a href="multiple-imputation-for-missing-data.html#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb64-9"><a href="multiple-imputation-for-missing-data.html#cb64-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-10"><a href="multiple-imputation-for-missing-data.html#cb64-10" aria-hidden="true" tabindex="-1"></a>  imp <span class="ot">&lt;-</span> <span class="fu">sample</span>(simple_data<span class="sc">$</span>X1[<span class="sc">!</span><span class="fu">is.na</span>(simple_data<span class="sc">$</span>X1)], <span class="dv">1</span>)</span>
+<span id="cb64-11"><a href="multiple-imputation-for-missing-data.html#cb64-11" aria-hidden="true" tabindex="-1"></a>  complete_data <span class="ot">&lt;-</span> simple_data</span>
+<span id="cb64-12"><a href="multiple-imputation-for-missing-data.html#cb64-12" aria-hidden="true" tabindex="-1"></a>  complete_data<span class="sc">$</span>X1[<span class="fu">is.na</span>(complete_data<span class="sc">$</span>X1)] <span class="ot">&lt;-</span> imp</span>
+<span id="cb64-13"><a href="multiple-imputation-for-missing-data.html#cb64-13" aria-hidden="true" tabindex="-1"></a>  imputations[i] <span class="ot">&lt;-</span> imp</span>
+<span id="cb64-14"><a href="multiple-imputation-for-missing-data.html#cb64-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-15"><a href="multiple-imputation-for-missing-data.html#cb64-15" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> X1 <span class="sc">+</span> X2, <span class="at">data =</span> complete_data)</span>
+<span id="cb64-16"><a href="multiple-imputation-for-missing-data.html#cb64-16" aria-hidden="true" tabindex="-1"></a>  theta[i, ] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)</span>
+<span id="cb64-17"><a href="multiple-imputation-for-missing-data.html#cb64-17" aria-hidden="true" tabindex="-1"></a>  V[i, ] <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">vcov</span>(fit))</span>
+<span id="cb64-18"><a href="multiple-imputation-for-missing-data.html#cb64-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>In the above we have implemented 30 imputations. An extract of the
+imputed parameter estimates
+<span class="math inline">\(\hat{\theta}^{(1)},\ldots,\hat{\theta}^{(30)}\)</span> is given here, with the
+three columns being for <span class="math inline">\(\beta_0,\beta_1,\beta_2\)</span>, respectively. Note
+that some of these rows are the same—this is because our simple
+imputation method meant that our single missing value was randomly
+chosen from the five observations of that variable, so we know there
+will be repetitions in our imputations.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="multiple-imputation-for-missing-data.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(theta)</span></code></pre></div>
+<pre><code>##           [,1]      [,2]     [,3]
+## [1,] 0.2980052 0.4800095 1.996850
+## [2,] 0.2911767 0.5745578 1.974844
+## [3,] 0.4016995 0.6943554 1.871238
+## [4,] 0.2980052 0.4800095 1.996850
+## [5,] 0.4016995 0.6943554 1.871238
+## [6,] 0.2911767 0.5745578 1.974844</code></pre>
+<p>We pool our estimates to obtain <span class="math inline">\(\bar{\theta}\)</span> by taking the sample mean
+of the imputed parameter estimates:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="multiple-imputation-for-missing-data.html#cb67-1" aria-hidden="true" tabindex="-1"></a>(theta_bar <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(theta))</span></code></pre></div>
+<pre><code>## [1] 0.3840886 0.5867359 1.9124154</code></pre>
+<p>We calculate the variance of the pooled estimate using Equation
+<a href="multiple-imputation-for-missing-data.html#eq:MIuncertainty">(5.2)</a> as:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="multiple-imputation-for-missing-data.html#cb69-1" aria-hidden="true" tabindex="-1"></a>(theta_var <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(V) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>m) <span class="sc">*</span> <span class="fu">diag</span>(<span class="fu">cov</span>(theta)))</span></code></pre></div>
+<pre><code>## [1] 0.4666031 0.1300045 0.1601651</code></pre>
+<p>We calculate the proportion of the variance due to the missing
+observation as:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="multiple-imputation-for-missing-data.html#cb71-1" aria-hidden="true" tabindex="-1"></a>(lambda <span class="ot">&lt;-</span> ((<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>m) <span class="sc">*</span> <span class="fu">diag</span>(<span class="fu">cov</span>(theta))) <span class="sc">/</span> theta_var)</span></code></pre></div>
+<pre><code>## [1] 0.05311199 0.03803215 0.07565886</code></pre>
+<p>We don’t need to implement imputation by hand, and will be
+using the package <code>mice</code>. The equivalent of our analysis here is
+implemented by specifying the <code>method</code> as <code>'sample'</code>:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="multiple-imputation-for-missing-data.html#cb73-1" aria-hidden="true" tabindex="-1"></a>imp_mice <span class="ot">&lt;-</span> <span class="fu">mice</span>(simple_data, <span class="at">m =</span> <span class="dv">30</span>, <span class="at">method =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">print =</span> F)</span>
+<span id="cb73-2"><a href="multiple-imputation-for-missing-data.html#cb73-2" aria-hidden="true" tabindex="-1"></a>fit_mice <span class="ot">&lt;-</span> <span class="fu">with</span>(imp_mice, <span class="fu">lm</span>(Y <span class="sc">~</span> X1 <span class="sc">+</span> X2))</span>
+<span id="cb73-3"><a href="multiple-imputation-for-missing-data.html#cb73-3" aria-hidden="true" tabindex="-1"></a>(pool_mice <span class="ot">&lt;-</span> <span class="fu">pool</span>(fit_mice))</span></code></pre></div>
+<pre><code>## Class: mipo    m = 30 
+##          term  m  estimate      ubar           b         t dfcom       df
+## 1 (Intercept) 30 0.4085576 0.4339769 0.030391099 0.4653810     3 1.864493
+## 2          X1 30 0.5818886 0.1209822 0.004851643 0.1259956     3 1.920219
+## 3          X2 30 1.8982188 0.1460214 0.014711458 0.1612232     3 1.810413
+##          riv     lambda       fmi
+## 1 0.07236361 0.06748048 0.4508789
+## 2 0.04143885 0.03979000 0.4301019
+## 3 0.10410694 0.09429063 0.4708526</code></pre>
+<p>Remember that these methods are stochastic, and so we do not expect to
+achieve equal results between these two implements when the number of
+iterations is the same. Let’s compare our output, however. The estimate
+<span class="math inline">\(\bar{\theta}\)</span> is given by <code>estimate</code>, The components of the uncertainty
+of this estimate are given as <code>ubar</code> and <code>b</code>, with the overall variance
+given by <code>t</code>. The proportion of the variance due to missingness is given
+by <code>lambda</code>.</p>
+</div>
+</div>
+<div id="imputing-missing-data-chained-equation-multiple-imputation" class="section level2 hasAnchor" number="5.8">
+<h2><span class="header-section-number">5.8</span> Imputing missing data: chained equation multiple imputation<a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In theory, to draw the imputations, we should specify a model, potentially involving some unknown parameters <span class="math inline">\(\phi\)</span>:
+<span class="math display">\[
+f(Y_\text{mis}  |  Y_\text{obs}, \phi),
+\]</span>
+specify a prior distribution <span class="math inline">\(\pi(\phi)\)</span>, and then sample <span class="math inline">\(\phi\)</span> from <span class="math inline">\(\pi(\phi)\)</span> and <span class="math inline">\(Y_\text{mis}\)</span> from <span class="math inline">\(f(Y_\text{mis} | Y_\text{obs}, \phi)\)</span>. This is likely to be difficult, particularly if we have multiple
+variables with missing information, such that we need to define a joint distribution of
+the missingness over all variables.</p>
+<p>One again, we will make some simplifications.</p>
+<ol style="list-style-type: decimal">
+<li>We will propose a missingness process on a
+per-variable basis, conditional on the remaining variables. For example,
+if we have three variables <span class="math inline">\(X_1,X_2,X_3\)</span>, we will specify a missing process model of
+<span class="math display">\[f(X_{\text{mis},1} \ | \ Y_\text{obs}, X_{\text{mis},2}, X_{\text{mis},3}, \phi),\]</span> and likewise for <span class="math inline">\(X_2\)</span> and <span class="math inline">\(X_3\)</span>.</li>
+<li>We will specify missing process models for each variable, with separate parameters <em>and without considering whether they form a coherent joint distribution for all the missing variables</em>. (We will need to rely on empirical evidence of whether doing this provides useful/appropriate imputations.)</li>
+</ol>
+<p>A method we can use to implement this is called <strong>multiple
+imputation with chained equations</strong>, which is referred to as the MICE algorithm.</p>
+<div class="result">
+<p>Suppose we have <span class="math inline">\(k\)</span> variables, <span class="math inline">\(Y_1,\ldots,Y_k\)</span>. The observed data is
+given by <span class="math inline">\(Y_1^\text{obs},\ldots,Y_k^\text{obs}\)</span>, the missing data is
+<span class="math inline">\(Y_1^\text{mis},\ldots,Y_k^\text{mis}\)</span> and ‘complete’ data will be
+referred to as <span class="math inline">\(Y_1,\ldots,Y_k\)</span>. For each variable
+<span class="math inline">\(j\in \lbrace1,\ldots,k\rbrace\)</span> we specify the conditional imputation
+model
+<span class="math display">\[f(Y_j^\text{mis} \ | \ Y_j^\text{obs}, Y_1, \ldots, Y_{j-1}, Y_{j+1},\ldots,Y_k,\phi_j).\]</span>
+Note that we have a separate set of parameters <span class="math inline">\(\phi_j\)</span> for each conditional imputation
+model.</p>
+<p>The MICE algorithm imputes a single set of complete data, <span class="math inline">\(Y^{(i)}\)</span>.
+Starting from a random set of values for the missing data, the algorithm
+implements a number of Gibbs-style iterations to sample missing data
+from the conditional distributions that have been specified.</p>
+</div>
+<p>Recall that a Gibbs iteration implements the concept of sampling from a
+joint distribution of <span class="math inline">\(k\)</span> variables by cycling through each of the
+dimensions in turn and updating them based on their full conditional
+distribution. Within the <span class="math inline">\(t^\text{th}\)</span> iteration of Gibbs, if we are
+handling the <span class="math inline">\(j^\text{th}\)</span> variable, then the conditional distribution
+that we would use to sample from would be
+<span class="math inline">\(f(Z_j \ | \ Z_1^t,\ldots,Z_{j-1}^t,Z_{j+1}^{t-1},\ldots,Z_{k}^{t-1})\)</span>.
+With MICE, we implement this same process. However, with multiple
+imputation, we often specify our conditional missing information
+distributions without considering whether these form a coherent joint
+distribution, which is why MICE is not necessarily a ‘true’ Gibbs
+sampler. Because of this, convergence is not guaranteed to a stationary
+distribution, but has been shown to produce useful imputations. The MICE
+algorithm is detailed in the following algorithm:</p>
+<hr />
+<p><strong>MICE Algorithm</strong>: To generate a single imputed dataset, <span class="math inline">\(Y^{(i)}\)</span>.</p>
+<hr />
+<ol style="list-style-type: lower-alpha">
+<li><p>Initialise <span class="math inline">\(\dot{Y}_1^{0},\ldots,\dot{Y}_k^0\)</span> by some simple
+approach, such as randomly sampling from the observed data
+<span class="math inline">\(Y_1^\text{obs},\ldots,Y_k^\text{obs}\)</span>.</p></li>
+<li><p>Cycle through <span class="math inline">\(t=1,\ldots,M\)</span> iterations of the following:</p>
+<ol style="list-style-type: decimal">
+<li>Simulate
+<span class="math inline">\(\phi_1^t \sim f(\phi_1^t \ | \ Y^\text{obs},\dot{Y}_1^{t-1},\ldots,\dot{Y}_k^{t-1}),\)</span>
+and set
+<span class="math display">\[\dot{Y}_1^t \sim f(Y_1^\text{mis} \ | \ Y^\text{obs},\dot{Y}_2^{t-1},\ldots,\dot{Y}_k^{t-1},\phi_1^t).\]</span></li>
+<li>Simulate
+<span class="math inline">\(\phi_2^t \sim f(\phi_2^t \ | \ Y^\text{obs},\dot{Y}_1^t,\dot{Y}_2^{t-1},\ldots,\dot{Y}_k^{t-1}),\)</span>
+and set
+<span class="math display">\[\dot{Y}_2^t \sim f(Y_2^\text{mis} \ | \ Y^\text{obs},\dot{Y}_1^t,\dot{Y}_3^{t-1},\ldots,\dot{Y}_k^{t-1},\phi_2^t).\]</span></li>
+<li>Simulate
+<span class="math inline">\(\phi_3^t \sim f(\phi_3^t \ | \ Y^\text{obs},\dot{Y}_1^t,\ldots,\dot{Y}_3^t,\dot{Y}_4^{t-1},\ldots,\dot{Y}_k^{t-1}),\)</span>
+and set
+<span class="math display">\[\dot{Y}_3^t \sim f(Y_3^\text{mis} \ | \ Y^\text{obs},\dot{Y}_1^t,\dot{Y}_2^t,\dot{Y}_4^{t-1},\ldots,\dot{Y}_k^{t-1},\phi_3^t).\]</span>
+<span class="math inline">\(\vdots\)</span></li>
+</ol>
+<!-- -->
+<ol start="11" style="list-style-type: lower-alpha">
+<li>Simulate
+<span class="math inline">\(\phi_k^t \sim f(\phi_k^t \ | \ Y^\text{obs},\dot{Y}_1^t,\ldots,\dot{Y}_{k}^{t}),\)</span>
+and set
+<span class="math display">\[\dot{Y}_k^t \sim f(Y_k^\text{mis} \ | \ Y^\text{obs},\dot{Y}_1^t,\ldots,\dot{Y}_{k-1}^{t},\phi_k^t).\]</span></li>
+</ol></li>
+<li><p>Set <span class="math inline">\(Y^{(i)}_1,\ldots, Y^{(i)}_k=\dot{Y}^M_1,\ldots,\dot{Y}^M_k\)</span>.</p></li>
+</ol>
+<hr />
+<p>Note that the MICE algorithm, although it
+involves <span class="math inline">\(M\)</span> iterations, only produces a single imputed dataset. The
+intermediate simulated values, the <span class="math inline">\(\dot{Y}\)</span>, are discarded. To
+implement a multiple imputation work-flow, we therefore need to
+implement the MICE algorithm <span class="math inline">\(m\)</span> times, independently from one another.</p>
+<p>In summary, key points to note are</p>
+<ul>
+<li>this process will achieve our objective of obtaining multiple imputed datasets…</li>
+<li>…and will account for uncertainty in any parameters used to specify the conditional missing data distributions…</li>
+<li>…but at a cost that we may not have coherently specified a <em>joint</em> distribution for all the missing data, conditional on all the observed data. We need to recognise that our inferences will be approximate.</li>
+</ul>
+<div id="how-many-iterations" class="section level3 hasAnchor" number="5.8.1">
+<h3><span class="header-section-number">5.8.1</span> How many iterations?<a href="multiple-imputation-for-missing-data.html#how-many-iterations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>MICE seems like a computationally intense process, because we need to
+implement <span class="math inline">\(M\)</span> iterations, where we cycle through our <span class="math inline">\(k\)</span> variables in
+each, to obtain a single imputed dataset. We repeat this whole process
+<span class="math inline">\(m\)</span> times to obtain our multiple imputation set. In practice, the value
+of <span class="math inline">\(M\)</span> is usually low (somewhere between 5 and 20 iterations). A number
+of studies have shown that this generally provides informative
+imputation datasets, because convergence of Gibbs-style samplers is fast
+when there is noise in the system and correlations are low. Situations
+we should be aware of in practice are when we have</p>
+<ul>
+<li>Very high correlations between the variables <span class="math inline">\(Y_i\)</span>;</li>
+<li>Missing data rates are high; and</li>
+<li>Constraints on parameters across different variables exist.</li>
+</ul>
+</div>
+</div>
+<div id="mice-example-the-nhanes-dataset" class="section level2 hasAnchor" number="5.9">
+<h2><span class="header-section-number">5.9</span> MICE example: the <code>nhanes</code> dataset<a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We previously introduced the <code>nhanes</code> dataset in this chapter and
+explored its missingness pattern. Recall the structure of the data in
+Table <a href="multiple-imputation-for-missing-data.html#tab:nhanes-head">5.1</a>, and that we have variables <code>age</code>
+(<span class="math inline">\(Y_\text{age}\)</span>), <code>bmi</code> (<span class="math inline">\(Y_\text{bmi}\)</span>), <code>hyp</code> (<span class="math inline">\(Y_\text{hyp}\)</span>) and
+<code>chl</code> (<span class="math inline">\(Y_\text{chl}\)</span>). In this section we will implement the MICE
+algorithm on this data. The goal of our analysis is going to be to
+predict <code>bmi</code> from <code>age</code> and <code>chl</code>, i.e. we want to fit the regression
+model
+<span class="math display" id="eq:nhanes-model">\[\begin{equation}
+Y_{\text{bmi},i} \sim N(\beta_0 + \beta_\text{age} \ Y_{\text{age},i} + \beta_\text{chl} Y_{\text{chl},i} + \beta_\text{age*chl}Y_{\text{age},i}Y_{\text{chl},i}, \sigma^2),\tag{5.3}
+\end{equation}\]</span>
+for <span class="math inline">\(i\in \lbrace 1,\ldots,25\rbrace\)</span>. Our parameters of
+interest are therefore
+<span class="math inline">\(\beta_0,\beta_\text{age},\beta_\text{chl},\beta_\text{age*chl},\sigma^2\)</span>.
+Notice that we aren’t interested in the variable <code>hyp</code> for our
+regression model, but we won’t remove this variable from our dataset
+because we are interested in how it can be informative for imputing our
+missing variables that do feature in the regression.</p>
+<div id="complete-case-analysis" class="section level3 hasAnchor" number="5.9.1">
+<h3><span class="header-section-number">5.9.1</span> Complete case analysis<a href="multiple-imputation-for-missing-data.html#complete-case-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For completeness, let us fit a complete case analysis to this data to
+compare with out multiple imputation results.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="multiple-imputation-for-missing-data.html#cb75-1" aria-hidden="true" tabindex="-1"></a>nhanes_cc <span class="ot">&lt;-</span> <span class="fu">lm</span>(bmi <span class="sc">~</span> chl <span class="sc">*</span> age, <span class="at">data =</span> nhanes)</span></code></pre></div>
+<p>This gives the following parameter estimates:</p>
+<pre><code>## 
+## Call:
+## lm(formula = bmi ~ chl * age, data = nhanes)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.8064 -0.9114  0.4048  2.4316  2.8864 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept) 13.95690    8.54679   1.633   0.1369  
+## chl          0.11031    0.04370   2.524   0.0325 *
+## age         -1.45829    5.77496  -0.253   0.8063  
+## chl:age     -0.01783    0.02557  -0.698   0.5031  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.147 on 9 degrees of freedom
+##   (12 observations deleted due to missingness)
+## Multiple R-squared:  0.6482, Adjusted R-squared:  0.5309 
+## F-statistic: 5.528 on 3 and 9 DF,  p-value: 0.01982</code></pre>
+</div>
+<div id="imputing-the-missing-data" class="section level3 hasAnchor" number="5.9.2">
+<h3><span class="header-section-number">5.9.2</span> Imputing the missing data<a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We use <code>mice</code> to impute 10 datasets, using regression models for the
+missing data conditional distributions:</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="multiple-imputation-for-missing-data.html#cb77-1" aria-hidden="true" tabindex="-1"></a>nhanes_imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">m =</span> <span class="dv">10</span>, <span class="at">method =</span> <span class="st">&#39;norm&#39;</span>, <span class="at">print =</span> F)</span></code></pre></div>
+<p>The object created by using the <code>mice</code> function is a list containing a
+wealth of information, including:</p>
+<ul>
+<li>The original, incomplete dataset, <code>data</code>;</li>
+<li>The imputed datasets, <code>imp</code> (easily extracted for use with the
+function <code>complete()</code>);</li>
+<li>The number of imputations, <code>m</code>;</li>
+<li>A matrix of the relations used for the imputation model,
+<code>predictorMatrix</code>. If all variables are used to impute all other
+variables, this will be a matrix of 1’s with 0’s on the diagonal;</li>
+<li>Information on the mean of the generated missing data over the <span class="math inline">\(M\)</span>
+iterations that are internal to the MICE algorithm, <code>chainMean</code>.
+This can be used to assess convergence of the Gibbs-style approach
+and whether <span class="math inline">\(M\)</span> should be increased.</li>
+</ul>
+<p>We can extract the imputed data and take a look at it, as shown in
+Figure <a href="multiple-imputation-for-missing-data.html#fig:imputed-data">5.2</a>. This shows the fully observed data pairs
+between <code>bmi</code> and <code>age</code>, <code>bmi</code> and <code>chl</code>, and <code>chl</code> and <code>age</code> with red
+squares. Each set of coloured points is then one of the 10 imputed
+datasets, and a regression line to highlight the general trend of these
+is given. Note that these regression lines plotted are not the
+regression lines used in the imputation algorithm, but are only the
+regression of the resulting imputed dataset. We have shown <code>bmi</code> against
+both <code>age</code> and <code>chl</code> as these are to be the elements of our analysis
+regression. This exploratory plot suggests a relationship between these
+variables, that remains similar throughout the range of imputed
+datasets.</p>
+<div class="figure"><span style="display:block;" id="fig:imputed-data"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/imputed-data-1.png" alt="The imputed data using MICE for the nhanes dataset. For the three pairs of variables shown below, fully observed data are highlighted with red squares. Each of the 10 imputed datasets are shown by the varying colour scale of points. A regression line of each imputed set is shown---note that this is not related to the imputation regression model, but merely used to highlight the differences between the imputed datasets." width="100%" />
+<p class="caption">
+Figure 5.2: The imputed data using MICE for the nhanes dataset. For the three pairs of variables shown below, fully observed data are highlighted with red squares. Each of the 10 imputed datasets are shown by the varying colour scale of points. A regression line of each imputed set is shown—note that this is not related to the imputation regression model, but merely used to highlight the differences between the imputed datasets.
+</p>
+</div>
+<p>We can study the convergence of our MICE algorithm by using <code>plot()</code> on
+the list produced by the <code>mice()</code> function. This plot, in Figure
+<a href="multiple-imputation-for-missing-data.html#fig:imp-converge">5.3</a> has a row for each imputed variable (recall that
+<code>age</code> is fully observed in our dataset so we have 3 variables being
+imputed), and a column each for the mean and sd. Each plot contains <span class="math inline">\(m\)</span>
+lines, one for each imputation. The points on the x-axis are the
+iterations within the MICE algorithm, which we referred to as <span class="math inline">\(M\)</span>
+earlier. The default value in MICE is <span class="math inline">\(M=5\)</span>, as shown in the top panel
+here. In general here we are looking for the imputation streams to
+intermingle and be free of any trends in the later iterations of the
+MICE algorithm to suggest convergence.</p>
+<p>Let’s increase the number of iterations of the MICE algorithm, to
+confirm that there is no trend and that convergence was acceptable. A
+great feature of <code>mice</code> is that we don’t need to start from scratch, we
+can continue the number of iterations from our original 5. In the below,
+we add another 35 to obtain 40 iterations, shown in the bottom panel of
+Figure <a href="multiple-imputation-for-missing-data.html#fig:imp-converge">5.3</a>:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="multiple-imputation-for-missing-data.html#cb78-1" aria-hidden="true" tabindex="-1"></a>nhanes_imp_long <span class="ot">&lt;-</span> <span class="fu">mice.mids</span>(nhanes_imp, <span class="at">maxit =</span> <span class="dv">35</span>, <span class="at">print =</span> F)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:imp-converge"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/imp-converge-1.png" alt="The mean and standard deviation of the three missing variables over the internal iterations of the MICE algorithm. The top panel shows the default 5 iterations for the 10 imputation datasets, and the bottom panel shows this after having been extended to 40 iterations." width="80%" />
+<p class="caption">
+Figure 5.3: The mean and standard deviation of the three missing variables over the internal iterations of the MICE algorithm. The top panel shows the default 5 iterations for the 10 imputation datasets, and the bottom panel shows this after having been extended to 40 iterations.
+</p>
+</div>
+<p>We plotted our imputed datasets in Figure <a href="multiple-imputation-for-missing-data.html#fig:imputed-data">5.2</a> to
+explore the relationships between the variables. A further common
+exploratory plot in multiple imputation would be to check that the
+imputed values are <em>plausible</em> and could reasonably be believed to have
+been values of possible observations. We can explore this with the
+<code>stripplot</code> function, as shown in Figure <a href="multiple-imputation-for-missing-data.html#fig:stripplot">5.4</a>. In such a
+plot, we’re hoping to see that the imputed data in red is not so extreme
+or unbelievable that we would not believe it could have been an observed
+data point, and also whether there are trends being followed.</p>
+<p>In Figure <a href="multiple-imputation-for-missing-data.html#fig:stripplot">5.4</a> we see some general
+bunching of the imputations in areas where the observations have, such
+as around 190 for <code>chl</code>, which is promising. We also see that there are
+imputed values more extreme than we observed— we
+would want to be careful to question whether these extremes are
+plausible.</p>
+<div class="figure"><span style="display:block;" id="fig:stripplot"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/stripplot-1.png" alt="Strip plots of the imputed variables bmi and chl. The observed data is shown in blue, and imputed data in red. Imputation 1 is shown as the original, incomplete data, and the 10 imputations are shown proceeding this." width="70%" />
+<p class="caption">
+Figure 5.4: Strip plots of the imputed variables bmi and chl. The observed data is shown in blue, and imputed data in red. Imputation 1 is shown as the original, incomplete data, and the 10 imputations are shown proceeding this.
+</p>
+</div>
+</div>
+<div id="imputation-analysis" class="section level3 hasAnchor" number="5.9.3">
+<h3><span class="header-section-number">5.9.3</span> Imputation analysis<a href="multiple-imputation-for-missing-data.html#imputation-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We now analyse each of each of
+our imputed datasets. Recall that our aim was to estimate the parameters
+<span class="math inline">\(\beta_0,\beta_\text{age},\beta_\text{chl},\beta_\text{age*chl},\sigma^2\)</span>
+for the regression model in Equation <a href="multiple-imputation-for-missing-data.html#eq:nhanes-model">(5.3)</a>. We use the
+function <code>with()</code> for this task:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="multiple-imputation-for-missing-data.html#cb79-1" aria-hidden="true" tabindex="-1"></a>nhanes_fit <span class="ot">&lt;-</span> <span class="fu">with</span>(nhanes_imp, <span class="fu">lm</span>(bmi <span class="sc">~</span> chl <span class="sc">*</span> age))</span></code></pre></div>
+<p>We produce an object of type <code>mira</code>, <em>multiply imputed repeated
+analyses</em>, which contains the estimated regression parameters for each
+of the 10 imputed datasets we created earlier. For instance, the summary
+of the model fitted to the first imputed dataset is:</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="multiple-imputation-for-missing-data.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nhanes_fit<span class="sc">$</span>analyses[[<span class="dv">1</span>]])</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = bmi ~ chl * age)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -12.0483  -1.4156   0.2602   2.6360   4.7962 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept) 17.019780   8.040370   2.117   0.0464 *
+## chl          0.088147   0.039157   2.251   0.0352 *
+## age         -4.792027   5.011114  -0.956   0.3498  
+## chl:age     -0.003299   0.021579  -0.153   0.8799  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.251 on 21 degrees of freedom
+## Multiple R-squared:  0.5393, Adjusted R-squared:  0.4735 
+## F-statistic: 8.195 on 3 and 21 DF,  p-value: 0.0008412</code></pre>
+</div>
+<div id="analysis-pooling" class="section level3 hasAnchor" number="5.9.4">
+<h3><span class="header-section-number">5.9.4</span> Analysis pooling<a href="multiple-imputation-for-missing-data.html#analysis-pooling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Finally, we pool our analyses together in step (3) of our multiple
+imputation work-flow with the function <code>pool()</code>:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="multiple-imputation-for-missing-data.html#cb82-1" aria-hidden="true" tabindex="-1"></a>(nhanes_pool <span class="ot">&lt;-</span> <span class="fu">pool</span>(nhanes_fit))</span></code></pre></div>
+<pre><code>## Class: mipo    m = 10 
+##          term  m     estimate         ubar            b            t dfcom
+## 1 (Intercept) 10 18.644069364 5.256869e+01 5.114892e+01 1.088325e+02    21
+## 2         chl 10  0.083297046 1.410073e-03 8.881682e-04 2.387058e-03    21
+## 3         age 10 -3.631627438 2.066410e+01 2.845666e+01 5.196643e+01    21
+## 4     chl:age 10 -0.006087487 4.483626e-04 3.977539e-04 8.858919e-04    21
+##         df       riv    lambda       fmi
+## 1 7.286312 1.0702913 0.5169762 0.6108920
+## 2 9.384960 0.6928614 0.4092842 0.5046766
+## 3 5.849503 1.5148169 0.6023567 0.6922247
+## 4 7.707515 0.9758382 0.4938857 0.5884201</code></pre>
+<p>We produce an object of type <code>mipo</code>, <em>multiply imputed pooled object</em>.
+We can see the pooled estimates of our parameters of interest, which we
+have referred to as <span class="math inline">\(\bar{\theta}\)</span>, via the <code>estimate</code> above. The
+components of the variance of this are given, with the total being <code>t</code>,
+and the proportion of the variance that is due to the missing data is
+given by <code>lambda</code>. Note that although <code>age</code> is completely observed in
+the data, this does not mean that this translates through into
+estimating the coefficient <span class="math inline">\(\beta_\text{age}\)</span> without missingness error,
+because the <code>bmi</code> and <code>chl</code> were not fully observed.</p>
+<p>We can explore the pooled estimate also with <code>summary()</code>:</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="multiple-imputation-for-missing-data.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nhanes_pool)</span></code></pre></div>
+<pre><code>##          term     estimate   std.error  statistic       df   p.value
+## 1 (Intercept) 18.644069364 10.43228159  1.7871517 7.286312 0.1153885
+## 2         chl  0.083297046  0.04885753  1.7048969 9.384960 0.1210228
+## 3         age -3.631627438  7.20877448 -0.5037788 5.849503 0.6328217
+## 4     chl:age -0.006087487  0.02976394 -0.2045256 7.707515 0.8432399</code></pre>
+<p>This suggests from the pooled p-value estimates that the <code>age</code> and
+<code>chl*age</code> terms are not required in our model.</p>
+
+</div>
+</div>
+</div>
+
+
+
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-mice" class="csl-entry">
+van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. <span>“<span class="nocase">mice</span>: Multivariate Imputation by Chained Equations in r.”</span> <em>Journal of Statistical Software</em> 45 (3): 1–67. <a href="https://doi.org/10.18637/jss.v045.i03">https://doi.org/10.18637/jss.v045.i03</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bayesian-regression-in-stan.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bootstrapping.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["MAS61006-S2-Notes.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll-highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

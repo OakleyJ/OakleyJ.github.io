@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Cross-validation | MAS61006 Bayesian Statistics and Computational Methods</title>
+  <meta name="description" content="Chapter 7 Cross-validation | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Cross-validation | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Cross-validation | MAS61006 Bayesian Statistics and Computational Methods" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2023-02-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bootstrapping.html"/>
+<link rel="next" href="variational-inference.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script>
+  $(document).ready(function () {
+    process_solutions();
+  });
+function process_solutions() {
+  $("div.section[id^='solution']").each(function(i) {
+    var soln_wrapper_id = "cvxr_ex_" + i;
+    var solution_id = $(this).attr('id');
+    var button = $("<button onclick=\"toggle_solution('" + soln_wrapper_id + "')\">Show/Hide</button>");
+    var new_div = $("<div id='" + soln_wrapper_id + "' class='solution' style='display: none;'></div>");
+    var h = $(this).first();
+    var others = $(this).children().slice(1);
+    $(others).each(function() {
+      $(this).appendTo($(new_div));
+    });
+    $(button).insertAfter($(h));
+    $(new_div).insertAfter($(button));
+  })
+}
+function toggle_solution(el_id) {
+  $("#" + el_id).toggle();
+}
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS61006(Sem2)</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i>Literature</a></li>
+<li class="part"><span><b>I Inference using advanced samplers</b></span></li>
+<li class="chapter" data-level="1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html"><i class="fa fa-check"></i><b>1</b> MCMC Sampling Recap</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#bayesian-inference-continued"><i class="fa fa-check"></i><b>1.1</b> Bayesian inference continued</a></li>
+<li class="chapter" data-level="1.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#monte-carlo"><i class="fa fa-check"></i><b>1.2</b> Monte Carlo estimation</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate"><i class="fa fa-check"></i><b>1.2.1</b> Properties of the Monte Carlo estimate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations"><i class="fa fa-check"></i><b>1.2.2</b> Expressing quantities as expectations</a></li>
+<li class="chapter" data-level="1.2.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#estimation-of-general-integrals"><i class="fa fa-check"></i><b>1.2.3</b> Estimation of general integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc"><i class="fa fa-check"></i><b>1.3</b> Markov chain Monte Carlo (MCMC)</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#mhsection"><i class="fa fa-check"></i><b>1.3.1</b> The Metroplis-Hastings (MH) algorithm</a></li>
+<li class="chapter" data-level="1.3.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals"><i class="fa fa-check"></i><b>1.3.2</b> The problem with random walk proposals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-gibbs-algorithm"><i class="fa fa-check"></i><b>1.3.3</b> The Gibbs algorithm</a></li>
+<li class="chapter" data-level="1.3.4" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-gibbs"><i class="fa fa-check"></i><b>1.3.4</b> The problem with Gibbs</a></li>
+<li class="chapter" data-level="1.3.5" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#a-solution"><i class="fa fa-check"></i><b>1.3.5</b> A solution?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html"><i class="fa fa-check"></i><b>2</b> Hamiltonian Monte Carlo (HMC)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition"><i class="fa fa-check"></i><b>2.1</b> Generating proposals: intuition</a></li>
+<li class="chapter" data-level="2.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics"><i class="fa fa-check"></i><b>2.2</b> Hamiltonian dynamics</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy"><i class="fa fa-check"></i><b>2.2.1</b> Conservation of energy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals"><i class="fa fa-check"></i><b>2.3</b> Using Hamilton’s equations to generate proposals</a></li>
+<li class="chapter" data-level="2.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m"><i class="fa fa-check"></i><b>2.4</b> The joint distribution for <span class="math inline">\((\theta, m)\)</span></a></li>
+<li class="chapter" data-level="2.5" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm"><i class="fa fa-check"></i><b>2.5</b> The HMC algorithm</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations"><i class="fa fa-check"></i><b>2.5.1</b> Approximate solution of Hamilton’s equations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta"><i class="fa fa-check"></i><b>2.6</b> Multivariate <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="2.7" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters"><i class="fa fa-check"></i><b>2.7</b> Tuning parameters</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2"><i class="fa fa-check"></i><b>2.7.1</b> The tuning parameter <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="2.7.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon"><i class="fa fa-check"></i><b>2.7.2</b> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand"><i class="fa fa-check"></i><b>2.8</b> Implementing HMC ‘by hand’</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh"><i class="fa fa-check"></i><b>2.8.1</b> Random-walk MH</a></li>
+<li class="chapter" data-level="2.8.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#gibbs"><i class="fa fa-check"></i><b>2.8.2</b> Gibbs</a></li>
+<li class="chapter" data-level="2.8.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hmc"><i class="fa fa-check"></i><b>2.8.3</b> HMC</a></li>
+<li class="chapter" data-level="2.8.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers"><i class="fa fa-check"></i><b>2.8.4</b> Comparing random-walk and HMC samplers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#summary"><i class="fa fa-check"></i><b>2.9</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html"><i class="fa fa-check"></i><b>3</b> Implementing HMC in Stan</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#getting-set-up-with-stan"><i class="fa fa-check"></i><b>3.1</b> Getting set up with Stan</a></li>
+<li class="chapter" data-level="3.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#rstan-options"><i class="fa fa-check"></i><b>3.2</b> <code>rstan</code> options</a></li>
+<li class="chapter" data-level="3.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#an-example-model"><i class="fa fa-check"></i><b>3.3</b> An example model</a></li>
+<li class="chapter" data-level="3.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio"><i class="fa fa-check"></i><b>3.4</b> Specifying a model in RStudio</a></li>
+<li class="chapter" data-level="3.5" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#stan-code-blocks"><i class="fa fa-check"></i><b>3.5</b> Stan code blocks</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#data-block"><i class="fa fa-check"></i><b>3.5.1</b> <code>data</code> block</a></li>
+<li class="chapter" data-level="3.5.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>3.5.2</b> <code>parameters</code> block</a></li>
+<li class="chapter" data-level="3.5.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#model-block"><i class="fa fa-check"></i><b>3.5.3</b> <code>model</code> block</a></li>
+<li class="chapter" data-level="3.5.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>3.5.4</b> <code>generated quantities</code> block</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm"><i class="fa fa-check"></i><b>3.6</b> Running the HMC algorithm</a></li>
+<li class="chapter" data-level="3.7" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples"><i class="fa fa-check"></i><b>3.7</b> Extracting and analysing the samples</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs"><i class="fa fa-check"></i><b>3.7.1</b> R packages for plotting outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts"><i class="fa fa-check"></i><b>3.8</b> No U-Turn Sampler (NUTS)</a></li>
+<li class="chapter" data-level="3.9" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#further-reading"><i class="fa fa-check"></i><b>3.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html"><i class="fa fa-check"></i><b>4</b> Bayesian regression in Stan</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#holiday-hangover-cures"><i class="fa fa-check"></i><b>4.1.1</b> Holiday hangover cures</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#least-squares-fit"><i class="fa fa-check"></i><b>4.1.2</b> Least squares fit</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-in-stan"><i class="fa fa-check"></i><b>4.1.3</b> Bayesian approach in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#recap-of-logistic-regression"><i class="fa fa-check"></i><b>4.2</b> Recap of logistic regression</a></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#overview-of-mixed-effects"><i class="fa fa-check"></i><b>4.3</b> Overview of mixed effects</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-example-of-a-mixed-effects-model"><i class="fa fa-check"></i><b>4.3.1</b> Simple example of a mixed effects model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#fixed-or-random-effects"><i class="fa fa-check"></i><b>4.3.2</b> Fixed or random effects?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#mixed-effect-logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Mixed effect logistic regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#balance-experiment"><i class="fa fa-check"></i><b>4.4.1</b> Balance experiment</a></li>
+<li class="chapter" data-level="4.4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>4.4.2</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#maximum-likelihood-approach"><i class="fa fa-check"></i><b>4.4.3</b> Maximum likelihood approach</a></li>
+<li class="chapter" data-level="4.4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-using-stan"><i class="fa fa-check"></i><b>4.4.4</b> Bayesian approach using Stan</a></li>
+<li class="chapter" data-level="4.4.5" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#comparing-stan-and-lme4"><i class="fa fa-check"></i><b>4.4.5</b> Comparing Stan and lme4</a></li>
+<li class="chapter" data-level="4.4.6" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#easy-bayesian-approach-with-brms"><i class="fa fa-check"></i><b>4.4.6</b> ‘Easy’ Bayesian approach with <code>brms</code></a></li>
+<li class="chapter" data-level="4.4.7" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#what-have-we-found"><i class="fa fa-check"></i><b>4.4.7</b> What have we found?</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Inference with missing data</b></span></li>
+<li class="chapter" data-level="5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html"><i class="fa fa-check"></i><b>5</b> Multiple imputation for missing data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#example-nhanes-data"><i class="fa fa-check"></i><b>5.2</b> Example: <code>nhanes</code> data</a></li>
+<li class="chapter" data-level="5.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness"><i class="fa fa-check"></i><b>5.3</b> Mechanisms of missingness</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>5.3.1</b> Missing completely at random (MCAR)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>5.3.2</b> Missing at random (MAR)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar"><i class="fa fa-check"></i><b>5.3.3</b> Not missing at random (NMAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness"><i class="fa fa-check"></i><b>5.4</b> Ignoring information about missingness</a></li>
+<li class="chapter" data-level="5.5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#inference-via-imputation"><i class="fa fa-check"></i><b>5.5</b> Inference via imputation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#further-simplifications"><i class="fa fa-check"></i><b>5.5.1</b> Further simplifications</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#pooling"><i class="fa fa-check"></i><b>5.6</b> Pooling multiple imputations</a></li>
+<li class="chapter" data-level="5.7" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#simple-example"><i class="fa fa-check"></i><b>5.7</b> Simple example</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand"><i class="fa fa-check"></i><b>5.7.1</b> Multiple imputation by hand</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation"><i class="fa fa-check"></i><b>5.8</b> Imputing missing data: chained equation multiple imputation</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#how-many-iterations"><i class="fa fa-check"></i><b>5.8.1</b> How many iterations?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset"><i class="fa fa-check"></i><b>5.9</b> MICE example: the <code>nhanes</code> dataset</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#complete-case-analysis"><i class="fa fa-check"></i><b>5.9.1</b> Complete case analysis</a></li>
+<li class="chapter" data-level="5.9.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data"><i class="fa fa-check"></i><b>5.9.2</b> Imputing the missing data</a></li>
+<li class="chapter" data-level="5.9.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputation-analysis"><i class="fa fa-check"></i><b>5.9.3</b> Imputation analysis</a></li>
+<li class="chapter" data-level="5.9.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#analysis-pooling"><i class="fa fa-check"></i><b>5.9.4</b> Analysis pooling</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Resampling methods</b></span></li>
+<li class="chapter" data-level="6" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>6</b> Bootstrapping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrap-estimates-of-standard-errors"><i class="fa fa-check"></i><b>6.1</b> Bootstrap estimates of standard errors</a></li>
+<li class="chapter" data-level="6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function"><i class="fa fa-check"></i><b>6.2</b> Estimating a distribution using the empirical cumulative distribution function</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="bootstrapping.html"><a href="bootstrapping.html#sampling-from-an-ecdf"><i class="fa fa-check"></i><b>6.2.1</b> Sampling from an ECDF</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#notation-summary"><i class="fa fa-check"></i><b>6.3</b> Notation summary</a></li>
+<li class="chapter" data-level="6.4" data-path="bootstrapping.html"><a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance"><i class="fa fa-check"></i><b>6.4</b> Example: Bootstrap standard errors of a sample mean and sample variance</a></li>
+<li class="chapter" data-level="6.5" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals"><i class="fa fa-check"></i><b>6.5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error"><i class="fa fa-check"></i><b>6.5.1</b> Confidence intervals using the estimated standard error</a></li>
+<li class="chapter" data-level="6.5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>6.5.2</b> Confidence intervals using percentiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="bootstrapping.html"><a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf"><i class="fa fa-check"></i><b>6.6</b> Properties of samples from the empirical CDF</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#expectation-and-variance"><i class="fa fa-check"></i><b>6.6.1</b> Expectation and variance</a></li>
+<li class="chapter" data-level="6.6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-percentiles"><i class="fa fa-check"></i><b>6.6.2</b> Sample percentiles</a></li>
+<li class="chapter" data-level="6.6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping"><i class="fa fa-check"></i><b>6.6.3</b> Sources of error and sample sizes in bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="bootstrapping.html"><a href="bootstrapping.html#example-measuring-observer-agreement"><i class="fa fa-check"></i><b>6.7</b> Example: Measuring observer agreement</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-data"><i class="fa fa-check"></i><b>6.7.1</b> The data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-kappa-statistic"><i class="fa fa-check"></i><b>6.7.2</b> The kappa statistic</a></li>
+<li class="chapter" data-level="6.7.3" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrapping-bivariate-data"><i class="fa fa-check"></i><b>6.7.3</b> Bootstrapping bivariate data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="bootstrapping.html"><a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing"><i class="fa fa-check"></i><b>6.8</b> Parametric bootstrapping and hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-milk-data-set"><i class="fa fa-check"></i><b>6.8.1</b> The <code>Milk</code> data set</a></li>
+<li class="chapter" data-level="6.8.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-model-and-hypothesis"><i class="fa fa-check"></i><b>6.8.2</b> The model and hypothesis</a></li>
+<li class="chapter" data-level="6.8.3" data-path="bootstrapping.html"><a href="bootstrapping.html#the-generalized-likelihood-ratio-test"><i class="fa fa-check"></i><b>6.8.3</b> The generalized likelihood ratio test</a></li>
+<li class="chapter" data-level="6.8.4" data-path="bootstrapping.html"><a href="bootstrapping.html#the-parametric-bootstrap-test"><i class="fa fa-check"></i><b>6.8.4</b> The parametric bootstrap test</a></li>
+<li class="chapter" data-level="6.8.5" data-path="bootstrapping.html"><a href="bootstrapping.html#implementation-with-r"><i class="fa fa-check"></i><b>6.8.5</b> Implementation with R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cross-validation.html"><a href="cross-validation.html"><i class="fa fa-check"></i><b>7</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-classification"><i class="fa fa-check"></i><b>7.1</b> Cross-validation in classification</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="cross-validation.html"><a href="cross-validation.html#the-palmer-penguins-data"><i class="fa fa-check"></i><b>7.1.1</b> The Palmer penguins data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cross-validation.html"><a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn"><i class="fa fa-check"></i><b>7.1.2</b> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-knn"><i class="fa fa-check"></i><b>7.1.3</b> Implementing cross-validation in KNN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2</b> Cross-validation in regression</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="cross-validation.html"><a href="cross-validation.html#the-flint-tools-data"><i class="fa fa-check"></i><b>7.2.1</b> The flint tools data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2.2</b> Implementing cross-validation in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="cross-validation.html"><a href="cross-validation.html#parameter-estimation-with-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Parameter estimation with cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="cross-validation.html"><a href="cross-validation.html#example-choosing-the-value-k-in-knn"><i class="fa fa-check"></i><b>7.3.1</b> Example: choosing the value <span class="math inline">\(K\)</span> in KNN</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood"><i class="fa fa-check"></i><b>7.3.2</b> Cross-validation as an alternative to maximum likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cross-validation.html"><a href="cross-validation.html#computational-short-cuts"><i class="fa fa-check"></i><b>7.4</b> Computational short-cuts</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="cross-validation.html"><a href="cross-validation.html#example-returning-to-the-flint-data"><i class="fa fa-check"></i><b>7.4.1</b> Example: Returning to the flint data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="cross-validation.html"><a href="cross-validation.html#relationship-with-aic"><i class="fa fa-check"></i><b>7.5</b> Relationship with AIC</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="cross-validation.html"><a href="cross-validation.html#example-the-cars-data"><i class="fa fa-check"></i><b>7.5.1</b> Example: The cars data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cross-validation.html"><a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut"><i class="fa fa-check"></i><b>7.6</b> (Non-examinable) Proof of the computational short cut</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="cross-validation.html"><a href="cross-validation.html#helpful-results-we-will-use"><i class="fa fa-check"></i><b>7.6.1</b> Helpful results we will use</a></li>
+<li class="chapter" data-level="7.6.2" data-path="cross-validation.html"><a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models"><i class="fa fa-check"></i><b>7.6.2</b> Relate the estimated coefficients of full and reduced models</a></li>
+<li class="chapter" data-level="7.6.3" data-path="cross-validation.html"><a href="cross-validation.html#relating-the-residuals"><i class="fa fa-check"></i><b>7.6.3</b> Relating the residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Approximate inference without sampling</b></span></li>
+<li class="chapter" data-level="8" data-path="variational-inference.html"><a href="variational-inference.html"><i class="fa fa-check"></i><b>8</b> Variational inference</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="variational-inference.html"><a href="variational-inference.html#background-theory"><i class="fa fa-check"></i><b>8.1</b> Background theory</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="variational-inference.html"><a href="variational-inference.html#jensens-inequality"><i class="fa fa-check"></i><b>8.1.1</b> Jensen’s inequality</a></li>
+<li class="chapter" data-level="8.1.2" data-path="variational-inference.html"><a href="variational-inference.html#kullback-leibler-divergence"><i class="fa fa-check"></i><b>8.1.2</b> Kullback-Leibler Divergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="variational-inference.html"><a href="variational-inference.html#optimisation-with-coordinate-ascent"><i class="fa fa-check"></i><b>8.1.3</b> Optimisation with coordinate ascent</a></li>
+<li class="chapter" data-level="8.1.4" data-path="variational-inference.html"><a href="variational-inference.html#stochastic-optimisation"><i class="fa fa-check"></i><b>8.1.4</b> Stochastic optimisation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="variational-inference.html"><a href="variational-inference.html#motivation-for-approximate-inference-approaches"><i class="fa fa-check"></i><b>8.2</b> Motivation for approximate inference approaches</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="variational-inference.html"><a href="variational-inference.html#intractable-integrals"><i class="fa fa-check"></i><b>8.2.1</b> Intractable integrals</a></li>
+<li class="chapter" data-level="8.2.2" data-path="variational-inference.html"><a href="variational-inference.html#variational-approach-to-intractable-integrals"><i class="fa fa-check"></i><b>8.2.2</b> Variational approach to intractable integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="variational-inference.html"><a href="variational-inference.html#approximate-inference-as-an-optimisation-problem"><i class="fa fa-check"></i><b>8.3</b> Approximate inference as an optimisation problem</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="variational-inference.html"><a href="variational-inference.html#exploring-the-elbo"><i class="fa fa-check"></i><b>8.3.1</b> Exploring the ELBO</a></li>
+<li class="chapter" data-level="8.3.2" data-path="variational-inference.html"><a href="variational-inference.html#forward-and-reverse-variational-inference"><i class="fa fa-check"></i><b>8.3.2</b> Forward and reverse variational inference</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="variational-inference.html"><a href="variational-inference.html#the-variational-family-of-distributions"><i class="fa fa-check"></i><b>8.4</b> The variational family of distributions</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="variational-inference.html"><a href="variational-inference.html#mean-field-family"><i class="fa fa-check"></i><b>8.4.1</b> Mean-field family</a></li>
+<li class="chapter" data-level="8.4.2" data-path="variational-inference.html"><a href="variational-inference.html#correlation-cannot-be-replicated"><i class="fa fa-check"></i><b>8.4.2</b> Correlation cannot be replicated</a></li>
+<li class="chapter" data-level="8.4.3" data-path="variational-inference.html"><a href="variational-inference.html#why-mean-field-is-useful"><i class="fa fa-check"></i><b>8.4.3</b> Why mean-field is useful</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html"><i class="fa fa-check"></i><b>9</b> Coordinate ascent variational inference (CAVI)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-cavi-algorithm"><i class="fa fa-check"></i><b>9.1</b> The CAVI algorithm</a></li>
+<li class="chapter" data-level="9.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#example-mixture-of-gaussians"><i class="fa fa-check"></i><b>9.2</b> Example: Mixture of Gaussians</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-observation-model"><i class="fa fa-check"></i><b>9.2.1</b> The observation model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-prior"><i class="fa fa-check"></i><b>9.2.2</b> The prior</a></li>
+<li class="chapter" data-level="9.2.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-joint-likelihood"><i class="fa fa-check"></i><b>9.2.3</b> The joint likelihood</a></li>
+<li class="chapter" data-level="9.2.4" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-mean-field-family-approximation"><i class="fa fa-check"></i><b>9.2.4</b> The mean-field family approximation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#cavi"><i class="fa fa-check"></i><b>9.2.5</b> CAVI</a></li>
+<li class="chapter" data-level="9.2.6" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#implementing-cavi-in-r"><i class="fa fa-check"></i><b>9.2.6</b> Implementing CAVI in R</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#comment"><i class="fa fa-check"></i><b>9.3</b> Comment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS61006 Bayesian Statistics and Computational Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cross-validation" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Cross-validation<a href="cross-validation.html#cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --->
+<p><span class="math inline">\(\def \mb{\mathbb}\)</span>
+<span class="math inline">\(\def \E{\mb{E}}\)</span>
+<span class="math inline">\(\def \P{\mb{P}}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\var}{Var}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\cov}{Cov}\)</span></p>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aims of this chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Understand cross-validation as a tool for both testing the predictive ability of a model, and for parameter estimation.</td>
+</tr>
+<tr class="even">
+<td>2. Learn about computational short-cuts for implementing cross-validation.</td>
+</tr>
+<tr class="odd">
+<td>3. Explore the link between cross-validation and AIC for model selection.</td>
+</tr>
+</tbody>
+</table>
+<p>We consider problems where the main interest is in <em>prediction</em> rather than inference: predicting the value of some dependent variable <span class="math inline">\(y\)</span> given independent variables <span class="math inline">\(x\)</span>. We suppose we have a data set
+<span class="math display">\[D=\{(x_i, y_i),\, i=1,\ldots,n\},\]</span>
+and we want to test the performance of some model or algorithm that, using these data, will predict <span class="math inline">\(y\)</span> for any value of <span class="math inline">\(x\)</span>.</p>
+<p>The usual practice is to divide the data <span class="math inline">\(D\)</span> into a training set and a test set. For each <span class="math inline">\(x\)</span> in the test set, we would predict the corresponding <span class="math inline">\(y\)</span>, using the training data only. For small data sets, this division may not be desirable; we may need to use all the data just to get good predictions and/or to reduce the uncertainty in our predictions as much as possible.</p>
+<p>When we have a small data set, we can assess the performance of our model using cross-validation instead. The basic idea is as follows.</p>
+<div class="result">
+<p>For <span class="math inline">\(i=1,\ldots,n\)</span> we</p>
+<ol style="list-style-type: decimal">
+<li>obtain a reduced data set <span class="math inline">\(D_{-i}\)</span> by removing the observation <span class="math inline">\((x_i,y_i)\)</span> from the full data set <span class="math inline">\(D\)</span>;</li>
+<li>re-fit the model using the reduced data set <span class="math inline">\(D_{-i}\)</span>, and predict the observation we removed in step 1: we obtain a prediction <span class="math inline">\(\hat{y}_i\)</span> of the dependent variable given <span class="math inline">\(x_i\)</span>.</li>
+</ol>
+<p>In removing any single observation, we’re hoping that the fitted model using the data <span class="math inline">\(D_{-i}\)</span> is similar to the fitted model based on all the data <span class="math inline">\(D\)</span>; predictions wouldn’t change much ‘in general’. We then get a sample of <span class="math inline">\(n\)</span> predictions errors <span class="math inline">\(\hat{y}_1 - y_1,\ldots,\hat{y}_n - y_n\)</span> with which we can evaluate our model.</p>
+</div>
+<p>What we calculate precisely in step (2), and what we do with the results, will depend on the problem. We’ll give two examples in this chapter. Note that this procedure is sometimes referred to as <strong>leave-one-out</strong> cross-validation, as we are leaving out a single observation in turn. <strong><span class="math inline">\(k\)</span>-fold cross-validation</strong> refers to leaving out <span class="math inline">\(k\)</span> observations at a time. We will not consider this here, but the concept is the same.</p>
+<div id="cross-validation-in-classification" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Cross-validation in classification<a href="cross-validation.html#cross-validation-in-classification" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="the-palmer-penguins-data" class="section level3 hasAnchor" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> The Palmer penguins data<a href="cross-validation.html#the-palmer-penguins-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We consider a data set from Gorman et al. (2014) and provided in an R package <code>palmerpenguins</code> <span class="citation">(<a href="#ref-R-palmerpenguins" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span>. In this example, we suppose the aim is to predict (“classify”) the species of a penguin (one of Adelie, Chinstrap and Gentoo) based on the measurements of bill length, bill depth and flipper length. One can imagine that it may be difficult to obtain a large data set for this sort of problem.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-83"></span>
+<img src="images/penguins.png" alt="Introducing the Palmer penguins. Artwork by Allison Horst." width="40%" /><img src="images/culmen_depth.png" alt="Introducing the Palmer penguins. Artwork by Allison Horst." width="40%" />
+<p class="caption">
+Figure 7.1: Introducing the Palmer penguins. Artwork by Allison Horst.
+</p>
+</div>
+<p>The data look like this:</p>
+<pre><code>## # A tibble: 6 × 4
+##   species bill_length_mm bill_depth_mm flipper_length_mm
+##   &lt;fct&gt;            &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
+## 1 Adelie            39.1          18.7               181
+## 2 Adelie            39.5          17.4               186
+## 3 Adelie            40.3          18                 195
+## 4 Adelie            NA            NA                  NA
+## 5 Adelie            36.7          19.3               193
+## 6 Adelie            39.3          20.6               190</code></pre>
+<p>There are 333 complete observations, so we have a data set <span class="math inline">\(D=\{(y_i, x_i),\,i=1,\ldots,333\}\)</span>, where, for the <span class="math inline">\(i^\text{th}\)</span> penguin:</p>
+<ul>
+<li><span class="math inline">\(y_i = 1\)</span>, <span class="math inline">\(2\)</span> or <span class="math inline">\(3\)</span> if the species is Adelie, Chinstrap or Gentoo, respectively, and</li>
+<li><span class="math inline">\(\mathbf{x}_i\)</span> is a vector of the three measurements: bill length, bill depth and flipper length (all in <em>mm</em>).</li>
+</ul>
+<p>For a new penguin with measurements <span class="math inline">\(\mathbf{x}^*\)</span>, the aim would be to classify the species (<span class="math inline">\(y^*\)</span>) given this measurement information alone.</p>
+<p>Note that the penguin data from the <code>palmerpenguins</code> package contains 344 penguins, however only 333 of these have complete observations for the three measurement variables and the species type. We will not be considering this incomplete information in our analysis here, so have removed these individuals from the data we work with.</p>
+</div>
+<div id="the-k-nearest-neighbours-algorithm-knn" class="section level3 hasAnchor" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)<a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>KNN is a simple algorithm for classification. There is no actual model, and just one parameter, <span class="math inline">\(K\)</span>, to choose. Given a new penguin with measurements <span class="math inline">\(\mathbf{x}\)</span>, the species is classified as follows:</p>
+<ol style="list-style-type: decimal">
+<li>For the penguins <span class="math inline">\(i=1,\ldots,333\)</span> in our data set <span class="math inline">\(D\)</span>, calculate the Euclidean distance <span class="math inline">\(||\mathbf{x}_i - \mathbf{x}||\)</span>.</li>
+<li>Find the <span class="math inline">\(K\)</span> smallest Euclidean distances. This means that we have identified the <span class="math inline">\(K\)</span> penguins in the data set <span class="math inline">\(D\)</span> with measurements closest to the measurements <span class="math inline">\(\mathbf{x}\)</span> of the new penguin. These are the <em><span class="math inline">\(K\)</span> nearest neighbours</em>.</li>
+<li>Classify the species of the new penguin as the species that occurred the most out of the <span class="math inline">\(K\)</span> penguins found in step (2). If there is a tie, pick a species at random from those tied.</li>
+</ol>
+</div>
+<div id="implementing-cross-validation-in-knn" class="section level3 hasAnchor" number="7.1.3">
+<h3><span class="header-section-number">7.1.3</span> Implementing cross-validation in KNN<a href="cross-validation.html#implementing-cross-validation-in-knn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can implement the KNN algorithm, using our training set of 333 penguins, for any measurement information that is obtained for a new penguin. However, we have no understanding of how well this algorithm is working, i.e. its <em>prediction ability</em>. We can asses how well this algorithm is working using cross-validation. We do the following, for <span class="math inline">\(i=1,\ldots,333\)</span>:</p>
+<ol style="list-style-type: decimal">
+<li>Remove penguin <span class="math inline">\(i\)</span> from the data set <span class="math inline">\(D\)</span>, to obtain a reduced data set <span class="math inline">\(D_{-i}\)</span>.</li>
+<li>Calculate the Euclidean distances <span class="math inline">\(||\mathbf{x}_j -\mathbf{x}_i||\)</span> for each <span class="math inline">\(\mathbf{x}_j\)</span> in the reduced data set <span class="math inline">\(D_{-i}\)</span>. This would involve <span class="math inline">\(j=1,\ldots, i-1,i+1, \ldots, 333\)</span>.</li>
+<li>Find the <span class="math inline">\(K\)</span> penguins in <span class="math inline">\(D_{-i}\)</span> with the smallest Euclidean distances from step (2), and obtain their species.</li>
+<li>Obtain the predicted species <span class="math inline">\(\hat{y}_i\)</span> of the <span class="math inline">\(i\)</span>-th penguin as the species that occurred the most in step (3).</li>
+</ol>
+<p>We do this in <code>R</code> in the following. As we’re using Euclidean distances, we’ll convert the independent variables to be on (roughly) the same scale. If we did not do this, our algorithm could be placing more weight on classifying the penguins based on only one of the three measurements. To see this, we note the summary information of the three variables in Table <a href="cross-validation.html#tab:unscaled">7.1</a>. The scale of the flipper length variable is much larger than that of the bill depth, and therefore the distance measurement used as part of the KNN algorithm will be dominated by the differences in flipper length, causing this to be the determining variable for the classification process. When we scale the measurements we get comparable variables, as shown in Table <a href="cross-validation.html#tab:scaled">7.2</a>.</p>
+<table>
+<caption><span id="tab:unscaled">Table 7.1: </span>Summary of the scale of penguin measurements in the Palmer penguin data.</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Bill length</th>
+<th align="left">Bill depth</th>
+<th align="left">Flipper length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Min. :32.10</td>
+<td align="left">Min. :13.10</td>
+<td align="left">Min. :172</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Median :44.50</td>
+<td align="left">Median :17.30</td>
+<td align="left">Median :197</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">3rd Qu.:48.60</td>
+<td align="left">3rd Qu.:18.70</td>
+<td align="left">3rd Qu.:213</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:scaled">Table 7.2: </span>Summary of the scaled penguin measurements in the Palmer penguin data.</caption>
+<colgroup>
+<col width="4%" />
+<col width="30%" />
+<col width="29%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Bill length (scaled)</th>
+<th align="left">Bill depth (scaled)</th>
+<th align="left">Flipper length (scaled)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Min. :-2.17471</td>
+<td align="left">Min. :-2.06418</td>
+<td align="left">Min. :-2.0667</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Median : 0.09275</td>
+<td align="left">Median : 0.06862</td>
+<td align="left">Median :-0.2830</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">3rd Qu.: 0.84247</td>
+<td align="left">3rd Qu.: 0.77956</td>
+<td align="left">3rd Qu.: 0.8585</td>
+</tr>
+</tbody>
+</table>
+<p>We can implement the KNN algorithm using the <code>knn</code> function from the <code>class</code> package <span class="citation">(<a href="#ref-R-class" role="doc-biblioref">Venables and Ripley 2002</a>)</span>. This function produces the predicted classification, based on the training variables (<code>train</code>, given here by the <span class="math inline">\(\mathbf{x}_j\)</span> from the reduced data set <span class="math inline">\(D_{-i}\)</span>), the training observations (<code>cl</code>, given here by the <span class="math inline">\(y_j\)</span> from the reduced data set <span class="math inline">\(D_{-i}\)</span>), and the test variables (<code>test</code>, given here by <span class="math inline">\(\mathbf{x}_i\)</span>). Recall we apply this process for each of our 333 observations, so here we use a <code>for</code> loop:</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="cross-validation.html#cb127-1" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(y)), <span class="at">levels =</span> <span class="fu">levels</span>(y))</span>
+<span id="cb127-2"><a href="cross-validation.html#cb127-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-3"><a href="cross-validation.html#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(y)){</span>
+<span id="cb127-4"><a href="cross-validation.html#cb127-4" aria-hidden="true" tabindex="-1"></a>  yhat[i] <span class="ot">&lt;-</span> class<span class="sc">::</span><span class="fu">knn</span>(<span class="at">train =</span> X[<span class="sc">-</span>i, ],</span>
+<span id="cb127-5"><a href="cross-validation.html#cb127-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">cl =</span> y[<span class="sc">-</span>i],</span>
+<span id="cb127-6"><a href="cross-validation.html#cb127-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">test =</span> X[i, ])</span>
+<span id="cb127-7"><a href="cross-validation.html#cb127-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>As an example of this in practice, let’s look at penguin 150. We have the measurements:</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="cross-validation.html#cb128-1" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">150</span>, ]</span></code></pre></div>
+<pre><code>## [1]  1.0984771 -0.9977806  1.2152767</code></pre>
+<p>and the observation that it is a Gentoo penguin. When we remove this penguin from the datset and use the remaining 332 penguins to classify its species, we get the prediction (<span class="math inline">\(\hat{y}_{155}\)</span>) of Gentoo. So the classification was correctly predicted when this penguin was removed from the data set. We can see how well all the observations were predicted using the <code>confusionMatrix</code> function from the <code>caret</code> package <span class="citation">(<a href="#ref-R-caret" role="doc-biblioref">Kuhn 2021</a>)</span>:</p>
+<pre><code>##            Reference
+## Prediction  Adelie Chinstrap Gentoo
+##   Adelie       142         3      0
+##   Chinstrap      4        65      0
+##   Gentoo         0         0    119</code></pre>
+<p>So we can see there were only 7 misclassified penguins out of 333 (4 Adelie penguins predicted to be Chinstrap, and 3 Chinstrap penguins predicted to be Adelie). The cross-validation approach here not only gives us an overall indication of predictive ability of a method, such as that 326 of the 333 penguins were correctly classified when removed from the training data, but also additional information about the classification problem. For instance, here we see that all penguins that were Gentoo were correctly classified, and the only misclassification is between Adelie and Chinstrap, so we might be interested in further investigating this overlap between these two species.</p>
+</div>
+</div>
+<div id="cross-validation-in-regression" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Cross-validation in regression<a href="cross-validation.html#cross-validation-in-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="the-flint-tools-data" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> The flint tools data<a href="cross-validation.html#the-flint-tools-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We’ll consider a simple example using a small data set of flint tools, where the breadth and length of each tool has been measured. (The context here is that we’d like to be able to estimate the original length of a damaged tool with its tip missing.) Again, we can imagine that such data would be scarce; we can’t easily obtain a large data set.</p>
+<div class="figure"><span style="display:block;" id="fig:flint"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/flint-1.png" alt="A small data set with the measurements of ten flint tools." width="60%" />
+<p class="caption">
+Figure 7.2: A small data set with the measurements of ten flint tools.
+</p>
+</div>
+</div>
+<div id="implementing-cross-validation-in-regression" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Implementing cross-validation in regression<a href="cross-validation.html#implementing-cross-validation-in-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Define <span class="math inline">\(D=\{(x_i,y_i),\, i=1,\ldots,10\}\)</span> to be the full data set, with <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> the breadth and length, respectively, in <em>mm</em>, for the <span class="math inline">\(i^\text{th}\)</span> tool. We’ll consider a simple linear regression model of the form
+<span class="math display">\[Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i,\]</span>
+with <span class="math inline">\(\varepsilon_i \sim N(0,\sigma^2)\)</span>.</p>
+<p>Given parameter estimates <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> and a tool breadth <span class="math inline">\(x\)</span>, we would predict the corresponding tool length as <span class="math inline">\(\hat{y}=\hat{\beta}_0+\hat{\beta}_1x\)</span>, and we can obtain a prediction interval using standard theory.</p>
+<p>Linear models are well understood, and there are various diagnostics we can do to check goodness-of-fit, model assumptions and so on, so that we wouldn’t normally consider cross-validation methods. However, as the sample size is so small, it’s going to be harder to judge from the usual diagnostics whether we can really trust predictions from our model. Despite this, it would be interesting to get some idea how the model performs on ‘new’ observations. Further, we could apply the same ideas for more complex, ‘black-box’ regression models, where we don’t have the same diagnostic tools that we have for simple linear regression.</p>
+<p>We’ll use cross-validation in a similar way as before, removing each observation in term and forming a prediction. To obtain this prediction, we will re-estimate the model parameters each time, and also compute a prediction interval in addition to an estimate <span class="math inline">\(\hat{y}_i\)</span>. The procedure is as follows.</p>
+<p>For <span class="math inline">\(i=1,\ldots,10\)</span>:</p>
+<ol style="list-style-type: decimal">
+<li>Remove the observation <span class="math inline">\((x_i,y_i)\)</span> from the data set <span class="math inline">\(D\)</span> to get a reduced data set <span class="math inline">\(D_{-i}\)</span>.</li>
+<li>Using <span class="math inline">\(D_{-i}\)</span>, compute least squares estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, and estimate <span class="math inline">\(\sigma^2\)</span> with the corresponding residual sum of squares. Denote these estimates by <span class="math inline">\(\hat{\beta}_{0,i}\)</span> and <span class="math inline">\(\hat{\beta}_{1,i}\)</span>, and <span class="math inline">\(\hat{\sigma}^2_i\)</span> respectively.</li>
+<li>Estimate the <span class="math inline">\(i^\text{th}\)</span> tool length using
+<span class="math display">\[\hat{y}_i=\hat{\beta}_{0,i}+\hat{\beta}_{1,i}x_i,\]</span>
+and obtain the corresponding (95%) prediction interval.</li>
+</ol>
+<p>These estimates and intervals can then be compared with the original observations <span class="math inline">\(y_1,\ldots,y_{10}\)</span>.</p>
+<p>In R, we’ll first set up an empty matrix to take the results:</p>
+<p>In <code>R</code>, we implement this as:</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="cross-validation.html#cb131-1" aria-hidden="true" tabindex="-1"></a>flint_yhat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb131-2"><a href="cross-validation.html#cb131-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb131-3"><a href="cross-validation.html#cb131-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>){</span>
+<span id="cb131-4"><a href="cross-validation.html#cb131-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb131-5"><a href="cross-validation.html#cb131-5" aria-hidden="true" tabindex="-1"></a>  lmReduced <span class="ot">&lt;-</span> <span class="fu">lm</span>(length <span class="sc">~</span> breadth, <span class="at">subset =</span> <span class="sc">-</span>i, <span class="at">data =</span> flint)</span>
+<span id="cb131-6"><a href="cross-validation.html#cb131-6" aria-hidden="true" tabindex="-1"></a>  flint_yhat[i, ] <span class="ot">&lt;-</span> <span class="fu">predict</span>(lmReduced, flint[i, ], <span class="at">interval =</span> <span class="st">&quot;prediction&quot;</span>)</span>
+<span id="cb131-7"><a href="cross-validation.html#cb131-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb131-8"><a href="cross-validation.html#cb131-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Figure <a href="cross-validation.html#fig:reg-cv-results">7.3</a> displays the results of this cross-validation experiment. For each observed breadth, the true length is shown in red. The fitted regression line from the complete set of 10 observations is shown in grey. The cross-validation results are shown in black, both as a point estimate and an interval. Note that the predictions do not sit on the regression line because they are each obtained by removing that observation from the training data. We can see, however, that the cross-validation predictions are in most cases close to the full data prediction which tells us that no single observation is having a great effect on the predicted model coefficients.</p>
+<div class="figure"><span style="display:block;" id="fig:reg-cv-results"></span>
+<img src="MAS61006-S2-Notes_files/figure-html/reg-cv-results-1.png" alt="The results of cross-validation on the flint tools data. The observed data is shown in red. Predictions (black point) of the length, and intervals, are shown for each breadth measurement, obtained by removing that measurement from the training data. The regression line using all 10 observations is also included for comparison." width="60%" />
+<p class="caption">
+Figure 7.3: The results of cross-validation on the flint tools data. The observed data is shown in red. Predictions (black point) of the length, and intervals, are shown for each breadth measurement, obtained by removing that measurement from the training data. The regression line using all 10 observations is also included for comparison.
+</p>
+</div>
+</div>
+</div>
+<div id="parameter-estimation-with-cross-validation" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Parameter estimation with cross-validation<a href="cross-validation.html#parameter-estimation-with-cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So far, we’ve used cross-validation to check how well a model (or algorithm) predicts observations. But we can also use it to estimate/choose parameters in our model/algorithm. We define a <em>loss function</em> <span class="math inline">\(L(\hat{y}_i, y_i)\)</span> which gives a penalty for predicting a value <span class="math inline">\(\hat{y}_i\)</span>, using the reduced data set <span class="math inline">\(D_{-i}\)</span>, when the true value is <span class="math inline">\(y_i\)</span>. We could then choose our model parameters to minimise
+<span class="math display">\[\sum_{i=1}^n L(\hat{y}_i, y_i).\]</span></p>
+<div id="example-choosing-the-value-k-in-knn" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Example: choosing the value <span class="math inline">\(K\)</span> in KNN<a href="cross-validation.html#example-choosing-the-value-k-in-knn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Recall that in the KNN algorithm we have to decide how many ‘nearest neighbours’ <span class="math inline">\(K\)</span> to look for. Note that in the penguin example earlier, we implemented <span class="math inline">\(K=1\)</span>. This parameter could be selected using cross-validation. An appropriate loss function would be
+<span class="math display">\[L(\hat{y}_i, y_i) =
+\begin{cases}
+    0 &amp; \text{for }\hat{y}_i= y_i;\\
+    1 &amp; \text{for }\hat{y}_i\neq y_i.
+\end{cases}\]</span>
+This loss function would lead to us searching for the <span class="math inline">\(K\)</span> that minimises the number of incorrect predictions.</p>
+<p>We’ll try this for the Palmer penguins. We’ve already seen that the algorithm works about as well as we could hope for using <span class="math inline">\(K=1\)</span> as there was only 7 incorrect predictions, so there’s not really any scope for improvement, but just for illustration, we’ll try a few different <span class="math inline">\(K\)</span>.</p>
+<p>Rather than using a for loop, we’ll use the function <code>knn.cv()</code>, which implements cross-validation for us:</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="cross-validation.html#cb132-1" aria-hidden="true" tabindex="-1"></a>peng_yhat <span class="ot">&lt;-</span> class<span class="sc">::</span><span class="fu">knn.cv</span>(<span class="at">train =</span> X, <span class="at">cl =</span> y, <span class="at">k =</span> <span class="dv">1</span>)</span>
+<span id="cb132-2"><a href="cross-validation.html#cb132-2" aria-hidden="true" tabindex="-1"></a>peng_yhat10 <span class="ot">&lt;-</span> class<span class="sc">::</span><span class="fu">knn.cv</span>(<span class="at">train =</span> X, <span class="at">cl =</span> y, <span class="at">k =</span> <span class="dv">10</span>)</span>
+<span id="cb132-3"><a href="cross-validation.html#cb132-3" aria-hidden="true" tabindex="-1"></a>peng_yhat100 <span class="ot">&lt;-</span> class<span class="sc">::</span><span class="fu">knn.cv</span>(<span class="at">train =</span> X, <span class="at">cl =</span> y, <span class="at">k =</span> <span class="dv">100</span>)</span></code></pre></div>
+<p>The sum of the loss functions for these <span class="math inline">\(K\)</span> are then 7, 6 and 20, respectively for <span class="math inline">\(k=1,10,100\)</span>. As we expected, there isn’t an argument for increasing the complexity of our classification algorithm here (as for <span class="math inline">\(K&gt;1\)</span> we have to identify the most common classification from a number of neighbours) because there isn’t much difference between <span class="math inline">\(K=1\)</span> or 10, but the performance is markedly worse for <span class="math inline">\(K=100\)</span>.</p>
+</div>
+<div id="cross-validation-as-an-alternative-to-maximum-likelihood" class="section level3 hasAnchor" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Cross-validation as an alternative to maximum likelihood<a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the KNN algorithm, there is no model; we couldn’t write down a likelihood function. Cross-validation is a natural way to choose <span class="math inline">\(K\)</span>: if we <em>didn’t</em> remove <span class="math inline">\(y_i\)</span> before predicting it, the nearest neighbour to the <span class="math inline">\(i\)</span>-th observation would be itself, and we’d always get 100% prediction accuracy with <span class="math inline">\(K=1\)</span> (assuming the independent variables are all distinct).</p>
+<p>When we do have a model, cross-validation could be used as an alternative way to estimate parameters; there are advantages and disadvantages. If we only care about getting good point predictions for new observations <span class="math inline">\(y\)</span>, cross-validation (with a suitable loss function) will attempt to get small prediction errors, <em>regardless of whether the model assumptions are valid</em>.</p>
+<p>If we also care about quantifying uncertainty in our predictions, we could try to design a suitable loss function, but maximum likelihood may be preferable. With maximum likelihood, within our chosen model, we’re trying to find the parameters that can ‘best’ describe the distribution of the data, and this will help us with our uncertainty quantification.</p>
+<p>As we’ll see later, there is a relationship between cross-validation and AIC, so cross-validation may be useful in situations where we want to penalise for model complexity.</p>
+</div>
+</div>
+<div id="computational-short-cuts" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Computational short-cuts<a href="cross-validation.html#computational-short-cuts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If we need to <em>repeatedly</em> do cross-validation, for example if we’re using it to estimate parameters, then the method can get computationally expensive. For example, if we have <span class="math inline">\(n\)</span> observations, and we want to try <span class="math inline">\(d\)</span> different parameter values to find the ‘best’ choice, we would have to fit the model <span class="math inline">\(n\times d\)</span> times.</p>
+<p>For linear models, it turns out that we don’t actually need to refit the model each time with a reduced data set: we can compute everything we need from a single model fit to <em>all</em> the data. There are similar results for some other types of model, so we need to be alert to this possibility, as it may speed up the computation.</p>
+<p>For a linear model, given the full data set <span class="math inline">\(D\)</span>, define as follows:</p>
+<ul>
+<li><span class="math inline">\(\hat{\beta}\)</span>: the least squares estimator of <span class="math inline">\(\beta\)</span>;</li>
+<li><span class="math inline">\(X\)</span>: the design matrix;</li>
+<li><span class="math inline">\(H\)</span>: the ‘hat matrix’ given by <span class="math inline">\(X^T(X^TX)^{-1}X\)</span></li>
+<li><span class="math inline">\(f(x_j)^T\)</span>: the <span class="math inline">\(j^\text{th}\)</span> row of the design matrix <span class="math inline">\(X\)</span>;</li>
+<li><span class="math inline">\(r_j\)</span>: the <span class="math inline">\(j^\text{th}\)</span> residual, <span class="math inline">\(r_j=y_j-f(x_j)^T\hat{\beta}\)</span>.</li>
+</ul>
+<p>Now, when the <span class="math inline">\(i^\text{th}\)</span> observation is removed from the data set <span class="math inline">\(D\)</span>, denote the corresponding least squares estimate by <span class="math inline">\(\hat{\beta}_{(i)}\)</span> and define
+<span class="math display" id="eq:deletion-resid-raw">\[\begin{equation}
+r_{(i)} = y_i - f(x_i)^T\hat{\beta}_{(i)},
+\tag{7.1}
+\end{equation}\]</span>
+which is the difference between the <span class="math inline">\(i^\text{th}\)</span> observed dependent variable and its estimate obtained when this observation is removed from the data <span class="math inline">\(D\)</span>. Note that <span class="math inline">\(r_{(i)}\)</span> is sometimes referred to as the <span class="math inline">\(i^\text{th}\)</span> <em>deletion residual</em>, and is not equal to <span class="math inline">\(r_i\)</span> because the least squares estimators are different (one is based on the full dataset and the other is from the reduced data).</p>
+<p>Earlier we used a for loop to compute <span class="math inline">\(\hat{\beta}_{(i)}\)</span> and <span class="math inline">\(f(x_i)^T\hat{\beta}_{(i)}\)</span> for <span class="math inline">\(i=1,\ldots,n\)</span>, removing each point in turn, refitting the model, and calculating the least squares estimate. But it isn’t necessary: it can be shown that
+<span class="math display" id="eq:deletion-resid">\[\begin{equation}
+r_{(i)} = \frac{r_i}{1-h_{ii}},
+\tag{7.2}
+\end{equation}\]</span>
+and
+<span class="math display" id="eq:beta-hat">\[\begin{equation}
+\hat{\beta}_{(i)} = \beta - (X^TX)^{-1}x_ir_{(i)},
+\tag{7.3}
+\end{equation}\]</span>
+where <span class="math inline">\(h_{ii}\)</span> is the <span class="math inline">\(i^\text{th}\)</span> diagonal element of the hat matrix <span class="math inline">\(H\)</span>. Proofs are given at the end of this chapter for reference, but you will not be assessed on these results or the proofs in this module.</p>
+<p>In summary, we do not need to implement a for loop like earlier, refitting the model for each removed location. Instead, we only fit the model once to the full data-set, and then calculate each deletion residual based on Equation <a href="cross-validation.html#eq:deletion-resid">(7.2)</a>.</p>
+<div id="example-returning-to-the-flint-data" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Example: Returning to the flint data<a href="cross-validation.html#example-returning-to-the-flint-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s check this short cut in <code>R</code> on a data-set. First, we’ll fit the flint model using all the data, and obtain <span class="math inline">\(X\)</span> and <span class="math inline">\(H\)</span>:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="cross-validation.html#cb133-1" aria-hidden="true" tabindex="-1"></a>lmFull <span class="ot">&lt;-</span> <span class="fu">lm</span>(length <span class="sc">~</span> breadth, <span class="at">data =</span> flint)</span>
+<span id="cb133-2"><a href="cross-validation.html#cb133-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(lmFull)</span>
+<span id="cb133-3"><a href="cross-validation.html#cb133-3" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> X <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X, <span class="fu">t</span>(X))</span></code></pre></div>
+<p>Then we’ll calculate the deletion residuals using the relationship in Equation <a href="cross-validation.html#eq:deletion-resid">(7.2)</a>:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="cross-validation.html#cb134-1" aria-hidden="true" tabindex="-1"></a>(deletionResiduals <span class="ot">&lt;-</span> lmFull<span class="sc">$</span>residuals<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">diag</span>(H)))</span></code></pre></div>
+<pre><code>##           1           2           3           4           5           6 
+## -0.13517895 -0.11047994 -0.03252041 -0.43621461 -0.05516638  0.21738803 
+##           7           8           9          10 
+##  0.45743603  0.34848697 -0.07227648 -0.00645657</code></pre>
+<p>We’ll check these are the same as the deletion residuals that are calculated via Equation <a href="cross-validation.html#eq:deletion-resid-raw">(7.1)</a> using the results from our earlier approach of using a for loop and repeatedly fitting the linear model on the reduced data:</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="cross-validation.html#cb136-1" aria-hidden="true" tabindex="-1"></a>flint<span class="sc">$</span>length <span class="sc">-</span> flint_yhat[ ,<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>##  [1] -0.13517895 -0.11047994 -0.03252041 -0.43621461 -0.05516638  0.21738803
+##  [7]  0.45743603  0.34848697 -0.07227648 -0.00645657</code></pre>
+<p>They are equal!</p>
+<p>We’ll also refit the model with the first observation removed to obtain <span class="math inline">\(\hat{\beta}_{(1)}\)</span>, and check we get the same as via Equation <a href="cross-validation.html#eq:beta-hat">(7.3)</a>:</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="cross-validation.html#cb138-1" aria-hidden="true" tabindex="-1"></a>lmReduced <span class="ot">&lt;-</span> <span class="fu">lm</span>(length<span class="sc">~</span>breadth, <span class="at">subset =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">data =</span> flint)</span>
+<span id="cb138-2"><a href="cross-validation.html#cb138-2" aria-hidden="true" tabindex="-1"></a>lmReduced<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>## (Intercept)     breadth 
+##   0.2820335   2.1437286</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="cross-validation.html#cb140-1" aria-hidden="true" tabindex="-1"></a>lmFull<span class="sc">$</span>coefficients <span class="sc">-</span></span>
+<span id="cb140-2"><a href="cross-validation.html#cb140-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span>X, <span class="fu">t</span>(X[<span class="dv">1</span>, , <span class="at">drop =</span> <span class="cn">FALSE</span> ])) <span class="sc">*</span> deletionResiduals[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>##                     1
+## (Intercept) 0.2820335
+## breadth     2.1437286</code></pre>
+<p>Again, these are equal!</p>
+</div>
+</div>
+<div id="relationship-with-aic" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Relationship with AIC<a href="cross-validation.html#relationship-with-aic" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Stone (1977) established a relationship between cross-validation and
+Akaike’s Information Criterion (AIC). Recall that AIC is defined as
+<span class="math display">\[-2 l(\hat{\theta}; y) + 2p,\]</span>
+where <span class="math inline">\(l(\hat{\theta}; y)\)</span> is the maximised log-likelihood function, and <span class="math inline">\(p\)</span> is the number of parameters in the model. We can use AIC to compare models, with a lower AIC value indicating a better model fit, after penalising for the model complexity (number of parameters).</p>
+<p>Now define a goodness-of-fit measure based on cross-validation as
+<span class="math display">\[CV:= -2\sum_{i=1}^n \log \pi(y_i|x_i, D_{-i}, \hat{\theta}_{(i)})\]</span>
+where <span class="math inline">\(\hat{\theta}_{(i)}\)</span> is the maximum likelihood estimate of the parameters given the reduced data set <span class="math inline">\(D_{-i}\)</span>, and <span class="math inline">\(\pi()\)</span> is the predictive density function of the model. For example, in our simple linear regression model, we would have
+<span class="math display">\[y_i \ | \ x_i, D_{-i}, \hat{\theta}_{(i)} \sim N((1,\, x_i)\hat{\beta}_{(i)}, \ \hat{\sigma}^2_{(i)}),\]</span>
+so that
+<span class="math display">\[\pi(y_i|x_i, D_{-i}, \hat{\theta}_{(i)}) = \frac{1}{\sqrt{2\pi\hat{\sigma}^2_{(i), MLE}}}\exp\left(-\frac{1}{2\pi\hat{\sigma}^2_{(i), MLE}}(y_i - (1,\, x_i)\hat{\beta}_{(i)})^2\right),\]</span>
+where <span class="math inline">\(\hat{\sigma}_{(i), MLE}\)</span> is the maximum likelihood estimator of <span class="math inline">\(\sigma^2\)</span>, given the reduced data set <span class="math inline">\(D_{-i}\)</span>. Stone then shows that asymptotically, <span class="math inline">\(CV\)</span> is equivalent to AIC. Intuitively, as the sample size tends to infinity, the maximised log-likelihood would dominate the penalty term <span class="math inline">\(2p\)</span>, and we would expect <span class="math inline">\(\hat{\theta}_{(i)}\)</span> to be similar to <span class="math inline">\(\hat{\theta}\)</span>, so that both AIC and <span class="math inline">\(CV\)</span> are just reporting the maximised log-likelihood. But this does suggest that cross-validation does have the effect of penalising for model complexity, in a similar way to AIC.</p>
+<div id="example-the-cars-data" class="section level3 hasAnchor" number="7.5.1">
+<h3><span class="header-section-number">7.5.1</span> Example: The cars data<a href="cross-validation.html#example-the-cars-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We’ll use the <code>cars</code> data, one of R’s in-built datasets, and consider a simple linear regression model to predict stopping distance (<code>dist</code>) given the initial travelling speed (<code>speed</code>) for some (very old!) cars. There are 50 observations in this data set.</p>
+<p>We’ll first fit the model to all the data:</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="cross-validation.html#cb142-1" aria-hidden="true" tabindex="-1"></a>lmFull <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> speed, <span class="at">data =</span> cars)</span></code></pre></div>
+<p>This gives the AIC as 419.156863 and minus twice the maximised log likelihood as 413.156863.</p>
+<p>Now we’ll compute <span class="math inline">\(CV\)</span>. We’ll go back to using a for loop, to make the code a bit more readable:</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="cross-validation.html#cb143-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(lmFull)</span>
+<span id="cb143-2"><a href="cross-validation.html#cb143-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(X)</span>
+<span id="cb143-3"><a href="cross-validation.html#cb143-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> cars<span class="sc">$</span>dist</span>
+<span id="cb143-4"><a href="cross-validation.html#cb143-4" aria-hidden="true" tabindex="-1"></a>logPredictiveDensity <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n )</span>
+<span id="cb143-5"><a href="cross-validation.html#cb143-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-6"><a href="cross-validation.html#cb143-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb143-7"><a href="cross-validation.html#cb143-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb143-8"><a href="cross-validation.html#cb143-8" aria-hidden="true" tabindex="-1"></a>  lmCV <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> speed, <span class="at">subset =</span> <span class="sc">-</span>i, <span class="at">data =</span> cars)</span>
+<span id="cb143-9"><a href="cross-validation.html#cb143-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Need the MLE of sigma. We&#39;ve got n-1 observations so this is RSS/(n-1)</span></span>
+<span id="cb143-10"><a href="cross-validation.html#cb143-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#sigmaMLE &lt;- sqrt(sum(lmCV$residuals^2) / (n - 1))</span></span>
+<span id="cb143-11"><a href="cross-validation.html#cb143-11" aria-hidden="true" tabindex="-1"></a>  logPredictiveDensity[i] <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(y[i],</span>
+<span id="cb143-12"><a href="cross-validation.html#cb143-12" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">sum</span>(X[i, ]<span class="sc">*</span>lmCV<span class="sc">$</span>coefficients),</span>
+<span id="cb143-13"><a href="cross-validation.html#cb143-13" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">sigma</span>(lmCV),</span>
+<span id="cb143-14"><a href="cross-validation.html#cb143-14" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb143-15"><a href="cross-validation.html#cb143-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb143-16"><a href="cross-validation.html#cb143-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-17"><a href="cross-validation.html#cb143-17" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">sum</span>(logPredictiveDensity) </span></code></pre></div>
+<pre><code>## [1] 421.028</code></pre>
+<p>This is close to the value obtained by AIC, and closer than when compared with minus twice the maximised log likelihood so it does appear that <span class="math inline">\(CV\)</span> is penalising for the number of parameters.</p>
+</div>
+</div>
+<div id="non-examinable-proof-of-the-computational-short-cut" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> (Non-examinable) Proof of the computational short cut<a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We outline how to derive the expressions for <span class="math inline">\(r_{(i)}\)</span> and <span class="math inline">\(\hat{\beta}_{(i)}\)</span> in Equations <a href="cross-validation.html#eq:deletion-resid">(7.2)</a> and <a href="cross-validation.html#eq:beta-hat">(7.3)</a>.</p>
+<div id="helpful-results-we-will-use" class="section level3 hasAnchor" number="7.6.1">
+<h3><span class="header-section-number">7.6.1</span> Helpful results we will use<a href="cross-validation.html#helpful-results-we-will-use" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are two results that help us here (and then it’s just fairly straightforward algebra - we won’t give all the steps here). Recall that <span class="math inline">\(f(x_i)^T\)</span> is the <span class="math inline">\(i\)</span>-th row of the design matrix <span class="math inline">\(X\)</span>.</p>
+<p>The first result is that
+<span class="math display">\[
+X^TX = \sum_{i=1}^n f(x_i)f(x_i)^T,
+\]</span>
+so we can write
+<span class="math display" id="eq:full-to-reduced">\[\begin{equation}
+X^T_{(i)}X_{(i)} = X^TX - f(x_i)f(x_i)^T,
+\tag{7.4}
+\end{equation}\]</span>
+where <span class="math inline">\(X_{(i)}\)</span> is the design matrix with the <span class="math inline">\(i\)</span>-th row (observation) removed. We will use this result multiple times in the following to relate the full dataset to the reduced dataset.</p>
+<p>The second result is the Woodbury identity for matrix inversion:
+<span class="math display">\[
+(A+UCV^T)^{-1} = A^{-1} - A^{-1}U(C^{-1} + V^TA^{-1}U)^{-1}VA^{-1},
+\]</span>
+for matrices of the appropriate sizes (with <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> invertible). To relate this to our scenario, we equate</p>
+<ul>
+<li><span class="math inline">\(X^TX\)</span> with <span class="math inline">\(A\)</span>,</li>
+<li><span class="math inline">\(U\)</span> with <span class="math inline">\(-f(x_i)\)</span>,</li>
+<li><span class="math inline">\(V\)</span> with <span class="math inline">\(f(x_i)\)</span>,</li>
+</ul>
+<p>and set <span class="math inline">\(C\)</span> to be the (<span class="math inline">\(1\times 1\)</span>) identity matrix. After a little algebra we have
+<span class="math display" id="eq:app1">\[\begin{equation}
+(X^T_{(i)}X_{(i)})^{-1} = (X^TX)^{-1} + \frac{(X^TX)^{-1}f(x_i)f(x_i)^T(X^TX)^{-1}}{1 - h_{ii}},
+\tag{7.5}
+\end{equation}\]</span>
+where <span class="math inline">\(h_{ii}\)</span> is the <span class="math inline">\(i\)</span>-th diagonal element of <span class="math inline">\(X(X^TX)^{-1}X^T\)</span>.</p>
+</div>
+<div id="relate-the-estimated-coefficients-of-full-and-reduced-models" class="section level3 hasAnchor" number="7.6.2">
+<h3><span class="header-section-number">7.6.2</span> Relate the estimated coefficients of full and reduced models<a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Next, we relate <span class="math inline">\(\hat{\beta}\)</span> with <span class="math inline">\(\hat{\beta}_{(i)}\)</span>.</p>
+<p>Define <span class="math inline">\(y_{(i)}\)</span> to be the vector of all observations, with <span class="math inline">\(y_i\)</span> removed, so that the estimated coefficients when the <span class="math inline">\(i^\text{th}\)</span> observation is removed is
+<span class="math display" id="eq:app2">\[\begin{equation}
+\hat{\beta}_{(i)} = (X^T_{(i)}X_{(i)})^{-1}X^T_{(i)}y_{(i)}.
+\tag{7.6}
+\end{equation}\]</span>
+Equation <a href="cross-validation.html#eq:full-to-reduced">(7.4)</a> also tells us that
+<span class="math display" id="eq:app3">\[\begin{equation}
+X^T_{(i)}y_{(i)} = X^Ty - y_i f(x_i).
+\tag{7.7}
+\end{equation}\]</span>
+Substituting Equations <a href="cross-validation.html#eq:app1">(7.5)</a> and <a href="cross-validation.html#eq:app3">(7.7)</a> into Equation <a href="cross-validation.html#eq:app2">(7.6)</a> gives
+<span class="math display">\[
+\hat{\beta}_{(i)} = (X^TX)^{-1}(X^Ty - y_i f(x_i)) + \frac{(X^TX)^{-1}f(x_i)f(x_i)^T(X^TX)^{-1}(X^Ty - y_i f(x_i)) }{1 - h_{ii}}.
+\]</span>
+which, after some algebra, becomes
+<span class="math display" id="eq:app4">\[\begin{equation}
+\hat{\beta}_{(i)} = \hat{\beta} - (X^TX)^{-1}f(x_i)\frac{r_i}{1 - h_{ii}}.
+\tag{7.8}
+\end{equation}\]</span></p>
+</div>
+<div id="relating-the-residuals" class="section level3 hasAnchor" number="7.6.3">
+<h3><span class="header-section-number">7.6.3</span> Relating the residuals<a href="cross-validation.html#relating-the-residuals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have that the deletion residual is
+<span class="math display">\[
+r_{(i)} = y_i - f(x_i)^T\hat{\beta}_{(i)},
+\]</span>
+and after substituting in Equation <a href="cross-validation.html#eq:app4">(7.8)</a> for <span class="math inline">\(\hat{\beta}_{(i)}\)</span>, we get
+<span class="math display">\[
+r_{(i)} = \frac{r_i}{1-h_{ii}}.
+\]</span></p>
+
+</div>
+</div>
+</div>
+
+
+
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-palmerpenguins" class="csl-entry">
+Horst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. <em>Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data</em>. <a href="https://allisonhorst.github.io/palmerpenguins/">https://allisonhorst.github.io/palmerpenguins/</a>.
+</div>
+<div id="ref-R-caret" class="csl-entry">
+Kuhn, Max. 2021. <em>Caret: Classification and Regression Training</em>. <a href="https://CRAN.R-project.org/package=caret">https://CRAN.R-project.org/package=caret</a>.
+</div>
+<div id="ref-R-class" class="csl-entry">
+Venables, W. N., and B. D. Ripley. 2002. <em>Modern Applied Statistics with s</em>. Fourth. New York: Springer. <a href="https://www.stats.ox.ac.uk/pub/MASS4/">https://www.stats.ox.ac.uk/pub/MASS4/</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bootstrapping.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="variational-inference.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["MAS61006-S2-Notes.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll-highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

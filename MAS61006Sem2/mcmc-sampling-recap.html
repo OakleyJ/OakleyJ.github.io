@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 MCMC Sampling Recap | MAS61006 Bayesian Statistics and Computational Methods</title>
+  <meta name="description" content="Chapter 1 MCMC Sampling Recap | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 MCMC Sampling Recap | MAS61006 Bayesian Statistics and Computational Methods" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 MCMC Sampling Recap | MAS61006 Bayesian Statistics and Computational Methods" />
+  
+  
+  
+
+<meta name="author" content="Jeremy Oakley" />
+
+
+<meta name="date" content="2023-02-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="literature.html"/>
+<link rel="next" href="hamiltonian-monte-carlo-hmc.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script>
+  $(document).ready(function () {
+    process_solutions();
+  });
+function process_solutions() {
+  $("div.section[id^='solution']").each(function(i) {
+    var soln_wrapper_id = "cvxr_ex_" + i;
+    var solution_id = $(this).attr('id');
+    var button = $("<button onclick=\"toggle_solution('" + soln_wrapper_id + "')\">Show/Hide</button>");
+    var new_div = $("<div id='" + soln_wrapper_id + "' class='solution' style='display: none;'></div>");
+    var h = $(this).first();
+    var others = $(this).children().slice(1);
+    $(others).each(function() {
+      $(this).appendTo($(new_div));
+    });
+    $(button).insertAfter($(h));
+    $(new_div).insertAfter($(button));
+  })
+}
+function toggle_solution(el_id) {
+  $("#" + el_id).toggle();
+}
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MAS61006(Sem2)</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i>Literature</a></li>
+<li class="part"><span><b>I Inference using advanced samplers</b></span></li>
+<li class="chapter" data-level="1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html"><i class="fa fa-check"></i><b>1</b> MCMC Sampling Recap</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#bayesian-inference-continued"><i class="fa fa-check"></i><b>1.1</b> Bayesian inference continued</a></li>
+<li class="chapter" data-level="1.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#monte-carlo"><i class="fa fa-check"></i><b>1.2</b> Monte Carlo estimation</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate"><i class="fa fa-check"></i><b>1.2.1</b> Properties of the Monte Carlo estimate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations"><i class="fa fa-check"></i><b>1.2.2</b> Expressing quantities as expectations</a></li>
+<li class="chapter" data-level="1.2.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#estimation-of-general-integrals"><i class="fa fa-check"></i><b>1.2.3</b> Estimation of general integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc"><i class="fa fa-check"></i><b>1.3</b> Markov chain Monte Carlo (MCMC)</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#mhsection"><i class="fa fa-check"></i><b>1.3.1</b> The Metroplis-Hastings (MH) algorithm</a></li>
+<li class="chapter" data-level="1.3.2" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals"><i class="fa fa-check"></i><b>1.3.2</b> The problem with random walk proposals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-gibbs-algorithm"><i class="fa fa-check"></i><b>1.3.3</b> The Gibbs algorithm</a></li>
+<li class="chapter" data-level="1.3.4" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#the-problem-with-gibbs"><i class="fa fa-check"></i><b>1.3.4</b> The problem with Gibbs</a></li>
+<li class="chapter" data-level="1.3.5" data-path="mcmc-sampling-recap.html"><a href="mcmc-sampling-recap.html#a-solution"><i class="fa fa-check"></i><b>1.3.5</b> A solution?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html"><i class="fa fa-check"></i><b>2</b> Hamiltonian Monte Carlo (HMC)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#generating-proposals-intuition"><i class="fa fa-check"></i><b>2.1</b> Generating proposals: intuition</a></li>
+<li class="chapter" data-level="2.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hamiltonian-dynamics"><i class="fa fa-check"></i><b>2.2</b> Hamiltonian dynamics</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#conservation-of-energy"><i class="fa fa-check"></i><b>2.2.1</b> Conservation of energy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#using-hamiltons-equations-to-generate-proposals"><i class="fa fa-check"></i><b>2.3</b> Using Hamilton’s equations to generate proposals</a></li>
+<li class="chapter" data-level="2.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-joint-distribution-for-theta-m"><i class="fa fa-check"></i><b>2.4</b> The joint distribution for <span class="math inline">\((\theta, m)\)</span></a></li>
+<li class="chapter" data-level="2.5" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hmc-algorithm"><i class="fa fa-check"></i><b>2.5</b> The HMC algorithm</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#approximate-solution-of-hamiltons-equations"><i class="fa fa-check"></i><b>2.5.1</b> Approximate solution of Hamilton’s equations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#multivariate-theta"><i class="fa fa-check"></i><b>2.6</b> Multivariate <span class="math inline">\(\theta\)</span></a></li>
+<li class="chapter" data-level="2.7" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#tuning-parameters"><i class="fa fa-check"></i><b>2.7</b> Tuning parameters</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-tuning-parameter-sigma2"><i class="fa fa-check"></i><b>2.7.1</b> The tuning parameter <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="2.7.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#the-hamiltonian-movement-tuning-parameters-t-and-epsilon"><i class="fa fa-check"></i><b>2.7.2</b> The Hamiltonian movement tuning parameters <span class="math inline">\(T\)</span> and <span class="math inline">\(\epsilon\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#implementing-hmc-by-hand"><i class="fa fa-check"></i><b>2.8</b> Implementing HMC ‘by hand’</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#random-walk-mh"><i class="fa fa-check"></i><b>2.8.1</b> Random-walk MH</a></li>
+<li class="chapter" data-level="2.8.2" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#gibbs"><i class="fa fa-check"></i><b>2.8.2</b> Gibbs</a></li>
+<li class="chapter" data-level="2.8.3" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#hmc"><i class="fa fa-check"></i><b>2.8.3</b> HMC</a></li>
+<li class="chapter" data-level="2.8.4" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#comparing-random-walk-and-hmc-samplers"><i class="fa fa-check"></i><b>2.8.4</b> Comparing random-walk and HMC samplers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="hamiltonian-monte-carlo-hmc.html"><a href="hamiltonian-monte-carlo-hmc.html#summary"><i class="fa fa-check"></i><b>2.9</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html"><i class="fa fa-check"></i><b>3</b> Implementing HMC in Stan</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#getting-set-up-with-stan"><i class="fa fa-check"></i><b>3.1</b> Getting set up with Stan</a></li>
+<li class="chapter" data-level="3.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#rstan-options"><i class="fa fa-check"></i><b>3.2</b> <code>rstan</code> options</a></li>
+<li class="chapter" data-level="3.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#an-example-model"><i class="fa fa-check"></i><b>3.3</b> An example model</a></li>
+<li class="chapter" data-level="3.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#specifying-a-model-in-rstudio"><i class="fa fa-check"></i><b>3.4</b> Specifying a model in RStudio</a></li>
+<li class="chapter" data-level="3.5" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#stan-code-blocks"><i class="fa fa-check"></i><b>3.5</b> Stan code blocks</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#data-block"><i class="fa fa-check"></i><b>3.5.1</b> <code>data</code> block</a></li>
+<li class="chapter" data-level="3.5.2" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>3.5.2</b> <code>parameters</code> block</a></li>
+<li class="chapter" data-level="3.5.3" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#model-block"><i class="fa fa-check"></i><b>3.5.3</b> <code>model</code> block</a></li>
+<li class="chapter" data-level="3.5.4" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>3.5.4</b> <code>generated quantities</code> block</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#running-the-hmc-algorithm"><i class="fa fa-check"></i><b>3.6</b> Running the HMC algorithm</a></li>
+<li class="chapter" data-level="3.7" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#extracting-and-analysing-the-samples"><i class="fa fa-check"></i><b>3.7</b> Extracting and analysing the samples</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#r-packages-for-plotting-outputs"><i class="fa fa-check"></i><b>3.7.1</b> R packages for plotting outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#no-u-turn-sampler-nuts"><i class="fa fa-check"></i><b>3.8</b> No U-Turn Sampler (NUTS)</a></li>
+<li class="chapter" data-level="3.9" data-path="implementing-hmc-in-stan.html"><a href="implementing-hmc-in-stan.html#further-reading"><i class="fa fa-check"></i><b>3.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html"><i class="fa fa-check"></i><b>4</b> Bayesian regression in Stan</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#holiday-hangover-cures"><i class="fa fa-check"></i><b>4.1.1</b> Holiday hangover cures</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#least-squares-fit"><i class="fa fa-check"></i><b>4.1.2</b> Least squares fit</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-in-stan"><i class="fa fa-check"></i><b>4.1.3</b> Bayesian approach in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#recap-of-logistic-regression"><i class="fa fa-check"></i><b>4.2</b> Recap of logistic regression</a></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#overview-of-mixed-effects"><i class="fa fa-check"></i><b>4.3</b> Overview of mixed effects</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#simple-example-of-a-mixed-effects-model"><i class="fa fa-check"></i><b>4.3.1</b> Simple example of a mixed effects model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#fixed-or-random-effects"><i class="fa fa-check"></i><b>4.3.2</b> Fixed or random effects?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#mixed-effect-logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Mixed effect logistic regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#balance-experiment"><i class="fa fa-check"></i><b>4.4.1</b> Balance experiment</a></li>
+<li class="chapter" data-level="4.4.2" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>4.4.2</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#maximum-likelihood-approach"><i class="fa fa-check"></i><b>4.4.3</b> Maximum likelihood approach</a></li>
+<li class="chapter" data-level="4.4.4" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#bayesian-approach-using-stan"><i class="fa fa-check"></i><b>4.4.4</b> Bayesian approach using Stan</a></li>
+<li class="chapter" data-level="4.4.5" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#comparing-stan-and-lme4"><i class="fa fa-check"></i><b>4.4.5</b> Comparing Stan and lme4</a></li>
+<li class="chapter" data-level="4.4.6" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#easy-bayesian-approach-with-brms"><i class="fa fa-check"></i><b>4.4.6</b> ‘Easy’ Bayesian approach with <code>brms</code></a></li>
+<li class="chapter" data-level="4.4.7" data-path="bayesian-regression-in-stan.html"><a href="bayesian-regression-in-stan.html#what-have-we-found"><i class="fa fa-check"></i><b>4.4.7</b> What have we found?</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Inference with missing data</b></span></li>
+<li class="chapter" data-level="5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html"><i class="fa fa-check"></i><b>5</b> Multiple imputation for missing data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#example-nhanes-data"><i class="fa fa-check"></i><b>5.2</b> Example: <code>nhanes</code> data</a></li>
+<li class="chapter" data-level="5.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mechanisms-of-missingness"><i class="fa fa-check"></i><b>5.3</b> Mechanisms of missingness</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>5.3.1</b> Missing completely at random (MCAR)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>5.3.2</b> Missing at random (MAR)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#not-missing-at-random-nmar"><i class="fa fa-check"></i><b>5.3.3</b> Not missing at random (NMAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#ignoring-information-about-missingness"><i class="fa fa-check"></i><b>5.4</b> Ignoring information about missingness</a></li>
+<li class="chapter" data-level="5.5" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#inference-via-imputation"><i class="fa fa-check"></i><b>5.5</b> Inference via imputation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#further-simplifications"><i class="fa fa-check"></i><b>5.5.1</b> Further simplifications</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#pooling"><i class="fa fa-check"></i><b>5.6</b> Pooling multiple imputations</a></li>
+<li class="chapter" data-level="5.7" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#simple-example"><i class="fa fa-check"></i><b>5.7</b> Simple example</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#multiple-imputation-by-hand"><i class="fa fa-check"></i><b>5.7.1</b> Multiple imputation by hand</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-missing-data-chained-equation-multiple-imputation"><i class="fa fa-check"></i><b>5.8</b> Imputing missing data: chained equation multiple imputation</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#how-many-iterations"><i class="fa fa-check"></i><b>5.8.1</b> How many iterations?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#mice-example-the-nhanes-dataset"><i class="fa fa-check"></i><b>5.9</b> MICE example: the <code>nhanes</code> dataset</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#complete-case-analysis"><i class="fa fa-check"></i><b>5.9.1</b> Complete case analysis</a></li>
+<li class="chapter" data-level="5.9.2" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputing-the-missing-data"><i class="fa fa-check"></i><b>5.9.2</b> Imputing the missing data</a></li>
+<li class="chapter" data-level="5.9.3" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#imputation-analysis"><i class="fa fa-check"></i><b>5.9.3</b> Imputation analysis</a></li>
+<li class="chapter" data-level="5.9.4" data-path="multiple-imputation-for-missing-data.html"><a href="multiple-imputation-for-missing-data.html#analysis-pooling"><i class="fa fa-check"></i><b>5.9.4</b> Analysis pooling</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Resampling methods</b></span></li>
+<li class="chapter" data-level="6" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>6</b> Bootstrapping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrap-estimates-of-standard-errors"><i class="fa fa-check"></i><b>6.1</b> Bootstrap estimates of standard errors</a></li>
+<li class="chapter" data-level="6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#estimating-a-distribution-using-the-empirical-cumulative-distribution-function"><i class="fa fa-check"></i><b>6.2</b> Estimating a distribution using the empirical cumulative distribution function</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="bootstrapping.html"><a href="bootstrapping.html#sampling-from-an-ecdf"><i class="fa fa-check"></i><b>6.2.1</b> Sampling from an ECDF</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#notation-summary"><i class="fa fa-check"></i><b>6.3</b> Notation summary</a></li>
+<li class="chapter" data-level="6.4" data-path="bootstrapping.html"><a href="bootstrapping.html#example-bootstrap-standard-errors-of-a-sample-mean-and-sample-variance"><i class="fa fa-check"></i><b>6.4</b> Example: Bootstrap standard errors of a sample mean and sample variance</a></li>
+<li class="chapter" data-level="6.5" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals"><i class="fa fa-check"></i><b>6.5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-the-estimated-standard-error"><i class="fa fa-check"></i><b>6.5.1</b> Confidence intervals using the estimated standard error</a></li>
+<li class="chapter" data-level="6.5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>6.5.2</b> Confidence intervals using percentiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="bootstrapping.html"><a href="bootstrapping.html#properties-of-samples-from-the-empirical-cdf"><i class="fa fa-check"></i><b>6.6</b> Properties of samples from the empirical CDF</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="bootstrapping.html"><a href="bootstrapping.html#expectation-and-variance"><i class="fa fa-check"></i><b>6.6.1</b> Expectation and variance</a></li>
+<li class="chapter" data-level="6.6.2" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-percentiles"><i class="fa fa-check"></i><b>6.6.2</b> Sample percentiles</a></li>
+<li class="chapter" data-level="6.6.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sources-of-error-and-sample-sizes-in-bootstrapping"><i class="fa fa-check"></i><b>6.6.3</b> Sources of error and sample sizes in bootstrapping</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="bootstrapping.html"><a href="bootstrapping.html#example-measuring-observer-agreement"><i class="fa fa-check"></i><b>6.7</b> Example: Measuring observer agreement</a>
+<ul>
+<li class="chapter" data-level="6.7.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-data"><i class="fa fa-check"></i><b>6.7.1</b> The data</a></li>
+<li class="chapter" data-level="6.7.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-kappa-statistic"><i class="fa fa-check"></i><b>6.7.2</b> The kappa statistic</a></li>
+<li class="chapter" data-level="6.7.3" data-path="bootstrapping.html"><a href="bootstrapping.html#bootstrapping-bivariate-data"><i class="fa fa-check"></i><b>6.7.3</b> Bootstrapping bivariate data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="bootstrapping.html"><a href="bootstrapping.html#parametric-bootstrapping-and-hypothesis-testing"><i class="fa fa-check"></i><b>6.8</b> Parametric bootstrapping and hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="bootstrapping.html"><a href="bootstrapping.html#the-milk-data-set"><i class="fa fa-check"></i><b>6.8.1</b> The <code>Milk</code> data set</a></li>
+<li class="chapter" data-level="6.8.2" data-path="bootstrapping.html"><a href="bootstrapping.html#the-model-and-hypothesis"><i class="fa fa-check"></i><b>6.8.2</b> The model and hypothesis</a></li>
+<li class="chapter" data-level="6.8.3" data-path="bootstrapping.html"><a href="bootstrapping.html#the-generalized-likelihood-ratio-test"><i class="fa fa-check"></i><b>6.8.3</b> The generalized likelihood ratio test</a></li>
+<li class="chapter" data-level="6.8.4" data-path="bootstrapping.html"><a href="bootstrapping.html#the-parametric-bootstrap-test"><i class="fa fa-check"></i><b>6.8.4</b> The parametric bootstrap test</a></li>
+<li class="chapter" data-level="6.8.5" data-path="bootstrapping.html"><a href="bootstrapping.html#implementation-with-r"><i class="fa fa-check"></i><b>6.8.5</b> Implementation with R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="cross-validation.html"><a href="cross-validation.html"><i class="fa fa-check"></i><b>7</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-classification"><i class="fa fa-check"></i><b>7.1</b> Cross-validation in classification</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="cross-validation.html"><a href="cross-validation.html#the-palmer-penguins-data"><i class="fa fa-check"></i><b>7.1.1</b> The Palmer penguins data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="cross-validation.html"><a href="cross-validation.html#the-k-nearest-neighbours-algorithm-knn"><i class="fa fa-check"></i><b>7.1.2</b> The <span class="math inline">\(K\)</span>-nearest neighbours algorithm (KNN)</a></li>
+<li class="chapter" data-level="7.1.3" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-knn"><i class="fa fa-check"></i><b>7.1.3</b> Implementing cross-validation in KNN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2</b> Cross-validation in regression</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="cross-validation.html"><a href="cross-validation.html#the-flint-tools-data"><i class="fa fa-check"></i><b>7.2.1</b> The flint tools data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="cross-validation.html"><a href="cross-validation.html#implementing-cross-validation-in-regression"><i class="fa fa-check"></i><b>7.2.2</b> Implementing cross-validation in regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="cross-validation.html"><a href="cross-validation.html#parameter-estimation-with-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Parameter estimation with cross-validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="cross-validation.html"><a href="cross-validation.html#example-choosing-the-value-k-in-knn"><i class="fa fa-check"></i><b>7.3.1</b> Example: choosing the value <span class="math inline">\(K\)</span> in KNN</a></li>
+<li class="chapter" data-level="7.3.2" data-path="cross-validation.html"><a href="cross-validation.html#cross-validation-as-an-alternative-to-maximum-likelihood"><i class="fa fa-check"></i><b>7.3.2</b> Cross-validation as an alternative to maximum likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="cross-validation.html"><a href="cross-validation.html#computational-short-cuts"><i class="fa fa-check"></i><b>7.4</b> Computational short-cuts</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="cross-validation.html"><a href="cross-validation.html#example-returning-to-the-flint-data"><i class="fa fa-check"></i><b>7.4.1</b> Example: Returning to the flint data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="cross-validation.html"><a href="cross-validation.html#relationship-with-aic"><i class="fa fa-check"></i><b>7.5</b> Relationship with AIC</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="cross-validation.html"><a href="cross-validation.html#example-the-cars-data"><i class="fa fa-check"></i><b>7.5.1</b> Example: The cars data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="cross-validation.html"><a href="cross-validation.html#non-examinable-proof-of-the-computational-short-cut"><i class="fa fa-check"></i><b>7.6</b> (Non-examinable) Proof of the computational short cut</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="cross-validation.html"><a href="cross-validation.html#helpful-results-we-will-use"><i class="fa fa-check"></i><b>7.6.1</b> Helpful results we will use</a></li>
+<li class="chapter" data-level="7.6.2" data-path="cross-validation.html"><a href="cross-validation.html#relate-the-estimated-coefficients-of-full-and-reduced-models"><i class="fa fa-check"></i><b>7.6.2</b> Relate the estimated coefficients of full and reduced models</a></li>
+<li class="chapter" data-level="7.6.3" data-path="cross-validation.html"><a href="cross-validation.html#relating-the-residuals"><i class="fa fa-check"></i><b>7.6.3</b> Relating the residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Approximate inference without sampling</b></span></li>
+<li class="chapter" data-level="8" data-path="variational-inference.html"><a href="variational-inference.html"><i class="fa fa-check"></i><b>8</b> Variational inference</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="variational-inference.html"><a href="variational-inference.html#background-theory"><i class="fa fa-check"></i><b>8.1</b> Background theory</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="variational-inference.html"><a href="variational-inference.html#jensens-inequality"><i class="fa fa-check"></i><b>8.1.1</b> Jensen’s inequality</a></li>
+<li class="chapter" data-level="8.1.2" data-path="variational-inference.html"><a href="variational-inference.html#kullback-leibler-divergence"><i class="fa fa-check"></i><b>8.1.2</b> Kullback-Leibler Divergence</a></li>
+<li class="chapter" data-level="8.1.3" data-path="variational-inference.html"><a href="variational-inference.html#optimisation-with-coordinate-ascent"><i class="fa fa-check"></i><b>8.1.3</b> Optimisation with coordinate ascent</a></li>
+<li class="chapter" data-level="8.1.4" data-path="variational-inference.html"><a href="variational-inference.html#stochastic-optimisation"><i class="fa fa-check"></i><b>8.1.4</b> Stochastic optimisation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="variational-inference.html"><a href="variational-inference.html#motivation-for-approximate-inference-approaches"><i class="fa fa-check"></i><b>8.2</b> Motivation for approximate inference approaches</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="variational-inference.html"><a href="variational-inference.html#intractable-integrals"><i class="fa fa-check"></i><b>8.2.1</b> Intractable integrals</a></li>
+<li class="chapter" data-level="8.2.2" data-path="variational-inference.html"><a href="variational-inference.html#variational-approach-to-intractable-integrals"><i class="fa fa-check"></i><b>8.2.2</b> Variational approach to intractable integrals</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="variational-inference.html"><a href="variational-inference.html#approximate-inference-as-an-optimisation-problem"><i class="fa fa-check"></i><b>8.3</b> Approximate inference as an optimisation problem</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="variational-inference.html"><a href="variational-inference.html#exploring-the-elbo"><i class="fa fa-check"></i><b>8.3.1</b> Exploring the ELBO</a></li>
+<li class="chapter" data-level="8.3.2" data-path="variational-inference.html"><a href="variational-inference.html#forward-and-reverse-variational-inference"><i class="fa fa-check"></i><b>8.3.2</b> Forward and reverse variational inference</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="variational-inference.html"><a href="variational-inference.html#the-variational-family-of-distributions"><i class="fa fa-check"></i><b>8.4</b> The variational family of distributions</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="variational-inference.html"><a href="variational-inference.html#mean-field-family"><i class="fa fa-check"></i><b>8.4.1</b> Mean-field family</a></li>
+<li class="chapter" data-level="8.4.2" data-path="variational-inference.html"><a href="variational-inference.html#correlation-cannot-be-replicated"><i class="fa fa-check"></i><b>8.4.2</b> Correlation cannot be replicated</a></li>
+<li class="chapter" data-level="8.4.3" data-path="variational-inference.html"><a href="variational-inference.html#why-mean-field-is-useful"><i class="fa fa-check"></i><b>8.4.3</b> Why mean-field is useful</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html"><i class="fa fa-check"></i><b>9</b> Coordinate ascent variational inference (CAVI)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-cavi-algorithm"><i class="fa fa-check"></i><b>9.1</b> The CAVI algorithm</a></li>
+<li class="chapter" data-level="9.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#example-mixture-of-gaussians"><i class="fa fa-check"></i><b>9.2</b> Example: Mixture of Gaussians</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-observation-model"><i class="fa fa-check"></i><b>9.2.1</b> The observation model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-prior"><i class="fa fa-check"></i><b>9.2.2</b> The prior</a></li>
+<li class="chapter" data-level="9.2.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-joint-likelihood"><i class="fa fa-check"></i><b>9.2.3</b> The joint likelihood</a></li>
+<li class="chapter" data-level="9.2.4" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#the-mean-field-family-approximation"><i class="fa fa-check"></i><b>9.2.4</b> The mean-field family approximation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#cavi"><i class="fa fa-check"></i><b>9.2.5</b> CAVI</a></li>
+<li class="chapter" data-level="9.2.6" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#implementing-cavi-in-r"><i class="fa fa-check"></i><b>9.2.6</b> Implementing CAVI in R</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="coordinate-ascent-variational-inference-cavi.html"><a href="coordinate-ascent-variational-inference-cavi.html#comment"><i class="fa fa-check"></i><b>9.3</b> Comment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MAS61006 Bayesian Statistics and Computational Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mcmc-sampling-recap" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> MCMC Sampling Recap<a href="mcmc-sampling-recap.html#mcmc-sampling-recap" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --->
+<p><span class="math inline">\(\def \mb{\mathbb}\)</span>
+<span class="math inline">\(\def \E{\mb{E}}\)</span>
+<span class="math inline">\(\def \P{\mb{P}}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\var}{Var}\)</span>
+<span class="math inline">\(\DeclareMathOperator{\cov}{Cov}\)</span></p>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aims of this chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Revision of Markov Chain Monte Carlo for practical Bayesian inference.</td>
+</tr>
+<tr class="even">
+<td>2. In particular, revise the random walk Metropolis-Hastings.</td>
+</tr>
+<tr class="odd">
+<td>3. Appreciate the limitations of random walk Metropolis-Hastings as an inference tool.</td>
+</tr>
+</tbody>
+</table>
+<div id="bayesian-inference-continued" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Bayesian inference continued<a href="mcmc-sampling-recap.html#bayesian-inference-continued" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will continue the Bayesian approach to statistical inference that we studied in Semester 1. In particular, given data <span class="math inline">\(x\)</span> and an unknown parameters of interest <span class="math inline">\(\theta\)</span>, we derive the posterior distribution <span class="math inline">\(f(\theta|x)\)</span> so that, for example, if we want to consider our probability of <span class="math inline">\(\theta\)</span> lying in some set <span class="math inline">\(R\)</span>, we would compute
+<span class="math display">\[
+P(\theta\in R|x) = \int_R f(\theta|x)d\theta.
+\]</span>
+Given our prior distribution <span class="math inline">\(f(\theta)\)</span> and likelihood <span class="math inline">\(f(x|\theta)\)</span>, the integral above can be computed via
+<span class="math display">\[
+\int_R f(\theta|x)d\theta = \frac{\int_R f(\theta)f(x|\theta)d\theta}{\int_{\Theta} f(\theta)f(x|\theta)d\theta},
+\]</span>
+where <span class="math inline">\(\Theta\)</span> is the sample space of <span class="math inline">\(\theta\)</span>. Often, however, we cannot evaluate these integrals analytically (we usually won’t have conjugate priors we can use). The parameter <span class="math inline">\(\theta\)</span> may be high-dimensional, and so to use Bayesian inference in practice, we need a reliable way to compute (estimate) high-dimensional integrals.</p>
+</div>
+<div id="monte-carlo" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Monte Carlo estimation<a href="mcmc-sampling-recap.html#monte-carlo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="result">
+<p>Suppose we are interested in an integral
+<span class="math display">\[I=\E(g(X))=\int g(x) f(x) \mathrm{d}x.\]</span>
+Let <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span> be independent random variables with pdf <span class="math inline">\(f(x)\)</span>.
+Then a Monte Carlo approximation to <span class="math inline">\(I\)</span> is
+<span class="math display">\[\begin{equation}
+\hat{I}_n=\frac{1}{n} \sum_{i=1}^n g(X_i).
+\end{equation}\]</span></p>
+</div>
+<p>The main idea in Monte Carlo integration is to approximate <span class="math inline">\(I\)</span> by <span class="math inline">\(\hat{I}_n\)</span>.</p>
+<p>For example, suppose we wish to find the theoretical mean
+<span class="math display">\[\E(X)= \int_{-\infty}^{\infty} x f_X(x) \mathrm{d} x,\]</span>
+then we can approximate the theoretical mean by the sample mean
+<span class="math display">\[\E(X) \approx \frac{1}{n}\sum_{i=1}^n X_i,\]</span>
+and this is the same as the Monte Carlo estimate.</p>
+<div id="properties-of-the-monte-carlo-estimate" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Properties of the Monte Carlo estimate<a href="mcmc-sampling-recap.html#properties-of-the-monte-carlo-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p><span class="math inline">\(\hat{I}_n\)</span> is an unbiased estimator of <span class="math inline">\(I\)</span>.</p></li>
+<li><p><span class="math inline">\(\hat{I}_n\)</span> converges to <span class="math inline">\(I\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span> according to the strong law of large numbers (SLLN).</p></li>
+<li><p>Although we know that <span class="math inline">\(\hat{I}_n\)</span> converges, we do not know how fast. We need to know how large <span class="math inline">\(n\)</span> must be to achieve a certain error. The variance of the Monte Carlo estimate is given by
+<span class="math display">\[\E[(\hat{I}_n-I)^2] = \frac{\sigma^2}{n},\]</span>
+where <span class="math inline">\(\sigma^2 = \var(g(X))\)</span>. Thus the ‘root mean square error’
+(RMSE) of <span class="math inline">\(\hat{I}_n\)</span> is
+<span class="math display">\[\mbox{RMSE}(\hat{I}_n) = \frac{\sigma}{\sqrt{n}} = O(n^{-1/2}).\]</span></p>
+<p>Thus, our estimate is more accurate as <span class="math inline">\(n \rightarrow \infty\)</span>,
+and is less accurate when <span class="math inline">\(\sigma^2\)</span> is large.
+<span class="math inline">\(\sigma^2\)</span> will usually be unknown, but we can estimate it:
+<span class="math display">\[\hat{\sigma}^2=\frac{1}{n-1} \sum_{i=1}^n (g(X_i)-\hat{I}_n)^2.\]</span>
+We call <span class="math inline">\(\frac{\hat{\sigma}}{\sqrt{n}}\)</span> the Monte Carlo standard error.</p>
+<p>We write
+<span class="math display">\[\mbox{RMSE}(\hat{I}_n) = O(n^{-1/2}),\]</span>
+to emphasise the rate of convergence of the error with <span class="math inline">\(n\)</span>.
+To get 1 digit more accuracy requires a 100-fold increase in <span class="math inline">\(n\)</span>.
+A 3-digit improvement would require us to multiply <span class="math inline">\(n\)</span> by <span class="math inline">\(10^6\)</span>.
+Consequently Monte Carlo is not usually suited for problems where
+we need a very high accuracy. Although the error rate is low (the
+RMSE decreases slowly with <span class="math inline">\(n\)</span>), it has the nice properties that
+the RMSE:</p>
+<ul>
+<li>Does not depend on <span class="math inline">\(d=\dim(x)\)</span>,</li>
+<li>Does not depend on the smoothness of <span class="math inline">\(f\)</span>.<br />
+Consequently Monte Carlo is very competitive in high dimensional
+problems that are not smooth.</li>
+</ul></li>
+<li><p>In addition to the rate of convergence, the central limit
+theorem tells us the asymptotic distribution of <span class="math inline">\(\hat{I}_n\)</span>:
+<span class="math display">\[\frac{\sqrt{n} (\hat{I}_n-I)}{\sigma} \rightarrow N(0,1) \mbox{ in distribution as } n \rightarrow \infty.\]</span>
+Informally, <span class="math inline">\(\hat{I}_n\)</span> is approximately <span class="math inline">\(N(I, \frac{\sigma^2}{n})\)</span>
+for large <span class="math inline">\(n\)</span>.
+This allows us to calculate confidence intervals for <span class="math inline">\(I\)</span>.</p></li>
+</ul>
+</div>
+<div id="expressing-quantities-as-expectations" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Expressing quantities as expectations<a href="mcmc-sampling-recap.html#expressing-quantities-as-expectations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In many statistical inference problems, we are interested in estimating some descriptive variable, such as a probability. It is useful to us that we can often write these quantities in terms of expectations, and apply our Monte Carlo estimate appropriately.</p>
+<ul>
+<li>For example, a variance can be expressed as two expectations:
+<span class="math display">\[\begin{equation}
+  \var(X)=\E(X^2)-\E(X)^2.
+  \end{equation}\]</span><br />
+</li>
+<li>A probability <span class="math inline">\(\P(X&lt;a)\)</span> can be expressed as an expectation: the
+expectation of an indicator function of <span class="math inline">\(X\)</span>. An indicator function
+<span class="math inline">\(\mb{I}(E)\)</span> of an event <span class="math inline">\(E\)</span> is defined as
+<span class="math display">\[\begin{equation}
+  \mb{I}(E)=\left\{\begin{array}{cc}1 &amp; \mbox{ $E$ is true} \\ 0 &amp; \mbox{
+      $E$ is false}
+  \end{array} \right.
+  \end{equation}\]</span>
+Then we have
+<span class="math display">\[\begin{eqnarray}
+  \E\{\mb{I}(X&lt;a)\}&amp;=&amp;1\times \P(X&lt;a)+0\times \P(X\ge a) \\ &amp;=&amp; \P(X&lt;a).
+  \end{eqnarray}\]</span><br />
+</li>
+<li>A percentile of the distribution of a random variable <span class="math inline">\(X\)</span> can be
+estimated by taking the sample percentile from the generated sample
+of values <span class="math inline">\(X_1,\ldots,X_n\)</span>. Informally, we would expect the estimate
+to be more accurate as <span class="math inline">\(n\)</span> increases. Determining a percentile is
+equivalent to inverting the distribution function; if for example we
+wish to know the 95th percentile, we must find <span class="math inline">\(\nu\)</span> such that
+<span class="math display">\[\begin{equation}
+  \P(X\le \nu)=0.95,
+  \end{equation}\]</span>
+so the more accurately we estimate the distribution function <span class="math inline">\(F(X)\)</span>,
+the more accurate we would expect the estimate of any particular
+percentile to be.</li>
+</ul>
+</div>
+<div id="estimation-of-general-integrals" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Estimation of general integrals<a href="mcmc-sampling-recap.html#estimation-of-general-integrals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In general, let the integral of interest be
+<span class="math display">\[\begin{equation}
+R=\int f(x) \mathrm{d}x. \label{intI}
+\end{equation}\]</span>
+Suppose that <span class="math inline">\(g(x)\)</span> is some density
+function that we can easily produce a sample of values
+<span class="math inline">\(X_1,\ldots,X_n\)</span> from. Then
+<span class="math display">\[\begin{eqnarray}
+R&amp;=&amp;\int \frac{f(x)}{g(x)} g(x) \mathrm{d}x\\ &amp;=&amp; \int h(x) g(x) \mathrm{d}x,
+\end{eqnarray}\]</span>
+with <span class="math inline">\(h(x)=\frac{f(x)}{g(x)}\)</span>. So we now have
+<span class="math display">\[\begin{equation}
+R=\E\{h(X)\},
+\end{equation}\]</span>
+where <span class="math inline">\(X\)</span> has the density function <span class="math inline">\(g(x)\)</span>. If we now sample
+<span class="math inline">\(X_1,\ldots,X_n\)</span> from <span class="math inline">\(g(x)\)</span>, then evaluate <span class="math inline">\(h(X_1),\ldots,h(X_n)\)</span>,
+then
+<span class="math display">\[\begin{equation}
+\hat{R}=\frac{1}{n}\sum_{i=1}^n h(X_i),
+\end{equation}\]</span>
+is an unbiased estimator of <span class="math inline">\(R\)</span>.</p>
+</div>
+</div>
+<div id="markov-chain-monte-carlo-mcmc" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Markov chain Monte Carlo (MCMC)<a href="mcmc-sampling-recap.html#markov-chain-monte-carlo-mcmc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In Bayesian statistics, we are faced with the problem that we cannot often derive the posterior distribution analytically. We can, however, write down the posterior distribution up to proportionality, simply by multiplying
+the prior and likelihood
+<span class="math display">\[ f(\theta|x) \propto f(\theta)f(x|\theta).\]</span></p>
+<p>If we can somehow produce a sample <span class="math inline">\(\theta_1,\ldots,\theta_n\)</span> from the posterior distribution then, using the Monte Carlo ideas described in the previous section, we can obtain any posterior summary of <span class="math inline">\(\theta\)</span> that we want, and to arbitrary accuracy given a sufficiently large sample. One way to obtain this sample is through Markov chain Monte Carlo methods.</p>
+<p>Recall that a sequence of random variables <span class="math inline">\(X_1,\ldots,X_n\)</span> is an instance of a Markov chain if the transition kernel <span class="math inline">\(\P(X_{t+1}|X_t)\)</span> satisfies the Markov property, i.e. that
+<span class="math display">\[\P(X_{t+1}|X_1,\ldots,X_t)=\P(X_{t+1}|X_t),\]</span>
+for all <span class="math inline">\(t&gt;0\)</span>. If a Markov chain is aperiodic and irreducible, then it has a unique stationary distribution, <span class="math inline">\(\boldsymbol{\pi}\)</span>, such that <span class="math inline">\(\lim_{t \rightarrow \infty} \P(X_t=i)=\boldsymbol{\pi}_i\)</span>.</p>
+<p>Our aim for Bayesian inference therefore is to specify a transition kernel for a Markov chain that allows us to sample <span class="math inline">\(\theta_1,\ldots,\theta_n\)</span> such that the stationary distribution is our posterior. The important algorithm that you were introduced to in Semester 1 to achieve this task is the Metropolis-Hastings algorithm, which we recap next.</p>
+<div id="mhsection" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> The Metroplis-Hastings (MH) algorithm<a href="mcmc-sampling-recap.html#mhsection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will revisit the MH algorithm for generating a sample <span class="math inline">\(\theta_1,\ldots,\theta_n\)</span> from the posterior distribution <span class="math inline">\(f(\theta|x)\)</span>.</p>
+<div class="result">
+<p>Given a sample <span class="math inline">\(\theta_i\)</span>, we:</p>
+<ol style="list-style-type: decimal">
+<li>Simulate the proposal <span class="math inline">\(\theta^*\sim q(\cdot|\theta_i)\)</span>.</li>
+<li>Evaluate
+<span class="math display" id="eq:mhaccept">\[\begin{equation}
+m=\min\left\lbrace1, \frac{f(\theta^*)f(x|\theta^*)q(\theta_i|\theta^*)}{f(\theta_i)f(x|\theta_i)q(\theta^*|\theta_i)} \right\rbrace,
+\tag{1.1}
+\end{equation}\]</span></li>
+<li>Accept <span class="math inline">\(\theta_{i+1}=\theta^*\)</span> with probability <span class="math inline">\(m\)</span>, and set <span class="math inline">\(\theta_{i+1}=\theta_i\)</span> otherwise.</li>
+</ol>
+</div>
+<p>The <em>MH acceptance probability</em>, given by <span class="math inline">\(m\)</span> above, comprises of two parts:</p>
+<ul>
+<li>The ratio of the posterior density between the proposed and current parameter values:
+<span class="math display">\[\frac{f(\theta^*)f(x|\theta^*)}{f(\theta_i)f(x|\theta_i)},\]</span> and</li>
+<li>The ratio of the proposal density between the forwards and backwards proposal steps:
+<span class="math display">\[\frac{q(\theta_i|\theta^*)}{q(\theta^*|\theta_i)}.\]</span>
+We’ll particularly focus on the concept of the <em>random walk MH</em> algorithm, where the proposal distribution is symmetric, i.e. <span class="math inline">\(q(i|j)=q(j|i)\)</span> for all <span class="math inline">\(i,j\)</span>. It is common in practice for this to be the case, with the proposal distribution being Gaussian centred on <span class="math inline">\(\theta_i\)</span>. The MH acceptance ratio therefore simplifies to <span class="math inline">\(m=\min\left\lbrace1, \frac{f(\theta^*)f(x|\theta^*)}{f(\theta_i)f(x|\theta_i)} \right\rbrace\)</span>, and is dependent only on the ratio of the posterior density.</li>
+</ul>
+</div>
+<div id="the-problem-with-random-walk-proposals" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> The problem with random walk proposals<a href="mcmc-sampling-recap.html#the-problem-with-random-walk-proposals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Under the random walk MH scenario, the algorithm amounts to choosing at random a new direction and distance to ‘step’ away from the current location (given by <span class="math inline">\(\theta_i\)</span>) within the parameter space. The shape or magnitude of the posterior density has no basis for how we make this step proposal, only whether or not we accept the proposal once it has been made. If our proposed value, <span class="math inline">\(\theta^*\)</span>, has a higher posterior density than the current value <span class="math inline">\(\theta_i\)</span>, then we automatically accept the proposal. If not, we have the MH ratio of densities to probabilistically decide on acceptance of the proposal.</p>
+<p>The theory of Markov chains tells us that a well designed MCMC sampler, such as the MH algorithm, will eventually converge to its stationary distribution (the posterior). But this theory does not tell us that this convergence will happen in a finite—or more importantly computationally feasible—amount of time/iterations.</p>
+<p>Convergence becomes particularly problematic for random walk MH in parameter spaces of high dimension. As dimension increases, the region of the parameter space that contributes significantly towards the posterior distribution function reduces, and it can be hard to design a ‘good’ proposal distribution for the MH sampler. This is because:</p>
+<ul>
+<li>If the proposed steps are too large, they are almost always rejected. This means the MCMC chains will get ‘stuck’ in an area of the parameter space.</li>
+<li>If the proposed steps are made very small so that acceptances occur, then the chain move around the parameter space prohibitively slowly.
+In either of these cases, this can result in an MCMC sample having an effective sample sizes of almost zero and not having explored the full parameter space. In high dimensional parameter spaces, multi-modality and complex correlations between dimensions further exacerbate this problem.</li>
+</ul>
+<p>The problems discussed here form the motivation for our next chapter—we aim to define an MCMC sampler that produces samples from our target posterior distribution, but which moves around the parameter space in a more efficient manner than the random walk.</p>
+</div>
+<div id="the-gibbs-algorithm" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> The Gibbs algorithm<a href="mcmc-sampling-recap.html#the-gibbs-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An improvement to MCMC algorithms that rely on random walks that you met in Semester 1 was the Gibbs algorithm, which is a special case of the MH sampler. Rather than proposing a step in the parameter space at random, without consideration to the shape of the posterior distribution, the Gibbs algorithm does make proposals based the shape of the posterior.</p>
+<p>We first recap the Gibbs algorithm for sampling the posterior of the parameter vector <span class="math inline">\((\theta_1,\ldots,\theta_n)\)</span>.</p>
+<div class="result">
+<p>Given <span class="math inline">\((\theta_{1,t},\ldots,\theta_{n,t})\)</span>:</p>
+<ul>
+<li>Choose a random update ordering <span class="math inline">\(\lbrace d_1,\ldots,d_n \rbrace\)</span> of the <span class="math inline">\(n\)</span> dimensions, i.e. a permutation of <span class="math inline">\(\lbrace 1,\ldots,n\rbrace\)</span>.<br />
+</li>
+<li>In the order determined, sample from the conditional posterior for each parameter, using the most up-to-date parameter values. For example:
+<ul>
+<li>set <span class="math inline">\(\theta_{d_1,t+1}\)</span> equal to a sample from <span class="math inline">\(f(\theta_{d_1}|x,\theta_{d_2, t},\ldots,\theta_{d_n, t})\)</span>,</li>
+<li>set <span class="math inline">\(\theta_{d_2,t+1}\)</span> equal to a sample from <span class="math inline">\(f(\theta_{d_2}|x,\theta_{d_1, t+1},\theta_{d_3, t},\ldots,\theta_{d_n, t})\)</span>,</li>
+<li>set <span class="math inline">\(\theta_{d_3,t+1}\)</span> equal to a sample from <span class="math inline">\(f(\theta_{d_3}|x,\theta_{d_1, t+1},\theta_{d_2, t+1},\theta_{d_4, t},\ldots,\theta_{d_n, t})\)</span>,</li>
+<li>and so forth.</li>
+</ul></li>
+</ul>
+</div>
+<p>Intuitively, in two dimensions, the Gibbs sampler amounts to exploring the parameter space by taking steps alternately along the horizontal (<span class="math inline">\(x\)</span>) and vertical (<span class="math inline">\(y\)</span>) axes. If the current location is at <span class="math inline">\((x,y)\)</span> and the next update is in the <span class="math inline">\(y\)</span> direction, then conditional posterior distribution is considered at the fixed point <span class="math inline">\(x\)</span>. Because we sample <span class="math inline">\(y\)</span> from this conditional distribution, we are taking into account the shape of the conditional posterior, and are most likely to move towards a region of high posterior conditional density.</p>
+<p>The Gibbs sampler is a special case of the MH sampler, but we do not have to evaluate the acceptance probability given in Equation <a href="mcmc-sampling-recap.html#eq:mhaccept">(1.1)</a>, because the proposal distribution is equal to the conditional posterior we need to consider, and therefore this term simplifies to 1.</p>
+</div>
+<div id="the-problem-with-gibbs" class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> The problem with Gibbs<a href="mcmc-sampling-recap.html#the-problem-with-gibbs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Gibbs sampler appears to solve our problem of proposing random directions to move around the parameter space. However, this also has a number of disadvantages.</p>
+<ul>
+<li>We need to be able to evaluate the conditional posterior density of every dimension of our parameter vector and be able to sample from it. In practice, this is often not possible, particularly at high dimensions.</li>
+<li>We can only move in a subset of dimensions at a time. This can be slow in high dimensions, and is exacerbated when correlations are high or ridges exist in the posterior. Intuitively, the stepping direction of Gibbs in two dimensions is alternately the horizontal and vertical, so if there is a high correlation between the two dimensions the region of high posterior density sits as a diagonal. Therefore the geometry of the stepping directions is not aligned with the geometry of the posterior.</li>
+</ul>
+</div>
+<div id="a-solution" class="section level3 hasAnchor" number="1.3.5">
+<h3><span class="header-section-number">1.3.5</span> A solution?<a href="mcmc-sampling-recap.html#a-solution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Our ideal situation is to define an MCMC sampler that goes beyond both the random stepping of Metropolis-Hastings and the straight-line movement of Gibbs. Head to the next chapter to see an approach for this.</p>
+
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="literature.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="hamiltonian-monte-carlo-hmc.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["MAS61006-S2-Notes.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll-highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
