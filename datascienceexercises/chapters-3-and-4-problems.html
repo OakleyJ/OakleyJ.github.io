@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 6 Chapters 3 and 4 problems | Data Science R Practicals and Exercises</title>
   <meta name="description" content=" 6 Chapters 3 and 4 problems | Data Science R Practicals and Exercises" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 6 Chapters 3 and 4 problems | Data Science R Practicals and Exercises" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-17" />
+<meta name="date" content="2023-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -208,8 +208,9 @@ X_1,\ldots,X_{30} \stackrel{i.i.d}{\sim}\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 <ol start="2" style="list-style-type: decimal">
 <li>A dataset contains FEV1 (Forced Expiratory Volume 1) measurements (in litres) in healthy adults aged between 20-30 years. FEV1 is the volume of air forcefully exhaled in 1 second. (The ratio of FEV1 to FVC: forced vital capacity, the total volume of air that can be exhaled, can be used to detect lung disorders). There were 75 females and 75 males in the study, with their values stored in R in the vectors <code>females</code> and <code>males</code> respectively. Plots and summary statistics are shown below.</li>
 </ol>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.1.2</code></pre>
 <p><img src="MAS109-5052-exercises_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="chapters-3-and-4-problems.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">sum</span>(females), <span class="fu">sum</span>(females<span class="sc">^</span><span class="dv">2</span>), <span class="fu">sum</span>(males), <span class="fu">sum</span>(males<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="chapters-3-and-4-problems.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">sum</span>(females), <span class="fu">sum</span>(females<span class="sc">^</span><span class="dv">2</span>), <span class="fu">sum</span>(males), <span class="fu">sum</span>(males<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div>
 <pre><code>## [1]  242.5690  786.8107  339.3340 1537.8311</code></pre>
 <p>Suggest a suitable model for these data, defining appropriate notation, and estimate the parameters.</p>
 <hr>
@@ -218,7 +219,7 @@ X_1,\ldots,X_{30} \stackrel{i.i.d}{\sim}\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 <img src="MAS109-5052-exercises_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" /></li>
 </ol>
 <p>What probability distribution would you use to model these data? The 100 times are stored in a vector <code>times</code>. Using the output below, suggest an estimate for the parameter in your distribution.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="chapters-3-and-4-problems.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(times)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="chapters-3-and-4-problems.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(times)</span></code></pre></div>
 <pre><code>## [1] 2061.353</code></pre>
 <hr>
 <ol start="4" style="list-style-type: decimal">
@@ -372,7 +373,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

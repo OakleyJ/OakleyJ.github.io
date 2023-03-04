@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2023-02-03" />
+<meta name="date" content="2023-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1199,10 +1199,12 @@ the list produced by the <code>mice()</code> function. This plot, in Figure
 <a href="multiple-imputation-for-missing-data.html#fig:imp-converge">5.3</a> has a row for each imputed variable (recall that
 <code>age</code> is fully observed in our dataset so we have 3 variables being
 imputed), and a column each for the mean and sd. Each plot contains <span class="math inline">\(m\)</span>
-lines, one for each imputation. The points on the x-axis are the
-iterations within the MICE algorithm, which we referred to as <span class="math inline">\(M\)</span>
+lines, one for each imputation.</p>
+<p>The points on the <span class="math inline">\(x\)</span>-axis are the
+iterations within the MICE algorithm; we referred to a total of <span class="math inline">\(M\)</span> iterations
 earlier. The default value in MICE is <span class="math inline">\(M=5\)</span>, as shown in the top panel
-here. In general here we are looking for the imputation streams to
+here. The points on the <span class="math inline">\(y\)</span>-axis are the means or standard deviations of the imputed values of the missing variables. For example, for there were 9 instances of missing <code>bmi</code> values, so the plot is showing the mean and standard deviation of 9 imputed <code>bmi</code> values at each for the 5 iterations within the MICE algorithm for each of the 10 imputed data sets.</p>
+<p>In general here we are looking for the imputation streams to
 intermingle and be free of any trends in the later iterations of the
 MICE algorithm to suggest convergence.</p>
 <p>Let’s increase the number of iterations of the MICE algorithm, to
@@ -1356,7 +1358,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["MAS61006-S2-Notes.pdf"],
+"download": null,
 "search": {
 "engine": "fuse",
 "options": null

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 1 R Practical 1: Brexit | Data Science R Practicals and Exercises</title>
   <meta name="description" content=" 1 R Practical 1: Brexit | Data Science R Practicals and Exercises" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 1 R Practical 1: Brexit | Data Science R Practicals and Exercises" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-17" />
+<meta name="date" content="2023-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -227,11 +227,11 @@ $(document).ready(function() {
 </ol>
 <hr>
 <ol start="2" style="list-style-type: decimal">
-<li>Download the files <code>Brexit.csv</code> and <code>Practical1.rmd</code> from Blackboard, and put them into your <code>Practical 1</code> folder. Open the file <code>Brexit.csv</code> to inspect it.</li>
+<li>Download the files <code>Brexit.csv</code> and <code>Practical1.Rmd</code> from Blackboard, and put them into your <code>Practical 1</code> folder. Open the file <code>Brexit.csv</code> to inspect it.</li>
 </ol>
 <hr>
 <ol start="3" style="list-style-type: decimal">
-<li>Open the R Markdown document <code>Practical1.rmd</code> in RStudio.
+<li>Open the R Markdown document <code>Practical1.Rmd</code> in RStudio.
 <ul>
 <li>Change the author to your name</li>
 <li>Run the first code chunk to load the <code>tidyverse</code> package (click on the green arrow).</li>
@@ -323,7 +323,7 @@ Markdown document, with one code chunk per task.
 <p><img src="images/knit.gif" width="50%" style="display: block; margin: auto;" /></p>
 </div>
 <ul>
-<li><p>To customise the appearance of your document, please refer to the <a href="http://www.jeremy-oakley.staff.shef.ac.uk/notes/rtutorial/r-markdown.html#code-chunk-options" target="_blank">tutorial notes and video on code chunk options</a>.</p></li>
+<li><p>To customise the appearance of your document, please refer to the <a href="https://oakleyj.github.io/ShortRIntro/r-markdown.html#code-chunk-options" target="_blank">tutorial notes and video on code chunk options</a>.</p></li>
 <li><p>If you get an error, two possible problems are</p></li>
 </ul>
 <ol style="list-style-type: decimal">
@@ -400,7 +400,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

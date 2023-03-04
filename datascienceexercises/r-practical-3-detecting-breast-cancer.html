@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 3 R Practical 3: detecting breast cancer | Data Science R Practicals and Exercises</title>
   <meta name="description" content=" 3 R Practical 3: detecting breast cancer | Data Science R Practicals and Exercises" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 3 R Practical 3: detecting breast cancer | Data Science R Practicals and Exercises" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-17" />
+<meta name="date" content="2023-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -291,7 +291,7 @@ You need to import your data by using suitable commands inside your
 <li>Experiment with including the option <code>alpha = 0.5</code> within your <code>geom_point()</code> command. The <code>alpha</code> value can be between 0 and 1 and controls the transparency of the points. This helps if points are being drawn over each other.</li>
 </ul></li>
 </ol>
-<p>Some code to help you do the annotation is in the file <code>Practical3.rmd</code></p>
+<p>Some code to help you do the annotation is in the file <code>Practical3.Rmd</code></p>
 <div class="fold">
 <p>See <a href="https://oakleyj.github.io/MAS5052Part1/exploratory-data-analysis-using-r.html#scatter-plots-to-represent-three-variables" target="_blank">here</a> for an example of drawing a scatter plot with colours to indicate groups.</p>
 </div>
@@ -308,7 +308,7 @@ for each measurement, with <span class="math inline">\(\bar{x}_m\)</span> and <s
 <li><p>Run the code provided in <code>Practical3.Rmd</code> to get the mean and standard deviation of the malignant observations, for each measurement.</p>
 <ul>
 <li><p>Copy and then modify the code to get the mean and standard deviation of the benign observations, for each measurement.</p></li>
-<li><p>Obtain the statistic <span class="math inline">\((|\bar{x}_m - \bar{x}_b|)/(s_m + s_b)\)</span> for each measurement. (Use the command <code>abs()</code>) to obtain the absolute value. Store the result in a single vector called <code>scaled.differences</code></p></li>
+<li><p>Obtain the statistic <span class="math inline">\((|\bar{x}_m - \bar{x}_b|)/(s_m + s_b)\)</span> for each measurement. Use the command <code>abs()</code> to obtain the absolute value. Store the result in a single vector called <code>scaled.differences</code>.</p></li>
 <li><p>Inspect the vector <code>scaled.differences</code> to see which measurements are most suitable for detecting breast cancer: use the command</p></li>
 </ul></li>
 </ol>
@@ -393,7 +393,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
