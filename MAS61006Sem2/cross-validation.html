@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Cross-validation | MAS61006 Bayesian Statistics and Computational Methods</title>
   <meta name="description" content="Chapter 7 Cross-validation | MAS61006 Bayesian Statistics and Computational Methods" />
-  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Cross-validation | MAS61006 Bayesian Statistics and Computational Methods" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2023-03-04" />
+<meta name="date" content="2023-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -703,7 +703,7 @@ This loss function would lead to us searching for the <span class="math inline">
 <ul>
 <li><span class="math inline">\(\hat{\beta}\)</span>: the least squares estimator of <span class="math inline">\(\beta\)</span>;</li>
 <li><span class="math inline">\(X\)</span>: the design matrix;</li>
-<li><span class="math inline">\(H\)</span>: the ‘hat matrix’ given by <span class="math inline">\(X^T(X^TX)^{-1}X\)</span></li>
+<li><span class="math inline">\(H\)</span>: the ‘hat matrix’ given by <span class="math inline">\(X(X^TX)^{-1}X^T\)</span></li>
 <li><span class="math inline">\(f(x_j)^T\)</span>: the <span class="math inline">\(j^\text{th}\)</span> row of the design matrix <span class="math inline">\(X\)</span>;</li>
 <li><span class="math inline">\(r_j\)</span>: the <span class="math inline">\(j^\text{th}\)</span> residual, <span class="math inline">\(r_j=y_j-f(x_j)^T\hat{\beta}\)</span>.</li>
 </ul>
@@ -720,7 +720,7 @@ r_{(i)} = \frac{r_i}{1-h_{ii}},
 \end{equation}\]</span>
 and
 <span class="math display" id="eq:beta-hat">\[\begin{equation}
-\hat{\beta}_{(i)} = \beta - (X^TX)^{-1}x_ir_{(i)},
+\hat{\beta}_{(i)} = \hat{\beta} - (X^TX)^{-1}x_ir_{(i)},
 \tag{7.3}
 \end{equation}\]</span>
 where <span class="math inline">\(h_{ii}\)</span> is the <span class="math inline">\(i^\text{th}\)</span> diagonal element of the hat matrix <span class="math inline">\(H\)</span>. Proofs are given at the end of this chapter for reference, but you will not be assessed on these results or the proofs in this module.</p>
@@ -935,7 +935,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
