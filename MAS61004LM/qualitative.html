@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A Second Course on Linear Models - 3&nbsp; Qualitative independent variables</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./fitting-in-R.html" rel="next">
+<link href="./parameterestimation.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./qualitative.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Qualitative independent variables</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A Second Course on Linear Models</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basicconcepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Basic concepts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parameterestimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Parameter estimation for linear models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./qualitative.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Qualitative independent variables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fitting-in-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fitting a linear model and making predictions in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./matrixAlgebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Matrix algebra essentials</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./randomVectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Random vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multivariateNormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">The multivariate normal distribution</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#example-cancer-survival-data" id="toc-example-cancer-survival-data" class="nav-link active" data-scroll-target="#example-cancer-survival-data"><span class="header-section-number">3.1</span> Example: cancer survival data</a></li>
+  <li><a href="#a-linear-model-for-the-cancer-data" id="toc-a-linear-model-for-the-cancer-data" class="nav-link" data-scroll-target="#a-linear-model-for-the-cancer-data"><span class="header-section-number">3.2</span> A linear model for the cancer data</a></li>
+  <li><a href="#notation-for-qualitative-independent-variables" id="toc-notation-for-qualitative-independent-variables" class="nav-link" data-scroll-target="#notation-for-qualitative-independent-variables"><span class="header-section-number">3.3</span> Notation for qualitative independent variables</a></li>
+  <li><a href="#the-one-way-anova-model-in-matrix-form" id="toc-the-one-way-anova-model-in-matrix-form" class="nav-link" data-scroll-target="#the-one-way-anova-model-in-matrix-form"><span class="header-section-number">3.4</span> The one-way ANOVA model in matrix form</a></li>
+  <li><a href="#least-squares-estimates-for-the-one-way-anova-model" id="toc-least-squares-estimates-for-the-one-way-anova-model" class="nav-link" data-scroll-target="#least-squares-estimates-for-the-one-way-anova-model"><span class="header-section-number">3.5</span> Least squares estimates for the one-way ANOVA model</a></li>
+  <li><a href="#an-alternative-parameterisation" id="toc-an-alternative-parameterisation" class="nav-link" data-scroll-target="#an-alternative-parameterisation"><span class="header-section-number">3.6</span> An alternative parameterisation</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Qualitative independent variables</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This chapter is taken from <a href="https://oakleyj.github.io/MAS5052Part2/qualitative-independent-variables.html">Chapter 10 in the MAS5052 notes</a>, but with fitting models left out until the next Chapter. If you are already familiar with one-way ANOVA models of the form <span class="math display">\[
+Y_{ij} = \mu_i + \varepsilon_{ij},
+\]</span> which may be expressed as <span class="math display">\[
+Y_{ij} = \mu + \tau_i+\varepsilon_{ij},
+\]</span> with appropriate constraints, then you should be able to skip over this chapter quickly.</p>
+<section id="example-cancer-survival-data" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="example-cancer-survival-data"><span class="header-section-number">3.1</span> Example: cancer survival data</h2>
+<p>The file <code>cancer.csv</code> has data from patients with advanced cancers of the stomach, bronchus, colon, ovary or breast were treated with ascorbate. We suppose that this aim is to determine if patient survival differs with respect to the organ affected by the cancer. The survival time in days was recorded for each patient.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>cancer <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://oakleyj.github.io/exampledata/cancer.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cancer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  survival organ  
+     &lt;dbl&gt; &lt;chr&gt;  
+1      124 Stomach
+2       42 Stomach
+3       25 Stomach
+4       45 Stomach
+5      412 Stomach
+6       51 Stomach</code></pre>
+</div>
+</div>
+<p>We can use a box plot to compare the survival times for each type (<code>organ</code>) of cancer patient:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cancer, <span class="fu">aes</span>(<span class="at">x =</span> organ, <span class="at">y =</span> survival)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="qualitative_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We suppose that the survival time is the dependent variable of interest, which we can treat as continuous as before. But our independent variable, <code>organ</code>, is qualitative. Can we still use a linear model to analyse these data?</p>
+</section>
+<section id="a-linear-model-for-the-cancer-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="a-linear-model-for-the-cancer-data"><span class="header-section-number">3.2</span> A linear model for the cancer data</h2>
+<p>Clearly, it would <em>not</em> make sense to write a model such as <span class="math display">\[
+Y_i=\beta_0 + \beta_1 x_i +\varepsilon_i,
+\]</span> where <span class="math inline">\(Y_i\)</span> is the survival time of the <span class="math inline">\(i\)</span>-th patient and <span class="math inline">\(x_i\)</span> is the cancer type of the <span class="math inline">\(i\)</span>-th patient, because the independent variable (cancer type) is a categorical variable (i.e.&nbsp;it doesn’t make sense to say “survival time <span class="math inline">\(= 50 +3\times\)</span> stomach cancer”). We could write our model as <span class="math display">\[
+Y_i= \beta_1 x_{i,1} + \beta_2 x_{i,2}+\beta_3 x_{i,3}+\beta_4 x_{i,4}+\beta_5 x_{i,5} +\varepsilon_i,
+\]</span> where <span class="math inline">\(x_{i,j} = 1\)</span> if patient had cancer type <span class="math inline">\(j\)</span> (<span class="math inline">\(j=1\)</span> for Breast, <span class="math inline">\(j=2\)</span> for Bronchus and so on) and <span class="math inline">\(x_{i,j} = 0\)</span> otherwise. We say that <span class="math inline">\(x_{i,j}\)</span> is a <strong>dummy variable</strong>. The five dummy variables here ensure that the correct <span class="math inline">\(\beta\)</span> term is selected for each observation. This notation can be a little cumbersome, so we typically write these sorts of models in a different way.</p>
+</section>
+<section id="notation-for-qualitative-independent-variables" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="notation-for-qualitative-independent-variables"><span class="header-section-number">3.3</span> Notation for qualitative independent variables</h2>
+<p>Each observation is associated with a particular group, where the group is specified by the value (level) of the qualitative independent variable. The <code>organ</code> variable can be one of five possibilities, so we think the data as being organised in five groups.</p>
+<p>We write <span class="math inline">\(Y_{ij}\)</span> as the <span class="math inline">\(j\)</span>-th observation within group <span class="math inline">\(i\)</span>. Let <span class="math inline">\(g\)</span> be the total number of groups (with <span class="math inline">\(g=5\)</span> in the cancer data). We then have <span class="math inline">\(i=1,\ldots,g\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Whereas a quantitative independent variable is typically represented by its own letter (e.g.&nbsp;<span class="math inline">\(x_i\)</span>), we typically represent a qualitative independent variable using <em>an additional subscript</em> on the dependent variable.</p>
+</div>
+</div>
+<p>Within group <span class="math inline">\(i\)</span> we let <span class="math inline">\(n_i\)</span> be the total number of observations, so that we have <span class="math inline">\(j=1,\ldots,n_i\)</span>. In the cancer data, if we call the group of patients with breast cancer group 1, there are 11 patients in this group, so <span class="math inline">\(n_1=11\)</span>, and the 11 survival times for patients with stomach cancer are denoted <span class="math inline">\(Y_{1,1},Y_{1,2},\ldots,Y_{1,11}\)</span>. As usual, we think of <span class="math inline">\(Y_{ij}\)</span> as a random variable, and <span class="math inline">\(y_{ij}\)</span> as the observed value of that random variable.</p>
+<p>We let <span class="math inline">\(n\)</span> denote the total number of observations, so that <span class="math inline">\(n=\sum_{i=1}^g n_i\)</span>.</p>
+<p>Now let <span class="math inline">\(\mu_i\)</span> denote the population mean of the dependent variable in group <span class="math inline">\(i\)</span>. We can now write a model for the data as follows: <span class="math display">\[
+Y_{ij}=\mu_i + \varepsilon_{ij},
+\]</span> for <span class="math inline">\(i=1,\ldots,g\)</span>, <span class="math inline">\(j=1,\ldots,n_i\)</span> and <span class="math inline">\(\varepsilon_{ij}\sim N(0,\sigma^2)\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Analysis of data using this model is sometimes referred to as <strong>one-way analysis of variance</strong> (ANOVA), and we will refer to the above model as the one-way ANOVA model.</p>
+</div>
+</div>
+</section>
+<section id="the-one-way-anova-model-in-matrix-form" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="the-one-way-anova-model-in-matrix-form"><span class="header-section-number">3.4</span> The one-way ANOVA model in matrix form</h2>
+<p>The model <span class="math display">\[ Y_{ij}=\mu_i + \varepsilon_{ij},\]</span> for <span class="math inline">\(i=1,\ldots,g\)</span>, <span class="math inline">\(j=1,\ldots,n_i\)</span> is written in matrix form as <span class="math display">\[
+\mathbf{Y} = X\boldsymbol{\beta} + \boldsymbol{\varepsilon},
+\]</span> with <span class="math display">\[
+\mathbf{Y}=\left(\begin{array}{c}Y_{1,1} \\ \vdots \\ Y_{1,n_1} \\ Y_{2,1}\\
+\vdots \\ Y_{2,n_2}  \\ \vdots  \\ Y_{g,1} \\
+\vdots
+\\ Y_{g,n_g}\end{array}\right),\quad
+X=\left(\begin{array}{ccccc}1&amp; 0 &amp; 0  &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+1&amp; 0 &amp; 0 &amp; \ldots &amp; 0 \\ 0&amp; 1 &amp; 0  &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+0&amp; 1 &amp; 0 &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots   \\ 0&amp; 0 &amp; 0  &amp; \ldots &amp; 1 \\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+0&amp; 0 &amp; 0 &amp; \ldots &amp; 1
+\end{array}\right),\quad
+\boldsymbol{\beta}=\left(\begin{array}{c}\mu_1 \\ \vdots \\
+\mu_g\end{array}\right),\quad
+\boldsymbol{\varepsilon}=\left(\begin{array}{c}\varepsilon_{1,1} \\ \vdots \\ \varepsilon_{1,n_1} \\ \varepsilon_{2,1}\\
+\vdots \\ \varepsilon_{2,n_2}  \\ \vdots  \\ \varepsilon_{g,1} \\
+\vdots
+\\ \varepsilon_{g,n_g}\end{array}\right)
+\]</span></p>
+</section>
+<section id="least-squares-estimates-for-the-one-way-anova-model" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="least-squares-estimates-for-the-one-way-anova-model"><span class="header-section-number">3.5</span> Least squares estimates for the one-way ANOVA model</h2>
+<p>Now that we have written the model in matrix notation, we can immediately obtain least squares estimates for the unknown group means <span class="math inline">\(\mu_1,\ldots,\mu_g\)</span>, using the formula <span class="math inline">\(\hat{\boldsymbol{\beta}}=(X^TX)^{-1}X^T\mathbf{y}\)</span>. Since <span class="math display">\[
+(X^TX)^{-1}=\left(\begin{array}{cccc}n_1 &amp; 0 &amp;  \ldots &amp; 0 \\ 0 &amp;
+n_2  &amp; \ldots &amp; 0 \\ \vdots &amp; &amp; \ddots &amp;   \vdots \\ 0 &amp; 0 &amp; \ldots
+&amp; n_g \end{array} \right)^{-1},\quad
+X^T\mathbf{y}=\left(\begin{array}{c} \sum_{j=1}^{n_1} y_{1,j} \\ \vdots \\
+\sum_{j=1}^{n_g} y_{g,j} \end{array}\right)
+\]</span> we have <span class="math display">\[
+\hat{\boldsymbol{\beta}}=\left(\begin{array}{c}\hat{\mu}_1 \\ \vdots \\ \hat{\mu}_g \end{array}\right) = \left(\begin{array}{c} \frac{1}{n_1} \sum_{j=1}^{n_1} y_{1,j} \\ \vdots \\
+\frac{1}{n_g} \sum_{j=1}^{n_g} y_{g,j} \end{array}\right)
+\]</span> This result is intuitive. For example, in group 1 we have <span class="math inline">\(n_1\)</span> observations <span class="math inline">\(y_{1,1},\ldots,y_{1,n_1}\)</span>, all with expected value <span class="math inline">\(\mu_1\)</span>. The obvious estimate for <span class="math inline">\(\mu_1\)</span> is the sample mean <span class="math inline">\(\frac{1}{n_1} \sum_{j=1}^{n_1} y_{1,j}\)</span>.</p>
+</section>
+<section id="an-alternative-parameterisation" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="an-alternative-parameterisation"><span class="header-section-number">3.6</span> An alternative parameterisation</h2>
+<p>None of the hypothesis tests in the <code>summary()</code> output above are likely to be of any interest; we are more likely to be interested in <em>differences</em> between groups, rather than whether some or all of the groups have a population mean response of 0.</p>
+<p>An alternative way of writing the one-way ANOVA model is as follows: <span class="math display">\[
+Y_{i,j}=\mu + \tau_i + \varepsilon_{i,j},
+\]</span> for <span class="math inline">\(i=1,\ldots,g\)</span>, <span class="math inline">\(j=1,\ldots,n_i\)</span> and with <span class="math inline">\(\varepsilon_{i,j}\sim N(0,\sigma^2)\)</span>.</p>
+<p>The <em>intention</em> of this parametrisation could be to think of <span class="math inline">\(\mu\)</span> as the grand mean, and <span class="math inline">\(\tau_i\)</span> as the difference between the mean of group <span class="math inline">\(i\)</span> and the grand mean <span class="math inline">\(\mu\)</span>. However, this model is <em>over-parametrised</em>.</p>
+<p>In matrix notation, we would write this as <span class="math display">\[
+\mathbf{Y} = X\boldsymbol{\beta} + \boldsymbol{\varepsilon},
+\]</span> with <span class="math display">\[
+\mathbf{Y}=\left(\begin{array}{c}Y_{1,1} \\ \vdots \\ Y_{1,n_1} \\ Y_{2,1}\\
+\vdots \\ Y_{2,n_2} \\ \vdots \\ Y_{g,1} \\
+\vdots
+\\ Y_{g,n_g}\end{array}\right),\quad
+X=\left(\begin{array}{cccccc}1&amp;1&amp; 0 &amp; 0  &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+1&amp; 1&amp; 0 &amp; 0 &amp; \ldots &amp; 0 \\ 1 &amp; 0&amp; 1 &amp; 0  &amp; \ldots &amp; 0 \\ \vdots &amp;  \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+1 &amp; 0&amp; 1 &amp; 0 &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\ 1 &amp; 0&amp; 0 &amp; 0  &amp; \ldots &amp; 1 \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+1 &amp; 0&amp; 0 &amp; 0 &amp; \ldots &amp; 1
+\end{array}\right),\quad
+\boldsymbol{\beta}=\left(\begin{array}{c}\mu \\\tau_1 \\ \vdots \\
+\tau_g\end{array}\right),\quad
+\boldsymbol{\varepsilon}=\left(\begin{array}{c}\varepsilon{1,1} \\ \vdots \\ \varepsilon{1,n_1} \\ \varepsilon{2,1}\\
+\vdots \\ \varepsilon{2,n_2}  \\ \vdots  \\ \varepsilon{g,1} \\
+\vdots
+\\ \varepsilon{g,n_g}\end{array}\right).
+\]</span> For this particular design matrix <span class="math inline">\(X\)</span>, we find that <span class="math display">\[
+X^TX=\left(\begin{array}{ccccc}n &amp; n_1 &amp; n_2 &amp; \cdots &amp; n_g
+\\ n_1 &amp; n_1 &amp; 0  &amp; \cdots &amp; 0\\ n_2 &amp; 0 &amp; n_2 &amp; \cdots &amp; 0 \\ \vdots &amp; \vdots &amp;\vdots &amp; \ddots &amp; \vdots \\ n_g &amp; 0 &amp; 0 &amp; \cdots &amp;
+n_g
+\end{array}\right).
+\]</span> The matrix <span class="math inline">\(X^TX\)</span> cannot be inverted, as <span class="math inline">\(\det(X^TX)=0\)</span> (the first column is the sum of columns 2 to <span class="math inline">\(g+1\)</span>, noting that <span class="math inline">\(\sum_{i=1}^g n_i=n\)</span>). Hence it is not possible to obtain least squares parameter estimates for this model, as we cannot evaluate the expression <span class="math inline">\(\boldsymbol{\beta}=(X^TX)^{-1}X^T\mathbf{y}\)</span>. Intuitively, this makes sense as we are trying to estimate <span class="math inline">\(g+1\)</span> parameters representing group means (<span class="math inline">\(\mu\)</span> and <span class="math inline">\(\tau_1,\ldots,\tau_g\)</span>) with data from only <span class="math inline">\(g\)</span> groups.</p>
+<p>The solution is to apply constraints to the parameters. One possibility is to state that <span class="math inline">\(\tau_1=0\)</span>, so that the model can be written as <span class="math display">\[
+Y_{i,j}=\left\{\begin{array}{ll}\mu + \varepsilon_{1,j} &amp; \mbox{$i=1$,
+$j=1,\ldots n_1$}\\ \mu + \tau_i + \varepsilon_{i,j} &amp; \mbox{$i=2,\ldots,g$,
+$j=1,\ldots n_i$} \end{array}\right.
+\]</span> For this parametrisation, <span class="math inline">\(\mu\)</span> is interpreted as the (population) mean for group 1, and <span class="math inline">\(\tau_i\)</span> gives the difference in means between group <span class="math inline">\(i\)</span> and group 1, for <span class="math inline">\(i\neq 1\)</span>. The null hypothesis of no difference between group means is written as <span class="math display">\[
+H_0:\tau_2=\ldots=\tau_g=0,
+\]</span> and any individual <span class="math inline">\(\tau_i=0\)</span> implies no difference in means between groups <span class="math inline">\(i\)</span> and 1. This model is written in matrix form as <span class="math display">\[
+\mathbf{Y} = X\boldsymbol{\beta} + \boldsymbol{\varepsilon},
+\]</span> with <span class="math display">\[
+\mathbf{Y}=\left(\begin{array}{c}Y_{1,1} \\ \vdots \\ Y_{1,n_1} \\ Y_{2,1}\\
+\vdots \\ Y_{2,n_2}  \\ \vdots  \\ Y_{g,1} \\
+\vdots
+\\ Y_{g,n_g}\end{array}\right),\quad
+X=\left(\begin{array}{ccccc}1&amp; 0 &amp; 0  &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+1&amp; 0 &amp; 0 &amp; \ldots &amp; 0 \\ 1&amp; 1 &amp; 0  &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+1&amp; 1 &amp; 0 &amp; \ldots &amp; 0
+\\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots   \\ 1&amp; 0 &amp; 0  &amp; \ldots &amp; 1 \\ \vdots &amp; \vdots &amp; \vdots &amp; &amp; \vdots  \\
+1&amp; 0 &amp; 0 &amp; \ldots &amp; 1
+\end{array}\right),\quad
+\boldsymbol{\beta}=\left(\begin{array}{c}\mu \\ \tau_2 \\ \vdots \\
+\tau_g\end{array}\right),\quad
+\boldsymbol{\varepsilon}=\left(\begin{array}{c}\varepsilon{1,1} \\ \vdots \\ \varepsilon{1,n_1} \\ \varepsilon{2,1}\\
+\vdots \\ \varepsilon{2,n_2} \\ \vdots  \\ \varepsilon{g,1} \\
+\vdots
+\\ \varepsilon{g,n_g}\end{array}\right).
+\]</span> For this design matrix we find that <span class="math display">\[
+\hat{\boldsymbol{\beta}}=\left(\begin{array}{c}\frac{1}{n_1}\sum_{j=1}^{n_1} y_{1,j} \\
+\frac{1}{n_2}\sum_{j=1}^{n_2} y_{2,j} -
+\frac{1}{n_1}\sum_{j=1}^{n_1} y_{1,j} \\ \vdots \\
+\frac{1}{n_g}\sum_{j=1}^{n_g} y_{g,j} -
+\frac{1}{n_1}\sum_{j=1}^{n_1} y_{1,j}
+\end{array}\right),
+\]</span> (details omitted), hence <span class="math inline">\(\hat{\mu}\)</span> is the sample mean of the observations in group 1, and <span class="math inline">\(\hat{\tau}_i\)</span> is the difference between the sample means of groups <span class="math inline">\(i\)</span> and 1.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./parameterestimation.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Parameter estimation for linear models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./fitting-in-R.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fitting a linear model and making predictions in R</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
