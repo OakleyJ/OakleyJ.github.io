@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -91,7 +91,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -112,7 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./qualitative.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Qualitative independent variables</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -164,6 +165,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fitting a linear model and making predictions in R</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hypothesisTesting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hypothesis testing</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
@@ -209,6 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-one-way-anova-model-in-matrix-form" id="toc-the-one-way-anova-model-in-matrix-form" class="nav-link" data-scroll-target="#the-one-way-anova-model-in-matrix-form"><span class="header-section-number">3.4</span> The one-way ANOVA model in matrix form</a></li>
   <li><a href="#least-squares-estimates-for-the-one-way-anova-model" id="toc-least-squares-estimates-for-the-one-way-anova-model" class="nav-link" data-scroll-target="#least-squares-estimates-for-the-one-way-anova-model"><span class="header-section-number">3.5</span> Least squares estimates for the one-way ANOVA model</a></li>
   <li><a href="#an-alternative-parameterisation" id="toc-an-alternative-parameterisation" class="nav-link" data-scroll-target="#an-alternative-parameterisation"><span class="header-section-number">3.6</span> An alternative parameterisation</a></li>
+  <li><a href="#sec-ancova" id="toc-sec-ancova" class="nav-link" data-scroll-target="#sec-ancova"><span class="header-section-number">3.7</span> ANCOVA and models with interactions</a></li>
   </ul>
 </nav>
     </div>
@@ -232,11 +240,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>This chapter is taken from <a href="https://oakleyj.github.io/MAS5052Part2/qualitative-independent-variables.html">Chapter 10 in the MAS5052 notes</a>, but with fitting models left out until the next Chapter. If you are already familiar with one-way ANOVA models of the form <span class="math display">\[
-Y_{ij} = \mu_i + \varepsilon_{ij},
-\]</span> which may be expressed as <span class="math display">\[
+<p>This chapter is mostly taken from <a href="https://oakleyj.github.io/MAS5052Part2/qualitative-independent-variables.html">Chapters 10 and 11 in the MAS5052 notes</a>, but with fitting models left out until the next Chapter. If you are already familiar with one-way ANOVA models of the form <span class="math display">\[
 Y_{ij} = \mu + \tau_i+\varepsilon_{ij},
-\]</span> with appropriate constraints, then you should be able to skip over this chapter quickly.</p>
+\]</span> (with appropriate constraints) and ANCOVA models of the form <span class="math display">\[
+Y_{ij} = \mu + \tau_i+\beta_ix_{ij}+\varepsilon_{ij},
+\]</span></p>
+<p>then you should be able to skip over this chapter quickly.</p>
 <section id="example-cancer-survival-data" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="example-cancer-survival-data"><span class="header-section-number">3.1</span> Example: cancer survival data</h2>
 <p>The file <code>cancer.csv</code> has data from patients with advanced cancers of the stomach, bronchus, colon, ovary or breast were treated with ascorbate. We suppose that this aim is to determine if patient survival differs with respect to the organ affected by the cancer. The survival time in days was recorded for each patient.</p>
@@ -347,10 +356,10 @@ X^T\mathbf{y}=\left(\begin{array}{c} \sum_{j=1}^{n_1} y_{1,j} \\ \vdots \\
 </section>
 <section id="an-alternative-parameterisation" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="an-alternative-parameterisation"><span class="header-section-number">3.6</span> An alternative parameterisation</h2>
-<p>None of the hypothesis tests in the <code>summary()</code> output above are likely to be of any interest; we are more likely to be interested in <em>differences</em> between groups, rather than whether some or all of the groups have a population mean response of 0.</p>
 <p>An alternative way of writing the one-way ANOVA model is as follows: <span class="math display">\[
 Y_{i,j}=\mu + \tau_i + \varepsilon_{i,j},
 \]</span> for <span class="math inline">\(i=1,\ldots,g\)</span>, <span class="math inline">\(j=1,\ldots,n_i\)</span> and with <span class="math inline">\(\varepsilon_{i,j}\sim N(0,\sigma^2)\)</span>.</p>
+<p>This parameterisation is usually more convenient when it comes to investigating differences between groups, as we shall see later.</p>
 <p>The <em>intention</em> of this parametrisation could be to think of <span class="math inline">\(\mu\)</span> as the grand mean, and <span class="math inline">\(\tau_i\)</span> as the difference between the mean of group <span class="math inline">\(i\)</span> and the grand mean <span class="math inline">\(\mu\)</span>. However, this model is <em>over-parametrised</em>.</p>
 <p>In matrix notation, we would write this as <span class="math display">\[
 \mathbf{Y} = X\boldsymbol{\beta} + \boldsymbol{\varepsilon},
@@ -380,9 +389,8 @@ n_g
 Y_{i,j}=\left\{\begin{array}{ll}\mu + \varepsilon_{1,j} &amp; \mbox{$i=1$,
 $j=1,\ldots n_1$}\\ \mu + \tau_i + \varepsilon_{i,j} &amp; \mbox{$i=2,\ldots,g$,
 $j=1,\ldots n_i$} \end{array}\right.
-\]</span> For this parametrisation, <span class="math inline">\(\mu\)</span> is interpreted as the (population) mean for group 1, and <span class="math inline">\(\tau_i\)</span> gives the difference in means between group <span class="math inline">\(i\)</span> and group 1, for <span class="math inline">\(i\neq 1\)</span>. The null hypothesis of no difference between group means is written as <span class="math display">\[
-H_0:\tau_2=\ldots=\tau_g=0,
-\]</span> and any individual <span class="math inline">\(\tau_i=0\)</span> implies no difference in means between groups <span class="math inline">\(i\)</span> and 1. This model is written in matrix form as <span class="math display">\[
+\]</span> For this parametrisation, <span class="math inline">\(\mu\)</span> is interpreted as the (population) mean for group 1, and <span class="math inline">\(\tau_i\)</span> gives the difference in means between group <span class="math inline">\(i\)</span> and group 1, for <span class="math inline">\(i\neq 1\)</span>.</p>
+<p>This model is written in matrix form as <span class="math display">\[
 \mathbf{Y} = X\boldsymbol{\beta} + \boldsymbol{\varepsilon},
 \]</span> with <span class="math display">\[
 \mathbf{Y}=\left(\begin{array}{c}Y_{1,1} \\ \vdots \\ Y_{1,n_1} \\ Y_{2,1}\\
@@ -409,6 +417,147 @@ X=\left(\begin{array}{ccccc}1&amp; 0 &amp; 0  &amp; \ldots &amp; 0 \\ \vdots &am
 \frac{1}{n_1}\sum_{j=1}^{n_1} y_{1,j}
 \end{array}\right),
 \]</span> (details omitted), hence <span class="math inline">\(\hat{\mu}\)</span> is the sample mean of the observations in group 1, and <span class="math inline">\(\hat{\tau}_i\)</span> is the difference between the sample means of groups <span class="math inline">\(i\)</span> and 1.</p>
+</section>
+<section id="sec-ancova" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="sec-ancova"><span class="header-section-number">3.7</span> ANCOVA and models with interactions</h2>
+<p>ANCOVA (<strong>An</strong>alysis of <strong>Cova</strong>riance) involves regression modelling where the regression line changes between different groups in the data (with groups defined by the values of a qualitative/factor variable.)</p>
+<p>For a simple example, we’ll use the built in dataset <code>mtcars</code> (see <code>?mtcars</code> for details)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+</div>
+</div>
+<p>We’ll be using the column <code>am</code> which describes transmission type. To make it more readable, we’ll do</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mtcars2 <span class="ot">&lt;-</span> mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transmission =</span> <span class="fu">factor</span>(am, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"automatic"</span>,  <span class="st">"manual"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>An ANCOVA model for this data would be</p>
+<p><span class="math display">\[
+Y_{ij} = \mu + \tau_i + \beta_i x_{ij} + \varepsilon_{ij}
+\]</span> where <span class="math inline">\(Y_{ij}\)</span> is the fuel economy <code>mpg</code> of the <span class="math inline">\(j\)</span>th car in group <span class="math inline">\(i\)</span>, and <span class="math inline">\(x_{ij}\)</span> is the corresponding weight <code>wt</code>, for <span class="math inline">\(i=1,2\)</span>. Group <span class="math inline">\(i=1\)</span> corresponds to automatic cars, and <span class="math inline">\(i=2\)</span> corresponds to manual cars. We include the constraint <span class="math inline">\(\tau_1 = 0\)</span>. So the regression line for automatic cars would be <span class="math display">\[
+y = \mu + \beta_1x,
+\]</span> and for manual cars would be <span class="math display">\[
+y = \mu +\tau_2+ \beta_2x.
+\]</span> The effect of weight on fuel economy (the ‘beta’ parameter) changes depending on whether the car is a manual or automatic: there is an interaction between transmission and weight in affecting the fuel economy.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-model-writing" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.1 </strong></span>Recall the respiration data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>respiration <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">"https://oakleyj.github.io/exampledata/resp_data.txt"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>respiration</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 305 × 8
+     vol exercise pulse pollution asbestos  home smoke asthma
+   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+ 1  117.     15.8 17.5     11.9          1     1     1      0
+ 2  148.     23.5 28.4      1.88         1     3     1      1
+ 3  214.     13.8 15.0      2.38         1     1     0      0
+ 4  162.     15.6 15.7      6.34         1     3     0      1
+ 5  352.     26.6 19.7      1.63         0     4     0      0
+ 6  304.     23.2 14.2      2.72         0     4     0      0
+ 7  157.     29.0 33.7      4.03         0     1     1      0
+ 8  110.     16.6 14.7      1.24         1     2     1      0
+ 9  218.     15.1  9.16     1.14         0     2     0      0
+10  246.     16.9 21.9      0.731        0     4     0      0
+# ℹ 295 more rows</code></pre>
+</div>
+</div>
+<p>The meanings of the column headings are:</p>
+<ul>
+<li><code>vol</code> - volume of air expelled whilst breathing out</li>
+<li><code>exer</code> - number of hours exercise per month</li>
+<li><code>pulse</code>- scaled resting pulse rate</li>
+<li><code>poll</code> - lifetime exposure to air pollution</li>
+<li><code>asbestos</code> - has the individual been exposed to asbestos (1=exposed, 0=unexposed)</li>
+<li><code>home</code> - place of residence (1=England, 2=Scotland, 3=Wales, 4=Northern Ireland)</li>
+<li><code>smoke</code> - have they ever smoked (1=yes, 0=no)</li>
+<li><code>asthma</code> - do they have asthma (1=yes, 0=no)</li>
+</ul>
+<p>Try writing down models with appropriate notation to represent the following, with <code>vol</code> the dependent variable in each case. Specify parameter constraints as needed.</p>
+<ol type="1">
+<li><p>There is one independent variable only: <code>smoke</code> .</p></li>
+<li><p>There are two independent variables only: <code>smoke</code> and <code>exer</code>. There is a linear relationship between <code>exer</code> and <code>vol</code>, but the relationship changes depending on whether the individual is a smoker or not.</p></li>
+<li><p>There are three independent variables only: <code>smoke</code>, <code>exer</code> and <code>asthma</code>. There is a linear relationship between <code>exer</code> and <code>vol</code>, but the relationship changes depending on the combination of the individual’s smoking and asthma status. Hint: you need one subscript per qualitative independent variable, and one further subscript to distinguish between individuals in the same group, with group specified by the combination of qualitative independent variables.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Our model is <span class="math display">\[
+Y_{ij} = \mu + \tau_i + \varepsilon_{ij},
+\]</span> where</li>
+</ol>
+<ul>
+<li><span class="math inline">\(Y_{ij}\)</span> is the observed volume of air expelled for individual <span class="math inline">\(j\)</span> in group <span class="math inline">\(i\)</span>, with group defined by smoking status;</li>
+<li><span class="math inline">\(i=1\)</span> if the individual is a smoker, <span class="math inline">\(i=2\)</span> otherwise,</li>
+<li>we have <span class="math inline">\(j=1,\ldots,n_i\)</span> (there may be different numbers of individuals per group);</li>
+<li>we constrain <span class="math inline">\(\tau_1=0\)</span>.</li>
+</ul>
+<ol start="2" type="1">
+<li>Our model is <span class="math display">\[
+Y_{ij} = \mu + \tau_i + \beta_ix_{ij} + \varepsilon_{ij},
+\]</span></li>
+</ol>
+<ul>
+<li><span class="math inline">\(Y_{ij}\)</span> is the observed volume of air expelled for individual <span class="math inline">\(j\)</span> in group <span class="math inline">\(i\)</span>, with group defined by smoking status;</li>
+<li><span class="math inline">\(x_{ij}\)</span> the corresponding number of hours of exercise per month;</li>
+<li><span class="math inline">\(i=1\)</span> if the individual is a smoker, <span class="math inline">\(i=2\)</span> otherwise,</li>
+<li>we have <span class="math inline">\(j=1,\ldots,n_i\)</span>;</li>
+<li>we constrain <span class="math inline">\(\tau_1=0\)</span>.</li>
+</ul>
+<ol start="3" type="1">
+<li>We have two qualitative variables (smoking and asthma), so we use two subscripts (<span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>) to define a group. Our model is</li>
+</ol>
+<p><span class="math display">\[
+Y_{ijk} = \mu + \tau_{ij} + \beta_{ij}x_{ijk} + \varepsilon_{ijk},
+\]</span></p>
+<ul>
+<li><span class="math inline">\(Y_{ijk}\)</span> is the observed volume of air expelled for individual <span class="math inline">\(k\)</span> in group <span class="math inline">\(ij\)</span>, with group defined by the combination of smoking and asthma status;</li>
+<li><span class="math inline">\(x_{ijk}\)</span> the corresponding number of hours of exercise per month;</li>
+<li><span class="math inline">\(i=1\)</span> if the individual is a smoker, <span class="math inline">\(i=2\)</span> otherwise,</li>
+<li><span class="math inline">\(j=1\)</span> if the individual has asthma and <span class="math inline">\(j=2\)</span> otherwise,</li>
+<li>we have <span class="math inline">\(k=1,\ldots,n_{ij}\)</span>;</li>
+<li>we constrain <span class="math inline">\(\tau_{11}=0\)</span>.</li>
+</ul>
+<p>An alternative model (for the intercept) is</p>
+<p><span class="math display">\[
+Y_{ijk} = \mu + \alpha_i+\gamma_j+\tau_{ij} + \beta_{ij}x_{ijk} + \varepsilon_{ijk},
+\]</span> now with constraints <span class="math inline">\(\alpha_1=\beta_1=\tau_{1j}=\tau_{i1}=0\)</span>. If we were to remove the exercise variable from this model, we would be left with the “two-way analysis of variance model”: <span class="math display">\[
+Y_{ijk} = \mu + \alpha_i+\gamma_j+\tau_{ij} + \varepsilon_{ijk},
+\]</span> which can be used to investigate whether the effects of two factors (smoking and asthma here) are <em>additive</em> or <em>interact</em>, as <span class="math inline">\(\tau_{ij}\)</span> represents an <em>interaction effect</em> here.</p>
+</div>
+</div>
+</div>
 
 
 </section>

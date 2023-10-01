@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A Second Course on Linear Models - 5&nbsp; Hypothesis testing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./matrixAlgebra.html" rel="next">
+<link href="./fitting-in-R.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hypothesisTesting.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hypothesis testing</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A Second Course on Linear Models</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basicconcepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Basic concepts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parameterestimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Parameter estimation for linear models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./qualitative.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Qualitative independent variables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fitting-in-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fitting a linear model and making predictions in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hypothesisTesting.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hypothesis testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./matrixAlgebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Matrix algebra essentials</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./randomVectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Random vectors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./multivariateNormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">The multivariate normal distribution</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-linear-hypothesis" id="toc-the-linear-hypothesis" class="nav-link active" data-scroll-target="#the-linear-hypothesis"><span class="header-section-number">5.1</span> The linear hypothesis</a>
+  <ul class="collapse">
+  <li><a href="#gentests" id="toc-gentests" class="nav-link" data-scroll-target="#gentests"><span class="header-section-number">5.1.1</span> A general testing problem</a></li>
+  <li><a href="#constructing-a-test" id="toc-constructing-a-test" class="nav-link" data-scroll-target="#constructing-a-test"><span class="header-section-number">5.1.2</span> Constructing a test</a></li>
+  </ul></li>
+  <li><a href="#equivalence-between-the-t-test-and-an-f-test" id="toc-equivalence-between-the-t-test-and-an-f-test" class="nav-link" data-scroll-target="#equivalence-between-the-t-test-and-an-f-test"><span class="header-section-number">5.2</span> Equivalence between the <span class="math inline">\(t\)</span>-test and an <span class="math inline">\(F\)</span>-test</a></li>
+  <li><a href="#sec-ttest-R" id="toc-sec-ttest-R" class="nav-link" data-scroll-target="#sec-ttest-R"><span class="header-section-number">5.3</span> The <span class="math inline">\(t\)</span>-test in R</a></li>
+  <li><a href="#sec-summary-F" id="toc-sec-summary-F" class="nav-link" data-scroll-target="#sec-summary-F"><span class="header-section-number">5.4</span> The <code>summary()</code> commmand and the <span class="math inline">\(F\)</span>-test output</a></li>
+  <li><a href="#f-tests-and-nested-models" id="toc-f-tests-and-nested-models" class="nav-link" data-scroll-target="#f-tests-and-nested-models"><span class="header-section-number">5.5</span> <span class="math inline">\(F\)</span>-tests and nested models</a>
+  <ul class="collapse">
+  <li><a href="#sec-anova-R" id="toc-sec-anova-R" class="nav-link" data-scroll-target="#sec-anova-R"><span class="header-section-number">5.5.1</span> Implementing a nested model comparison in R</a></li>
+  </ul></li>
+  <li><a href="#help-test-overload" id="toc-help-test-overload" class="nav-link" data-scroll-target="#help-test-overload"><span class="header-section-number">5.6</span> Help! Test overload!</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hypothesis testing</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In this chapter we will:</p>
+<ol type="1">
+<li>present a “general linear null hypothesis” - the basis for all hypothesis tests we will consider in these notes;</li>
+<li>derive an “<span class="math inline">\(F\)</span>-test” for tesing this general linear null hypothesis;</li>
+<li>understand how particular testing problems are derived from this general linear null hypothesis;</li>
+<li>implement hypothesis tests for linear models in R;</li>
+<li>review the different presentations and implementations of hypothesis tests for linear models, and identify the most appropriate in different situations.</li>
+</ol>
+<section id="the-linear-hypothesis" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="the-linear-hypothesis"><span class="header-section-number">5.1</span> The linear hypothesis</h2>
+<section id="gentests" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="gentests"><span class="header-section-number">5.1.1</span> A general testing problem</h3>
+<p>If you have studied hypothesis testing for linear models before, e.g.&nbsp;for the simple linear regression model <span class="math display">\[
+Y_i = \beta_0+\beta_1 + \varepsilon_i,
+\]</span> you may be used to tests of the form <span class="math display">\[
+H_0: \beta_1=0,
+\]</span> which involve computing a ``<span class="math inline">\(T\)</span>-statistic’’ and comparing with the <span class="math inline">\(t_{n-2}\)</span> distribution.</p>
+<p>Here, we present the most general linear null hypothesis, which takes the form <span class="math display">\[
+H_0: \quad C\boldsymbol{\beta}=\boldsymbol{c},
+\]</span> where <span class="math inline">\(C\)</span> is a <span class="math inline">\(q\times p\)</span> matrix and <span class="math inline">\(\boldsymbol{c}\)</span> is a <span class="math inline">\(q\times 1\)</span> vector of known constants. This hypothesis simultaneously asserts specific values for <span class="math inline">\(q\)</span> linear functions of <span class="math inline">\(\boldsymbol{\beta}\)</span>. Without loss of generality, we can assume that <span class="math inline">\(C\)</span> has rank <span class="math inline">\(q\)</span>.</p>
+<p>The usual alternative is simply <span class="math display">\[H_1: \quad C\boldsymbol{\beta}\neq\boldsymbol{c}\]</span> i.e.&nbsp;that <em>at least one</em> of the <span class="math inline">\(q\)</span> linear functions does not take its hypothesized value. This is a two-sided alternative; one sided alternatives are unlikely to be of interest/appropriate.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-hyptest-slr" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 5.1 </strong></span>How do we write our hypothesis test for the simple linear regression model in this notation?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For the test <span class="math inline">\(H_0: \beta_1=0\)</span>, we have <span class="math display">\[
+C = (0\quad 1), \quad \boldsymbol{\beta} = \left(\begin{array}{c}\beta_0\\\beta_1\end{array}\right),\quad \boldsymbol{c}=(0).
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-hyptest-anova" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 5.2 </strong></span>For one-way ANOVA models, how do we write the test for equal group means using this notation? Try using using both parameterisations presented in Chapter 3.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If we write the model as <span class="math display">\[
+Y_{ij}=\mu_i+\varepsilon_{ij},
+\]</span> for <span class="math inline">\(i=1,\ldots,g\)</span>, then the usual hypothesis we want to test is <span class="math display">\[
+H_0:\mu_1=\mu_2=\ldots,\mu_g.
+\]</span> This can be written as a set of <span class="math inline">\(g-1\)</span> equations: <span class="math display">\[\begin{align}
+\mu_1 -\mu_2 &amp;=0,\\
+\mu_2 -\mu_3 &amp;=0,\\
+\cdots &amp;\\
+\mu_{g-1} -\mu_g &amp;=0.
+\end{align}\]</span> So in our notation, we have <span class="math display">\[
+C = \left(\begin{array}{cccccc}1 &amp; -1 &amp; 0 &amp; \cdots&amp;0 &amp; 0\\
+0 &amp; 1 &amp; -1 &amp; \cdots &amp;0 &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots &amp;  \vdots &amp; \vdots &amp; \vdots  \\
+0 &amp; 0 &amp; 0 &amp; \cdots &amp; 1 &amp; -1\end{array}\right), \quad \boldsymbol{\beta} = \left(\begin{array}{c}\mu_1 \\ \vdots \\\mu_g\end{array}\right),\quad \boldsymbol{c}=\left(\begin{array}{c}0 \\ \vdots \\0\end{array}\right).
+\]</span> If we write the model as <span class="math display">\[
+Y_{ij}=\mu+\tau_i+\varepsilon_{ij},
+\]</span> for <span class="math inline">\(i=1,\ldots,g\)</span>, with the constraint <span class="math inline">\(\tau_1=0\)</span>, then the usual hypothesis we want to test is <span class="math display">\[
+H_0:\tau_i=0\quad \forall i.
+\]</span> So in our notation, we have <span class="math display">\[
+C = \left(\begin{array}{cccccc}0 &amp; 1 &amp; 0 &amp; \cdots&amp;0 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; \cdots &amp;0 &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots &amp;  \vdots &amp; \vdots &amp; \vdots  \\
+0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1\end{array}\right), \quad \boldsymbol{\beta} = \left(\begin{array}{c}\mu\\\tau_2 \\ \vdots \\\tau_g\end{array}\right),\quad \boldsymbol{c}=\left(\begin{array}{c}0 \\ \vdots \\0\end{array}\right).
+\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="constructing-a-test" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="constructing-a-test"><span class="header-section-number">5.1.2</span> Constructing a test</h3>
+<p>To construct a test, we consider the estimator <span class="math inline">\(C\boldsymbol{\hat{\beta}}\)</span>. <em>If the null hypothesis is true</em>, we have that <span class="math display">\[
+E(C\boldsymbol{\hat{\beta}})=C \boldsymbol{\beta}=\boldsymbol{c},
+\]</span> and <span class="math display">\[
+\mathrm{Var}(C \boldsymbol{\hat{\beta}})=C \mathrm{Var}(\boldsymbol{\hat{\beta}})C^T=\sigma^2C(X^TX)^{-1}C^T,
+\]</span> and so <span class="math display">\[C\boldsymbol{\hat{\beta}}\sim N_q(\boldsymbol{c},\sigma^2C(X^TX)^{-1}C^T).\]</span> But as <span class="math inline">\(C\boldsymbol{\hat{\beta}}\)</span> is a vector, this isn’t a result that we can easily use directly for a hypothesis test; we normally work with scalar test statistics. However, this result can be used to show that, again if <span class="math inline">\(H_0\)</span> is true then <span class="math display">\[
+(C\boldsymbol{\hat{\beta}}-\boldsymbol{c})^T
+\left(C(X^TX)^{-1}C^T\right)^{-1} (C\boldsymbol{\hat{\beta}}-\boldsymbol{c})/\sigma^2 \sim \chi^2_q.
+\]</span> We use some further results from distribution theory: if <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent random variables with <span class="math inline">\(X\sim \chi^2_{\nu_1}\)</span> and <span class="math inline">\(Y\sim \chi^2_{\nu_2}\)</span> then <span class="math inline">\(\frac{X/\nu_1}{Y/\nu_2}\)</span> has the <span class="math inline">\(F_{\nu_1,\nu_2}\)</span> distribution. From the result above, and recalling that <span class="math display">\[
+(n-p)\hat{\sigma}^2\sim \sigma^2\chi_{n-p}^2,
+\]</span> we have the result that, if <span class="math inline">\(H_0\)</span> is true, then <span class="math display">\[
+F:=\frac{ (C\boldsymbol{\hat{\beta}}-\boldsymbol{c})^T
+\left(C(X^TX)^{-1}C^T\right)^{-1} (C\boldsymbol{\hat{\beta}}-\boldsymbol{c}) }{
+q\hat{\sigma}^2 } \sim F_{q,n-p}
+\]</span></p>
+<p>So for a <span class="math inline">\(100 \alpha\%\)</span> significance test we will reject <span class="math inline">\(H_0\)</span> if the test statistic <span class="math inline">\(F\)</span> exceeds <span class="math inline">\(F_{q,n-p,\alpha}\)</span>, the upper <span class="math inline">\(100\alpha \%\)</span> point of the <span class="math inline">\(F_{q,n-p}\)</span> distribution. This is a <em>one-tailed test</em>, even though the original alternative hypothesis was two-sided. It is one-tailed because we are using sums of squares, so that any failure of the null hypothesis leads to a larger value of the test statistic. (For <span class="math inline">\(F\)</span> to be small, we need <span class="math inline">\((C\boldsymbol{\hat{\beta}}\)</span> similar to <span class="math inline">\(\boldsymbol{c}\)</span>; the null hypothesis is that these two vectors are equal))</p>
+</section>
+</section>
+<section id="equivalence-between-the-t-test-and-an-f-test" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="equivalence-between-the-t-test-and-an-f-test"><span class="header-section-number">5.2</span> Equivalence between the <span class="math inline">\(t\)</span>-test and an <span class="math inline">\(F\)</span>-test</h2>
+<p>As commented at the beginning of this chapter, you may have used a <span class="math inline">\(t\)</span>-test before for testing whether single coefficients take a particular value (usually 0). This is equivalent to a particular <span class="math inline">\(F\)</span>-test.</p>
+<p>Testing the <span class="math inline">\(i\)</span>th element <span class="math inline">\(\beta_i\)</span> of <span class="math inline">\(\boldsymbol{\beta}\)</span> is a special case of our general hypothesis, where <span class="math inline">\(q=1\)</span> (only 1 hypothesis) and <span class="math inline">\(C\)</span> is a row vector of zeroes except for a single 1 in the <span class="math inline">\(i\)</span>-th position. Thus, we have <span class="math inline">\(H_0: \beta_i=c_i\)</span>. The <span class="math inline">\(F\)</span>-statistic reduces to</p>
+<p><span class="math display">\[
+F=\frac{(\hat{\beta}_i-c_i)^2}{\hat \sigma^2 g_{ii}} \sim F_{1,n-p},
+\]</span> where <span class="math inline">\(g_{ii}\)</span> is the <span class="math inline">\(i\)</span>-th diagonal element of <span class="math inline">\(G=(X^TX)^{-1}\)</span>.</p>
+<p>Previously, we explained that <span class="math display">\[
+\frac{\hat{\beta}_i-\beta_i}{\hat{\sigma}\sqrt{g_{ii}}}\sim t_{n-p}.
+\]</span> This could also be used to test the hypothesis <span class="math inline">\(H_0: \beta_i=c_i\)</span>: our test statistic would be <span class="math display">\[
+T = \frac{\hat{\beta}_i-c_i}{\hat{\sigma}\sqrt{g_{ii}}}\sim t_{n-p},
+\]</span> if <span class="math inline">\(H_0\)</span> is true. But we see that <span class="math inline">\(T^2=F\)</span>, and the hypothesis tests are equivalent, because <span class="math display">\[
+X \sim t_\nu\iff
+X^2 \sim F_{1,\nu}.
+\]</span></p>
+</section>
+<section id="sec-ttest-R" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-ttest-R"><span class="header-section-number">5.3</span> The <span class="math inline">\(t\)</span>-test in R</h2>
+<p>R will perform a <span class="math inline">\(t\)</span>-test <strong>separately</strong> for each hypothesis <span class="math inline">\(H_0: \beta_i=c_i\)</span>, for <span class="math inline">\(i=1,\ldots,p\)</span>. The results of this can be seen using the <code>summary()</code> command. For example</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lmCars <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> speed, cars)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmCars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = dist ~ speed, data = cars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-29.069  -9.525  -2.272   9.215  43.201 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -17.5791     6.7584  -2.601   0.0123 *  
+speed         3.9324     0.4155   9.464 1.49e-12 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 15.38 on 48 degrees of freedom
+Multiple R-squared:  0.6511,    Adjusted R-squared:  0.6438 
+F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12</code></pre>
+</div>
+</div>
+<p>The last two columns in the <code>Coefficients</code> table give the corresponding test statistic and <span class="math inline">\(p\)</span>-values. To be clear: for the simple linear regression model (with <code>dist</code> the dependent variable and <code>speed</code> the independent variable): <span class="math display">\[
+Y_i = \beta_0 + \beta_1x_i + \varepsilon_i,
+\]</span> the R output has given us observed values of the test statistics <span class="math display">\[
+T_{0,obs} = \frac{\hat{\beta}_0-0}{\hat{\sigma}\sqrt{g_{11}}}=-2.601, \quad T_{1,obs} = \frac{\hat{\beta}_1-0}{\hat{\sigma}\sqrt{g_{22}}}=9.464,
+\]</span> with <span class="math inline">\(p\)</span>-values of <span class="math inline">\(0.0123\)</span> and <span class="math inline">\(1.49\times 10^{-12}\)</span> respectively (although for the latter, we should not claim such a precise order of magnitude! The precision is spurious here.)</p>
+</section>
+<section id="sec-summary-F" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="sec-summary-F"><span class="header-section-number">5.4</span> The <code>summary()</code> commmand and the <span class="math inline">\(F\)</span>-test output</h2>
+<p>Whenever we use the <code>summary()</code> command in R, we see the result of and <span class="math inline">\(F\)</span>-test displayed at the bottom. This is a test of the hypothesis that <em>all</em> coefficients <em>except</em> the intercept term are zero.</p>
+<p>As an example, consider the one-way ANOVA model for the cancer data, using the parameterisation <span class="math display">\[
+Y_{ij}=\mu + \tau_i + \varepsilon_{ij},
+\]</span> with <span class="math inline">\(\tau_1=0\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cancer <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://oakleyj.github.io/exampledata/cancer.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lmcancer <span class="ot">&lt;-</span> <span class="fu">lm</span>(survival <span class="sc">~</span> organ, <span class="at">data =</span> cancer)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmcancer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = survival ~ organ, data = cancer)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1371.91  -241.75  -111.50    87.19  2412.09 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     1395.9      201.9   6.915 3.77e-09 ***
+organBronchus  -1184.3      259.1  -4.571 2.53e-05 ***
+organColon      -938.5      259.1  -3.622 0.000608 ***
+organOvary      -511.6      339.8  -1.506 0.137526    
+organStomach   -1109.9      274.3  -4.046 0.000153 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 669.5 on 59 degrees of freedom
+Multiple R-squared:  0.3037,    Adjusted R-squared:  0.2565 
+F-statistic: 6.433 on 4 and 59 DF,  p-value: 0.0002295</code></pre>
+</div>
+</div>
+<p>A null hypothesis of interest here is that the mean surival time is the same for all groups (organs): <span class="math display">\[
+H_0: \tau_i=0 \quad \forall i
+\]</span> See the exercise above for how to write this in the general notation <span class="math inline">\(H_0: C\boldsymbol{\beta} = \boldsymbol{c}\)</span>; there are <span class="math inline">\(n=64\)</span> observations, there are <span class="math inline">\(p=5\)</span> parameters, and the matrix <span class="math inline">\(\boldsymbol{C}\)</span> has <span class="math inline">\(q=4\)</span> rows, so under <span class="math inline">\(H_0\)</span>, the <span class="math inline">\(F\)</span>-statistic has the <span class="math inline">\(F_{4, 59}\)</span> distribution. We can see in the <code>summary()</code> output that the observed <span class="math inline">\(F\)</span>-statistic was 6.433, R has compared this to the <span class="math inline">\(F_{4, 59}\)</span> distribution, and obtained a <span class="math inline">\(p\)</span>-value: 0.0002295.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We can check this <span class="math inline">\(p\)</span>-value for ourself:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pf</span>(<span class="fl">6.433</span>, <span class="at">df1 =</span> <span class="dv">4</span>, <span class="at">df2 =</span> <span class="dv">59</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.000229583</code></pre>
+</div>
+</div>
+<p>and if we want to visualise it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">df</span>(x, <span class="at">df1 =</span> <span class="dv">4</span>, <span class="at">df2 =</span> <span class="dv">59</span>), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">10</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fl">6.433</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="hypothesisTesting_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value is area under the curve from the right of the vertical line</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (very close to 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If we use the parameterisation <span class="math display">\[
+Y_{ij}=\mu_i  + \varepsilon_{ij},
+\]</span> and fit this model in R, we do not get a sensible <span class="math inline">\(F\)</span>-test!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lmcancer <span class="ot">&lt;-</span> <span class="fu">lm</span>(survival <span class="sc">~</span> organ <span class="sc">-</span><span class="dv">1</span>, <span class="at">data =</span> cancer)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmcancer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = survival ~ organ - 1, data = cancer)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1371.91  -241.75  -111.50    87.19  2412.09 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+organBreast     1395.9      201.9   6.915 3.77e-09 ***
+organBronchus    211.6      162.4   1.303  0.19764    
+organColon       457.4      162.4   2.817  0.00659 ** 
+organOvary       884.3      273.3   3.235  0.00199 ** 
+organStomach     286.0      185.7   1.540  0.12887    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 669.5 on 59 degrees of freedom
+Multiple R-squared:  0.5437,    Adjusted R-squared:  0.505 
+F-statistic: 14.06 on 5 and 59 DF,  p-value: 4.766e-09</code></pre>
+</div>
+</div>
+<p>There is no ‘intercept’ in this model, so the null hypothesis being tested here is <span class="math inline">\(H_0:\mu_i = 0 \quad \forall i\)</span>. Whilst we might hypothesise that all group means are equal, is unlikely that we would hypothesise that all group means are <em>zero</em>.</p>
+<p>This is why the parameterisation</p>
+<p><span class="math display">\[
+Y_{ij}=\mu + \tau_i  + \varepsilon_{ij},
+\]</span> (with an appropriate constraint on the <span class="math inline">\(\tau\)</span> parameters) is more commonly used, as parameters representing <em>differences</em> between groups are usually the main interest.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Have a look again at the <code>summary</code> output for a simple linear regression model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>lmCars <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> speed, cars)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmCars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = dist ~ speed, data = cars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-29.069  -9.525  -2.272   9.215  43.201 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -17.5791     6.7584  -2.601   0.0123 *  
+speed         3.9324     0.4155   9.464 1.49e-12 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 15.38 on 48 degrees of freedom
+Multiple R-squared:  0.6511,    Adjusted R-squared:  0.6438 
+F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12</code></pre>
+</div>
+</div>
+<p>The <span class="math inline">\(p\)</span>-values for the <code>speed</code> coefficient and the <code>F-statistic</code> are the same. Make sure you understand why!</p>
+</div>
+</div>
+</section>
+<section id="f-tests-and-nested-models" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="f-tests-and-nested-models"><span class="header-section-number">5.5</span> <span class="math inline">\(F\)</span>-tests and nested models</h2>
+<p>The general linear hypothesis <span class="math display">\[
+H_0: \quad C\boldsymbol{\beta}=\boldsymbol{c},
+\]</span> implies a constraint on the parameter vector <span class="math inline">\(\beta\)</span> in a linear model. This constraint implies a simpler model that we refer to as being <em>nested</em> in our original model. We sometimes use the terms <em>full model</em> and <em>reduced</em> model to refer to the original and nested model. Here are some examples:</p>
+<ul>
+<li>Simple linear regression:
+<ul>
+<li>Full model: <span class="math display">\[Y_i = \beta_0 + \beta_1x_i + \varepsilon_i.\]</span></li>
+<li>Null hypothesis of interest: <span class="math display">\[H_0: \beta_1 = 0.\]</span></li>
+<li>Reduced model: <span class="math display">\[Y_i = \beta_0 + \varepsilon_i.\]</span></li>
+<li>Interpretation: the null hypothesis states that there is no relationship between the dependent and independent variable.</li>
+</ul></li>
+<li>Polynomial regression:
+<ul>
+<li>Full model: <span class="math display">\[Y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+ \varepsilon_i.\]</span></li>
+<li>Null hypothesis of interest: <span class="math display">\[H_0: \beta_2 = 0.\]</span></li>
+<li>Reduced model: <span class="math display">\[Y_i = \beta_0 + \beta_1x_i + \varepsilon_i.\]</span></li>
+<li>Interpretation: the null hypothesis states that the relationship between the dependent and independent variable is linear.</li>
+</ul></li>
+<li>One-way analysis of variance:
+<ul>
+<li>Full model: <span class="math display">\[Y_{ij} = \mu + \tau_{i}+ \varepsilon_{ij}, \quad \tau_1=0\]</span></li>
+<li>Null hypothesis of interest: <span class="math display">\[H_0: \tau_i = 0\quad \forall_i.\]</span></li>
+<li>Reduced model: <span class="math display">\[Y_{ij} = \mu + \varepsilon_{ij}.\]</span></li>
+<li>Interpretation: the expected value of the dependent variable is the same in all groups; there is no difference between the groups.</li>
+</ul></li>
+</ul>
+<p>We can interpret the <span class="math inline">\(F\)</span>-test as a comparison between the full model and the reduced model, and the <span class="math inline">\(F\)</span>-statistic can be written as follows:</p>
+<p><span class="math display">\[F=\frac{(RSS_r-RSS_f)/(p_f-p_r)}{(RSS_f)/(n-p_f)},\]</span> with each term defined as follows:</p>
+<ul>
+<li><span class="math inline">\(RSS_r\)</span>: the residual sum of squares obtained by fitting the reduced model to the data;</li>
+<li><span class="math inline">\(RSS_f\)</span>: the residual sum of squares obtained by fitting the full model to the data;</li>
+<li><span class="math inline">\(p_r\)</span>: the number of parameters (in the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span>) in the reduced model;</li>
+<li><span class="math inline">\(p_f\)</span>: the number of parameters (in the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span>) in the full model;</li>
+<li><span class="math inline">\(n\)</span>: the number of observations.</li>
+</ul>
+<p>There is a nice interpretation of the <span class="math inline">\(F\)</span> statistic written in this form. We are calculating the difference in how well each model fits the data <span class="math inline">\(RSS_r - RSS_f\)</span>, relative to the ‘goodness-of-fit’ (residual sum of squares) for the full model. We also account for the difference between the number of parameters in the two models, as we would always expect the residual sum of squares to decrease if we increase the number of parameters.</p>
+<section id="sec-anova-R" class="level3" data-number="5.5.1">
+<h3 data-number="5.5.1" class="anchored" data-anchor-id="sec-anova-R"><span class="header-section-number">5.5.1</span> Implementing a nested model comparison in R</h3>
+<p>The general approach is to fit the full and reduced models separately, and then use the <code>anova()</code> command. For example, suppose we have</p>
+<p><span class="math display">\[\begin{align}
+\mbox{full model: } Y_i &amp;= \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \beta x_i^3 + \varepsilon_i,\\
+\mbox{reduced model: } Y_i &amp;= \beta_0 + \beta_1 x_i + \varepsilon_i,\\
+\end{align}\]</span> so that the null hypothesis is <span class="math inline">\(H_0: \beta_2 = \beta_3 = 0\)</span>. We test this in R as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the full model:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>lmFull <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> speed <span class="sc">+</span> <span class="fu">I</span>(speed<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(speed<span class="sc">^</span><span class="dv">3</span>) , cars)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the reduced model:</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>lmReduced <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> speed, cars)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># perform the F-test of the null hypothesis that the reduced model is correct:</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(lmReduced, lmFull)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: dist ~ speed
+Model 2: dist ~ speed + I(speed^2) + I(speed^3)
+  Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
+1     48 11354                           
+2     46 10634  2    719.16 1.5554  0.222</code></pre>
+</div>
+</div>
+<p>We see that R has presented the results using an “<code>Analysis of Variance Table</code>”; it’s quite common to see these reported in statistical software. The entries in the table correspond to the elements of as follows (assuming we specify the reduced model as the first argument of <code>anova()</code>):</p>
+<table class="table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 26%">
+<col style="width: 15%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><code>Res.Df</code></th>
+<th style="text-align: right;"><code>RSS</code></th>
+<th style="text-align: right;"><code>Df</code></th>
+<th style="text-align: right;"><code>Sum of Sq</code></th>
+<th style="text-align: right;"><code>F</code></th>
+<th style="text-align: right;"><code>Pr(&gt;F)</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(n - p_f\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(RSS_f\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(n-p_r\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(RSS_r\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(p_f - p_r\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(RSS_r - RSS_f\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(F_{obs}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(P(F_{p_f - p_r ; n - p_f} &gt; F_{obs})\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Analysis of variance (ANOVA) tables are perhaps most commonly seen when testing for equality of means for models of the type <span class="math display">\[
+Y_{ij}=\mu+\tau_i+\varepsilon_{ij}
+\]</span> This is why the model above as a (one-way) analysis of variance model.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="help-test-overload" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="help-test-overload"><span class="header-section-number">5.6</span> Help! Test overload!</h2>
+<p>At this point, you may be feeling confused by what appears to be different variants of the same test. The reason for presenting the test in different ways relates to the way tests are implemented and reported in R.</p>
+<ol type="1">
+<li>When do we use the <span class="math inline">\(t\)</span>-test?</li>
+</ol>
+<p>We use this if we want to test that a single coefficient is 0. The easiest way to implement this is to use the <code>summary()</code> command on a fitted model, and look at the <code>coefficients</code> table, as shown in <a href="#sec-ttest-R"><span>Section&nbsp;5.3</span></a>.</p>
+<ol start="2" type="1">
+<li>When do we use the <span class="math inline">\(F\)</span>-test reported in the <code>summary()</code> output?</li>
+</ol>
+<p>We use this to test that <em>all</em> coefficients (apart from an intercept parameter) are zero. In the one-way ANOVA model <span class="math display">\[
+Y_{ij} = \mu + \tau_i + \varepsilon_{ij},
+\]</span> with <span class="math inline">\(\tau_1=0\)</span>, we usually have particular interest in the null hypothesis <span class="math inline">\(H_0:\tau_i=0 \quad \forall_i\)</span>. The easiest way to implement this is to use the <code>summary()</code> command on a fitted model, and look at the <code>F-statistic</code> output, as shown in <a href="#sec-summary-F"><span>Section&nbsp;5.4</span></a>.</p>
+<ol start="3" type="1">
+<li>When do we compare ‘full and reduced’ models?</li>
+</ol>
+<p>Typically, the scenario here is where we have multiple independent variables, but the null model is not a sensible model to use for the null hypothesis; we might be certain a particular independent variable has an effect. For example, our full model might be</p>
+<p><span class="math display">\[
+\mbox{full model: }Y_i = \beta_0 + \beta_1x_i + \beta_2w_i + \beta_3 z_i + \varepsilon_i,
+\]</span> and we might be certain (from other knowledge or data) that the <span class="math inline">\(x\)</span>-variable has an effect, so that <span class="math inline">\(\beta_1\neq 0\)</span>, so that the main interest is in testing if <span class="math inline">\(\beta_2=\beta_3=0\)</span>. A reduced model would then be <span class="math display">\[
+\mbox{reduced model: }Y_i = \beta_0 + \beta_1x_i + \varepsilon_i.
+\]</span> The <code>summary()</code> command won’t perform this particular <span class="math inline">\(F\)</span>-test directly. In R, we need to fit the full model and reduced models separately, and then use the <code>anova()</code> command, as shown in <a href="#sec-anova-R"><span>Section&nbsp;5.5.1</span></a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./fitting-in-R.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fitting a linear model and making predictions in R</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./matrixAlgebra.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Matrix algebra essentials</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
