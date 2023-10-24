@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./matrixAlgebra.html" rel="next">
+<link href="./cautionaryTales.html" rel="next">
 <link href="./fitting-in-R.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -169,6 +169,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./hypothesisTesting.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hypothesis testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cautionaryTales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Cautionary tales</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -641,12 +647,12 @@ Model 2: dist ~ speed + I(speed^2) + I(speed^3)
 <p>We see that R has presented the results using an “<code>Analysis of Variance Table</code>”; it’s quite common to see these reported in statistical software. The entries in the table correspond to the elements of as follows (assuming we specify the reduced model as the first argument of <code>anova()</code>):</p>
 <table class="table">
 <colgroup>
-<col style="width: 19%">
-<col style="width: 10%">
-<col style="width: 10%">
-<col style="width: 26%">
-<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 <col style="width: 17%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -660,16 +666,16 @@ Model 2: dist ~ speed + I(speed^2) + I(speed^3)
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;"><span class="math inline">\(n - p_f\)</span></td>
-<td style="text-align: right;"><span class="math inline">\(RSS_f\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(n-p_r\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(RSS_r\)</span></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: right;"><span class="math inline">\(n-p_r\)</span></td>
-<td style="text-align: right;"><span class="math inline">\(RSS_r\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(n - p_f\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(RSS_f\)</span></td>
 <td style="text-align: right;"><span class="math inline">\(p_f - p_r\)</span></td>
 <td style="text-align: right;"><span class="math inline">\(RSS_r - RSS_f\)</span></td>
 <td style="text-align: right;"><span class="math inline">\(F_{obs}\)</span></td>
@@ -689,7 +695,7 @@ Note
 <div class="callout-body-container callout-body">
 <p>Analysis of variance (ANOVA) tables are perhaps most commonly seen when testing for equality of means for models of the type <span class="math display">\[
 Y_{ij}=\mu+\tau_i+\varepsilon_{ij}
-\]</span> This is why the model above as a (one-way) analysis of variance model.</p>
+\]</span> This is why the model above is called a (one-way) analysis of variance model.</p>
 </div>
 </div>
 </section>
@@ -961,8 +967,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./matrixAlgebra.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Matrix algebra essentials</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./cautionaryTales.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Cautionary tales</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
