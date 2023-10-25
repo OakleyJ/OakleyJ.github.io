@@ -143,6 +143,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Cautionary tales</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Checking model assumptions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Transformations</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
@@ -195,8 +207,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#chapter-appendix" id="toc-chapter-appendix" class="nav-link" data-scroll-target="#chapter-appendix"><span class="header-section-number">2.7</span> Chapter appendix</a>
   <ul class="collapse">
   <li><a href="#deriving-the-least-squares-estimator" id="toc-deriving-the-least-squares-estimator" class="nav-link" data-scroll-target="#deriving-the-least-squares-estimator"><span class="header-section-number">2.7.1</span> Deriving the least squares estimator</a></li>
-  <li><a href="#bias-of-the-maximum-likelihood-estimator" id="toc-bias-of-the-maximum-likelihood-estimator" class="nav-link" data-scroll-target="#bias-of-the-maximum-likelihood-estimator"><span class="header-section-number">2.7.2</span> Bias of the maximum likelihood estimator</a></li>
-  <li><a href="#independence-between-hatsigma2-and-boldsymbolhatbeta" id="toc-independence-between-hatsigma2-and-boldsymbolhatbeta" class="nav-link" data-scroll-target="#independence-between-hatsigma2-and-boldsymbolhatbeta"><span class="header-section-number">2.7.3</span> Independence between <span class="math inline">\(\hat{\sigma}^2\)</span> and <span class="math inline">\(\boldsymbol{\hat{\beta}}\)</span></a></li>
+  <li><a href="#sec-bias" id="toc-sec-bias" class="nav-link" data-scroll-target="#sec-bias"><span class="header-section-number">2.7.2</span> Bias of the maximum likelihood estimator</a></li>
+  <li><a href="#sec-independence" id="toc-sec-independence" class="nav-link" data-scroll-target="#sec-independence"><span class="header-section-number">2.7.3</span> Independence between <span class="math inline">\(\hat{\sigma}^2\)</span> and <span class="math inline">\(\boldsymbol{\hat{\beta}}\)</span></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -558,8 +570,8 @@ R^2=\frac{S_{yy}-S_r}{S_{yy}}.
 \hat{\boldsymbol\beta}=(X^TX)^{-1}X^T\boldsymbol{y}
 \]</span></p>
 </section>
-<section id="bias-of-the-maximum-likelihood-estimator" class="level3" data-number="2.7.2">
-<h3 data-number="2.7.2" class="anchored" data-anchor-id="bias-of-the-maximum-likelihood-estimator"><span class="header-section-number">2.7.2</span> Bias of the maximum likelihood estimator</h3>
+<section id="sec-bias" class="level3" data-number="2.7.2">
+<h3 data-number="2.7.2" class="anchored" data-anchor-id="sec-bias"><span class="header-section-number">2.7.2</span> Bias of the maximum likelihood estimator</h3>
 <p>We define <span class="math display">\[
 \boldsymbol{e}:=\boldsymbol{Y}-X\boldsymbol{\hat{\beta}}=\boldsymbol{Y}-X(X^TX)^{-1}X^T\boldsymbol{Y},
 \]</span></p>
@@ -582,8 +594,8 @@ E\left(\sum_{i=1}^ne_i^2\right)=\sum_{i=1}^n E(e_i^2) = \sigma^2
 E(\hat{\sigma}^2_{MLE}) = E\left(\frac{\sum_{i=1}^ne_i^2}{n}\right)=\sigma^2\frac{(n-p)}{n}.
 \]</span></p>
 </section>
-<section id="independence-between-hatsigma2-and-boldsymbolhatbeta" class="level3" data-number="2.7.3">
-<h3 data-number="2.7.3" class="anchored" data-anchor-id="independence-between-hatsigma2-and-boldsymbolhatbeta"><span class="header-section-number">2.7.3</span> Independence between <span class="math inline">\(\hat{\sigma}^2\)</span> and <span class="math inline">\(\boldsymbol{\hat{\beta}}\)</span></h3>
+<section id="sec-independence" class="level3" data-number="2.7.3">
+<h3 data-number="2.7.3" class="anchored" data-anchor-id="sec-independence"><span class="header-section-number">2.7.3</span> Independence between <span class="math inline">\(\hat{\sigma}^2\)</span> and <span class="math inline">\(\boldsymbol{\hat{\beta}}\)</span></h3>
 <p>Using the definitions of <span class="math inline">\(\boldsymbol{e}\)</span> and <span class="math inline">\(M\)</span> from above</p>
 <p><span class="math display">\[
 \boldsymbol{e}:=\boldsymbol{Y}-X\boldsymbol{\hat{\beta}} = M\boldsymbol{Y}
