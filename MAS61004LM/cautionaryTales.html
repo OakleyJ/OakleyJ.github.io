@@ -189,6 +189,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Transformations</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
@@ -605,7 +611,7 @@ Solution
 <p><img src="cautionaryTales_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>In this plot the arrow going from <code>Temp</code> (temperature) to <code>IC</code> (ice cream sales) represents a causal relationship: the volume of ice cream sales is ‘caused’ by the value of the temperature, and potentially other unmeasured variables represented by an error term, e.g. <span class="math display">\[
+<p>In this plot the arrow going from <code>Temp</code> (temperature) to <code>IC</code> (ice cream sales) represents a causal relationship: the volume of ice cream sales is ‘caused’ by the value of the temperature, and potentially other unmeasured variables represented by an error term, e.g.&nbsp;<span class="math display">\[
 IC_i = \beta_0 + \beta_1Temp_i + \varepsilon_i.
 \]</span> The diagram represents a similar causal relationship between temperature and crime, but no causal relationship between ice creams sales and crime. Ice creams sales and crime are correlated, however, due to their common dependence on temperature.</p>
 <p>We’ll now consider a few examples of causal relationships versus correlations, and how they might be explored through hypothesis tests.</p>

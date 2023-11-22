@@ -155,6 +155,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Transformations</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
@@ -546,7 +552,7 @@ P(\hat{\beta}_i-t_{n-p,1-\alpha/2}\hat{\sigma}\sqrt{g_{ii}} \leq
 R^2=\frac{S_{yy}-S_r}{S_{yy}}.
 \]</span> Here <span class="math inline">\(S_{yy}\)</span> (also written <span class="math inline">\(SS_{Total}\)</span>) is the total sum of squares, defined as <span class="math inline">\((\boldsymbol{y}-\boldsymbol{\bar y})^T(\boldsymbol{y}-\boldsymbol{\bar y})=\boldsymbol{y}^T\boldsymbol{y}-n\bar{y}^2\)</span>, which can be thought of as the sum of the squares of residuals when fitting a model which only has a constant term. This value <span class="math inline">\(R^2\)</span> is sometimes called the <em>coefficient of determination</em> and can be thought of the proportion of the total sum of squares that the regression model explains. The residual sum of squares <span class="math inline">\(S_r\)</span> is the <em>unexplained</em> part of the total sum of squares of <span class="math inline">\(y\)</span>.</p>
 <p>Note that in the case of the simple linear regression model, <span class="math inline">\(R^2\)</span> equals <span class="math inline">\(r^2\)</span>, the squared sample correlation coefficient between <span class="math inline">\(\boldsymbol{y}\)</span> and <span class="math inline">\(\boldsymbol{x}\)</span>, so we can see <span class="math inline">\(R^2\)</span> as the generalization of <span class="math inline">\(r^2\)</span> to the more general linear model. <span class="math inline">\(R^2\)</span> is also called the squared multiple correlation coefficient and it always lies between 0 and 1.</p>
-<p>There is also an `Adjusted R-squared’ value. This value takes into account the number of regressor variables used in the model. It is defined as <span class="math display">\[R^2(adj)=1-\frac{S_r/(n-p)}{SS_{total}/(n-1)}\]</span></p>
+<p>There is also an ‘Adjusted R-squared’ value. This value takes into account the number of regressor variables used in the model. It is defined as <span class="math display">\[R^2(adj)=1-\frac{S_r/(n-p)}{SS_{total}/(n-1)}\]</span></p>
 <p>You will see a lot more about model selection later in the course, but it does not make sense to simply pick the model with the largest <span class="math inline">\(R^2\)</span> as this necessarily increases as the number of regressor variables increases. The adjusted R-squared value does not necessarily increase as the number of regressor variables increases, suggesting that using the adjusted R-squared value in model selection is more sensible.</p>
 </section>
 <section id="chapter-appendix" class="level2" data-number="2.7">
