@@ -657,7 +657,7 @@ Note
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>lmLassoCV<span class="sc">$</span>lambda<span class="fl">.1</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 7.289264</code></pre>
+<pre><code>[1] 8.779945</code></pre>
 </div>
 </div>
 <p>Similarly for ridge regression.</p>
@@ -680,17 +680,17 @@ Note
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">coef</span>(lmRidgeCV, lmRidgeCV<span class="sc">$</span>lambda<span class="fl">.1</span>se))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>10 x 3 sparse Matrix of class "dgCMatrix"
-                                          s1          s1
-(Intercept)           179.7789115  186.64575 172.8461992
-exercise                4.0843780    2.80429   2.3440272
-pulse                  -0.3311115    .         0.6438444
-pollution               0.9322368    .         0.9372327
-asbestosYes            -5.2548552    .        -1.8279559
-homeScotland            5.1136247    .         2.6362831
-homeWales               0.8962507    .         1.0010502
-homeNorthern_Ireland    5.7756180    .         4.4893148
-smokeYes             -120.9720708 -107.07152 -92.5895106
-asthmaYes             -49.8651200  -35.16316 -38.8886080</code></pre>
+                                           s1          s1
+(Intercept)           179.7789115  187.494303 172.8461992
+exercise                4.0843780    2.604639   2.3440272
+pulse                  -0.3311115    .          0.6438444
+pollution               0.9322368    .          0.9372327
+asbestosYes            -5.2548552    .         -1.8279559
+homeScotland            5.1136247    .          2.6362831
+homeWales               0.8962507    .          1.0010502
+homeNorthern_Ireland    5.7756180    .          4.4893148
+smokeYes             -120.9720708 -104.327190 -92.5895106
+asthmaYes             -49.8651200  -32.166129 -38.8886080</code></pre>
 </div>
 </div>
 <p>A <code>.</code> indicates a coefficient set to 0 in the lasso, which we can think of as variable selection. In this example, this is the same as the coefficients that are not significantly different from 0 in the full model. Note also how (intercept excluded), the coefficients are typically closer to 0 for the lasso and ridge regression models, compared to the full model.</p>

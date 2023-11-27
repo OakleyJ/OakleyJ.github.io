@@ -326,7 +326,7 @@ f_\lambda(y_i)=\boldsymbol{x}_i^T\boldsymbol{\beta}+\varepsilon_i
 <section id="sec-max_like" class="level3" data-number="8.2.2">
 <h3 data-number="8.2.2" class="anchored" data-anchor-id="sec-max_like"><span class="header-section-number">8.2.2</span> Maximum likelihood</h3>
 <p>We can estimate <span class="math inline">\(\lambda\)</span> by maximum likelihood. To calculate the likelihood we have to remember that we do not observe <span class="math inline">\(f_\lambda(y_i)\)</span>, which depends on the unknown parameter <span class="math inline">\(\lambda\)</span>. We observe the <span class="math inline">\(y_i\)</span>, and the likelihood should be the joint probability density function of the <span class="math inline">\(y_i\)</span> given the parameters, and this entails bringing in the derivative of the transformation. The likelihood is <span class="math display">\[
-L(\boldsymbol{\beta}_\lambda,\sigma^2,\lambda;\boldsymbol{y}) \propto \sigma^{-n}
+L(\boldsymbol{\beta},\sigma^2,\lambda;\boldsymbol{y}) \propto \sigma^{-n}
 \exp\left\{ -\frac{1}{2\sigma^2}\sum_{i=1}^n
 \left(f_\lambda(y_i)-\boldsymbol{x}_i^T\boldsymbol{\beta}\right)^2\right\}
 \prod_{i=1}^n f_\lambda'(y_i).
@@ -352,7 +352,7 @@ L(\boldsymbol{\hat{\beta}}_\lambda,\hat{\sigma}_\lambda^2,\lambda;\boldsymbol{y}
 <p>Whilst the above theory works for any family of transformations, by far the most popular family is the family of power transformations, also known as the <em>Box-Cox family</em>. Box and Cox (1964) proposed a family of transformations on the response variable to correct non-normality and/or non-constant variance. If the response is positive, the transformation is given by <span class="math display">\[
 f_\lambda(y)=\left\{\begin{array}{ll}(y^\lambda-1)/\lambda, &amp;
 \lambda\neq 0 \\ \log y, &amp; \lambda=0\end{array}\right.
-\]</span> It can be shown that <span class="math inline">\(f_\lambda(y)\)</span> is a continuous function of <span class="math inline">\(\lambda\)</span>. We assume that the transformed values of <span class="math inline">\(Y\)</span> are normally distributed about a linear combination of the covariates with constant variance, that is <span class="math inline">\(f_\lambda(Y)\sim N(\boldsymbol{x}_i^T\boldsymbol{\beta},\sigma^2)\)</span> for some unknown value of <span class="math inline">\(\lambda\)</span>. Hence, the problem is to estimate <span class="math inline">\(\lambda\)</span> as well as the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+\]</span> It can be shown that <span class="math inline">\(f_\lambda(y)\)</span> is a continuous function of <span class="math inline">\(\lambda\)</span>. We assume that the transformed values of <span class="math inline">\(Y\)</span> are normally distributed about a linear combination of the covariates with constant variance, that is <span class="math inline">\(f_\lambda(Y_i)\sim N(\boldsymbol{x}_i^T\boldsymbol{\beta},\sigma^2)\)</span> for some unknown value of <span class="math inline">\(\lambda\)</span>. Hence, the problem is to estimate <span class="math inline">\(\lambda\)</span> as well as the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
 </section>
 <section id="obtaining-a-box-cox-transformation" class="level3" data-number="8.2.4">
 <h3 data-number="8.2.4" class="anchored" data-anchor-id="obtaining-a-box-cox-transformation"><span class="header-section-number">8.2.4</span> Obtaining a Box-Cox transformation</h3>
