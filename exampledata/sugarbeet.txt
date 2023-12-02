@@ -1,4 +1,4 @@
-dose weight
+log_dose weight
 1 283
 2 339
 3 344
