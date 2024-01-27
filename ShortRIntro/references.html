@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>References | An Introduction to R</title>
   <meta name="description" content="An introduction to R for students on MAS113 and MAS5052" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="References | An Introduction to R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2024-01-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -258,27 +262,31 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="r-markdown.html"><a href="r-markdown.html#spell-checking"><i class="fa fa-check"></i><b>13.4</b> Spell checking</a></li>
 </ul></li>
-<li class="part"><span><b>IV Miscelleanous</b></span></li>
-<li class="chapter" data-level="14" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>14</b> RStudio Projects</a>
+<li class="part"><span><b>IV Miscellaneaous</b></span></li>
+<li class="chapter" data-level="14" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html"><i class="fa fa-check"></i><b>14</b> Probability Distributions in R</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>14.1</b> File paths and working directories</a>
-<ul>
-<li class="chapter" data-level="14.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>14.1.1</b> Working directories for R Markdown documents</a></li>
+<li class="chapter" data-level="14.1" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html#example"><i class="fa fa-check"></i><b>14.1</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="14.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>14.2</b> Creating a new project</a></li>
-<li class="chapter" data-level="14.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>14.3</b> Opening an existing project</a></li>
-<li class="chapter" data-level="14.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>14.4</b> Using your project folder</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>15</b> More on R Markdown</a>
+<li class="chapter" data-level="15" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>15</b> RStudio Projects</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>15.1</b> Tables</a>
+<li class="chapter" data-level="15.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>15.1</b> File paths and working directories</a>
 <ul>
-<li class="chapter" data-level="15.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>15.1.1</b> Using Markdown</a></li>
-<li class="chapter" data-level="15.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>15.1.2</b> Using <code>knitr::kable()</code></a></li>
+<li class="chapter" data-level="15.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>15.1.1</b> Working directories for R Markdown documents</a></li>
 </ul></li>
-<li class="chapter" data-level="15.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>15.2</b> Caching results for slow-running code</a></li>
-<li class="chapter" data-level="15.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>15.3</b> R Markdown for LaTeX users</a></li>
-<li class="chapter" data-level="15.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>15.4</b> The YAML header</a></li>
+<li class="chapter" data-level="15.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>15.2</b> Creating a new project</a></li>
+<li class="chapter" data-level="15.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>15.3</b> Opening an existing project</a></li>
+<li class="chapter" data-level="15.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>15.4</b> Using your project folder</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>16</b> More on R Markdown</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>16.1</b> Tables</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>16.1.1</b> Using Markdown</a></li>
+<li class="chapter" data-level="16.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>16.1.2</b> Using <code>knitr::kable()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>16.2</b> Caching results for slow-running code</a></li>
+<li class="chapter" data-level="16.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>16.3</b> R Markdown for LaTeX users</a></li>
+<li class="chapter" data-level="16.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>16.4</b> The YAML header</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>

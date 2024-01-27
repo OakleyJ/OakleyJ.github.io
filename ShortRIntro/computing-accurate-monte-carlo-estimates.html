@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 11 Computing accurate Monte Carlo estimates | An Introduction to R</title>
   <meta name="description" content="An introduction to R for students on MAS113 and MAS5052" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 11 Computing accurate Monte Carlo estimates | An Introduction to R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2024-01-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -258,27 +262,31 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="r-markdown.html"><a href="r-markdown.html#spell-checking"><i class="fa fa-check"></i><b>13.4</b> Spell checking</a></li>
 </ul></li>
-<li class="part"><span><b>IV Miscelleanous</b></span></li>
-<li class="chapter" data-level="14" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>14</b> RStudio Projects</a>
+<li class="part"><span><b>IV Miscellaneaous</b></span></li>
+<li class="chapter" data-level="14" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html"><i class="fa fa-check"></i><b>14</b> Probability Distributions in R</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>14.1</b> File paths and working directories</a>
-<ul>
-<li class="chapter" data-level="14.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>14.1.1</b> Working directories for R Markdown documents</a></li>
+<li class="chapter" data-level="14.1" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html#example"><i class="fa fa-check"></i><b>14.1</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="14.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>14.2</b> Creating a new project</a></li>
-<li class="chapter" data-level="14.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>14.3</b> Opening an existing project</a></li>
-<li class="chapter" data-level="14.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>14.4</b> Using your project folder</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>15</b> More on R Markdown</a>
+<li class="chapter" data-level="15" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>15</b> RStudio Projects</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>15.1</b> Tables</a>
+<li class="chapter" data-level="15.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>15.1</b> File paths and working directories</a>
 <ul>
-<li class="chapter" data-level="15.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>15.1.1</b> Using Markdown</a></li>
-<li class="chapter" data-level="15.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>15.1.2</b> Using <code>knitr::kable()</code></a></li>
+<li class="chapter" data-level="15.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>15.1.1</b> Working directories for R Markdown documents</a></li>
 </ul></li>
-<li class="chapter" data-level="15.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>15.2</b> Caching results for slow-running code</a></li>
-<li class="chapter" data-level="15.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>15.3</b> R Markdown for LaTeX users</a></li>
-<li class="chapter" data-level="15.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>15.4</b> The YAML header</a></li>
+<li class="chapter" data-level="15.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>15.2</b> Creating a new project</a></li>
+<li class="chapter" data-level="15.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>15.3</b> Opening an existing project</a></li>
+<li class="chapter" data-level="15.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>15.4</b> Using your project folder</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>16</b> More on R Markdown</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>16.1</b> Tables</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>16.1.1</b> Using Markdown</a></li>
+<li class="chapter" data-level="16.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>16.1.2</b> Using <code>knitr::kable()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>16.2</b> Caching results for slow-running code</a></li>
+<li class="chapter" data-level="16.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>16.3</b> R Markdown for LaTeX users</a></li>
+<li class="chapter" data-level="16.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>16.4</b> The YAML header</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -304,36 +312,36 @@ div.csl-indent {
 <div id="computing-accurate-monte-carlo-estimates" class="section level1 hasAnchor" number="11">
 <h1><span class="header-section-number">Section 11</span> Computing accurate Monte Carlo estimates<a href="computing-accurate-monte-carlo-estimates.html#computing-accurate-monte-carlo-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Returning to the result of our original for loop, we had</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="computing-accurate-monte-carlo-estimates.html#cb118-1" aria-hidden="true" tabindex="-1"></a>numberUnique</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="computing-accurate-monte-carlo-estimates.html#cb118-1" tabindex="-1"></a>numberUnique</span></code></pre></div>
 <pre><code>## [1] 19 19 20 20 20</code></pre>
 <p>From this, we estimate the probability that at least two people have the same birthday, by counting the proportion of times there were fewer than 20 unique birthdays:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="computing-accurate-monte-carlo-estimates.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(numberUnique <span class="sc">&lt;</span> <span class="dv">20</span>) <span class="sc">/</span> <span class="dv">5</span></span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="computing-accurate-monte-carlo-estimates.html#cb120-1" tabindex="-1"></a><span class="fu">sum</span>(numberUnique <span class="sc">&lt;</span> <span class="dv">20</span>) <span class="sc">/</span> <span class="dv">5</span></span></code></pre></div>
 <pre><code>## [1] 0.4</code></pre>
 <p>So our estimated probability is 0.4. Remember that, on its own,</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="computing-accurate-monte-carlo-estimates.html#cb122-1" aria-hidden="true" tabindex="-1"></a>numberUnique <span class="sc">&lt;</span> <span class="dv">20</span></span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="computing-accurate-monte-carlo-estimates.html#cb122-1" tabindex="-1"></a>numberUnique <span class="sc">&lt;</span> <span class="dv">20</span></span></code></pre></div>
 <p>produces</p>
 <pre><code>## [1]  TRUE  TRUE FALSE FALSE FALSE</code></pre>
 <p>so that <code>sum(numberUnique &lt; 20)</code> adds up the number of <code>TRUE</code>s (each <code>TRUE</code> is interpreted as a 1, and each <code>FALSE</code> is interpreted as a zero.)</p>
 <div id="using-the-mean-command" class="section level2 hasAnchor" number="11.1">
 <h2><span class="header-section-number">11.1</span> Using the <code>mean()</code> command<a href="computing-accurate-monte-carlo-estimates.html#using-the-mean-command" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>It’s slightly easier to use the <code>mean()</code> command instead of <code>sum()</code>, as it will add up the values and divide by the number of values there are (it will do the dividing by 5 for us).</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="computing-accurate-monte-carlo-estimates.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(numberUnique <span class="sc">&lt;</span> <span class="dv">20</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="computing-accurate-monte-carlo-estimates.html#cb124-1" tabindex="-1"></a><span class="fu">mean</span>(numberUnique <span class="sc">&lt;</span> <span class="dv">20</span>) </span></code></pre></div>
 <pre><code>## [1] 0.4</code></pre>
 </div>
 <div id="improving-the-accuracy-of-the-estimate" class="section level2 hasAnchor" number="11.2">
 <h2><span class="header-section-number">11.2</span> Improving the accuracy of the estimate<a href="computing-accurate-monte-carlo-estimates.html#improving-the-accuracy-of-the-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Roughly speaking, the more simulations we do, the better the estimate will be. Simulating 5 sets of 20 birthdays wasn’t enough, so let’s try a larger number: 100,000:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="computing-accurate-monte-carlo-estimates.html#cb126-1" aria-hidden="true" tabindex="-1"></a>numberUnique <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100000</span>)</span>
-<span id="cb126-2"><a href="computing-accurate-monte-carlo-estimates.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100000</span>){</span>
-<span id="cb126-3"><a href="computing-accurate-monte-carlo-estimates.html#cb126-3" aria-hidden="true" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb126-4"><a href="computing-accurate-monte-carlo-estimates.html#cb126-4" aria-hidden="true" tabindex="-1"></a>  numberUnique[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
-<span id="cb126-5"><a href="computing-accurate-monte-carlo-estimates.html#cb126-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb126-6"><a href="computing-accurate-monte-carlo-estimates.html#cb126-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(numberUnique <span class="sc">&lt;</span> <span class="dv">20</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="computing-accurate-monte-carlo-estimates.html#cb126-1" tabindex="-1"></a>numberUnique <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100000</span>)</span>
+<span id="cb126-2"><a href="computing-accurate-monte-carlo-estimates.html#cb126-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100000</span>){</span>
+<span id="cb126-3"><a href="computing-accurate-monte-carlo-estimates.html#cb126-3" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb126-4"><a href="computing-accurate-monte-carlo-estimates.html#cb126-4" tabindex="-1"></a>  numberUnique[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
+<span id="cb126-5"><a href="computing-accurate-monte-carlo-estimates.html#cb126-5" tabindex="-1"></a>}</span>
+<span id="cb126-6"><a href="computing-accurate-monte-carlo-estimates.html#cb126-6" tabindex="-1"></a><span class="fu">mean</span>(numberUnique <span class="sc">&lt;</span> <span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## [1] 0.40967</code></pre>
 <p>We can repeat this a few times to see if the answer changes much. The estimate looks fairly stable correct to two decimal places. If we needed to, we could do even more simulations (millions), though we’ll start noticing that the code takes longer to run.</p>
 <div class="task">
 <div class="exercise">
-<p><span id="exr:unlabeled-div-8" class="exercise"><strong>Exercise 11.1  </strong></span>Suppose there are, instead, 30 people in the room, and they are all born in a leap year. Assume each person is equally likely to have been born on any day of the year. Use the Monte Carlo method to</p>
+<p><span id="exr:unlabeled-div-10" class="exercise"><strong>Exercise 11.1  </strong></span>Suppose there are, instead, 30 people in the room, and they are all born in a leap year. Assume each person is equally likely to have been born on any day of the year. Use the Monte Carlo method to</p>
 <ol style="list-style-type: decimal">
 <li>estimate the probability that at least two people have birthdays on the same day;</li>
 <li>estimate the probability that two people <strong>only</strong> have birthdays on the same day.</li>

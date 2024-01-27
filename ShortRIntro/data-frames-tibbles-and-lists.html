@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 6 Data frames, tibbles and lists | An Introduction to R</title>
   <meta name="description" content="An introduction to R for students on MAS113 and MAS5052" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 6 Data frames, tibbles and lists | An Introduction to R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2024-01-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -258,27 +262,31 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="r-markdown.html"><a href="r-markdown.html#spell-checking"><i class="fa fa-check"></i><b>13.4</b> Spell checking</a></li>
 </ul></li>
-<li class="part"><span><b>IV Miscelleanous</b></span></li>
-<li class="chapter" data-level="14" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>14</b> RStudio Projects</a>
+<li class="part"><span><b>IV Miscellaneaous</b></span></li>
+<li class="chapter" data-level="14" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html"><i class="fa fa-check"></i><b>14</b> Probability Distributions in R</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>14.1</b> File paths and working directories</a>
-<ul>
-<li class="chapter" data-level="14.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>14.1.1</b> Working directories for R Markdown documents</a></li>
+<li class="chapter" data-level="14.1" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html#example"><i class="fa fa-check"></i><b>14.1</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="14.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>14.2</b> Creating a new project</a></li>
-<li class="chapter" data-level="14.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>14.3</b> Opening an existing project</a></li>
-<li class="chapter" data-level="14.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>14.4</b> Using your project folder</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>15</b> More on R Markdown</a>
+<li class="chapter" data-level="15" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>15</b> RStudio Projects</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>15.1</b> Tables</a>
+<li class="chapter" data-level="15.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>15.1</b> File paths and working directories</a>
 <ul>
-<li class="chapter" data-level="15.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>15.1.1</b> Using Markdown</a></li>
-<li class="chapter" data-level="15.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>15.1.2</b> Using <code>knitr::kable()</code></a></li>
+<li class="chapter" data-level="15.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>15.1.1</b> Working directories for R Markdown documents</a></li>
 </ul></li>
-<li class="chapter" data-level="15.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>15.2</b> Caching results for slow-running code</a></li>
-<li class="chapter" data-level="15.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>15.3</b> R Markdown for LaTeX users</a></li>
-<li class="chapter" data-level="15.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>15.4</b> The YAML header</a></li>
+<li class="chapter" data-level="15.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>15.2</b> Creating a new project</a></li>
+<li class="chapter" data-level="15.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>15.3</b> Opening an existing project</a></li>
+<li class="chapter" data-level="15.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>15.4</b> Using your project folder</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>16</b> More on R Markdown</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>16.1</b> Tables</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>16.1.1</b> Using Markdown</a></li>
+<li class="chapter" data-level="16.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>16.1.2</b> Using <code>knitr::kable()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>16.2</b> Caching results for slow-running code</a></li>
+<li class="chapter" data-level="16.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>16.3</b> R Markdown for LaTeX users</a></li>
+<li class="chapter" data-level="16.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>16.4</b> The YAML header</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -306,7 +314,7 @@ div.csl-indent {
 <div id="data-frames" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Data frames<a href="data-frames-tibbles-and-lists.html#data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Data sets in R are organised in <strong>data frames</strong>. R has various built-in data frames that we can use as illustrations, for example, <code>mtcars</code>. The full data set has 32 rows, but we will just display the first 6, using the <code>head()</code> function</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="data-frames-tibbles-and-lists.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="data-frames-tibbles-and-lists.html#cb69-1" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code></pre></div>
 <pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
 ## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 ## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
@@ -316,7 +324,7 @@ div.csl-indent {
 ## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
 <p>Each column has a name (<code>mpg</code>, <code>cyl</code>, etc.) which can be used to access the values in that column. The rows in this data frame are also named, but that is optional, and we usually select particular rows by their row number.</p>
 <p>The <code>mtcars</code> data frame has columns of numeric quantities only (though some columns are really dummy variables to represent factors), but is common for data frames to have a mix of variable types, for example, in the <code>CO2</code> data frame we have</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="data-frames-tibbles-and-lists.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(CO2)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="data-frames-tibbles-and-lists.html#cb71-1" tabindex="-1"></a><span class="fu">head</span>(CO2)</span></code></pre></div>
 <pre><code>##   Plant   Type  Treatment conc uptake
 ## 1   Qn1 Quebec nonchilled   95   16.0
 ## 2   Qn1 Quebec nonchilled  175   30.4
@@ -340,10 +348,10 @@ be easy for others to run.
 <h3><span class="header-section-number">6.1.2</span> Extracting rows and columns<a href="data-frames-tibbles-and-lists.html#extracting-rows-and-columns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Extracting data from data frames can be confusing, in that there are multiple ways to do it, and the format of the result (e.g. a vector or another data frame) can vary.</p>
 <p>For now, one syntax for extracting a column is <code>dataframe-name$column-name</code>, for example:</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="data-frames-tibbles-and-lists.html#cb73-1" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>cyl</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="data-frames-tibbles-and-lists.html#cb73-1" tabindex="-1"></a>mtcars<span class="sc">$</span>cyl</span></code></pre></div>
 <pre><code>##  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</code></pre>
 <p>and a complete row can be extracted using its position (row number):</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="data-frames-tibbles-and-lists.html#cb75-1" aria-hidden="true" tabindex="-1"></a>mtcars[<span class="dv">2</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="data-frames-tibbles-and-lists.html#cb75-1" tabindex="-1"></a>mtcars[<span class="dv">2</span>, ]</span></code></pre></div>
 <pre><code>##               mpg cyl disp  hp drat    wt  qsec vs am gear carb
 ## Mazda RX4 Wag  21   6  160 110  3.9 2.875 17.02  0  1    4    4</code></pre>
 <p>We’ll look more at extracting subsets of data frames later on.</p>
@@ -351,7 +359,7 @@ be easy for others to run.
 </div>
 <div id="tibbles" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> tibbles<a href="data-frames-tibbles-and-lists.html#tibbles" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A tibble is a special type of data frame <span class="citation">(<a href="#ref-R-tibble" role="doc-biblioref">Müller and Wickham 2020</a>)</span>. When we view a tibble, R will normally only show the first 10 rows, and as many columns as can be fitted in the screen (but R will tell us if there are more columns). For example, a tibble version of the <code>mtcars</code> data frame would look like this (you will need to install the <code>tibble</code> package for this command to work):</p>
+<p>A tibble is a special type of data frame <span class="citation">(<a href="#ref-R-tibble">Müller and Wickham 2020</a>)</span>. When we view a tibble, R will normally only show the first 10 rows, and as many columns as can be fitted in the screen (but R will tell us if there are more columns). For example, a tibble version of the <code>mtcars</code> data frame would look like this (you will need to install the <code>tibble</code> package for this command to work):</p>
 <pre><code>## # A tibble: 32 × 11
 ##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -365,17 +373,17 @@ be easy for others to run.
 ##  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
 ##  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
 ## 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-## # … with 22 more rows</code></pre>
+## # ℹ 22 more rows</code></pre>
 <p>Line three tells us what data type we have in each column. (<code>&lt;dbl&gt;</code> is short for “double precision”, a numeric variable type).</p>
 <p>In this module, it won’t make any difference whether our data are in a tibble format or ‘standard’ data frame, but there are some situations where they behave differently.</p>
 <p>If we want to force R to display all the rows of a tibble, we can use the <code>print</code> function:</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="data-frames-tibbles-and-lists.html#cb78-1" aria-hidden="true" tabindex="-1"></a>mtcarsTibble <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(mtcars)</span>
-<span id="cb78-2"><a href="data-frames-tibbles-and-lists.html#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mtcarsTibble, <span class="at">n =</span> <span class="fu">nrow</span>(mtcarsTibble))</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="data-frames-tibbles-and-lists.html#cb78-1" tabindex="-1"></a>mtcarsTibble <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(mtcars)</span>
+<span id="cb78-2"><a href="data-frames-tibbles-and-lists.html#cb78-2" tabindex="-1"></a><span class="fu">print</span>(mtcarsTibble, <span class="at">n =</span> <span class="fu">nrow</span>(mtcarsTibble))</span></code></pre></div>
 </div>
 <div id="inspecting-large-data-frames-and-tibbles" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Inspecting large data frames and tibbles<a href="data-frames-tibbles-and-lists.html#inspecting-large-data-frames-and-tibbles" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If we have a large number of columns in a data frame or tibble in R, it can be difficult to see exactly what data we’ve got. (The default display of a large tibble can still be overwhelming.) The <code>str()</code> function can be useful here (and will work with any type of R object):</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="data-frames-tibbles-and-lists.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mtcars)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="data-frames-tibbles-and-lists.html#cb79-1" tabindex="-1"></a><span class="fu">str</span>(mtcars)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
 ##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
 ##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
@@ -389,7 +397,7 @@ be easy for others to run.
 ##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
 ##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
 <p>A similar function, with slightly different output, is</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="data-frames-tibbles-and-lists.html#cb81-1" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">glimpse</span>(mtcars)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="data-frames-tibbles-and-lists.html#cb81-1" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">glimpse</span>(mtcars)</span></code></pre></div>
 <pre><code>## Rows: 32
 ## Columns: 11
 ## $ mpg  &lt;dbl&gt; 21.0, 21.0, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8,…
@@ -408,12 +416,12 @@ be easy for others to run.
 <h2><span class="header-section-number">6.4</span> Lists<a href="data-frames-tibbles-and-lists.html#lists" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We’ll briefly mention another type of object known as a <strong>list</strong>. Whereas a data frame is essentially a table, combining columns of the same length, a list is a more general collection of objects, which can vary in size and type.</p>
 <p>For example, we can create a list as follows:</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="data-frames-tibbles-and-lists.html#cb83-1" aria-hidden="true" tabindex="-1"></a>mylist <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">b =</span> <span class="st">&quot;Monday&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="data-frames-tibbles-and-lists.html#cb83-1" tabindex="-1"></a>mylist <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">b =</span> <span class="st">&quot;Monday&quot;</span>)</span></code></pre></div>
 <p>We can view the names of the objects inside a list with the command</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="data-frames-tibbles-and-lists.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mylist)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="data-frames-tibbles-and-lists.html#cb84-1" tabindex="-1"></a><span class="fu">names</span>(mylist)</span></code></pre></div>
 <pre><code>## [1] &quot;a&quot; &quot;b&quot;</code></pre>
 <p>and access objects inside the list with the <code>$</code> operator:</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="data-frames-tibbles-and-lists.html#cb86-1" aria-hidden="true" tabindex="-1"></a>mylist<span class="sc">$</span>b</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="data-frames-tibbles-and-lists.html#cb86-1" tabindex="-1"></a>mylist<span class="sc">$</span>b</span></code></pre></div>
 <pre><code>## [1] &quot;Monday&quot;</code></pre>
 <p>A data frame behaves like a list: it is a list of columns (although there are extra things you can do with data frames that you can’t do with lists.)</p>
 <div class="task">

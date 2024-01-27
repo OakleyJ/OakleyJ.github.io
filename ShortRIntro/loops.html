@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 10 Loops | An Introduction to R</title>
   <meta name="description" content="An introduction to R for students on MAS113 and MAS5052" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 10 Loops | An Introduction to R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-10-31" />
+<meta name="date" content="2024-01-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -258,27 +262,31 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="r-markdown.html"><a href="r-markdown.html#spell-checking"><i class="fa fa-check"></i><b>13.4</b> Spell checking</a></li>
 </ul></li>
-<li class="part"><span><b>IV Miscelleanous</b></span></li>
-<li class="chapter" data-level="14" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>14</b> RStudio Projects</a>
+<li class="part"><span><b>IV Miscellaneaous</b></span></li>
+<li class="chapter" data-level="14" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html"><i class="fa fa-check"></i><b>14</b> Probability Distributions in R</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>14.1</b> File paths and working directories</a>
-<ul>
-<li class="chapter" data-level="14.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>14.1.1</b> Working directories for R Markdown documents</a></li>
+<li class="chapter" data-level="14.1" data-path="probability-distributions-in-r.html"><a href="probability-distributions-in-r.html#example"><i class="fa fa-check"></i><b>14.1</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="14.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>14.2</b> Creating a new project</a></li>
-<li class="chapter" data-level="14.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>14.3</b> Opening an existing project</a></li>
-<li class="chapter" data-level="14.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>14.4</b> Using your project folder</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>15</b> More on R Markdown</a>
+<li class="chapter" data-level="15" data-path="rstudio-projects.html"><a href="rstudio-projects.html"><i class="fa fa-check"></i><b>15</b> RStudio Projects</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>15.1</b> Tables</a>
+<li class="chapter" data-level="15.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#file-paths-and-working-directories"><i class="fa fa-check"></i><b>15.1</b> File paths and working directories</a>
 <ul>
-<li class="chapter" data-level="15.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>15.1.1</b> Using Markdown</a></li>
-<li class="chapter" data-level="15.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>15.1.2</b> Using <code>knitr::kable()</code></a></li>
+<li class="chapter" data-level="15.1.1" data-path="rstudio-projects.html"><a href="rstudio-projects.html#working-directories-for-r-markdown-documents"><i class="fa fa-check"></i><b>15.1.1</b> Working directories for R Markdown documents</a></li>
 </ul></li>
-<li class="chapter" data-level="15.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>15.2</b> Caching results for slow-running code</a></li>
-<li class="chapter" data-level="15.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>15.3</b> R Markdown for LaTeX users</a></li>
-<li class="chapter" data-level="15.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>15.4</b> The YAML header</a></li>
+<li class="chapter" data-level="15.2" data-path="rstudio-projects.html"><a href="rstudio-projects.html#creating-a-new-project"><i class="fa fa-check"></i><b>15.2</b> Creating a new project</a></li>
+<li class="chapter" data-level="15.3" data-path="rstudio-projects.html"><a href="rstudio-projects.html#opening-an-existing-project"><i class="fa fa-check"></i><b>15.3</b> Opening an existing project</a></li>
+<li class="chapter" data-level="15.4" data-path="rstudio-projects.html"><a href="rstudio-projects.html#using-your-project-folder"><i class="fa fa-check"></i><b>15.4</b> Using your project folder</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html"><i class="fa fa-check"></i><b>16</b> More on R Markdown</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#tables"><i class="fa fa-check"></i><b>16.1</b> Tables</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-markdown"><i class="fa fa-check"></i><b>16.1.1</b> Using Markdown</a></li>
+<li class="chapter" data-level="16.1.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#using-knitrkable"><i class="fa fa-check"></i><b>16.1.2</b> Using <code>knitr::kable()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#caching-results-for-slow-running-code"><i class="fa fa-check"></i><b>16.2</b> Caching results for slow-running code</a></li>
+<li class="chapter" data-level="16.3" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#r-markdown-for-latex-users"><i class="fa fa-check"></i><b>16.3</b> R Markdown for LaTeX users</a></li>
+<li class="chapter" data-level="16.4" data-path="more-on-r-markdown.html"><a href="more-on-r-markdown.html#the-yaml-header"><i class="fa fa-check"></i><b>16.4</b> The YAML header</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -309,42 +317,42 @@ div.csl-indent {
 <p>We need to simulate lots of separate sets of 20 birthdays. To keep things simple and easy to visualise, we’ll first simulate five sets of 20 birthdays, then do more later.</p>
 <p>We will simulate one set of 20 birthdays at a time, and record the number of unique birthdays. It can be helpful to ‘pre-assign’ a vector, so that we’ve got somewhere convenient to store the results as they come in.</p>
 <p>We’ll make a vector called <code>numberUnique</code>, that initially just consists of five zeros. We can use the <code>rep()</code> command to replicate 0 five times:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="loops.html#cb97-1" aria-hidden="true" tabindex="-1"></a>numberUnique <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="loops.html#cb97-1" tabindex="-1"></a>numberUnique <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">5</span>)</span></code></pre></div>
 <p>and to see what the result is:</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="loops.html#cb98-1" aria-hidden="true" tabindex="-1"></a>numberUnique</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="loops.html#cb98-1" tabindex="-1"></a>numberUnique</span></code></pre></div>
 <pre><code>## [1] 0 0 0 0 0</code></pre>
 <p>The zeros will all be replaced as we work through the simulation, so the values in <code>numberUnique</code> aren’t important right now: what matters is that we have a vector with five places, ready to store the results. (An analogy would be that this is a bit like, having been told we’re going to be given five books, we first clear an empty space for five books on a bookshelf. We’ve then got somewhere ready to put the books as we get them.)</p>
 </div>
 <div id="looping-by-hand" class="section level2 hasAnchor" number="10.2">
 <h2><span class="header-section-number">10.2</span> ‘looping’ by hand<a href="loops.html#looping-by-hand" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A slow and tedious way to do the five simulations would be as follows. We simulate the first set of 20 birthdays, count how many unique birthdays there are, and store the result in element <code>1</code> of <code>numberUnique</code>:</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="loops.html#cb100-1" aria-hidden="true" tabindex="-1"></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb100-2"><a href="loops.html#cb100-2" aria-hidden="true" tabindex="-1"></a>numberUnique[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="loops.html#cb100-1" tabindex="-1"></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb100-2"><a href="loops.html#cb100-2" tabindex="-1"></a>numberUnique[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
 <p>so that the first element of <code>numberUnique</code> has been updated:</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="loops.html#cb101-1" aria-hidden="true" tabindex="-1"></a>numberUnique</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="loops.html#cb101-1" tabindex="-1"></a>numberUnique</span></code></pre></div>
 <pre><code>## [1] 19  0  0  0  0</code></pre>
 <p>(We’ll have a quick look at <code>birthdays</code>, to see why the first element is 19)</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="loops.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(birthdays)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="loops.html#cb103-1" tabindex="-1"></a><span class="fu">sort</span>(birthdays)</span></code></pre></div>
 <pre><code>##  [1]  48  62  71  75  84 102 130 152 172 176 186 235 245 255 259 291 307 307 312
 ## [20] 365</code></pre>
 <p>(There are 19 unique birthdays: two people had birthdays on day number 307.)</p>
 <p>Then we simulate the second set of 20 birthdays, count how many unique birthdays there are, and store the result in element <code>2</code> of <code>numberUnique</code>:</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="loops.html#cb105-1" aria-hidden="true" tabindex="-1"></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb105-2"><a href="loops.html#cb105-2" aria-hidden="true" tabindex="-1"></a>numberUnique[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="loops.html#cb105-1" tabindex="-1"></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb105-2"><a href="loops.html#cb105-2" tabindex="-1"></a>numberUnique[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
 <p>Note that <code>sample()</code> produces a different result each time, so we’ll have different values in <code>birthdays</code>:</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="loops.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(birthdays)</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="loops.html#cb106-1" tabindex="-1"></a><span class="fu">sort</span>(birthdays)</span></code></pre></div>
 <pre><code>##  [1]  54  65  76  80 126 126 150 152 180 197 203 246 288 300 303 304 315 316 320
 ## [20] 357</code></pre>
 <p>Now the second element of <code>numberUnique</code> has been updated:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="loops.html#cb108-1" aria-hidden="true" tabindex="-1"></a>numberUnique</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="loops.html#cb108-1" tabindex="-1"></a>numberUnique</span></code></pre></div>
 <pre><code>## [1] 19 19  0  0  0</code></pre>
 <p>and we keep going…</p>
 <p>But to do lots of simulations, this would take ages!</p>
 <div class="task">
 <div class="exercise">
-<p><span id="exr:unlabeled-div-7" class="exercise"><strong>Exercise 10.1  </strong></span>In a script file, first pre-assign <code>numberUnique</code> to be a vector of 5 zeros. Then copy these two lines into your script, pasting them five times:</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="loops.html#cb110-1" aria-hidden="true" tabindex="-1"></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb110-2"><a href="loops.html#cb110-2" aria-hidden="true" tabindex="-1"></a>numberUnique[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
+<p><span id="exr:unlabeled-div-8" class="exercise"><strong>Exercise 10.1  </strong></span>In a script file, first pre-assign <code>numberUnique</code> to be a vector of 5 zeros. Then copy these two lines into your script, pasting them five times:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="loops.html#cb110-1" tabindex="-1"></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb110-2"><a href="loops.html#cb110-2" tabindex="-1"></a>numberUnique[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
 <p>Change the numbers in the square brackets <code>[]</code> as appropriate: your goal is to do five simulations, and replace the 5 zeros in <code>numberUnique</code> with the results from the five simulations. Run your script and look at the values in <code>numberUnique</code>, to see that your script has worked.</p>
 </div>
 </div>
@@ -352,53 +360,53 @@ div.csl-indent {
 <div id="for-loops" class="section level2 hasAnchor" number="10.3">
 <h2><span class="header-section-number">10.3</span> for loops<a href="loops.html#for-loops" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A more convenient way to tell R to do the five (or many more) simulations is to use what we call a <strong>for loop</strong>:</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="loops.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>){</span>
-<span id="cb111-2"><a href="loops.html#cb111-2" aria-hidden="true" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb111-3"><a href="loops.html#cb111-3" aria-hidden="true" tabindex="-1"></a>  numberUnique[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
-<span id="cb111-4"><a href="loops.html#cb111-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="loops.html#cb111-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>){</span>
+<span id="cb111-2"><a href="loops.html#cb111-2" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb111-3"><a href="loops.html#cb111-3" tabindex="-1"></a>  numberUnique[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
+<span id="cb111-4"><a href="loops.html#cb111-4" tabindex="-1"></a>}</span></code></pre></div>
 <p>This is the same (but more concise) as writing out the following:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="loops.html#cb112-1" aria-hidden="true" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb112-2"><a href="loops.html#cb112-2" aria-hidden="true" tabindex="-1"></a>  numberUnique[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
-<span id="cb112-3"><a href="loops.html#cb112-3" aria-hidden="true" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb112-4"><a href="loops.html#cb112-4" aria-hidden="true" tabindex="-1"></a>  numberUnique[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
-<span id="cb112-5"><a href="loops.html#cb112-5" aria-hidden="true" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb112-6"><a href="loops.html#cb112-6" aria-hidden="true" tabindex="-1"></a>  numberUnique[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
-<span id="cb112-7"><a href="loops.html#cb112-7" aria-hidden="true" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb112-8"><a href="loops.html#cb112-8" aria-hidden="true" tabindex="-1"></a>  numberUnique[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
-<span id="cb112-9"><a href="loops.html#cb112-9" aria-hidden="true" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb112-10"><a href="loops.html#cb112-10" aria-hidden="true" tabindex="-1"></a>  numberUnique[<span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="loops.html#cb112-1" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb112-2"><a href="loops.html#cb112-2" tabindex="-1"></a>  numberUnique[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
+<span id="cb112-3"><a href="loops.html#cb112-3" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb112-4"><a href="loops.html#cb112-4" tabindex="-1"></a>  numberUnique[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
+<span id="cb112-5"><a href="loops.html#cb112-5" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb112-6"><a href="loops.html#cb112-6" tabindex="-1"></a>  numberUnique[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
+<span id="cb112-7"><a href="loops.html#cb112-7" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb112-8"><a href="loops.html#cb112-8" tabindex="-1"></a>  numberUnique[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span>
+<span id="cb112-9"><a href="loops.html#cb112-9" tabindex="-1"></a>  birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb112-10"><a href="loops.html#cb112-10" tabindex="-1"></a>  numberUnique[<span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(birthdays))</span></code></pre></div>
 <p>Comparing the two, we can see that in the for loop, the commands inside the brackets <code>{ }</code> have been repeated five times, but with the value of <code>i</code> within <code>[i]</code> cycling through the integers 1, 2, 3, 4, 5. R will cycle <code>i</code> through these five values, because as the start of the for loop, we wrote <code>i = 1:5</code>, and <code>1:5</code> produces these five integers.</p>
 <p><img src="images/forLoop.png" width="542" style="display: block; margin: auto;" /></p>
 <p>The ‘looping’ variable <code>i</code> can also be within calculations. Here’s a simple example. This loop will do four ‘iterations’, so we will first pre-assign a vector with four zeros to store the results:</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="loops.html#cb113-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="loops.html#cb113-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p>Then this for loop:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="loops.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>){</span>
-<span id="cb114-2"><a href="loops.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> i <span class="sc">^</span> (i <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb114-3"><a href="loops.html#cb114-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="loops.html#cb114-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb114-2"><a href="loops.html#cb114-2" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> i <span class="sc">^</span> (i <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb114-3"><a href="loops.html#cb114-3" tabindex="-1"></a>}</span></code></pre></div>
 <p>would be equivalent to writing out</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="loops.html#cb115-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">^</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb115-2"><a href="loops.html#cb115-2" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">^</span> (<span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb115-3"><a href="loops.html#cb115-3" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">^</span> (<span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb115-4"><a href="loops.html#cb115-4" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">^</span> (<span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="loops.html#cb115-1" tabindex="-1"></a>results[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">^</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb115-2"><a href="loops.html#cb115-2" tabindex="-1"></a>results[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">^</span> (<span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb115-3"><a href="loops.html#cb115-3" tabindex="-1"></a>results[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">^</span> (<span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb115-4"><a href="loops.html#cb115-4" tabindex="-1"></a>results[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">^</span> (<span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="task">
 <div class="exercise">
-<p><span id="exr:unlabeled-div-8" class="exercise"><strong>Exercise 10.2  </strong></span>Using for loops.</p>
+<p><span id="exr:unlabeled-div-9" class="exercise"><strong>Exercise 10.2  </strong></span>Using for loops.</p>
 <ol style="list-style-type: decimal">
 <li><p>Modify the birthday problem for loop shown above to do 10 simulations rather than 5. Make sure you ‘pre-assign’ <code>numberUnique</code> first, to be a vector of 10 zeros. Inspect the results in <code>numberUnique</code>, after you have run your loop.</p></li>
 <li><p>First, copy and paste these commands into a script file, then run them and inspect <code>reciprocals</code> to see the result</p></li>
 </ol>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="loops.html#cb116-1" aria-hidden="true" tabindex="-1"></a>reciprocals <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">3</span>)</span>
-<span id="cb116-2"><a href="loops.html#cb116-2" aria-hidden="true" tabindex="-1"></a>reciprocals[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">1</span></span>
-<span id="cb116-3"><a href="loops.html#cb116-3" aria-hidden="true" tabindex="-1"></a>reciprocals[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb116-4"><a href="loops.html#cb116-4" aria-hidden="true" tabindex="-1"></a>reciprocals[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="loops.html#cb116-1" tabindex="-1"></a>reciprocals <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">3</span>)</span>
+<span id="cb116-2"><a href="loops.html#cb116-2" tabindex="-1"></a>reciprocals[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">1</span></span>
+<span id="cb116-3"><a href="loops.html#cb116-3" tabindex="-1"></a>reciprocals[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb116-4"><a href="loops.html#cb116-4" tabindex="-1"></a>reciprocals[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span></span></code></pre></div>
 <p>Now write a for loop that produces the same result.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>All the calculations we’ve done using for loops can actually be done even more efficiently another way, but we won’t worry about this for now. for loops are really designed for problems when the results at one iteration will depend on results from previous iterations, as in the following example. Can you predict which famous sequence the following code would produce? Copy and paste the code into R to find out.</li>
 </ol>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="loops.html#cb117-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">10</span>)</span>
-<span id="cb117-2"><a href="loops.html#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>){</span>
-<span id="cb117-3"><a href="loops.html#cb117-3" aria-hidden="true" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> results[i<span class="dv">-1</span>] <span class="sc">+</span> results[i<span class="dv">-2</span>]</span>
-<span id="cb117-4"><a href="loops.html#cb117-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="loops.html#cb117-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">10</span>)</span>
+<span id="cb117-2"><a href="loops.html#cb117-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>){</span>
+<span id="cb117-3"><a href="loops.html#cb117-3" tabindex="-1"></a>  results[i] <span class="ot">&lt;-</span> results[i<span class="dv">-1</span>] <span class="sc">+</span> results[i<span class="dv">-2</span>]</span>
+<span id="cb117-4"><a href="loops.html#cb117-4" tabindex="-1"></a>}</span></code></pre></div>
 <p>(Why did we use <code>i in 3:10</code> and not <code>i in 1:10</code>?)</p>
 </div>
 </div>
