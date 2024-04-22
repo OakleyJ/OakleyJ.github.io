@@ -511,7 +511,7 @@ Given the corresponding observed values <span class="math inline">\(x_1,\ldots,x
 We also have</p>
 <div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="interval-estimates-and-confidence-intervals.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qchisq</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), <span class="dv">248</span>)</span></code></pre></div>
 <pre><code>## [1] 206.2736 293.5128</code></pre>
-<p>which means that <span class="math inline">\(\chi^2_{248,\, 0.975} = 206.3\)</span> and <span class="math inline">\(\chi^2_{248,\, 0.025} = 293.5\)</span> (to 1 d.p.): the 2.5th and 97.5th percentiles of the <span class="math inline">\(\chi^2_{248}\)</span> distribution are 206.3 and 293.5 respectively. These are displayed below: each red shaded region indicates a 2.5% probability, so the probability of lying outside the range (439, 293.5) is 5%.
+<p>which means that <span class="math inline">\(\chi^2_{248,\, 0.975} = 206.3\)</span> and <span class="math inline">\(\chi^2_{248,\, 0.025} = 293.5\)</span> (to 1 d.p.): the 2.5th and 97.5th percentiles of the <span class="math inline">\(\chi^2_{248}\)</span> distribution are 206.3 and 293.5 respectively. These are displayed below: each red shaded region indicates a 2.5% probability, so the probability of lying outside the range (206.3, 293.5) is 5%.
 <img src="MAS109-5052-Data-Science_files/figure-html/unnamed-chunk-118-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Now, the 95% confidence interval for <span class="math inline">\(\mu\)</span> is
 <span class="math display">\[
