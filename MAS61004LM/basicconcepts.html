@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -99,6 +106,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -107,12 +141,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./basicconcepts.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Basic concepts</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./basicconcepts.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Basic concepts</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -122,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">A Second Course on Linear Models</a> 
@@ -227,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -260,7 +294,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>In this chapter, we will:</p>
 <ol type="1">
@@ -272,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="motivating-example" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">1.1</span> Motivating example</h2>
 <div id="exm-1" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.1 </strong></span>Respiration data</p>
+<p><span class="theorem-title"><strong>Example 1.1</strong></span> Respiration data</p>
 </div>
 <p>The following is an extract from a data set with data on 305 individuals:</p>
 <div class="cell">
@@ -369,7 +405,7 @@ Note
 \end{equation}\]</span> Even more neatly, if we define the parameter vector <span class="math inline">\(\boldsymbol{\beta}=(\beta_0,\beta_1)^T\)</span> and the <span class="math inline">\(n\times 2\)</span> matrix <span class="math inline">\(X\)</span> is defined to have <span class="math inline">\(\boldsymbol{1}_n\)</span> as its first column and <span class="math inline">\(\boldsymbol{x}\)</span> as its second, then</p>
 <p><span id="eq-matrixform"><span class="math display">\[
 \boldsymbol{Y}=X\boldsymbol{\beta} +\boldsymbol{\varepsilon}.
-\tag{1.3}\]</span></span> The form (<a href="#eq-matrixform">Equation&nbsp;<span>1.3</span></a>) naturally generalizes to more complicated models; for a suitable definition of the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> and the matrix <span class="math inline">\(X\)</span> (also called the <em>design matrix</em>) we can express both <a href="#eq-multipleregression">Equation&nbsp;<span>1.1</span></a> and <a href="#eq-quadraticregression">Equation&nbsp;<span>1.2</span></a> in this form.</p>
+\tag{1.3}\]</span></span> The form (<a href="#eq-matrixform" class="quarto-xref">Equation&nbsp;<span>1.3</span></a>) naturally generalizes to more complicated models; for a suitable definition of the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> and the matrix <span class="math inline">\(X\)</span> (also called the <em>design matrix</em>) we can express both <a href="#eq-multipleregression" class="quarto-xref">Equation&nbsp;<span>1.1</span></a> and <a href="#eq-quadraticregression" class="quarto-xref">Equation&nbsp;<span>1.2</span></a> in this form.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -380,20 +416,20 @@ The importance of matrix notation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Matrix notation is really useful. As well as clarifying the definition of a linear model (any model that can be expressed in the form <a href="#eq-matrixform">Equation&nbsp;<span>1.3</span></a>), it means that any result obtained using the matrix notation can be applied to <em>all</em> linear models.</p>
+<p>Matrix notation is really useful. As well as clarifying the definition of a linear model (any model that can be expressed in the form <a href="#eq-matrixform" class="quarto-xref">Equation&nbsp;<span>1.3</span></a>), it means that any result obtained using the matrix notation can be applied to <em>all</em> linear models.</p>
 </div>
 </div>
 </section>
 <section id="sec-parameters" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="sec-parameters"><span class="header-section-number">1.4</span> Parameters and assumptions</h2>
-<p>The linear model is expressed by (<a href="#eq-matrixform">Equation&nbsp;<span>1.3</span></a>). In its general form,</p>
+<p>The linear model is expressed by (<a href="#eq-matrixform" class="quarto-xref">Equation&nbsp;<span>1.3</span></a>). In its general form,</p>
 <ul>
 <li><span class="math inline">\(\boldsymbol{y}\)</span> is a <span class="math inline">\(n\times 1\)</span> vector of observed random variables.</li>
 <li><span class="math inline">\(X\)</span> is an <span class="math inline">\(n\times p\)</span> matrix of known coefficients (perhaps observed or controlled values of other explanatory variables, but also perhaps functions of such explanatory variables, or just constants).</li>
 <li><span class="math inline">\(\boldsymbol{\beta}\)</span> is a <span class="math inline">\(p\times 1\)</span> vector of unknown parameters.</li>
 <li><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> is an <span class="math inline">\(n \times 1\)</span> vector of unobserved random variables.</li>
 </ul>
-<p>The number of components, <span class="math inline">\(p\)</span>, of <span class="math inline">\(\boldsymbol{\beta}\)</span> is allowed to be whatever we wish, as long as it is not too large to be sensible for the number of observations. In the multiple regression model (<a href="#eq-multipleregression">Equation&nbsp;<span>1.1</span></a>) it would be <span class="math inline">\(r+1\)</span>, while in the quadratic regression model (<a href="#eq-quadraticregression">Equation&nbsp;<span>1.2</span></a>) it would be 3.</p>
+<p>The number of components, <span class="math inline">\(p\)</span>, of <span class="math inline">\(\boldsymbol{\beta}\)</span> is allowed to be whatever we wish, as long as it is not too large to be sensible for the number of observations. In the multiple regression model (<a href="#eq-multipleregression" class="quarto-xref">Equation&nbsp;<span>1.1</span></a>) it would be <span class="math inline">\(r+1\)</span>, while in the quadratic regression model (<a href="#eq-quadraticregression" class="quarto-xref">Equation&nbsp;<span>1.2</span></a>) it would be 3.</p>
 <p>To fully define our model we need to make some assumptions on <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>. In the general linear model, we assume that <span class="math inline">\(\boldsymbol{\varepsilon}\)</span> has a multivariate normal distribution, whose components have zero mean, are independent, and have common variance <span class="math inline">\(\sigma^2\)</span> (that they have the same variance is referred to as <em>homoscedasticity</em>), which is another unknown parameter. Testing these assumptions and what to do if they are not satisfied will be a major part of this module.</p>
 <p>From these assumptions, <span class="math display">\[
 \boldsymbol{\varepsilon}\sim N_n(\boldsymbol{0},\sigma^2I_n)
@@ -405,11 +441,11 @@ The importance of matrix notation
 <h2 data-number="1.5" class="anchored" data-anchor-id="terminology"><span class="header-section-number">1.5</span> Terminology</h2>
 <p>We can think of each column of the <span class="math inline">\(X\)</span> matrix as comprising <span class="math inline">\(n\)</span> values of a <em>regressor variable</em>, also called an <em>independent variable</em>. So we have in general one response variable and <span class="math inline">\(p\)</span> (<span class="math inline">\(p=r+1\)</span> in multiple regression, <span class="math inline">\(p=3\)</span> in quadratic regression) regressor variables.</p>
 <p>Sometimes this terminology may seem strange, because, for example, in the simple linear regression model the <span class="math inline">\(X\)</span> matrix has two columns, the first of which is a column of ones. We still would say that this column defines a regressor variable, but this ‘variable’ is a constant.</p>
-<p>Regressor variables are also sometimes called explanatory variables, but in this course we will give this term a slightly different meaning. Consider the quadratic regression (<a href="#eq-quadraticregression">Equation&nbsp;<span>1.2</span></a>). Here there are three regressor variables (the constant, the <span class="math inline">\(x_i\)</span> column and the <span class="math inline">\(x_i^2\)</span> column), but there is really only one <span class="math inline">\(x\)</span> variable. The three regressor variables are all functions of the <span class="math inline">\(x\)</span> variable. In this course we will refer to the <span class="math inline">\(x\)</span> variable as the single explanatory variable in the quadratic regression model. In general, the regressor variables will always be functions of the explanatory variables.</p>
+<p>Regressor variables are also sometimes called explanatory variables, but in this course we will give this term a slightly different meaning. Consider the quadratic regression (<a href="#eq-quadraticregression" class="quarto-xref">Equation&nbsp;<span>1.2</span></a>). Here there are three regressor variables (the constant, the <span class="math inline">\(x_i\)</span> column and the <span class="math inline">\(x_i^2\)</span> column), but there is really only one <span class="math inline">\(x\)</span> variable. The three regressor variables are all functions of the <span class="math inline">\(x\)</span> variable. In this course we will refer to the <span class="math inline">\(x\)</span> variable as the single explanatory variable in the quadratic regression model. In general, the regressor variables will always be functions of the explanatory variables.</p>
 <div id="exm-2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.2 </strong></span>An example of the design matrix <span class="math inline">\(X\)</span> - polynomial regression</p>
+<p><span class="theorem-title"><strong>Example 1.2</strong></span> An example of the design matrix <span class="math inline">\(X\)</span> - polynomial regression</p>
 </div>
-<p>The general polynomial regression with one explanatory variable, a generalization of the quadratic regression <a href="#eq-quadraticregression">Equation&nbsp;<span>1.2</span></a>, is <span class="math display">\[
+<p>The general polynomial regression with one explanatory variable, a generalization of the quadratic regression <a href="#eq-quadraticregression" class="quarto-xref">Equation&nbsp;<span>1.2</span></a>, is <span class="math display">\[
 Y_i=\beta_0+\beta_1x_i+\cdots+\beta_rx_i^r+\varepsilon_i
 \]</span> which is turned into the general linear model form by <span class="math display">\[
 \boldsymbol{Y}=\left(\begin{array}{c} Y_1 \\ Y_2 \\ \vdots \\
@@ -432,7 +468,7 @@ Exercise
 </div>
 <div class="callout-body-container callout-body">
 <div id="exr-slr-meancentred-matrix" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.1 </strong></span>An alternative way to parameterise the simple linear regression model is as follows: <span class="math display">\[
+<p><span class="theorem-title"><strong>Exercise 1.1</strong></span> An alternative way to parameterise the simple linear regression model is as follows: <span class="math display">\[
 Y_i = \beta_0 + \beta_1(x_i-\bar{x}) + \varepsilon_i.
 \]</span> This is sometimes referred to as <em>mean-centring</em> the independent variable.</p>
 <ol type="1">
@@ -558,10 +594,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -571,8 +624,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -584,7 +646,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -628,6 +813,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -653,6 +839,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -714,17 +926,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link">
+      <a href="./index.html" class="pagination-link" aria-label="Introduction">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introduction</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./parameterestimation.html" class="pagination-link">
+      <a href="./parameterestimation.html" class="pagination-link" aria-label="Parameter estimation for linear models">
         <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Parameter estimation for linear models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
