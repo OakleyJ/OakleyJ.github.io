@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 15 Processing multiple files | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 15 Processing multiple files | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-10-14" />
+<meta name="date" content="2024-09-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,21 +52,22 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -102,7 +103,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +116,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -130,10 +131,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -352,7 +358,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#global-aesthetics"><i class="fa fa-check"></i><b>18.5</b> ‘Global’ aesthetics</a></li>
 <li class="chapter" data-level="18.6" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#facets"><i class="fa fa-check"></i><b>18.6</b> Facets</a></li>
-<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exercises"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
+<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exBrexitPlots"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
 <li class="chapter" data-level="18.8" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#further-reading-6"><i class="fa fa-check"></i><b>18.8</b> Further reading</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html"><i class="fa fa-check"></i><b>19</b> Presentation of plots</a>
@@ -367,7 +373,7 @@ div.csl-indent {
 <li class="chapter" data-level="19.5.2" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#a-first-attempt-four-histograms"><i class="fa fa-check"></i><b>19.5.2</b> A first attempt: four histograms</a></li>
 <li class="chapter" data-level="19.5.3" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#using-a-box-plot"><i class="fa fa-check"></i><b>19.5.3</b> Using a box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises-1"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
+<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
 <li class="chapter" data-level="19.7" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#data-sources-1"><i class="fa fa-check"></i><b>19.7</b> Data sources</a></li>
 </ul></li>
 <li class="chapter" data-level="20" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html"><i class="fa fa-check"></i><b>20</b> Maps with <code>leaflet</code></a>
@@ -383,6 +389,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="20.4" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#further-reading-7"><i class="fa fa-check"></i><b>20.4</b> Further reading</a></li>
 <li class="chapter" data-level="20.5" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#acknowledgement"><i class="fa fa-check"></i><b>20.5</b> Acknowledgement</a></li>
+<li class="chapter" data-level="20.6" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#references"><i class="fa fa-check"></i><b>20.6</b> References:</a></li>
 </ul></li>
 <li class="part"><span><b>IV Presenting your results</b></span></li>
 <li class="chapter" data-level="21" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>21</b> R Markdown</a>
@@ -469,7 +476,7 @@ div.csl-indent {
 <li class="chapter" data-level="25.3" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#approximately-matching-strings"><i class="fa fa-check"></i><b>25.3</b> Approximately matching strings</a></li>
 <li class="chapter" data-level="25.4" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#assembling-the-target-data-frame"><i class="fa fa-check"></i><b>25.4</b> Assembling the target data frame</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -511,34 +518,34 @@ div.csl-indent {
 <div id="the-core-code-block" class="section level3 hasAnchor" number="15.2.1">
 <h3><span class="header-section-number">15.2.1</span> The core code block<a href="processing-multiple-files.html#the-core-code-block" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We have a ‘core’ block of code that we want to use multiple times, making small changes each time. The code to get a single data file into a data frame was as follows. (We’ll add an extra <code>mutate()</code> command to store the module code).</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="processing-multiple-files.html#cb197-1" aria-hidden="true" tabindex="-1"></a>examTextRaw <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(<span class="st">&quot;data/stat101.txt&quot;</span>)</span>
-<span id="cb197-2"><a href="processing-multiple-files.html#cb197-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-3"><a href="processing-multiple-files.html#cb197-3" aria-hidden="true" tabindex="-1"></a>examTextClean <span class="ot">&lt;-</span> examTextRaw <span class="sc">%&gt;%</span></span>
-<span id="cb197-4"><a href="processing-multiple-files.html#cb197-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb197-5"><a href="processing-multiple-files.html#cb197-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
-<span id="cb197-6"><a href="processing-multiple-files.html#cb197-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb197-7"><a href="processing-multiple-files.html#cb197-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_trim</span>()</span>
-<span id="cb197-8"><a href="processing-multiple-files.html#cb197-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-9"><a href="processing-multiple-files.html#cb197-9" aria-hidden="true" tabindex="-1"></a>header <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;student&quot;</span>)</span>
-<span id="cb197-10"><a href="processing-multiple-files.html#cb197-10" aria-hidden="true" tabindex="-1"></a>endLine <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;denotes&quot;</span>)</span>
-<span id="cb197-11"><a href="processing-multiple-files.html#cb197-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-12"><a href="processing-multiple-files.html#cb197-12" aria-hidden="true" tabindex="-1"></a><span class="fu">read_table</span>(examTextClean[header<span class="sc">:</span>(endLine <span class="sc">-</span> <span class="dv">1</span>)]) <span class="sc">%&gt;%</span></span>
-<span id="cb197-13"><a href="processing-multiple-files.html#cb197-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">module =</span> <span class="st">&quot;stat101&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="processing-multiple-files.html#cb197-1" tabindex="-1"></a>examTextRaw <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(<span class="st">&quot;data/stat101.txt&quot;</span>)</span>
+<span id="cb197-2"><a href="processing-multiple-files.html#cb197-2" tabindex="-1"></a></span>
+<span id="cb197-3"><a href="processing-multiple-files.html#cb197-3" tabindex="-1"></a>examTextClean <span class="ot">&lt;-</span> examTextRaw <span class="sc">%&gt;%</span></span>
+<span id="cb197-4"><a href="processing-multiple-files.html#cb197-4" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb197-5"><a href="processing-multiple-files.html#cb197-5" tabindex="-1"></a>  <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
+<span id="cb197-6"><a href="processing-multiple-files.html#cb197-6" tabindex="-1"></a>                  <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb197-7"><a href="processing-multiple-files.html#cb197-7" tabindex="-1"></a>  <span class="fu">str_trim</span>()</span>
+<span id="cb197-8"><a href="processing-multiple-files.html#cb197-8" tabindex="-1"></a></span>
+<span id="cb197-9"><a href="processing-multiple-files.html#cb197-9" tabindex="-1"></a>header <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;student&quot;</span>)</span>
+<span id="cb197-10"><a href="processing-multiple-files.html#cb197-10" tabindex="-1"></a>endLine <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;denotes&quot;</span>)</span>
+<span id="cb197-11"><a href="processing-multiple-files.html#cb197-11" tabindex="-1"></a></span>
+<span id="cb197-12"><a href="processing-multiple-files.html#cb197-12" tabindex="-1"></a><span class="fu">read_table</span>(examTextClean[header<span class="sc">:</span>(endLine <span class="sc">-</span> <span class="dv">1</span>)]) <span class="sc">%&gt;%</span></span>
+<span id="cb197-13"><a href="processing-multiple-files.html#cb197-13" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">module =</span> <span class="st">&quot;stat101&quot;</span>)</span></code></pre></div>
 <p>We want to run this block twice, once for the file <code>stat101.txt</code> and once for <code>stat102.txt</code>.</p>
 </div>
 <div id="identify-the-variables-we-need-to-specify" class="section level3 hasAnchor" number="15.2.2">
 <h3><span class="header-section-number">15.2.2</span> Identify the variables we need to specify<a href="processing-multiple-files.html#identify-the-variables-we-need-to-specify" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The code block above needs to run twice, once using the file name <code>stat101.txt</code>, and once using the name <code>stat102.txt</code>. We will have to specify these in advance. We can actually just specify module codes:</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="processing-multiple-files.html#cb198-1" aria-hidden="true" tabindex="-1"></a>modules <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;stat101&quot;</span>, <span class="st">&quot;stat102&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="processing-multiple-files.html#cb198-1" tabindex="-1"></a>modules <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;stat101&quot;</span>, <span class="st">&quot;stat102&quot;</span>)</span></code></pre></div>
 <p>and construct file paths using <code>paste0()</code>:</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="processing-multiple-files.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, modules, <span class="st">&quot;.txt&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="processing-multiple-files.html#cb199-1" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, modules, <span class="st">&quot;.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;data/stat101.txt&quot; &quot;data/stat102.txt&quot;</code></pre>
 </div>
 <div id="create-an-empty-list-to-store-the-results" class="section level3 hasAnchor" number="15.2.3">
 <h3><span class="header-section-number">15.2.3</span> Create an empty list to store the results<a href="processing-multiple-files.html#create-an-empty-list-to-store-the-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Lists are useful here, as an element of a list can be any type of object. We make an empty one as follows:</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="processing-multiple-files.html#cb201-1" aria-hidden="true" tabindex="-1"></a>moduleResults <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(modules))</span>
-<span id="cb201-2"><a href="processing-multiple-files.html#cb201-2" aria-hidden="true" tabindex="-1"></a>moduleResults</span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="processing-multiple-files.html#cb201-1" tabindex="-1"></a>moduleResults <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(modules))</span>
+<span id="cb201-2"><a href="processing-multiple-files.html#cb201-2" tabindex="-1"></a>moduleResults</span></code></pre></div>
 <pre><code>## [[1]]
 ## NULL
 ## 
@@ -549,31 +556,31 @@ div.csl-indent {
 <div id="use-a-for-loop-to-run-the-code-block-multiple-times" class="section level3 hasAnchor" number="15.2.4">
 <h3><span class="header-section-number">15.2.4</span> Use a for loop to run the code block multiple times<a href="processing-multiple-files.html#use-a-for-loop-to-run-the-code-block-multiple-times" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The code to be repeated goes inside a for loop, with one element of the list <code>moduleResults</code> filled each time. (We’ll repeat the commands to set up the variables at the start.)</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="processing-multiple-files.html#cb203-1" aria-hidden="true" tabindex="-1"></a>modules <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;stat101&quot;</span>, <span class="st">&quot;stat102&quot;</span>)</span>
-<span id="cb203-2"><a href="processing-multiple-files.html#cb203-2" aria-hidden="true" tabindex="-1"></a>filePaths <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, modules, <span class="st">&quot;.txt&quot;</span>)</span>
-<span id="cb203-3"><a href="processing-multiple-files.html#cb203-3" aria-hidden="true" tabindex="-1"></a>moduleResults <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(modules))</span>
-<span id="cb203-4"><a href="processing-multiple-files.html#cb203-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb203-5"><a href="processing-multiple-files.html#cb203-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(modules)){</span>
-<span id="cb203-6"><a href="processing-multiple-files.html#cb203-6" aria-hidden="true" tabindex="-1"></a>  examTextRaw <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(filePaths[i])</span>
-<span id="cb203-7"><a href="processing-multiple-files.html#cb203-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb203-8"><a href="processing-multiple-files.html#cb203-8" aria-hidden="true" tabindex="-1"></a>  examTextClean <span class="ot">&lt;-</span> examTextRaw <span class="sc">%&gt;%</span></span>
-<span id="cb203-9"><a href="processing-multiple-files.html#cb203-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb203-10"><a href="processing-multiple-files.html#cb203-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
-<span id="cb203-11"><a href="processing-multiple-files.html#cb203-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb203-12"><a href="processing-multiple-files.html#cb203-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_trim</span>()</span>
-<span id="cb203-13"><a href="processing-multiple-files.html#cb203-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb203-14"><a href="processing-multiple-files.html#cb203-14" aria-hidden="true" tabindex="-1"></a>  header <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;student&quot;</span>)</span>
-<span id="cb203-15"><a href="processing-multiple-files.html#cb203-15" aria-hidden="true" tabindex="-1"></a>  endLine <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;denotes&quot;</span>)</span>
-<span id="cb203-16"><a href="processing-multiple-files.html#cb203-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb203-17"><a href="processing-multiple-files.html#cb203-17" aria-hidden="true" tabindex="-1"></a>  moduleResults[[i]] <span class="ot">&lt;-</span> </span>
-<span id="cb203-18"><a href="processing-multiple-files.html#cb203-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_table</span>(examTextClean[header<span class="sc">:</span>(endLine <span class="sc">-</span> <span class="dv">1</span>)]) <span class="sc">%&gt;%</span></span>
-<span id="cb203-19"><a href="processing-multiple-files.html#cb203-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">module =</span> modules[i])</span>
-<span id="cb203-20"><a href="processing-multiple-files.html#cb203-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="processing-multiple-files.html#cb203-1" tabindex="-1"></a>modules <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;stat101&quot;</span>, <span class="st">&quot;stat102&quot;</span>)</span>
+<span id="cb203-2"><a href="processing-multiple-files.html#cb203-2" tabindex="-1"></a>filePaths <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, modules, <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb203-3"><a href="processing-multiple-files.html#cb203-3" tabindex="-1"></a>moduleResults <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(modules))</span>
+<span id="cb203-4"><a href="processing-multiple-files.html#cb203-4" tabindex="-1"></a></span>
+<span id="cb203-5"><a href="processing-multiple-files.html#cb203-5" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(modules)){</span>
+<span id="cb203-6"><a href="processing-multiple-files.html#cb203-6" tabindex="-1"></a>  examTextRaw <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(filePaths[i])</span>
+<span id="cb203-7"><a href="processing-multiple-files.html#cb203-7" tabindex="-1"></a>  </span>
+<span id="cb203-8"><a href="processing-multiple-files.html#cb203-8" tabindex="-1"></a>  examTextClean <span class="ot">&lt;-</span> examTextRaw <span class="sc">%&gt;%</span></span>
+<span id="cb203-9"><a href="processing-multiple-files.html#cb203-9" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb203-10"><a href="processing-multiple-files.html#cb203-10" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
+<span id="cb203-11"><a href="processing-multiple-files.html#cb203-11" tabindex="-1"></a>                    <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb203-12"><a href="processing-multiple-files.html#cb203-12" tabindex="-1"></a>    <span class="fu">str_trim</span>()</span>
+<span id="cb203-13"><a href="processing-multiple-files.html#cb203-13" tabindex="-1"></a>  </span>
+<span id="cb203-14"><a href="processing-multiple-files.html#cb203-14" tabindex="-1"></a>  header <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;student&quot;</span>)</span>
+<span id="cb203-15"><a href="processing-multiple-files.html#cb203-15" tabindex="-1"></a>  endLine <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;denotes&quot;</span>)</span>
+<span id="cb203-16"><a href="processing-multiple-files.html#cb203-16" tabindex="-1"></a>  </span>
+<span id="cb203-17"><a href="processing-multiple-files.html#cb203-17" tabindex="-1"></a>  moduleResults[[i]] <span class="ot">&lt;-</span> </span>
+<span id="cb203-18"><a href="processing-multiple-files.html#cb203-18" tabindex="-1"></a>    <span class="fu">read_table</span>(examTextClean[header<span class="sc">:</span>(endLine <span class="sc">-</span> <span class="dv">1</span>)]) <span class="sc">%&gt;%</span></span>
+<span id="cb203-19"><a href="processing-multiple-files.html#cb203-19" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">module =</span> modules[i])</span>
+<span id="cb203-20"><a href="processing-multiple-files.html#cb203-20" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="convert-the-list-to-a-data-frame" class="section level3 hasAnchor" number="15.2.5">
 <h3><span class="header-section-number">15.2.5</span> Convert the list to a data frame<a href="processing-multiple-files.html#convert-the-list-to-a-data-frame" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As each data frame in the list has the same column headings, we can convert the data frame to a list as follows</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="processing-multiple-files.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(rbind.data.frame, moduleResults)</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="processing-multiple-files.html#cb204-1" tabindex="-1"></a><span class="fu">do.call</span>(rbind.data.frame, moduleResults)</span></code></pre></div>
 <pre><code>## # A tibble: 7 × 4
 ##   student   cwk  exam module 
 ##     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 12 Importing, combining, and reshaping data | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 12 Importing, combining, and reshaping data | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-10-14" />
+<meta name="date" content="2024-09-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,21 +52,22 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -102,7 +103,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +116,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -130,10 +131,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -352,7 +358,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#global-aesthetics"><i class="fa fa-check"></i><b>18.5</b> ‘Global’ aesthetics</a></li>
 <li class="chapter" data-level="18.6" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#facets"><i class="fa fa-check"></i><b>18.6</b> Facets</a></li>
-<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exercises"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
+<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exBrexitPlots"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
 <li class="chapter" data-level="18.8" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#further-reading-6"><i class="fa fa-check"></i><b>18.8</b> Further reading</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html"><i class="fa fa-check"></i><b>19</b> Presentation of plots</a>
@@ -367,7 +373,7 @@ div.csl-indent {
 <li class="chapter" data-level="19.5.2" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#a-first-attempt-four-histograms"><i class="fa fa-check"></i><b>19.5.2</b> A first attempt: four histograms</a></li>
 <li class="chapter" data-level="19.5.3" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#using-a-box-plot"><i class="fa fa-check"></i><b>19.5.3</b> Using a box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises-1"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
+<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
 <li class="chapter" data-level="19.7" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#data-sources-1"><i class="fa fa-check"></i><b>19.7</b> Data sources</a></li>
 </ul></li>
 <li class="chapter" data-level="20" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html"><i class="fa fa-check"></i><b>20</b> Maps with <code>leaflet</code></a>
@@ -383,6 +389,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="20.4" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#further-reading-7"><i class="fa fa-check"></i><b>20.4</b> Further reading</a></li>
 <li class="chapter" data-level="20.5" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#acknowledgement"><i class="fa fa-check"></i><b>20.5</b> Acknowledgement</a></li>
+<li class="chapter" data-level="20.6" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#references"><i class="fa fa-check"></i><b>20.6</b> References:</a></li>
 </ul></li>
 <li class="part"><span><b>IV Presenting your results</b></span></li>
 <li class="chapter" data-level="21" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>21</b> R Markdown</a>
@@ -469,7 +476,7 @@ div.csl-indent {
 <li class="chapter" data-level="25.3" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#approximately-matching-strings"><i class="fa fa-check"></i><b>25.3</b> Approximately matching strings</a></li>
 <li class="chapter" data-level="25.4" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#assembling-the-target-data-frame"><i class="fa fa-check"></i><b>25.4</b> Assembling the target data frame</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -510,13 +517,13 @@ data file to the data you actually worked with in your analysis.
 </div>
 <p>As an example, we’ll import the two files <code>RIOolympics.csv</code> and <code>population.xlsx</code>, and make a single data frame with medal results and population size for each country.</p>
 <p>We suppose that in your current working directory, you have a folder called <code>data</code>, and the two files we want to import are in that folder. First load the <code>tidyverse</code> library</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="importing-combining-and-reshaping-data.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="importing-combining-and-reshaping-data.html#cb98-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <div id="importing-a-.csv-file" class="section level2 hasAnchor" number="12.1">
 <h2><span class="header-section-number">12.1</span> Importing a .csv file<a href="importing-combining-and-reshaping-data.html#importing-a-.csv-file" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Use the command <code>read_csv()</code>, with the path to your target file in quotes (if you can, use the path relative to your project directory). This command is from the <code>readr</code> package <span class="citation">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, and Francois 2018</a>)</span>. We’ll import the <code>RIOolympics.csv</code> file and store it as a data frame called <code>medals</code>.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="importing-combining-and-reshaping-data.html#cb99-1" aria-hidden="true" tabindex="-1"></a>medals <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/RIOolympics.csv&quot;</span>)</span></code></pre></div>
+<p>Use the command <code>read_csv()</code>, with the path to your target file in quotes (if you can, use the path relative to your project directory). This command is from the <code>readr</code> package <span class="citation">(<a href="#ref-R-readr">Wickham, Hester, and Francois 2018</a>)</span>. We’ll import the <code>RIOolympics.csv</code> file and store it as a data frame called <code>medals</code>.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="importing-combining-and-reshaping-data.html#cb99-1" tabindex="-1"></a>medals <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/RIOolympics.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 87 Columns: 6
-## ── Column specification ──────────────
+## ── Column specification ───────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (2): code, country
 ## dbl (4): gold, silver, bronze, total
@@ -524,7 +531,7 @@ data file to the data you actually worked with in your analysis.
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <p>To view the first few rows:</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="importing-combining-and-reshaping-data.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(medals)</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="importing-combining-and-reshaping-data.html#cb101-1" tabindex="-1"></a><span class="fu">head</span>(medals)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 6
 ##   code  country             gold silver bronze total
 ##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
@@ -545,10 +552,10 @@ data file to the data you actually worked with in your analysis.
 </div>
 <div id="importing-an-excel-.xlsx-file" class="section level2 hasAnchor" number="12.2">
 <h2><span class="header-section-number">12.2</span> Importing an Excel .xlsx file<a href="importing-combining-and-reshaping-data.html#importing-an-excel-.xlsx-file" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We can import Excel files with the command <code>readxl::read_excel()</code>. The <code>readxl</code> package <span class="citation">(<a href="#ref-R-readxl" role="doc-biblioref">Wickham and Bryan 2019</a>)</span> is installed as part of the tidyverse, but <em>not</em> loaded by the command <code>library(tidyverse)</code>.</p>
+<p>We can import Excel files with the command <code>readxl::read_excel()</code>. The <code>readxl</code> package <span class="citation">(<a href="#ref-R-readxl">Wickham and Bryan 2019</a>)</span> is installed as part of the tidyverse, but <em>not</em> loaded by the command <code>library(tidyverse)</code>.</p>
 <p>We’ll import the <code>population.xlsx</code> file and store it as a data frame called <code>population</code>:</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="importing-combining-and-reshaping-data.html#cb103-1" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">&quot;data/population.xlsx&quot;</span>)</span>
-<span id="cb103-2"><a href="importing-combining-and-reshaping-data.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(population)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="importing-combining-and-reshaping-data.html#cb103-1" tabindex="-1"></a>population <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">&quot;data/population.xlsx&quot;</span>)</span>
+<span id="cb103-2"><a href="importing-combining-and-reshaping-data.html#cb103-2" tabindex="-1"></a><span class="fu">head</span>(population)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 3
 ##   `Country Name` `Country Code`    `2015`
 ##   &lt;chr&gt;          &lt;chr&gt;              &lt;dbl&gt;
@@ -570,14 +577,14 @@ data file to the data you actually worked with in your analysis.
 <div id="importing-a-plain-text-file" class="section level2 hasAnchor" number="12.3">
 <h2><span class="header-section-number">12.3</span> Importing a plain text file<a href="importing-combining-and-reshaping-data.html#importing-a-plain-text-file" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can import plain text files (typically files with a <code>.txt</code> extension) with the command <code>read_table()</code>. For example, in the MAS61004Data.zip file, there is a file <code>flintsdata.txt</code>. Although the file is a plain text file, the data appear formatted as a two-column table, with headers <code>breadth</code> and <code>length</code>. We import the data (and create a new data frame called <code>flints</code>) as follows.</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="importing-combining-and-reshaping-data.html#cb105-1" aria-hidden="true" tabindex="-1"></a>flints <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">&quot;data/flintsdata.txt&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="importing-combining-and-reshaping-data.html#cb105-1" tabindex="-1"></a>flints <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">&quot;data/flintsdata.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## 
-## ── Column specification ──────────────
+## ── Column specification ───────────────────────────────────────────────
 ## cols(
 ##   breadth = col_double(),
 ##   length = col_double()
 ## )</code></pre>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="importing-combining-and-reshaping-data.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flints)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="importing-combining-and-reshaping-data.html#cb107-1" tabindex="-1"></a><span class="fu">head</span>(flints)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 2
 ##   breadth length
 ##     &lt;dbl&gt;  &lt;dbl&gt;
@@ -592,25 +599,25 @@ data file to the data you actually worked with in your analysis.
 <div id="importing-online-data" class="section level2 hasAnchor" number="12.4">
 <h2><span class="header-section-number">12.4</span> Importing online data<a href="importing-combining-and-reshaping-data.html#importing-online-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If you are online, R can read in data directly from the web: you just give the full web address as the file name, e.g.</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="importing-combining-and-reshaping-data.html#cb109-1" aria-hidden="true" tabindex="-1"></a>maths <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://oakleyj.github.io/exampledata/maths.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="importing-combining-and-reshaping-data.html#cb109-1" tabindex="-1"></a>maths <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://oakleyj.github.io/exampledata/maths.csv&quot;</span>)</span></code></pre></div>
 <p>This can be convenient, though it may slow down your code if the file is large, and there is a risk that your code won’t run in the future: you can’t be sure that the file will always be there!</p>
 <p>Nevertheless, downloading a data file via R (or another language) is preferable to clicking buttons/links on a website, as you will have a record of where you got the data from. We recommend that you download your data with R, but then save a copy on your computer, and that your analysis uses your copied version.</p>
 <p>We can export data from R to a external file, e.g. csv format with the <code>write_csv()</code> command, e.g.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="importing-combining-and-reshaping-data.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(maths, <span class="at">path =</span> <span class="st">&quot;data/myCopyOfMaths.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="importing-combining-and-reshaping-data.html#cb110-1" tabindex="-1"></a><span class="fu">write_csv</span>(maths, <span class="at">path =</span> <span class="st">&quot;data/myCopyOfMaths.csv&quot;</span>)</span></code></pre></div>
 <p>We can also use the <code>download.file()</code> command, which downloads and saves the file, but doesn’t keep the data within R:</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="importing-combining-and-reshaping-data.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://oakleyj.github.io/exampledata/maths.csv&quot;</span>,</span>
-<span id="cb111-2"><a href="importing-combining-and-reshaping-data.html#cb111-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;data/myCopyOfMaths.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="importing-combining-and-reshaping-data.html#cb111-1" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://oakleyj.github.io/exampledata/maths.csv&quot;</span>,</span>
+<span id="cb111-2"><a href="importing-combining-and-reshaping-data.html#cb111-2" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;data/myCopyOfMaths.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="working-with-column-names" class="section level2 hasAnchor" number="12.5">
 <h2><span class="header-section-number">12.5</span> Working with column names<a href="importing-combining-and-reshaping-data.html#working-with-column-names" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>All three column names in <code>population</code> are awkward to work with! Two of them have spaces in, and third is a number. If we wanted to access individual columns, none of the following commands would work!</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="importing-combining-and-reshaping-data.html#cb112-1" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span>Country Name</span>
-<span id="cb112-2"><a href="importing-combining-and-reshaping-data.html#cb112-2" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span>Country Code</span>
-<span id="cb112-3"><a href="importing-combining-and-reshaping-data.html#cb112-3" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span><span class="dv">2015</span></span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="importing-combining-and-reshaping-data.html#cb112-1" tabindex="-1"></a>population<span class="sc">$</span>Country Name</span>
+<span id="cb112-2"><a href="importing-combining-and-reshaping-data.html#cb112-2" tabindex="-1"></a>population<span class="sc">$</span>Country Code</span>
+<span id="cb112-3"><a href="importing-combining-and-reshaping-data.html#cb112-3" tabindex="-1"></a>population<span class="sc">$</span><span class="dv">2015</span></span></code></pre></div>
 <p>Use backticks around any awkward column names:</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="importing-combining-and-reshaping-data.html#cb113-1" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">Country Name</span><span class="st">`</span></span>
-<span id="cb113-2"><a href="importing-combining-and-reshaping-data.html#cb113-2" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">Country Code</span><span class="st">`</span></span>
-<span id="cb113-3"><a href="importing-combining-and-reshaping-data.html#cb113-3" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">2015</span><span class="st">`</span></span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="importing-combining-and-reshaping-data.html#cb113-1" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">Country Name</span><span class="st">`</span></span>
+<span id="cb113-2"><a href="importing-combining-and-reshaping-data.html#cb113-2" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">Country Code</span><span class="st">`</span></span>
+<span id="cb113-3"><a href="importing-combining-and-reshaping-data.html#cb113-3" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">2015</span><span class="st">`</span></span></code></pre></div>
 </div>
 <div id="combining-data-frames" class="section level2 hasAnchor" number="12.6">
 <h2><span class="header-section-number">12.6</span> Combining data frames<a href="importing-combining-and-reshaping-data.html#combining-data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -623,14 +630,14 @@ data file to the data you actually worked with in your analysis.
 <h3><span class="header-section-number">12.6.1</span> Adding columns<a href="importing-combining-and-reshaping-data.html#adding-columns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose we want to add the population sizes to the data in the medal table: we want to combine the <code>olympics</code> and <code>population</code> data frames. To do this, we need one column in each data frame where the same values are used to identify the countries.</p>
 <p>We can use the columns</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="importing-combining-and-reshaping-data.html#cb114-1" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">Country Code</span><span class="st">`</span></span>
-<span id="cb114-2"><a href="importing-combining-and-reshaping-data.html#cb114-2" aria-hidden="true" tabindex="-1"></a>medals<span class="sc">$</span>code</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="importing-combining-and-reshaping-data.html#cb114-1" tabindex="-1"></a>population<span class="sc">$</span><span class="st">`</span><span class="at">Country Code</span><span class="st">`</span></span>
+<span id="cb114-2"><a href="importing-combining-and-reshaping-data.html#cb114-2" tabindex="-1"></a>medals<span class="sc">$</span>code</span></code></pre></div>
 <p>(both columns use “ISO 3166-1 alpha-3” for identifying countries).</p>
 <p>We will use the function <code>inner_join()</code> which will look for countries present in both data frames (there are variations: see <code>?inner_join</code> for details), storing the result in a new data frame called <code>olympics</code>:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="importing-combining-and-reshaping-data.html#cb115-1" aria-hidden="true" tabindex="-1"></a>olympics <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(medals, population,</span>
-<span id="cb115-2"><a href="importing-combining-and-reshaping-data.html#cb115-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;code&quot;</span> <span class="ot">=</span> <span class="st">&quot;Country Code&quot;</span>))</span>
-<span id="cb115-3"><a href="importing-combining-and-reshaping-data.html#cb115-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb115-4"><a href="importing-combining-and-reshaping-data.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(olympics)</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="importing-combining-and-reshaping-data.html#cb115-1" tabindex="-1"></a>olympics <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(medals, population,</span>
+<span id="cb115-2"><a href="importing-combining-and-reshaping-data.html#cb115-2" tabindex="-1"></a>                       <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;code&quot;</span> <span class="ot">=</span> <span class="st">&quot;Country Code&quot;</span>))</span>
+<span id="cb115-3"><a href="importing-combining-and-reshaping-data.html#cb115-3" tabindex="-1"></a></span>
+<span id="cb115-4"><a href="importing-combining-and-reshaping-data.html#cb115-4" tabindex="-1"></a><span class="fu">head</span>(olympics)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 8
 ##   code  country             gold silver bronze total `Country Name`       `2015`
 ##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;
@@ -653,9 +660,9 @@ e.g. <code>code</code>, we could just use the argument
 <div id="adding-rows" class="section level3 hasAnchor" number="12.6.2">
 <h3><span class="header-section-number">12.6.2</span> Adding rows<a href="importing-combining-and-reshaping-data.html#adding-rows" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>rbind()</code> function can be used to combine data frames with the same column headings. Here’s a simple example:</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="importing-combining-and-reshaping-data.html#cb117-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">11</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">101</span>))</span>
-<span id="cb117-2"><a href="importing-combining-and-reshaping-data.html#cb117-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">13</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">102</span>, <span class="dv">103</span>))</span>
-<span id="cb117-3"><a href="importing-combining-and-reshaping-data.html#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(df1, df2)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="importing-combining-and-reshaping-data.html#cb117-1" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">11</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">101</span>))</span>
+<span id="cb117-2"><a href="importing-combining-and-reshaping-data.html#cb117-2" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">13</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">102</span>, <span class="dv">103</span>))</span>
+<span id="cb117-3"><a href="importing-combining-and-reshaping-data.html#cb117-3" tabindex="-1"></a><span class="fu">rbind</span>(df1, df2)</span></code></pre></div>
 <pre><code>##    x   y
 ## 1 10 100
 ## 2 11 101
@@ -665,8 +672,8 @@ e.g. <code>code</code>, we could just use the argument
 <div id="data-frames-from-lists" class="section level3 hasAnchor" number="12.6.3">
 <h3><span class="header-section-number">12.6.3</span> Data frames from lists<a href="importing-combining-and-reshaping-data.html#data-frames-from-lists" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Continuing the example above, if we have a <code>list</code> of data frames, again with the same column headings, these can be assembled into a data frame as follows.</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="importing-combining-and-reshaping-data.html#cb119-1" aria-hidden="true" tabindex="-1"></a>myList <span class="ot">&lt;-</span> <span class="fu">list</span>(df1, df1)</span>
-<span id="cb119-2"><a href="importing-combining-and-reshaping-data.html#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(rbind.data.frame, myList)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="importing-combining-and-reshaping-data.html#cb119-1" tabindex="-1"></a>myList <span class="ot">&lt;-</span> <span class="fu">list</span>(df1, df1)</span>
+<span id="cb119-2"><a href="importing-combining-and-reshaping-data.html#cb119-2" tabindex="-1"></a><span class="fu">do.call</span>(rbind.data.frame, myList)</span></code></pre></div>
 <pre><code>##    x   y
 ## 1 10 100
 ## 2 11 101
@@ -677,37 +684,36 @@ e.g. <code>code</code>, we could just use the argument
 <div id="renaming-columns" class="section level2 hasAnchor" number="12.7">
 <h2><span class="header-section-number">12.7</span> Renaming columns<a href="importing-combining-and-reshaping-data.html#renaming-columns" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The column name 2015 isn’t very descriptive, so we may wish to change the name, for example to <code>population2015</code>. We can do this with the <code>rename()</code> command.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="importing-combining-and-reshaping-data.html#cb121-1" aria-hidden="true" tabindex="-1"></a>olympics <span class="ot">&lt;-</span> <span class="fu">rename</span>(olympics, <span class="at">population2015 =</span> <span class="st">`</span><span class="at">2015</span><span class="st">`</span>)</span>
-<span id="cb121-2"><a href="importing-combining-and-reshaping-data.html#cb121-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(olympics)</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="importing-combining-and-reshaping-data.html#cb121-1" tabindex="-1"></a>olympics <span class="ot">&lt;-</span> <span class="fu">rename</span>(olympics, <span class="at">population2015 =</span> <span class="st">`</span><span class="at">2015</span><span class="st">`</span>)</span>
+<span id="cb121-2"><a href="importing-combining-and-reshaping-data.html#cb121-2" tabindex="-1"></a><span class="fu">head</span>(olympics)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 8
-##   code  country             gold silver bronze total `Country Name`     popula…¹
-##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;
-## 1 USA   UNITED STATES         46     37     38   121 United States        3.21e8
-## 2 GBR   GREAT BRITAIN         27     23     17    67 United Kingdom       6.51e7
-## 3 CHN   CHINA                 26     18     26    70 China                1.37e9
-## 4 RUS   RUSSIAN FEDERATION    19     18     19    56 Russian Federation   1.44e8
-## 5 DEU   GERMANY               17     10     15    42 Germany              8.14e7
-## 6 JPN   JAPAN                 12      8     21    41 Japan                1.27e8
-## # … with abbreviated variable name ¹​population2015</code></pre>
+##   code  country           gold silver bronze total `Country Name` population2015
+##   &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
+## 1 USA   UNITED STATES       46     37     38   121 United States       321418820
+## 2 GBR   GREAT BRITAIN       27     23     17    67 United Kingdom       65138232
+## 3 CHN   CHINA               26     18     26    70 China              1371220000
+## 4 RUS   RUSSIAN FEDERAT…    19     18     19    56 Russian Feder…      144096812
+## 5 DEU   GERMANY             17     10     15    42 Germany              81413145
+## 6 JPN   JAPAN               12      8     21    41 Japan               126958472</code></pre>
 <p>(Note that in assigning the result to a data frame called <code>olympics</code>, we’ve overwritten our earlier version of the <code>olympics</code> data frame. In general, be careful when you do this: the command will work the first time we use it, but not the second!)</p>
 </div>
 <div id="importing-data-from-other-statistical-packages" class="section level2 hasAnchor" number="12.8">
 <h2><span class="header-section-number">12.8</span> Importing data from other statistical packages<a href="importing-combining-and-reshaping-data.html#importing-data-from-other-statistical-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>You may come across data sets stored in a format specific to another statistical package (SAS, SPSS, Stata). The <code>haven</code> package <span class="citation">(<a href="#ref-R-haven" role="doc-biblioref">Wickham and Miller 2020</a>)</span> can be used to import these. See <a href="haven.tidyverse.org">https://haven.tidyverse.org/</a> for more details.</p>
+<p>You may come across data sets stored in a format specific to another statistical package (SAS, SPSS, Stata). The <code>haven</code> package <span class="citation">(<a href="#ref-R-haven">Wickham and Miller 2020</a>)</span> can be used to import these. See <a href="haven.tidyverse.org">https://haven.tidyverse.org/</a> for more details.</p>
 </div>
 <div id="reshaping-data-frames" class="section level2 hasAnchor" number="12.9">
 <h2><span class="header-section-number">12.9</span> Reshaping data frames<a href="importing-combining-and-reshaping-data.html#reshaping-data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Sometimes a data set may be in the wrong ‘shape’ for the analysis or plot that we want to do. As an example, we’ll use an extended data set on populations, with observations in multiple years:</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="importing-combining-and-reshaping-data.html#cb123-1" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/populationMultiple.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="importing-combining-and-reshaping-data.html#cb123-1" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/populationMultiple.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 264 Columns: 4
-## ── Column specification ──────────────
+## ── Column specification ───────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): Country Name
 ## dbl (3): 2013, 2014, 2015
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="importing-combining-and-reshaping-data.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(countries)</span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="importing-combining-and-reshaping-data.html#cb125-1" tabindex="-1"></a><span class="fu">head</span>(countries)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 4
 ##   `Country Name`    `2013`    `2014`    `2015`
 ##   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -717,12 +723,12 @@ e.g. <code>code</code>, we could just use the argument
 ## 4 Angola          23448202  24227524  25021974
 ## 5 Albania          2896652   2893654   2889167
 ## 6 Arab World     376504253 384222592 392022276</code></pre>
-<p>For our analysis, we may need all population values in a single column, with another column indicating the year. We can use the function <code>pivot_longer()</code> from the <code>tidyr</code> package <span class="citation">(<a href="#ref-R-tidyr" role="doc-biblioref">Wickham and Henry 2020</a>)</span> to change the data frame from ‘wide’ to ‘long’ format:</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="importing-combining-and-reshaping-data.html#cb127-1" aria-hidden="true" tabindex="-1"></a>countriesLong <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(countries,</span>
-<span id="cb127-2"><a href="importing-combining-and-reshaping-data.html#cb127-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">cols =</span> <span class="sc">-</span><span class="st">`</span><span class="at">Country Name</span><span class="st">`</span>,</span>
-<span id="cb127-3"><a href="importing-combining-and-reshaping-data.html#cb127-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">names_to =</span> <span class="st">&quot;year&quot;</span>,</span>
-<span id="cb127-4"><a href="importing-combining-and-reshaping-data.html#cb127-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">values_to =</span> <span class="st">&quot;population&quot;</span>)</span>
-<span id="cb127-5"><a href="importing-combining-and-reshaping-data.html#cb127-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(countriesLong)</span></code></pre></div>
+<p>For our analysis, we may need all population values in a single column, with another column indicating the year. We can use the function <code>pivot_longer()</code> from the <code>tidyr</code> package <span class="citation">(<a href="#ref-R-tidyr">Wickham and Henry 2020</a>)</span> to change the data frame from ‘wide’ to ‘long’ format:</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="importing-combining-and-reshaping-data.html#cb127-1" tabindex="-1"></a>countriesLong <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(countries,</span>
+<span id="cb127-2"><a href="importing-combining-and-reshaping-data.html#cb127-2" tabindex="-1"></a>                              <span class="at">cols =</span> <span class="sc">-</span><span class="st">`</span><span class="at">Country Name</span><span class="st">`</span>,</span>
+<span id="cb127-3"><a href="importing-combining-and-reshaping-data.html#cb127-3" tabindex="-1"></a>                              <span class="at">names_to =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb127-4"><a href="importing-combining-and-reshaping-data.html#cb127-4" tabindex="-1"></a>                              <span class="at">values_to =</span> <span class="st">&quot;population&quot;</span>)</span>
+<span id="cb127-5"><a href="importing-combining-and-reshaping-data.html#cb127-5" tabindex="-1"></a><span class="fu">head</span>(countriesLong)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 3
 ##   `Country Name` year  population
 ##   &lt;chr&gt;          &lt;chr&gt;      &lt;dbl&gt;
@@ -739,10 +745,10 @@ e.g. <code>code</code>, we could just use the argument
 </ul>
 <p>It’s worth looking at the help file for <code>pivot_longer()</code> to see more examples.</p>
 <p>We can go back from ‘long’ to ‘wide’ with the function <code>pivot_wider()</code></p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="importing-combining-and-reshaping-data.html#cb129-1" aria-hidden="true" tabindex="-1"></a>countriesWide <span class="ot">&lt;-</span> <span class="fu">pivot_wider</span>(countriesLong, </span>
-<span id="cb129-2"><a href="importing-combining-and-reshaping-data.html#cb129-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">names_from =</span> year,</span>
-<span id="cb129-3"><a href="importing-combining-and-reshaping-data.html#cb129-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">values_from =</span> population)</span>
-<span id="cb129-4"><a href="importing-combining-and-reshaping-data.html#cb129-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(countriesWide)</span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="importing-combining-and-reshaping-data.html#cb129-1" tabindex="-1"></a>countriesWide <span class="ot">&lt;-</span> <span class="fu">pivot_wider</span>(countriesLong, </span>
+<span id="cb129-2"><a href="importing-combining-and-reshaping-data.html#cb129-2" tabindex="-1"></a>                             <span class="at">names_from =</span> year,</span>
+<span id="cb129-3"><a href="importing-combining-and-reshaping-data.html#cb129-3" tabindex="-1"></a>                             <span class="at">values_from =</span> population)</span>
+<span id="cb129-4"><a href="importing-combining-and-reshaping-data.html#cb129-4" tabindex="-1"></a><span class="fu">head</span>(countriesWide)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 4
 ##   `Country Name`    `2013`    `2014`    `2015`
 ##   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -797,8 +803,8 @@ these for referencing.
 
 </div>
 </div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<h3>References<a href="references-1.html#references-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-R-readxl" class="csl-entry">
 Wickham, Hadley, and Jennifer Bryan. 2019. <em>Readxl: Read Excel Files</em>. <a href="https://CRAN.R-project.org/package=readxl">https://CRAN.R-project.org/package=readxl</a>.
 </div>

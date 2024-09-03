@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 24 EDA for logistic regression | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 24 EDA for logistic regression | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-10-14" />
+<meta name="date" content="2024-09-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,21 +52,22 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -102,7 +103,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +116,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -130,10 +131,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -352,7 +358,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#global-aesthetics"><i class="fa fa-check"></i><b>18.5</b> ‘Global’ aesthetics</a></li>
 <li class="chapter" data-level="18.6" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#facets"><i class="fa fa-check"></i><b>18.6</b> Facets</a></li>
-<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exercises"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
+<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exBrexitPlots"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
 <li class="chapter" data-level="18.8" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#further-reading-6"><i class="fa fa-check"></i><b>18.8</b> Further reading</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html"><i class="fa fa-check"></i><b>19</b> Presentation of plots</a>
@@ -367,7 +373,7 @@ div.csl-indent {
 <li class="chapter" data-level="19.5.2" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#a-first-attempt-four-histograms"><i class="fa fa-check"></i><b>19.5.2</b> A first attempt: four histograms</a></li>
 <li class="chapter" data-level="19.5.3" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#using-a-box-plot"><i class="fa fa-check"></i><b>19.5.3</b> Using a box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises-1"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
+<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
 <li class="chapter" data-level="19.7" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#data-sources-1"><i class="fa fa-check"></i><b>19.7</b> Data sources</a></li>
 </ul></li>
 <li class="chapter" data-level="20" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html"><i class="fa fa-check"></i><b>20</b> Maps with <code>leaflet</code></a>
@@ -383,6 +389,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="20.4" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#further-reading-7"><i class="fa fa-check"></i><b>20.4</b> Further reading</a></li>
 <li class="chapter" data-level="20.5" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#acknowledgement"><i class="fa fa-check"></i><b>20.5</b> Acknowledgement</a></li>
+<li class="chapter" data-level="20.6" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#references"><i class="fa fa-check"></i><b>20.6</b> References:</a></li>
 </ul></li>
 <li class="part"><span><b>IV Presenting your results</b></span></li>
 <li class="chapter" data-level="21" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>21</b> R Markdown</a>
@@ -469,7 +476,7 @@ div.csl-indent {
 <li class="chapter" data-level="25.3" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#approximately-matching-strings"><i class="fa fa-check"></i><b>25.3</b> Approximately matching strings</a></li>
 <li class="chapter" data-level="25.4" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#assembling-the-target-data-frame"><i class="fa fa-check"></i><b>25.4</b> Assembling the target data frame</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -499,19 +506,19 @@ div.csl-indent {
 </ol>
 <div id="example-a-balance-study" class="section level2 hasAnchor" number="24.1">
 <h2><span class="header-section-number">24.1</span> Example: a balance study<a href="eda-for-logistic-regression.html#example-a-balance-study" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We will use an example given in <span class="citation">(<a href="#ref-Faraway2016" role="doc-biblioref">Faraway 2016a</a>)</span>, Section 13.3. (I have also used some of the code provided there). There is a chain of sources for these data! I obtained the data via the package <code>faraway</code> <span class="citation">(<a href="#ref-r-faraway" role="doc-biblioref">Faraway 2016b</a>)</span>, which in turn got the data from the “OzDasl”: <a href="http://www.statsci.org/data/oz/ctsib.html">the Australasian Data and Story Library</a>, and the original source for the data is <span class="citation">(<a href="#ref-Steele1998" role="doc-biblioref">Steele 1998</a>)</span>.</p>
+<p>We will use an example given in <span class="citation">(<a href="#ref-Faraway2016">Faraway 2016a</a>)</span>, Section 13.3. (I have also used some of the code provided there). There is a chain of sources for these data! I obtained the data via the package <code>faraway</code> <span class="citation">(<a href="#ref-r-faraway">Faraway 2016b</a>)</span>, which in turn got the data from the “OzDasl”: <a href="http://www.statsci.org/data/oz/ctsib.html">the Australasian Data and Story Library</a>, and the original source for the data is <span class="citation">(<a href="#ref-Steele1998">Steele 1998</a>)</span>.</p>
 <p>For details, see the help file <code>?faraway::ctsib</code>. Quoting the description from the help file:</p>
 <blockquote>
 <p>An experiment was conducted to study the effects of surface and vision on balance. The balance of subjects were observed for two different surfaces and for restricted and unrestricted vision. Balance was assessed qualitatively on an ordinal four-point scale based on observation by the experimenter. Forty subjects were studied, twenty males and twenty females ranging in age from 18 to 38, with heights given in cm and weights in kg. The subjects were tested while standing on foam or a normal surface and with their eyes closed or open or with a dome placed over their head. Each subject was tested twice in each of the surface and eye combinations for a total of 12 measures per subject.</p>
 </blockquote>
 <p>The dependent variable <code>CTSIB</code> was on four point ordinal scale, with 1 meaning ‘stable’ and 4 meaning ‘unstable’. Faraway converted it to binary variable: 1 to represent the original level 1, and 0 to represent the original levels 2-4. I will do the same, and also add in a random, dummy covariate, which we will know for certain is independent of the response. I will also convert the <code>Subject</code> variable (representing the 40 participants in the experiment) to a factor variable:</p>
-<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="eda-for-logistic-regression.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb323-2"><a href="eda-for-logistic-regression.html#cb323-2" aria-hidden="true" tabindex="-1"></a>balance <span class="ot">&lt;-</span> faraway<span class="sc">::</span>ctsib <span class="sc">%&gt;%</span></span>
-<span id="cb323-3"><a href="eda-for-logistic-regression.html#cb323-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Stable =</span> <span class="fu">ifelse</span>(CTSIB <span class="sc">==</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb323-4"><a href="eda-for-logistic-regression.html#cb323-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Subject =</span> <span class="fu">factor</span>(Subject),</span>
-<span id="cb323-5"><a href="eda-for-logistic-regression.html#cb323-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">Dummy =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(<span class="dv">480</span>), <span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="eda-for-logistic-regression.html#cb323-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb323-2"><a href="eda-for-logistic-regression.html#cb323-2" tabindex="-1"></a>balance <span class="ot">&lt;-</span> faraway<span class="sc">::</span>ctsib <span class="sc">%&gt;%</span></span>
+<span id="cb323-3"><a href="eda-for-logistic-regression.html#cb323-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Stable =</span> <span class="fu">ifelse</span>(CTSIB <span class="sc">==</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb323-4"><a href="eda-for-logistic-regression.html#cb323-4" tabindex="-1"></a>         <span class="at">Subject =</span> <span class="fu">factor</span>(Subject),</span>
+<span id="cb323-5"><a href="eda-for-logistic-regression.html#cb323-5" tabindex="-1"></a>         <span class="at">Dummy =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(<span class="dv">480</span>), <span class="dv">1</span>))</span></code></pre></div>
 <p>so the data for our EDA are in the data frame <code>balance</code>:</p>
-<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="eda-for-logistic-regression.html#cb324-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(balance)</span></code></pre></div>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="eda-for-logistic-regression.html#cb324-1" tabindex="-1"></a><span class="fu">head</span>(balance)</span></code></pre></div>
 <pre><code>##   Subject  Sex Age Height Weight Surface Vision CTSIB Stable Dummy
 ## 1       1 male  22    176   68.2    norm   open     1      1  -0.6
 ## 2       1 male  22    176   68.2    norm   open     1      1  -0.2
@@ -562,9 +569,9 @@ where <span class="math inline">\(i=1,\ldots,I\)</span> represents a group, and 
 <div id="investigating-the-experimental-design" class="section level2 hasAnchor" number="24.3">
 <h2><span class="header-section-number">24.3</span> Investigating the experimental design<a href="eda-for-logistic-regression.html#investigating-the-experimental-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Firstly, we might look at the data for a single <code>Subject</code>, and just examine the response and design variables. (The data description in <code>?faraway::ctsib</code> tells us that we have a complete factorial design with respect to the design factors and participants, with two replications per combination, but we’ll check this anyway.)</p>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="eda-for-logistic-regression.html#cb326-1" aria-hidden="true" tabindex="-1"></a>balance <span class="sc">%&gt;%</span></span>
-<span id="cb326-2"><a href="eda-for-logistic-regression.html#cb326-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Subject <span class="sc">==</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb326-3"><a href="eda-for-logistic-regression.html#cb326-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Surface, Vision, Stable)</span></code></pre></div>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="eda-for-logistic-regression.html#cb326-1" tabindex="-1"></a>balance <span class="sc">%&gt;%</span></span>
+<span id="cb326-2"><a href="eda-for-logistic-regression.html#cb326-2" tabindex="-1"></a>  <span class="fu">filter</span>(Subject <span class="sc">==</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb326-3"><a href="eda-for-logistic-regression.html#cb326-3" tabindex="-1"></a>  <span class="fu">select</span>(Surface, Vision, Stable)</span></code></pre></div>
 <pre><code>##    Surface Vision Stable
 ## 1     norm   open      1
 ## 2     norm   open      1
@@ -579,16 +586,16 @@ where <span class="math inline">\(i=1,\ldots,I\)</span> represents a group, and 
 ## 11    foam   dome      0
 ## 12    foam   dome      0</code></pre>
 <p>We’ll check the levels of the factor variables <code>Surface</code> and <code>Vision</code>:</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="eda-for-logistic-regression.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Surface)</span></code></pre></div>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="eda-for-logistic-regression.html#cb328-1" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Surface)</span></code></pre></div>
 <pre><code>## [1] &quot;foam&quot; &quot;norm&quot;</code></pre>
-<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="eda-for-logistic-regression.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Vision)</span></code></pre></div>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="eda-for-logistic-regression.html#cb330-1" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Vision)</span></code></pre></div>
 <pre><code>## [1] &quot;closed&quot; &quot;dome&quot;   &quot;open&quot;</code></pre>
 <p>So this confirms that we have each combination of factors, replicated twice, for the first subject.</p>
 <p>We can check all subjects have same number of observations for each surface and vision level, using the <code>count()</code> function to count the number of observations per combination, and then using the <code>summary()</code> function to check that this number is 2 for all combinations.</p>
-<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="eda-for-logistic-regression.html#cb332-1" aria-hidden="true" tabindex="-1"></a>balance <span class="sc">%&gt;%</span> </span>
-<span id="cb332-2"><a href="eda-for-logistic-regression.html#cb332-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Subject, Vision, Surface) <span class="sc">%&gt;%</span></span>
-<span id="cb332-3"><a href="eda-for-logistic-regression.html#cb332-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(n) <span class="sc">%&gt;%</span></span>
-<span id="cb332-4"><a href="eda-for-logistic-regression.html#cb332-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="eda-for-logistic-regression.html#cb332-1" tabindex="-1"></a>balance <span class="sc">%&gt;%</span> </span>
+<span id="cb332-2"><a href="eda-for-logistic-regression.html#cb332-2" tabindex="-1"></a>  <span class="fu">count</span>(Subject, Vision, Surface) <span class="sc">%&gt;%</span></span>
+<span id="cb332-3"><a href="eda-for-logistic-regression.html#cb332-3" tabindex="-1"></a>  <span class="fu">pull</span>(n) <span class="sc">%&gt;%</span></span>
+<span id="cb332-4"><a href="eda-for-logistic-regression.html#cb332-4" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##       2       2       2       2       2       2</code></pre>
 <p>This confirms that for every <code>Subject</code>, there are two replications for each combination of <code>Vision</code> and <code>Surface</code>.</p>
@@ -596,17 +603,17 @@ where <span class="math inline">\(i=1,\ldots,I\)</span> represents a group, and 
 <div id="contingency-tables" class="section level2 hasAnchor" number="24.4">
 <h2><span class="header-section-number">24.4</span> Contingency tables<a href="eda-for-logistic-regression.html#contingency-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can use the <code>xtabs()</code> function to make contingency tables of responses. If the data were unbalanced we’d need to interpret these a little more cautiously, and be alert to Simpson’s paradox.</p>
-<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="eda-for-logistic-regression.html#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>( <span class="sc">~</span> Sex <span class="sc">+</span> Stable, <span class="at">data =</span> balance)</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="eda-for-logistic-regression.html#cb334-1" tabindex="-1"></a><span class="fu">xtabs</span>( <span class="sc">~</span> Sex <span class="sc">+</span> Stable, <span class="at">data =</span> balance)</span></code></pre></div>
 <pre><code>##         Stable
 ## Sex        0   1
 ##   female 193  47
 ##   male   173  67</code></pre>
-<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="eda-for-logistic-regression.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>( <span class="sc">~</span> Surface <span class="sc">+</span> Stable, <span class="at">data =</span> balance)</span></code></pre></div>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="eda-for-logistic-regression.html#cb336-1" tabindex="-1"></a><span class="fu">xtabs</span>( <span class="sc">~</span> Surface <span class="sc">+</span> Stable, <span class="at">data =</span> balance)</span></code></pre></div>
 <pre><code>##        Stable
 ## Surface   0   1
 ##    foam 230  10
 ##    norm 136 104</code></pre>
-<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="eda-for-logistic-regression.html#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>( <span class="sc">~</span> Vision <span class="sc">+</span> Stable, <span class="at">data =</span> balance)</span></code></pre></div>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="eda-for-logistic-regression.html#cb338-1" tabindex="-1"></a><span class="fu">xtabs</span>( <span class="sc">~</span> Vision <span class="sc">+</span> Stable, <span class="at">data =</span> balance)</span></code></pre></div>
 <pre><code>##         Stable
 ## Vision     0   1
 ##   closed 143  17
@@ -618,41 +625,42 @@ where <span class="math inline">\(i=1,\ldots,I\)</span> represents a group, and 
 <h2><span class="header-section-number">24.5</span> Checking for identical responses<a href="eda-for-logistic-regression.html#checking-for-identical-responses" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will first examine the design factors, and see if there any combinations for which all the responses were stable (or all unstable.)</p>
 <p>We can compute the proportion of stable responses by calculating the mean of <code>Stable</code> for each combination of <code>Surface</code> and <code>Vision</code>:</p>
-<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="eda-for-logistic-regression.html#cb340-1" aria-hidden="true" tabindex="-1"></a>balance <span class="sc">%&gt;%</span></span>
-<span id="cb340-2"><a href="eda-for-logistic-regression.html#cb340-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Surface, Vision) <span class="sc">%&gt;%</span></span>
-<span id="cb340-3"><a href="eda-for-logistic-regression.html#cb340-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">proportion  =</span> <span class="fu">mean</span>(Stable), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="eda-for-logistic-regression.html#cb340-1" tabindex="-1"></a>balance <span class="sc">%&gt;%</span></span>
+<span id="cb340-2"><a href="eda-for-logistic-regression.html#cb340-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Surface, Vision) <span class="sc">%&gt;%</span></span>
+<span id="cb340-3"><a href="eda-for-logistic-regression.html#cb340-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">proportion  =</span> <span class="fu">mean</span>(Stable), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) </span></code></pre></div>
 <pre><code>## # A tibble: 6 × 3
 ##   Surface Vision proportion
 ##   &lt;fct&gt;   &lt;fct&gt;       &lt;dbl&gt;
 ## 1 foam    closed      0    
 ## 2 foam    dome        0    
 ## 3 foam    open        0.125
-## 4 norm    closed      0.212
+## 4 norm    closed      0.213
 ## 5 norm    dome        0.275
 ## 6 norm    open        0.812</code></pre>
 <p>Alternatively, we can obtain a contingency table with the <code>xtabs()</code> command. We can count the total number of 1s for each combination of <code>Surface</code> and <code>Vision</code> levels, by specifying the dependent variable <code>Stable</code> in the formula argument:</p>
-<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="eda-for-logistic-regression.html#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(Stable <span class="sc">~</span> Surface <span class="sc">+</span> Vision, <span class="at">data =</span> balance)</span></code></pre></div>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="eda-for-logistic-regression.html#cb342-1" tabindex="-1"></a><span class="fu">xtabs</span>(Stable <span class="sc">~</span> Surface <span class="sc">+</span> Vision, <span class="at">data =</span> balance)</span></code></pre></div>
 <pre><code>##        Vision
 ## Surface closed dome open
 ##    foam      0    0   10
 ##    norm     17   22   65</code></pre>
 <p>All participants were unstable for <code>foam-closed</code> and <code>foam-dome</code> groups: this would cause problems if we tried to include interaction effects between the <code>Vision</code> and <code>Surface</code> variables.</p>
 <p>We’ll now see if there are any participants (<code>Subject</code>) who were always stable, or always unstable. We have 40 participants, so a contingency table would be quite large, but we can work out the proportion of 1s per <code>Subject</code>, and then make a contingency table of the proportions:</p>
-<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="eda-for-logistic-regression.html#cb344-1" aria-hidden="true" tabindex="-1"></a>balance <span class="sc">%&gt;%</span> </span>
-<span id="cb344-2"><a href="eda-for-logistic-regression.html#cb344-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Subject) <span class="sc">%&gt;%</span></span>
-<span id="cb344-3"><a href="eda-for-logistic-regression.html#cb344-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">meanStable =</span> <span class="fu">mean</span>(Stable), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb344-4"><a href="eda-for-logistic-regression.html#cb344-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(meanStable) </span></code></pre></div>
-<pre><code>## # A tibble: 8 × 2
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="eda-for-logistic-regression.html#cb344-1" tabindex="-1"></a>balance <span class="sc">%&gt;%</span> </span>
+<span id="cb344-2"><a href="eda-for-logistic-regression.html#cb344-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Subject) <span class="sc">%&gt;%</span></span>
+<span id="cb344-3"><a href="eda-for-logistic-regression.html#cb344-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">meanStable =</span> <span class="fu">mean</span>(Stable), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb344-4"><a href="eda-for-logistic-regression.html#cb344-4" tabindex="-1"></a>  <span class="fu">count</span>(meanStable) </span></code></pre></div>
+<pre><code>## # A tibble: 9 × 2
 ##   meanStable     n
 ##        &lt;dbl&gt; &lt;int&gt;
 ## 1     0          5
 ## 2     0.0833     4
-## 3     0.167     15
-## 4     0.25       3
-## 5     0.333      4
-## 6     0.417      3
-## 7     0.5        4
-## 8     0.667      2</code></pre>
+## 3     0.167     14
+## 4     0.167      1
+## 5     0.25       3
+## 6     0.333      4
+## 7     0.417      3
+## 8     0.5        4
+## 9     0.667      2</code></pre>
 <p>So there were five subjects who were always unstable. We’d have problems including <code>Subject</code> as a <em>fixed</em> effect, but we could incorporate it as a <em>random</em> effect, as there would be some shrinkage of the random effects towards 0.</p>
 </div>
 <div id="exploratory-plots" class="section level2 hasAnchor" number="24.6">
@@ -660,61 +668,61 @@ where <span class="math inline">\(i=1,\ldots,I\)</span> represents a group, and 
 <div id="a-simple-box-plot" class="section level3 hasAnchor" number="24.6.1">
 <h3><span class="header-section-number">24.6.1</span> A simple box plot<a href="eda-for-logistic-regression.html#a-simple-box-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For continuous independent variables, we can try box plots of each independent variable with the dependent variable treated as a grouping factor. We will create a new variable <code>Stability</code>: the dependent variable <code>Stable</code>, re-defined as a factor variable; we’ll need this for the box plots.</p>
-<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="eda-for-logistic-regression.html#cb346-1" aria-hidden="true" tabindex="-1"></a>balance <span class="ot">&lt;-</span> balance <span class="sc">%&gt;%</span></span>
-<span id="cb346-2"><a href="eda-for-logistic-regression.html#cb346-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Stability =</span> <span class="fu">factor</span>(balance<span class="sc">$</span>Stable))</span>
-<span id="cb346-3"><a href="eda-for-logistic-regression.html#cb346-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Stability) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;unstable&quot;</span>, <span class="st">&quot;stable&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="eda-for-logistic-regression.html#cb346-1" tabindex="-1"></a>balance <span class="ot">&lt;-</span> balance <span class="sc">%&gt;%</span></span>
+<span id="cb346-2"><a href="eda-for-logistic-regression.html#cb346-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Stability =</span> <span class="fu">factor</span>(balance<span class="sc">$</span>Stable))</span>
+<span id="cb346-3"><a href="eda-for-logistic-regression.html#cb346-3" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Stability) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;unstable&quot;</span>, <span class="st">&quot;stable&quot;</span>)</span></code></pre></div>
 <p>We can then make a box plot, for example, of heights:</p>
-<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="eda-for-logistic-regression.html#cb347-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Stability, <span class="at">y =</span> Height)) <span class="sc">+</span> </span>
-<span id="cb347-2"><a href="eda-for-logistic-regression.html#cb347-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-290-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="eda-for-logistic-regression.html#cb347-1" tabindex="-1"></a><span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Stability, <span class="at">y =</span> Height)) <span class="sc">+</span> </span>
+<span id="cb347-2"><a href="eda-for-logistic-regression.html#cb347-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-287-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="interactions" class="section level3 hasAnchor" number="24.6.2">
 <h3><span class="header-section-number">24.6.2</span> Interactions<a href="eda-for-logistic-regression.html#interactions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We can visualise possible interaction effects between a continuous independent variable and a factor independent variable, by setting additional aesthetics. We could map <code>Sex</code> to colour:</p>
-<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="eda-for-logistic-regression.html#cb348-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Stability, <span class="at">y =</span> Height,</span>
-<span id="cb348-2"><a href="eda-for-logistic-regression.html#cb348-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">colour =</span> Sex)) <span class="sc">+</span> </span>
-<span id="cb348-3"><a href="eda-for-logistic-regression.html#cb348-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-291-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="eda-for-logistic-regression.html#cb348-1" tabindex="-1"></a><span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Stability, <span class="at">y =</span> Height,</span>
+<span id="cb348-2"><a href="eda-for-logistic-regression.html#cb348-2" tabindex="-1"></a>                    <span class="at">colour =</span> Sex)) <span class="sc">+</span> </span>
+<span id="cb348-3"><a href="eda-for-logistic-regression.html#cb348-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-288-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>but this is perhaps a little confusing, because the main result this plot appears to present is the relationship between <code>Sex</code> and <code>Height</code>. It might be better to map the dependent variable onto colour here:</p>
-<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="eda-for-logistic-regression.html#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Height,</span>
-<span id="cb349-2"><a href="eda-for-logistic-regression.html#cb349-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
-<span id="cb349-3"><a href="eda-for-logistic-regression.html#cb349-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-292-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="eda-for-logistic-regression.html#cb349-1" tabindex="-1"></a><span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Height,</span>
+<span id="cb349-2"><a href="eda-for-logistic-regression.html#cb349-2" tabindex="-1"></a>                    <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
+<span id="cb349-3"><a href="eda-for-logistic-regression.html#cb349-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-289-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>We will now draw box plots for all four continuous independent variables, again, split by sex. The plot involving the <code>Dummy</code> variable can be useful here, to give us an idea of what we might see purely by chance.</p>
-<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="eda-for-logistic-regression.html#cb350-1" aria-hidden="true" tabindex="-1"></a>balance <span class="ot">&lt;-</span> balance <span class="sc">%&gt;%</span></span>
-<span id="cb350-2"><a href="eda-for-logistic-regression.html#cb350-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Stability =</span> <span class="fu">factor</span>(balance<span class="sc">$</span>Stable))</span>
-<span id="cb350-3"><a href="eda-for-logistic-regression.html#cb350-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Stability) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;unstable&quot;</span>, <span class="st">&quot;stable&quot;</span>)</span>
-<span id="cb350-4"><a href="eda-for-logistic-regression.html#cb350-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb350-5"><a href="eda-for-logistic-regression.html#cb350-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb350-6"><a href="eda-for-logistic-regression.html#cb350-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Height,</span>
-<span id="cb350-7"><a href="eda-for-logistic-regression.html#cb350-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
-<span id="cb350-8"><a href="eda-for-logistic-regression.html#cb350-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
-<span id="cb350-9"><a href="eda-for-logistic-regression.html#cb350-9" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Weight,</span>
-<span id="cb350-10"><a href="eda-for-logistic-regression.html#cb350-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
-<span id="cb350-11"><a href="eda-for-logistic-regression.html#cb350-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
-<span id="cb350-12"><a href="eda-for-logistic-regression.html#cb350-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb350-13"><a href="eda-for-logistic-regression.html#cb350-13" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Age,</span>
-<span id="cb350-14"><a href="eda-for-logistic-regression.html#cb350-14" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
-<span id="cb350-15"><a href="eda-for-logistic-regression.html#cb350-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
-<span id="cb350-16"><a href="eda-for-logistic-regression.html#cb350-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb350-17"><a href="eda-for-logistic-regression.html#cb350-17" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Dummy,</span>
-<span id="cb350-18"><a href="eda-for-logistic-regression.html#cb350-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
-<span id="cb350-19"><a href="eda-for-logistic-regression.html#cb350-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
-<span id="cb350-20"><a href="eda-for-logistic-regression.html#cb350-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb350-21"><a href="eda-for-logistic-regression.html#cb350-21" aria-hidden="true" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(p1, p2, p3,p4,  <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-293-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="eda-for-logistic-regression.html#cb350-1" tabindex="-1"></a>balance <span class="ot">&lt;-</span> balance <span class="sc">%&gt;%</span></span>
+<span id="cb350-2"><a href="eda-for-logistic-regression.html#cb350-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Stability =</span> <span class="fu">factor</span>(balance<span class="sc">$</span>Stable))</span>
+<span id="cb350-3"><a href="eda-for-logistic-regression.html#cb350-3" tabindex="-1"></a><span class="fu">levels</span>(balance<span class="sc">$</span>Stability) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;unstable&quot;</span>, <span class="st">&quot;stable&quot;</span>)</span>
+<span id="cb350-4"><a href="eda-for-logistic-regression.html#cb350-4" tabindex="-1"></a></span>
+<span id="cb350-5"><a href="eda-for-logistic-regression.html#cb350-5" tabindex="-1"></a></span>
+<span id="cb350-6"><a href="eda-for-logistic-regression.html#cb350-6" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Height,</span>
+<span id="cb350-7"><a href="eda-for-logistic-regression.html#cb350-7" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
+<span id="cb350-8"><a href="eda-for-logistic-regression.html#cb350-8" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
+<span id="cb350-9"><a href="eda-for-logistic-regression.html#cb350-9" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Weight,</span>
+<span id="cb350-10"><a href="eda-for-logistic-regression.html#cb350-10" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
+<span id="cb350-11"><a href="eda-for-logistic-regression.html#cb350-11" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
+<span id="cb350-12"><a href="eda-for-logistic-regression.html#cb350-12" tabindex="-1"></a></span>
+<span id="cb350-13"><a href="eda-for-logistic-regression.html#cb350-13" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Age,</span>
+<span id="cb350-14"><a href="eda-for-logistic-regression.html#cb350-14" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
+<span id="cb350-15"><a href="eda-for-logistic-regression.html#cb350-15" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
+<span id="cb350-16"><a href="eda-for-logistic-regression.html#cb350-16" tabindex="-1"></a></span>
+<span id="cb350-17"><a href="eda-for-logistic-regression.html#cb350-17" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(balance, <span class="fu">aes</span>(<span class="at">x =</span> Sex, <span class="at">y =</span> Dummy,</span>
+<span id="cb350-18"><a href="eda-for-logistic-regression.html#cb350-18" tabindex="-1"></a>                          <span class="at">colour =</span> Stability)) <span class="sc">+</span> </span>
+<span id="cb350-19"><a href="eda-for-logistic-regression.html#cb350-19" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span>
+<span id="cb350-20"><a href="eda-for-logistic-regression.html#cb350-20" tabindex="-1"></a></span>
+<span id="cb350-21"><a href="eda-for-logistic-regression.html#cb350-21" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(p1, p2, p3,p4,  <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-290-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="plotting-mean-proportions" class="section level2 hasAnchor" number="24.7">
 <h2><span class="header-section-number">24.7</span> Plotting mean proportions<a href="eda-for-logistic-regression.html#plotting-mean-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If we compute the proportion of stable responses for each subject, that gives us a quantitative dependent variable that we can use in plots involving the participant-specific covariates. We’ll make a new data frame, and include the <code>height</code> variable as an example:</p>
-<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="eda-for-logistic-regression.html#cb351-1" aria-hidden="true" tabindex="-1"></a>balanceGrouped <span class="ot">&lt;-</span> balance <span class="sc">%&gt;%</span> </span>
-<span id="cb351-2"><a href="eda-for-logistic-regression.html#cb351-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Subject) <span class="sc">%&gt;%</span></span>
-<span id="cb351-3"><a href="eda-for-logistic-regression.html#cb351-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">proportionStable =</span> <span class="fu">mean</span>(Stable),</span>
-<span id="cb351-4"><a href="eda-for-logistic-regression.html#cb351-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">Sex =</span> Sex[<span class="dv">1</span>],</span>
-<span id="cb351-5"><a href="eda-for-logistic-regression.html#cb351-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">Height =</span> Height[<span class="dv">1</span>],</span>
-<span id="cb351-6"><a href="eda-for-logistic-regression.html#cb351-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>)</span>
-<span id="cb351-7"><a href="eda-for-logistic-regression.html#cb351-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(balanceGrouped)</span></code></pre></div>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="eda-for-logistic-regression.html#cb351-1" tabindex="-1"></a>balanceGrouped <span class="ot">&lt;-</span> balance <span class="sc">%&gt;%</span> </span>
+<span id="cb351-2"><a href="eda-for-logistic-regression.html#cb351-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Subject) <span class="sc">%&gt;%</span></span>
+<span id="cb351-3"><a href="eda-for-logistic-regression.html#cb351-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">proportionStable =</span> <span class="fu">mean</span>(Stable),</span>
+<span id="cb351-4"><a href="eda-for-logistic-regression.html#cb351-4" tabindex="-1"></a>            <span class="at">Sex =</span> Sex[<span class="dv">1</span>],</span>
+<span id="cb351-5"><a href="eda-for-logistic-regression.html#cb351-5" tabindex="-1"></a>            <span class="at">Height =</span> Height[<span class="dv">1</span>],</span>
+<span id="cb351-6"><a href="eda-for-logistic-regression.html#cb351-6" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>)</span>
+<span id="cb351-7"><a href="eda-for-logistic-regression.html#cb351-7" tabindex="-1"></a><span class="fu">head</span>(balanceGrouped)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 4
 ##   Subject proportionStable Sex    Height
 ##   &lt;fct&gt;              &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;
@@ -725,10 +733,10 @@ where <span class="math inline">\(i=1,\ldots,I\)</span> represents a group, and 
 ## 5 5                 0.0833 female   166 
 ## 6 6                 0.417  male     177</code></pre>
 <p>Now we can make a scatter plot (with points coloured by Sex):</p>
-<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="eda-for-logistic-regression.html#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(balanceGrouped, <span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> proportionStable,</span>
-<span id="cb353-2"><a href="eda-for-logistic-regression.html#cb353-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">col =</span> Sex))<span class="sc">+</span></span>
-<span id="cb353-3"><a href="eda-for-logistic-regression.html#cb353-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-295-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="eda-for-logistic-regression.html#cb353-1" tabindex="-1"></a><span class="fu">ggplot</span>(balanceGrouped, <span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> proportionStable,</span>
+<span id="cb353-2"><a href="eda-for-logistic-regression.html#cb353-2" tabindex="-1"></a>                           <span class="at">col =</span> Sex))<span class="sc">+</span></span>
+<span id="cb353-3"><a href="eda-for-logistic-regression.html#cb353-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-292-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plotting-fitted-logistic-regression-lines" class="section level2 hasAnchor" number="24.8">
 <h2><span class="header-section-number">24.8</span> Plotting fitted logistic regression lines<a href="eda-for-logistic-regression.html#plotting-fitted-logistic-regression-lines" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -738,19 +746,19 @@ where <span class="math inline">\(i=1,\ldots,I\)</span> represents a group, and 
 <span class="math display">\[
 Y_i|x_i \sim Bernoulli(p_i),\quad\quad \log\left(\frac{p_i}{1-p_i}\right) = x_i.
 \]</span></p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="eda-for-logistic-regression.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb354-2"><a href="eda-for-logistic-regression.html#cb354-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">5</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">100</span>)</span>
-<span id="cb354-3"><a href="eda-for-logistic-regression.html#cb354-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">exp</span>(x) <span class="sc">/</span> (<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(x))</span>
-<span id="cb354-4"><a href="eda-for-logistic-regression.html#cb354-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">100</span>, <span class="dv">1</span>, p)</span>
-<span id="cb354-5"><a href="eda-for-logistic-regression.html#cb354-5" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y, p)</span></code></pre></div>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="eda-for-logistic-regression.html#cb354-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb354-2"><a href="eda-for-logistic-regression.html#cb354-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">5</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">100</span>)</span>
+<span id="cb354-3"><a href="eda-for-logistic-regression.html#cb354-3" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">exp</span>(x) <span class="sc">/</span> (<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(x))</span>
+<span id="cb354-4"><a href="eda-for-logistic-regression.html#cb354-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">100</span>, <span class="dv">1</span>, p)</span>
+<span id="cb354-5"><a href="eda-for-logistic-regression.html#cb354-5" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y, p)</span></code></pre></div>
 <p>We can then draw a scatter plot as normal, and add in some extra arguments to <code>geom_smooth()</code> to specify the model. (This uses the syntax from the <code>glm</code> command: this will be covered in detail in Semester 2.) We’ll also add in the true regression line, as a red dashed line.</p>
-<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="eda-for-logistic-regression.html#cb355-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
-<span id="cb355-2"><a href="eda-for-logistic-regression.html#cb355-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb355-3"><a href="eda-for-logistic-regression.html#cb355-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;glm&quot;</span>, <span class="at">formula =</span> <span class="st">&#39;y~x&#39;</span>,</span>
-<span id="cb355-4"><a href="eda-for-logistic-regression.html#cb355-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args=</span><span class="fu">list</span>(<span class="at">family=</span><span class="st">&quot;binomial&quot;</span>),</span>
-<span id="cb355-5"><a href="eda-for-logistic-regression.html#cb355-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">se=</span><span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb355-6"><a href="eda-for-logistic-regression.html#cb355-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> p), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-297-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="eda-for-logistic-regression.html#cb355-1" tabindex="-1"></a><span class="fu">ggplot</span>(df1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))<span class="sc">+</span></span>
+<span id="cb355-2"><a href="eda-for-logistic-regression.html#cb355-2" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb355-3"><a href="eda-for-logistic-regression.html#cb355-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;glm&quot;</span>, <span class="at">formula =</span> <span class="st">&#39;y~x&#39;</span>,</span>
+<span id="cb355-4"><a href="eda-for-logistic-regression.html#cb355-4" tabindex="-1"></a>              <span class="at">method.args=</span><span class="fu">list</span>(<span class="at">family=</span><span class="st">&quot;binomial&quot;</span>),</span>
+<span id="cb355-5"><a href="eda-for-logistic-regression.html#cb355-5" tabindex="-1"></a>              <span class="at">se=</span><span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb355-6"><a href="eda-for-logistic-regression.html#cb355-6" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> p), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-294-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plots-with-binomial-n1-data" class="section level3 hasAnchor" number="24.8.2">
 <h3><span class="header-section-number">24.8.2</span> Plots with Binomial <span class="math inline">\((n&gt;1)\)</span> data<a href="eda-for-logistic-regression.html#plots-with-binomial-n1-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -763,29 +771,29 @@ so that
 \sum_{j=1}^{n_i}Y_{ij}|x_i \sim Binomial(n_i, p_i)
 \]</span></p>
 <p>Given the observations <span class="math inline">\(y_{ij}\)</span>, we can plot <span class="math inline">\(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}\)</span> against <span class="math inline">\(x_i\)</span>. To illustrate this, first, we’ll make an example data set.</p>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="eda-for-logistic-regression.html#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb356-2"><a href="eda-for-logistic-regression.html#cb356-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">5</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">10</span>)</span>
-<span id="cb356-3"><a href="eda-for-logistic-regression.html#cb356-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">exp</span>(x) <span class="sc">/</span> (<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(x))</span>
-<span id="cb356-4"><a href="eda-for-logistic-regression.html#cb356-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">10</span>, <span class="dv">10</span>, p)</span>
-<span id="cb356-5"><a href="eda-for-logistic-regression.html#cb356-5" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, <span class="at">proportion =</span> y <span class="sc">/</span> <span class="dv">10</span>, p, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="eda-for-logistic-regression.html#cb356-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb356-2"><a href="eda-for-logistic-regression.html#cb356-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">5</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">10</span>)</span>
+<span id="cb356-3"><a href="eda-for-logistic-regression.html#cb356-3" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">exp</span>(x) <span class="sc">/</span> (<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(x))</span>
+<span id="cb356-4"><a href="eda-for-logistic-regression.html#cb356-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">10</span>, <span class="dv">10</span>, p)</span>
+<span id="cb356-5"><a href="eda-for-logistic-regression.html#cb356-5" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, <span class="at">proportion =</span> y <span class="sc">/</span> <span class="dv">10</span>, p, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
 <p>We will need to map the sample sizes <span class="math inline">\(n_i\)</span> to an aesthetic <code>weight</code>.</p>
-<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="eda-for-logistic-regression.html#cb357-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df2, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> proportion, <span class="at">weight =</span> n))<span class="sc">+</span></span>
-<span id="cb357-2"><a href="eda-for-logistic-regression.html#cb357-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb357-3"><a href="eda-for-logistic-regression.html#cb357-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;glm&quot;</span>, <span class="at">formula =</span> <span class="st">&#39;y~x&#39;</span>,</span>
-<span id="cb357-4"><a href="eda-for-logistic-regression.html#cb357-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args=</span><span class="fu">list</span>(<span class="at">family=</span><span class="st">&quot;binomial&quot;</span>),</span>
-<span id="cb357-5"><a href="eda-for-logistic-regression.html#cb357-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">se=</span><span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb357-6"><a href="eda-for-logistic-regression.html#cb357-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> p), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-299-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="eda-for-logistic-regression.html#cb357-1" tabindex="-1"></a><span class="fu">ggplot</span>(df2, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> proportion, <span class="at">weight =</span> n))<span class="sc">+</span></span>
+<span id="cb357-2"><a href="eda-for-logistic-regression.html#cb357-2" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb357-3"><a href="eda-for-logistic-regression.html#cb357-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;glm&quot;</span>, <span class="at">formula =</span> <span class="st">&#39;y~x&#39;</span>,</span>
+<span id="cb357-4"><a href="eda-for-logistic-regression.html#cb357-4" tabindex="-1"></a>              <span class="at">method.args=</span><span class="fu">list</span>(<span class="at">family=</span><span class="st">&quot;binomial&quot;</span>),</span>
+<span id="cb357-5"><a href="eda-for-logistic-regression.html#cb357-5" tabindex="-1"></a>              <span class="at">se=</span><span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb357-6"><a href="eda-for-logistic-regression.html#cb357-6" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> p), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-296-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>We can try this on the balance data. I’d leave out the standard errors in the <code>geom_smooth()</code>, as the model assumptions are (probably ) not valid here; this plot ignores <code>Subject</code>, <code>Vision</code> and <code>Surface</code> effects.</p>
-<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="eda-for-logistic-regression.html#cb358-1" aria-hidden="true" tabindex="-1"></a>balanceGrouped <span class="sc">%&gt;%</span></span>
-<span id="cb358-2"><a href="eda-for-logistic-regression.html#cb358-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">w =</span> <span class="dv">12</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb358-3"><a href="eda-for-logistic-regression.html#cb358-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> proportionStable,</span>
-<span id="cb358-4"><a href="eda-for-logistic-regression.html#cb358-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">weight =</span> w, <span class="at">col =</span> Sex)) <span class="sc">+</span></span>
-<span id="cb358-5"><a href="eda-for-logistic-regression.html#cb358-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb358-6"><a href="eda-for-logistic-regression.html#cb358-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;glm&quot;</span>,</span>
-<span id="cb358-7"><a href="eda-for-logistic-regression.html#cb358-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args=</span><span class="fu">list</span>(<span class="at">family=</span><span class="st">&quot;binomial&quot;</span>),</span>
-<span id="cb358-8"><a href="eda-for-logistic-regression.html#cb358-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-300-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="eda-for-logistic-regression.html#cb358-1" tabindex="-1"></a>balanceGrouped <span class="sc">%&gt;%</span></span>
+<span id="cb358-2"><a href="eda-for-logistic-regression.html#cb358-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">w =</span> <span class="dv">12</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb358-3"><a href="eda-for-logistic-regression.html#cb358-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> proportionStable,</span>
+<span id="cb358-4"><a href="eda-for-logistic-regression.html#cb358-4" tabindex="-1"></a>             <span class="at">weight =</span> w, <span class="at">col =</span> Sex)) <span class="sc">+</span></span>
+<span id="cb358-5"><a href="eda-for-logistic-regression.html#cb358-5" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb358-6"><a href="eda-for-logistic-regression.html#cb358-6" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;glm&quot;</span>,</span>
+<span id="cb358-7"><a href="eda-for-logistic-regression.html#cb358-7" tabindex="-1"></a>              <span class="at">method.args=</span><span class="fu">list</span>(<span class="at">family=</span><span class="st">&quot;binomial&quot;</span>),</span>
+<span id="cb358-8"><a href="eda-for-logistic-regression.html#cb358-8" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-297-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="summary" class="section level2 hasAnchor" number="24.9">
@@ -800,8 +808,8 @@ so that
 
 </div>
 </div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<h3>References<a href="references-1.html#references-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Faraway2016" class="csl-entry">
 Faraway, Julian J. 2016a. <em>Extending the Linear Model with r : Generalized Linear, Mixed Effects and Nonparametric Regression Models</em>. Second edition. A Chapman and Hall Book. Boca Raton, Florida ; London, [England] ; New York: CRC Press.
 </div>

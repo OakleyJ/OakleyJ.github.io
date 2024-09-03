@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 14 Strings | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 14 Strings | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-10-14" />
+<meta name="date" content="2024-09-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,21 +52,22 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -102,7 +103,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +116,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -130,10 +131,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -352,7 +358,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#global-aesthetics"><i class="fa fa-check"></i><b>18.5</b> ‘Global’ aesthetics</a></li>
 <li class="chapter" data-level="18.6" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#facets"><i class="fa fa-check"></i><b>18.6</b> Facets</a></li>
-<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exercises"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
+<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exBrexitPlots"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
 <li class="chapter" data-level="18.8" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#further-reading-6"><i class="fa fa-check"></i><b>18.8</b> Further reading</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html"><i class="fa fa-check"></i><b>19</b> Presentation of plots</a>
@@ -367,7 +373,7 @@ div.csl-indent {
 <li class="chapter" data-level="19.5.2" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#a-first-attempt-four-histograms"><i class="fa fa-check"></i><b>19.5.2</b> A first attempt: four histograms</a></li>
 <li class="chapter" data-level="19.5.3" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#using-a-box-plot"><i class="fa fa-check"></i><b>19.5.3</b> Using a box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises-1"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
+<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
 <li class="chapter" data-level="19.7" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#data-sources-1"><i class="fa fa-check"></i><b>19.7</b> Data sources</a></li>
 </ul></li>
 <li class="chapter" data-level="20" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html"><i class="fa fa-check"></i><b>20</b> Maps with <code>leaflet</code></a>
@@ -383,6 +389,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="20.4" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#further-reading-7"><i class="fa fa-check"></i><b>20.4</b> Further reading</a></li>
 <li class="chapter" data-level="20.5" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#acknowledgement"><i class="fa fa-check"></i><b>20.5</b> Acknowledgement</a></li>
+<li class="chapter" data-level="20.6" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#references"><i class="fa fa-check"></i><b>20.6</b> References:</a></li>
 </ul></li>
 <li class="part"><span><b>IV Presenting your results</b></span></li>
 <li class="chapter" data-level="21" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>21</b> R Markdown</a>
@@ -469,7 +476,7 @@ div.csl-indent {
 <li class="chapter" data-level="25.3" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#approximately-matching-strings"><i class="fa fa-check"></i><b>25.3</b> Approximately matching strings</a></li>
 <li class="chapter" data-level="25.4" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#assembling-the-target-data-frame"><i class="fa fa-check"></i><b>25.4</b> Assembling the target data frame</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -523,7 +530,7 @@ large, and it’s hard to keep a good record of what edits you made.
 <div id="importing-text-data-with-read_lines" class="section level2 hasAnchor" number="14.2">
 <h2><span class="header-section-number">14.2</span> Importing text data with <code>read_lines()</code><a href="strings.html#importing-text-data-with-read_lines" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If the text file was only contained a table (and so looked like a data frame), we could use <code>readr::read_table()</code> to import it. But if we need to do any processing of the text first, a better option may be to first import the file with <code>readr::read_lines()</code>. This will create a vector of character strings, where each element is one whole line of the text file.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="strings.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_lines</span>(<span class="st">&quot;data/stat101.txt&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="strings.html#cb174-1" tabindex="-1"></a><span class="fu">read_lines</span>(<span class="st">&quot;data/stat101.txt&quot;</span>)</span></code></pre></div>
 <pre><code>##  [1] &quot;STAT101 module marks&quot;                  
 ##  [2] &quot;29/06/20&quot;                              
 ##  [3] &quot;&quot;                                      
@@ -539,36 +546,36 @@ large, and it’s hard to keep a good record of what edits you made.
 <li>we can use the argument <code>skip</code> to skip lines at the start (we might skip lines 1-3 here, but I will leave them in for now);</li>
 <li>the argument <code>skip_empty_rows</code> is <code>FALSE</code> by default, but I will set it to <code>TRUE</code> to skip rows 3 and 9:</li>
 </ul>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="strings.html#cb176-1" aria-hidden="true" tabindex="-1"></a>examTextRaw <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(<span class="st">&quot;data/stat101.txt&quot;</span>,</span>
-<span id="cb176-2"><a href="strings.html#cb176-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">skip_empty_rows =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="strings.html#cb176-1" tabindex="-1"></a>examTextRaw <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(<span class="st">&quot;data/stat101.txt&quot;</span>,</span>
+<span id="cb176-2"><a href="strings.html#cb176-2" tabindex="-1"></a>                          <span class="at">skip_empty_rows =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="finding-and-replacing-characters-in-strings" class="section level2 hasAnchor" number="14.3">
 <h2><span class="header-section-number">14.3</span> Finding (and replacing) characters in strings<a href="strings.html#finding-and-replacing-characters-in-strings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can test for equality of entire strings in the usual way, e.g.</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="strings.html#cb177-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;red house&quot;</span>, <span class="st">&quot;blue car&quot;</span>)</span>
-<span id="cb177-2"><a href="strings.html#cb177-2" aria-hidden="true" tabindex="-1"></a>x <span class="sc">==</span> <span class="st">&quot;red house&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="strings.html#cb177-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;red house&quot;</span>, <span class="st">&quot;blue car&quot;</span>)</span>
+<span id="cb177-2"><a href="strings.html#cb177-2" tabindex="-1"></a>x <span class="sc">==</span> <span class="st">&quot;red house&quot;</span></span></code></pre></div>
 <pre><code>## [1]  TRUE FALSE</code></pre>
-<p>but here, we will want to search <em>within</em> a string for some text, e.g., how to determine which elements of <code>x</code> contain the word <code>red</code>? Here, we will make use of the <code>stringr</code> package <span class="citation">(<a href="#ref-r-stringr" role="doc-biblioref">Wickham 2019a</a>)</span>.</p>
+<p>but here, we will want to search <em>within</em> a string for some text, e.g., how to determine which elements of <code>x</code> contain the word <code>red</code>? Here, we will make use of the <code>stringr</code> package <span class="citation">(<a href="#ref-r-stringr">Wickham 2019a</a>)</span>.</p>
 <div id="finding-text-with-str_which" class="section level3 hasAnchor" number="14.3.1">
 <h3><span class="header-section-number">14.3.1</span> Finding text with <code>str_which()</code><a href="strings.html#finding-text-with-str_which" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose we want to find the line with the column headings. Here, will do this by finding which line contains the text <code>student</code> (assuming we know that’s what we need to look for):</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="strings.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_which</span>(examTextRaw, <span class="st">&quot;student&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="strings.html#cb179-1" tabindex="-1"></a><span class="fu">str_which</span>(examTextRaw, <span class="st">&quot;student&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
 </div>
 <div id="escape-characters-and-regular-expressions" class="section level3 hasAnchor" number="14.3.2">
 <h3><span class="header-section-number">14.3.2</span> Escape characters and regular expressions<a href="strings.html#escape-characters-and-regular-expressions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Some characters have special meaning, which makes it harder to search for them. If we wanted to find lines containing <code>*</code>, this won’t work:</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="strings.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_which</span>(examTextRaw, <span class="st">&quot;*&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="strings.html#cb181-1" tabindex="-1"></a><span class="fu">str_which</span>(examTextRaw, <span class="st">&quot;*&quot;</span>)</span></code></pre></div>
 <p>Here, we have to insert two backslash symbols, so that R understands we are searching for a <code>*</code>:</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="strings.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_which</span>(examTextRaw, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="strings.html#cb182-1" tabindex="-1"></a><span class="fu">str_which</span>(examTextRaw, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 6 8</code></pre>
 <p>To do more complicated searches, one can make use of <strong>regular expressions</strong>. Regular expressions describe particular patterns of text, and can be used in many different programming languages. We won’t cover these here, but further reading is given at the of this chapter.</p>
 </div>
 <div id="replacing-or-removing-text" class="section level3 hasAnchor" number="14.3.3">
 <h3><span class="header-section-number">14.3.3</span> Replacing or removing text<a href="strings.html#replacing-or-removing-text" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose we want to replace <code>--</code> by <code>NA</code>, to indicate a missing value. We do</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="strings.html#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace_all</span>(examTextRaw, <span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
-<span id="cb184-2"><a href="strings.html#cb184-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="strings.html#cb184-1" tabindex="-1"></a><span class="fu">str_replace_all</span>(examTextRaw, <span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
+<span id="cb184-2"><a href="strings.html#cb184-2" tabindex="-1"></a>                <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;STAT101 module marks&quot;                  
 ## [2] &quot;29/06/20&quot;                              
 ## [3] &quot;student cwk exam&quot;                      
@@ -578,7 +585,7 @@ large, and it’s hard to keep a good record of what edits you made.
 ## [7] &quot;12589    62   NA &quot;                     
 ## [8] &quot;* denotes resit attempt - capped at 40&quot;</code></pre>
 <p>To delete text, we can either set <code>replacement = ""</code> in the above or use <code>str_remove_all()</code>. For example, to get rid of the asterisks, we would do</p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="strings.html#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_remove_all</span>(examTextRaw, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="strings.html#cb186-1" tabindex="-1"></a><span class="fu">str_remove_all</span>(examTextRaw, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;STAT101 module marks&quot;                 
 ## [2] &quot;29/06/20&quot;                             
 ## [3] &quot;student cwk exam&quot;                     
@@ -591,7 +598,7 @@ large, and it’s hard to keep a good record of what edits you made.
 <div id="removing-white-space-at-startend-of-strings" class="section level3 hasAnchor" number="14.3.4">
 <h3><span class="header-section-number">14.3.4</span> Removing white space at start/end of strings<a href="strings.html#removing-white-space-at-startend-of-strings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Blank spaces at the end of a string can cause problems, as R might think there is an extra column of data. We can get rid of these with <code>str_trim()</code></p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="strings.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_trim</span>(examTextRaw)</span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="strings.html#cb188-1" tabindex="-1"></a><span class="fu">str_trim</span>(examTextRaw)</span></code></pre></div>
 <pre><code>## [1] &quot;STAT101 module marks&quot;                  
 ## [2] &quot;29/06/20&quot;                              
 ## [3] &quot;student cwk exam&quot;                      
@@ -605,22 +612,22 @@ large, and it’s hard to keep a good record of what edits you made.
 <div id="subsetting-strings" class="section level2 hasAnchor" number="14.4">
 <h2><span class="header-section-number">14.4</span> Subsetting strings<a href="strings.html#subsetting-strings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We might want to search for some text at a particular place in a string, or just extract part of a string. We can do this with <code>str_sub()</code>. For example, to extract the module code from the data, we could do</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="strings.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(examTextRaw[<span class="dv">1</span>], <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="strings.html#cb190-1" tabindex="-1"></a><span class="fu">str_sub</span>(examTextRaw[<span class="dv">1</span>], <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">7</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;STAT101&quot;</code></pre>
 </div>
 <div id="making-a-data-frame" class="section level2 hasAnchor" number="14.5">
 <h2><span class="header-section-number">14.5</span> Making a data frame<a href="strings.html#making-a-data-frame" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We’ll first do some operations to clean up the text:</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="strings.html#cb192-1" aria-hidden="true" tabindex="-1"></a>examTextClean <span class="ot">&lt;-</span> examTextRaw <span class="sc">%&gt;%</span></span>
-<span id="cb192-2"><a href="strings.html#cb192-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb192-3"><a href="strings.html#cb192-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
-<span id="cb192-4"><a href="strings.html#cb192-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb192-5"><a href="strings.html#cb192-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_trim</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="strings.html#cb192-1" tabindex="-1"></a>examTextClean <span class="ot">&lt;-</span> examTextRaw <span class="sc">%&gt;%</span></span>
+<span id="cb192-2"><a href="strings.html#cb192-2" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">*&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb192-3"><a href="strings.html#cb192-3" tabindex="-1"></a>  <span class="fu">str_replace_all</span>(<span class="at">pattern =</span> <span class="st">&quot;--&quot;</span>,</span>
+<span id="cb192-4"><a href="strings.html#cb192-4" tabindex="-1"></a>                  <span class="at">replacement =</span> <span class="st">&quot;NA&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb192-5"><a href="strings.html#cb192-5" tabindex="-1"></a>  <span class="fu">str_trim</span>()</span></code></pre></div>
 <p>and then do some searching to see which lines we want to use in our data frame:</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="strings.html#cb193-1" aria-hidden="true" tabindex="-1"></a>header <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;student&quot;</span>)</span>
-<span id="cb193-2"><a href="strings.html#cb193-2" aria-hidden="true" tabindex="-1"></a>endLine <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;denotes&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="strings.html#cb193-1" tabindex="-1"></a>header <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;student&quot;</span>)</span>
+<span id="cb193-2"><a href="strings.html#cb193-2" tabindex="-1"></a>endLine <span class="ot">&lt;-</span> <span class="fu">str_which</span>(examTextClean, <span class="at">pattern =</span> <span class="st">&quot;denotes&quot;</span>)</span></code></pre></div>
 <p>We can now make a data frame with</p>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="strings.html#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_table</span>(examTextClean[header<span class="sc">:</span>(endLine <span class="sc">-</span> <span class="dv">1</span>)])</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="strings.html#cb194-1" tabindex="-1"></a><span class="fu">read_table</span>(examTextClean[header<span class="sc">:</span>(endLine <span class="sc">-</span> <span class="dv">1</span>)])</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 3
 ##   student   cwk  exam
 ##     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -638,8 +645,8 @@ large, and it’s hard to keep a good record of what edits you made.
 
 </div>
 </div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<h3>References<a href="references-1.html#references-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-r-stringr" class="csl-entry">
 ———. 2019a. <em>Stringr: Simple, Consistent Wrappers for Common String Operations</em>. <a href="https://CRAN.R-project.org/package=stringr">https://CRAN.R-project.org/package=stringr</a>.
 </div>

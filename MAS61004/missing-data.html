@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 17 Missing data | Data handling, exploratory analysis, and reporting in R</title>
   <meta name="description" content="An introduction to R for students on MAS61004" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 17 Missing data | Data handling, exploratory analysis, and reporting in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jeremy Oakley" />
 
 
-<meta name="date" content="2022-10-14" />
+<meta name="date" content="2024-09-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,21 +52,22 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -102,7 +103,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +116,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -130,10 +131,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -352,7 +358,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#global-aesthetics"><i class="fa fa-check"></i><b>18.5</b> ‘Global’ aesthetics</a></li>
 <li class="chapter" data-level="18.6" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#facets"><i class="fa fa-check"></i><b>18.6</b> Facets</a></li>
-<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exercises"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
+<li class="chapter" data-level="18.7" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#exBrexitPlots"><i class="fa fa-check"></i><b>18.7</b> Exercises</a></li>
 <li class="chapter" data-level="18.8" data-path="making-plots-with-ggplot2.html"><a href="making-plots-with-ggplot2.html#further-reading-6"><i class="fa fa-check"></i><b>18.8</b> Further reading</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html"><i class="fa fa-check"></i><b>19</b> Presentation of plots</a>
@@ -367,7 +373,7 @@ div.csl-indent {
 <li class="chapter" data-level="19.5.2" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#a-first-attempt-four-histograms"><i class="fa fa-check"></i><b>19.5.2</b> A first attempt: four histograms</a></li>
 <li class="chapter" data-level="19.5.3" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#using-a-box-plot"><i class="fa fa-check"></i><b>19.5.3</b> Using a box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises-1"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
+<li class="chapter" data-level="19.6" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#exercises"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
 <li class="chapter" data-level="19.7" data-path="presentation-of-plots.html"><a href="presentation-of-plots.html#data-sources-1"><i class="fa fa-check"></i><b>19.7</b> Data sources</a></li>
 </ul></li>
 <li class="chapter" data-level="20" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html"><i class="fa fa-check"></i><b>20</b> Maps with <code>leaflet</code></a>
@@ -383,6 +389,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="20.4" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#further-reading-7"><i class="fa fa-check"></i><b>20.4</b> Further reading</a></li>
 <li class="chapter" data-level="20.5" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#acknowledgement"><i class="fa fa-check"></i><b>20.5</b> Acknowledgement</a></li>
+<li class="chapter" data-level="20.6" data-path="maps-with-leaflet.html"><a href="maps-with-leaflet.html#references"><i class="fa fa-check"></i><b>20.6</b> References:</a></li>
 </ul></li>
 <li class="part"><span><b>IV Presenting your results</b></span></li>
 <li class="chapter" data-level="21" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>21</b> R Markdown</a>
@@ -469,7 +476,7 @@ div.csl-indent {
 <li class="chapter" data-level="25.3" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#approximately-matching-strings"><i class="fa fa-check"></i><b>25.3</b> Approximately matching strings</a></li>
 <li class="chapter" data-level="25.4" data-path="example-working-with-strings.html"><a href="example-working-with-strings.html#assembling-the-target-data-frame"><i class="fa fa-check"></i><b>25.4</b> Assembling the target data frame</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -506,9 +513,9 @@ the treatment is.
 <div id="na" class="section level2 hasAnchor" number="17.1">
 <h2><span class="header-section-number">17.1</span> <code>NA</code><a href="missing-data.html#na" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>R represents a missing observation with <code>NA</code>. For example, we can create a vector with missing elements as follows,</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="missing-data.html#cb224-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="cn">NA</span>, <span class="dv">6</span>, <span class="cn">NA</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="missing-data.html#cb225-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="cn">NA</span>, <span class="dv">6</span>, <span class="cn">NA</span>)</span></code></pre></div>
 <p>and we can test to see if there are missing elements with the function <code>is.na()</code>:</p>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="missing-data.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="missing-data.html#cb226-1" tabindex="-1"></a><span class="fu">is.na</span>(x)</span></code></pre></div>
 <pre><code>## [1] FALSE FALSE  TRUE FALSE  TRUE</code></pre>
 <div class="rmdnote">
 <p>
@@ -522,58 +529,58 @@ methods to handle missing values inside R.
 <div id="functions-and-na" class="section level2 hasAnchor" number="17.2">
 <h2><span class="header-section-number">17.2</span> Functions and <code>NA</code><a href="missing-data.html#functions-and-na" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Some functions will, by default, return <code>NA</code> if the vector has any missing elements, e.g.</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="missing-data.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="missing-data.html#cb228-1" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div>
 <pre><code>## [1] NA</code></pre>
 <p>however, there is usually an argument to specify whether to remove missing values, e.g.</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="missing-data.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="missing-data.html#cb230-1" tabindex="-1"></a><span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>Alternatively, the function <code>na.omit()</code> can be used to first remove missing values:</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="missing-data.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">na.omit</span>(x))</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="missing-data.html#cb232-1" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">na.omit</span>(x))</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>If used with a data frame, <code>na.omit()</code> will exclude rows where any single column has a missing value:</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="missing-data.html#cb233-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">15</span></span>
-<span id="cb233-2"><a href="missing-data.html#cb233-2" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y)</span>
-<span id="cb233-3"><a href="missing-data.html#cb233-3" aria-hidden="true" tabindex="-1"></a><span class="fu">na.omit</span>(myData)</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="missing-data.html#cb234-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">15</span></span>
+<span id="cb234-2"><a href="missing-data.html#cb234-2" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y)</span>
+<span id="cb234-3"><a href="missing-data.html#cb234-3" tabindex="-1"></a><span class="fu">na.omit</span>(myData)</span></code></pre></div>
 <pre><code>##   x  y
 ## 1 2 11
 ## 2 4 12
 ## 4 6 14</code></pre>
 <p>Plot commands will typically ignore missing values (although you may get a warning message), for example</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="missing-data.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x)</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-174-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="missing-data.html#cb236-1" tabindex="-1"></a><span class="fu">plot</span>(x)</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-173-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="imputation" class="section level2 hasAnchor" number="17.3">
 <h2><span class="header-section-number">17.3</span> Imputation<a href="missing-data.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In some cases, it may be desirable to ‘impute’ (estimate) missing values, and there are different options (and R packages) for doing this. We will briefly illustrate one package, <code>imputeTS</code> <span class="citation">(<a href="#ref-r-imputeTS" role="doc-biblioref">Moritz and Bartz-Beielstein 2017</a>)</span>. This package has a nice ‘<a href="https://cran.r-project.org/web/packages/imputeTS/vignettes/Cheat_Sheet_imputeTS.pdf" target="_blank">cheat sheet</a>’ which illustrates its functions.</p>
+<p>In some cases, it may be desirable to ‘impute’ (estimate) missing values, and there are different options (and R packages) for doing this. We will briefly illustrate one package, <code>imputeTS</code> <span class="citation">(<a href="#ref-r-imputeTS">Moritz and Bartz-Beielstein 2017</a>)</span>. This package has a nice ‘<a href="https://cran.r-project.org/web/packages/imputeTS/vignettes/Cheat_Sheet_imputeTS.pdf" target="_blank">cheat sheet</a>’ which illustrates its functions.</p>
 <p>Suppose we have a vector with some missing values, which we will create as follows, and treat as a time series.</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="missing-data.html#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb236-2"><a href="missing-data.html#cb236-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">10</span>), <span class="dv">3</span>)</span>
-<span id="cb236-3"><a href="missing-data.html#cb236-3" aria-hidden="true" tabindex="-1"></a>x[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">8</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="missing-data.html#cb237-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb237-2"><a href="missing-data.html#cb237-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">10</span>), <span class="dv">3</span>)</span>
+<span id="cb237-3"><a href="missing-data.html#cb237-3" tabindex="-1"></a>x[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">8</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
 <p>Then, some options for imputing the missing values are</p>
 <ul>
 <li>impute using the mean of all the non-missing cases</li>
 </ul>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="missing-data.html#cb237-1" aria-hidden="true" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_mean</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="missing-data.html#cb238-1" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_mean</span>(x)</span></code></pre></div>
 <pre><code>##  [1] 0.440000 1.770000 5.768571 5.768571 5.130000 7.720000 7.460000 5.768571
 ##  [9] 8.310000 9.550000</code></pre>
 <ul>
 <li>impute using the most recent observed value, “last observation carried forward” (e.g. estimate <code>x[3]</code> by <code>x[2]</code>)</li>
 </ul>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="missing-data.html#cb239-1" aria-hidden="true" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_locf</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="missing-data.html#cb240-1" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_locf</span>(x)</span></code></pre></div>
 <pre><code>##  [1] 0.44 1.77 1.77 1.77 5.13 7.72 7.46 7.46 8.31 9.55</code></pre>
 <ul>
 <li>impute using linear interpolation (e.g. linearly interpolate between <code>x[2]</code> and <code>x[5]</code> to get <code>x[3]</code> and <code>x[4]</code>, assuming the observations are uniformly separated in time)</li>
 </ul>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="missing-data.html#cb241-1" aria-hidden="true" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_interpolation</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="missing-data.html#cb242-1" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_interpolation</span>(x)</span></code></pre></div>
 <pre><code>##  [1] 0.440 1.770 2.890 4.010 5.130 7.720 7.460 7.885 8.310 9.550</code></pre>
 <ul>
 <li>impute using a Kalman smoother (see MAS61005 Time Series)</li>
 </ul>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="missing-data.html#cb243-1" aria-hidden="true" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_kalman</span>(x)</span></code></pre></div>
-<pre><code>##  [1] 0.440000 1.770000 2.982747 4.155760 5.130000 7.720000 7.460000 7.985059
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="missing-data.html#cb244-1" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">na_kalman</span>(x)</span></code></pre></div>
+<pre><code>##  [1] 0.440000 1.770000 2.982747 4.155760 5.130000 7.720000 7.460000 7.985058
 ##  [9] 8.310000 9.550000</code></pre>
 <p>The plot below shows the imputed values (as red circles) in each case.</p>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
 <div class="rmdnote">
 <p>
 Modelling-based estimates such as those from the Kalman smoother
@@ -588,12 +595,12 @@ would actually be <em>observed</em>.
 <h2><span class="header-section-number">17.4</span> Visualising missing data<a href="missing-data.html#visualising-missing-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <code>imputeTS</code> package has some nice plotting functions for missing data. The plots make use of <code>ggplot2</code> (which we will cover later), but you don’t need to know any <code>ggplot2</code> syntax to use these functions.</p>
 <p>We can produce a plot to show clearly where the missing data are using</p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="missing-data.html#cb245-1" aria-hidden="true" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">ggplot_na_distribution</span>(x)</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-182-1.png" width="672" style="display: block; margin: auto;" />
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="missing-data.html#cb246-1" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">ggplot_na_distribution</span>(x)</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-181-1.png" width="672" style="display: block; margin: auto;" />
 and if we have used imputation, we can make a plot that clearly displays the imputed values with (using <code>na_kalman()</code> as an example):</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="missing-data.html#cb246-1" aria-hidden="true" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">ggplot_na_imputations</span>(x,</span>
-<span id="cb246-2"><a href="missing-data.html#cb246-2" aria-hidden="true" tabindex="-1"></a>                                imputeTS<span class="sc">::</span><span class="fu">na_kalman</span>(x))</span></code></pre></div>
-<p><img src="EDA-R_files/figure-html/unnamed-chunk-183-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="missing-data.html#cb247-1" tabindex="-1"></a>imputeTS<span class="sc">::</span><span class="fu">ggplot_na_imputations</span>(x,</span>
+<span id="cb247-2"><a href="missing-data.html#cb247-2" tabindex="-1"></a>                                imputeTS<span class="sc">::</span><span class="fu">na_kalman</span>(x))</span></code></pre></div>
+<p><img src="EDA-R_files/figure-html/unnamed-chunk-182-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exercise-2" class="section level2 hasAnchor" number="17.5">
 <h2><span class="header-section-number">17.5</span> Exercise<a href="missing-data.html#exercise-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -615,8 +622,8 @@ and if we have used imputation, we can make a plot that clearly displays the imp
 
 
 
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<h3>References<a href="references-1.html#references-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-r-imputeTS" class="csl-entry">
 Moritz, Steffen, and Thomas Bartz-Beielstein. 2017. <span>“<span class="nocase">imputeTS: Time Series Missing Value Imputation in R</span>.”</span> <em><span>The R Journal</span></em> 9 (1): 207–18. <a href="https://doi.org/10.32614/RJ-2017-009">https://doi.org/10.32614/RJ-2017-009</a>.
 </div>
