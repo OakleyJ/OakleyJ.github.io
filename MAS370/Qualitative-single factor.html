@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Designs for qualitative explanatory variables: one factor – MAS370/61003 Sampling Theory and Design of Experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Qualitative-multiple factors.html" rel="next">
+<link href="./Optimality.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Qualitative-single factor.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MAS370/61003 Sampling Theory and Design of Experiments</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: Experimental Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to experimental design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Experimental Design</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Review of linear models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Optimality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-multiple factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: multiple factors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Factorial designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Designs for mixture experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Designs for mixture experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Continuous and exact designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Continuous and exact designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tailor-made designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Tailor-made designs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Sampling Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Simple random sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Simple Random Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Stratified sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Stratified Sampling: Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Population size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Practicalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Practicalities of Surveys: Problems at the Planning Stage</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#randomisation" id="toc-randomisation" class="nav-link active" data-scroll-target="#randomisation"><span class="header-section-number">4.1</span> Randomisation</a></li>
+  <li><a href="#completely-randomised-designs-crd" id="toc-completely-randomised-designs-crd" class="nav-link" data-scroll-target="#completely-randomised-designs-crd"><span class="header-section-number">4.2</span> Completely Randomised Designs (CRD)</a></li>
+  <li><a href="#blocks" id="toc-blocks" class="nav-link" data-scroll-target="#blocks"><span class="header-section-number">4.3</span> Blocks</a></li>
+  <li><a href="#RBD" id="toc-RBD" class="nav-link" data-scroll-target="#RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Qualitative-single factor.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We now consider some standard designs that can be used to compare the effects of several categorical variables. The simplest case is where there is just one factor, acting at <span class="math inline">\(m\)</span> different levels, and we wish to compare the effects of these levels.</p>
+<p>A typical example is where an investigator is wishing to compare <span class="math inline">\(m\)</span> different drugs, one of which may be a placebo, by dividing the patients into <span class="math inline">\(m\)</span> groups and administering a different drug to each group. Of course, such data can be described with a linear model, for example: <span class="math display">\[Y_{ij}=\mu_i+\varepsilon_{ij},\]</span> where <span class="math inline">\(Y_{ij}\)</span> is the <span class="math inline">\(j\)</span>-th observed response in the <span class="math inline">\(i\)</span>-th treatment group, <span class="math inline">\(\mu_i\)</span> is the population mean response in the <span class="math inline">\(i\)</span>-th treatment group, and <span class="math inline">\(\varepsilon_{ij}\)</span> is an error term following a <span class="math inline">\(N(0,\sigma^2)\)</span> distribution. We can represent this model in the usual matrix form <span class="math inline">\(\mathbf{y}= \mathbf{x}\boldsymbol{\beta}+ \mathbf{\varepsilon}\)</span>. Consequently, all the theory from the previous sections applies.</p>
+<p>The first design question is simply how best to allocate patients to treatment groups. But we can also consider whether it’s possible to reduce experimental error through other features of the design. In later sections, we extend the design problem to the case where we wish to investigate the effects of several factors simultaneously.</p>
+<section id="randomisation" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="randomisation"><span class="header-section-number">4.1</span> Randomisation</h2>
+<p>An important aspect of the design of experiments, in cases where the aim is to investigate the effect of treatments on subjects say, is to choose the combinations of treatments which we wish to apply, and then allocate them to subjects in a completely random way. This helps to avoid bias, possibly subconscious, in the allocation, but there is also a more technical justification for randomisation.</p>
+</section>
+<section id="completely-randomised-designs-crd" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="completely-randomised-designs-crd"><span class="header-section-number">4.2</span> Completely Randomised Designs (CRD)</h2>
+<p>A <strong>completely randomised design (CRD)</strong> is one where every possible allocation of subjects to treatments is equally likely to be chosen. The model may be written <span class="math display">\[Y_{ij} = \mu _i + \epsilon _{ij}~~~~(i=1,2,\ldots ,m; j=1,2,\ldots n_i)\]</span> where <span class="math inline">\(n_i\)</span> is the size of the <span class="math inline">\(i\)</span>-th group, <span class="math inline">\(Y_{ij}\)</span> is the <span class="math inline">\(j\)</span>-th observation in the <span class="math inline">\(i\)</span>-th group, <span class="math inline">\(\mu _i\)</span> is the unknown mean for the <span class="math inline">\(i\)</span>-th treatment, and <span class="math inline">\(\epsilon _{ij}\)</span> is random error.</p>
+<p>Under the usual assumptions of the general linear model, the analysis is easy, because the parameters are orthogonal and we get <span class="math display">\[\begin{align}
+\hat{\mu}_i=\overline{Y}_{i.}\\
+\text{var}(\hat{\mu})_i=\frac{\sigma ^2}{n_i}
+\end{align}\]</span> where <span class="math inline">\(\overline{Y}_{i.}\)</span> is the mean of the <span class="math inline">\(i\)</span>-th group. The residual sum of squares is <span class="math display">\[S^2 = \sum _{i=1}^m \sum _{j=1}^{n_i}(Y_{ij}-\overline{Y}_{i.})^2\]</span> with <span class="math inline">\(n-m\)</span> degrees of freedom, where <span class="math inline">\(n\)</span> is the total number of observations.</p>
+<p>From the design point of view, the main question here is how best to choose the sizes of the groups. Obviously, as ever, the larger the experiment, the more accurate the estimators will be, and so it is of more interest to look at the problem of choice of <span class="math inline">\(n_1, n_2, \ldots ,n_m\)</span> subject to a fixed total number of observations <span class="math inline">\(n\)</span> say.</p>
+<p>If, for example, we adopt the <span class="math inline">\(D\)</span>-optimality criterion, then, noting that in this case <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is the diagonal matrix with <span class="math inline">\(n_1, n_2, \ldots , n_m\)</span> down the diagonal, its determinant is <span class="math inline">\(n_1n_2\ldots n_m\)</span> and this is maximised subject to <span class="math inline">\(n_1+n_2+\ldots
++n_m=n\)</span> by taking <span class="math inline">\(n_1, n_2, \ldots , n_m\)</span> as nearly as possible equal to each other.</p>
+<p>If there is a placebo, an alternative might be to aim to minimise the variance of the estimated treatment difference between each of the genuine treatments and the placebo. Suppose that each of the genuine treatments is administered to <span class="math inline">\(t\)</span> patients, and the placebo to the remaining <span class="math inline">\(n-(m-1)t\)</span> patients; then this variance may be written <span class="math display">\[v(t) = \sigma ^2\left( \frac{1}{t} + \frac{1}{n-(m-1)t} \right).\]</span> We minimise this by treating <span class="math inline">\(t\)</span> as a continuous variable and using calculus. Leaving out the constant multiplicative factor <span class="math inline">\(\sigma
+^2\)</span>, <span class="math display">\[\begin{align}
+\frac{d}{dt} v(t)&amp;=-\frac{1}{t^2} + \frac{m-1}{(n-(m-1)t)^2}.\\
+\frac{d^2}{dt^2}v(t)&amp;=\frac{2}{t^3}+\frac{2(m-1)^2}{(n-(m-1)t)^3}&gt;0.
+\end{align}\]</span> Hence a minimum occurs when <span class="math inline">\((m-1)t^2 = (n-(m-1)t)^2\)</span>, and this is an equation which may be solved for <span class="math inline">\(t\)</span>. The solution will not necessarily be an integer, and so in practice it may have to be rounded up or down.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-crd" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.1</strong></span> Let <span class="math inline">\(n=24\)</span> and <span class="math inline">\(m=3\)</span>. In this case the equation is<br>
+<span class="math display">\[2t^2 = (24-2t)^2\]</span> leading to <span class="math display">\[t = \frac{24}{2+\sqrt{2}} \simeq 7.03\]</span> In practice we would take <span class="math inline">\(t=7\)</span>, and administer each of the two genuine treatments to seven patients, and the placebo to the remaining ten.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="blocks" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="blocks"><span class="header-section-number">4.3</span> Blocks</h2>
+<p>Sometimes we can increase the accuracy of an experiment by making use of knowledge of uncontrollable sources of variation by incorporating them in the model as <strong>blocking variables</strong>. A typical example here is an agricultural experiment, where a number of plants are to be grown, perhaps in order to estimate the effects of several different fertilisers, but the plot on which the plants are to be grown is known to be inhomogeneous with respect to its natural fertility. If a model were fitted which ignored this inhomogeneity, estimates would not be very accurate because the residuals would have to carry the associated variability, and some of them might be expected to be large in magnitude. Also, the assumption of independent observations might be questionable, since those from plants grown close together might be expected to be positively correlated.</p>
+<p>A way of dealing with this is to divide the plot into relatively homogeneous sub-plots known as <strong>blocks</strong> and to incorporate into the model <strong>block effects</strong>, which are additive parameters, one for each block, and which can be dealt with in the formulation of the model using dummy variables, similarly to the catalyst effects discussed in Section @ref(qualvars). The chief difference here is that the block effects may not be of interest in their own right, but are introduced merely to produce a better-fitting model, and increase the accuracy of estimation of parameters which <em>are</em> of interest.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-blocks1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.2</strong></span> If there are just two blocks, introducing two block parameters <span class="math inline">\(B_1\)</span> and <span class="math inline">\(B_2\)</span> would over-parametrise the model, and so imposing a constraint, say <span class="math inline">\(B_1+B_2=0\)</span>, or equivalently <span class="math inline">\(B_2=-B_1\)</span>, enables us to eliminate <span class="math inline">\(B_2\)</span>, giving a single extra parameter <span class="math inline">\(B_1\)</span>. Correspondingly, the design matrix will have an extra column consisting of a <span class="math inline">\(1\)</span> for every observation from the first block and a <span class="math inline">\(-1\)</span> for every observation from the second block.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-blocks2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.3</strong></span> In an experiment with two blocks, suppose that each observation in one block is twinned with an observation with the same treatment combination in the other block. If the block effect is represented by a parameter <span class="math inline">\(B_1\)</span> which is included in the model as an additive effect <span class="math inline">\(+B_1\)</span> in the first block and <span class="math inline">\(-B_1\)</span> in the second block, explain why this parameter is orthogonal to all of the other parameters in the model.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="RBD" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</h2>
+<p>In an experiment to compare the effects of different drugs, for example, we might wish to use blocks which consist of patients of the same sex and fairly homogeneous with respect to age, so that variation due to these factors can be separated from variation due to the effects of the drugs. If all of the blocks contain the same number of units, and each treatment is used the same number of times within each block, with randomisation taking place independently within each block, we have a <strong>randomised block design (RBD)</strong>.</p>
+<p>The simplest case is where each treatment is administered once within each block. If <span class="math inline">\(b\)</span> denotes the number of blocks and <span class="math inline">\(t\)</span> denotes the number of treatments, the model which we might consider is the additive one <span class="math display">\[Y_{ij} = \mu + \alpha _i + \tau _j + \epsilon_{ij}~~~~(i=1,2,\ldots ,b;~~j=1,2,\ldots ,t)\]</span> where <span class="math inline">\(Y_{ij}\)</span> is the observation in block <span class="math inline">\(i\)</span> for treatment <span class="math inline">\(j\)</span>, <span class="math inline">\(\mu\)</span> is the overall mean, <span class="math inline">\(\alpha _i\)</span> is the effect of block <span class="math inline">\(i\)</span>, and <span class="math inline">\(\tau _j\)</span> is the effect of treatment <span class="math inline">\(j\)</span>. This model is over-parametrised as it stands; to overcome this, and to give <span class="math inline">\(\mu\)</span> a genuine meaning, we need to impose the constraints <span class="math display">\[\sum _{i=1}^b \alpha _i = \sum _{j=1}^t \tau _j = 0\]</span> so that, in applying the machinery of the general linear model, we need to express the parameters <span class="math inline">\(\alpha _b\)</span> and <span class="math inline">\(\tau _t\)</span> in terms of the others and adjust the design matrix accordingly.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-rbd" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.4</strong></span> Let <span class="math inline">\(b=2\)</span> and <span class="math inline">\(t=3\)</span>. Then the model may be expressed as <span class="math display">\[
+E\left( \begin{array}{c} Y_{11} \\ Y_{12} \\ Y_{13} \\ Y_{21} \\
+Y_{22} \\ Y_{23} \end{array} \right) = \left( \begin{array}{cccc} 1 &amp; 1 &amp; 1 &amp; 0 \\ 1 &amp; 1 &amp; 0 &amp; 1 \\ 1 &amp; 1 &amp; -1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; 0 \\
+1 &amp; -1 &amp; 0 &amp; 1 \\ 1 &amp; -1 &amp; -1 &amp; -1 \end{array} \right) \left(\begin{array}{c} \mu \\ \alpha _1 \\ \tau _1 \\ \tau _2 \end{array}\right)
+\]</span> and in this case <span class="math display">\[\mathbf{X}^T\mathbf{X}=\left(\begin{array}{cccc} 6 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 6 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 4 &amp; 2 \\ 0 &amp; 0 &amp; 2 &amp; 4 \end{array} \right)
+\text{ and }(\mathbf{X}^T\mathbf{X})^{-1}=\left(\begin{array}{rrrr}\frac{1}{6} &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; \frac{1}{6} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; \frac{1}{3} &amp;-\frac{1}{6} \\ 0 &amp; 0 &amp; -\frac{1}{6} &amp; \frac{1}{3} \end{array} \right).\]</span> Note that the three groups of parameters <span class="math inline">\(\{ \mu \} , \{ \alpha _i\}\)</span> and <span class="math inline">\(\{ \tau _j\}\)</span> are mutually orthogonal.</p>
+</div>
+</div>
+</div>
+<p>The symmetry of the RBD makes it relatively easy to analyse. If <span class="math inline">\(\overline{Y}_{..}\)</span> denotes the overall mean of the observations, <span class="math inline">\(\overline{Y}_{i.}\)</span> denotes the mean of block <span class="math inline">\(i\)</span> and <span class="math inline">\(\overline{Y}_{.j}\)</span> denotes the mean of treatment <span class="math inline">\(j\)</span>, then we have <span class="math display">\[\begin{align}
+\hat{\mu}&amp;=\overline{Y}_{..} \\
+\text{var}(\hat{\mu})&amp;=\frac{\sigma ^2}{bt}\\
+\hat{\alpha}_i&amp;=\overline{Y}_{i.} - \overline{Y}_{..}\\
+\text{var}(\hat{\alpha}_i)&amp;=\frac{\sigma ^2}{t}\left( 1 - \frac{1}{b} \right)\\
+\text{cov}(\hat{\alpha}_i, \hat{\alpha }_{i^{\prime }})&amp;=-\frac{\sigma ^2}{bt}\text{ for }i\neq i^{\prime}\\
+\hat{\tau }_j&amp;= \overline{Y}_{.j} - \overline{Y}_{..}\\
+\text{var}(\hat{\tau }_j)=&amp;\frac{\sigma^2}{b}\left( 1 - \frac{1}{t} \right)\\
+\text{cov}(\hat{\tau}_j, \hat{\tau }_{j^{\prime }})&amp;=-\frac{\sigma^2}{bt}\text{ for }j\neq j^{\prime}
+\end{align}\]</span> and the three groups of parameters are mutually orthogonal and therefore independent. The residual sum of squares is <span class="math display">\[\sum _{i=1}^b \sum _{j=1}^t (Y_{ij} - \overline{Y}_{i.} -\overline{Y}_{.j} + \overline{Y}_{..})^2\]</span> and the number of degrees of freedom for error is <span class="math display">\[bt - 1 - (b-1) - (t-1) = (b-1)(t-1) .\]</span></p>
+<p>Suppose now we are able to take <span class="math inline">\(r&gt;1\)</span> observations per ’’cell” (block/treatment combination). If we stick to the additive model above, the analysis is similar except that the observations take the form <span class="math inline">\(Y_{ijk}\)</span> (block <span class="math inline">\(i\)</span>, treatment <span class="math inline">\(j\)</span>, replicate <span class="math inline">\(k\)</span>), the estimators have some added suffices, their variances and covariances are divided by a factor <span class="math inline">\(r\)</span>, the residual sum of squares becomes <span class="math display">\[\sum _{i=1}^b \sum _{j=1}^t \sum _{k=1}^r (Y_{ijk} - \overline{Y}_{i..} - \overline{Y}_{.j.} + \overline{Y}_{...})^2\]</span> and the number of degrees of freedom is increased by <span class="math inline">\(bt(r-1)\)</span>.</p>
+<p>However, with replication it is possible to investigate <strong>interactions</strong> between blocks and treatments, by introducing extra parameters to the model. Roughly speaking, the interaction between block <span class="math inline">\(i\)</span> and treatment <span class="math inline">\(j\)</span>, denoted by <span class="math inline">\((\alpha \tau )_{ij}\)</span>, measures the extent to which the observations in this cell depart from what might be expected on the additive model. We may write the model with interactions as <span class="math display">\[Y_{ijk} = \mu + \alpha _i + \tau _j + (\alpha \tau )_{ij} + \epsilon _{ijk} .\]</span> Once again, this model is over-parametrised as it stands, and we need to impose the constraints <span class="math display">\[\begin{align}
+\sum _{i=1}^b (\alpha \tau )_{ij} &amp;= 0\text{ for each }j \\
+\text{and } \sum_{j=1}^t (\alpha \tau)_{ij} &amp;= 0\text{ for each }i
+\end{align}\]</span> so that, in applying the machinery of the general linear model, any interaction <span class="math inline">\((\alpha \tau )_{ij}\)</span> with <em>either</em> <span class="math inline">\(i=b\)</span> <em>or</em> <span class="math inline">\(j=t\)</span> must be expressed in terms of the others.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-rbd2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.5</strong></span> Let <span class="math inline">\(b=2, t=3\)</span> and <span class="math inline">\(r=2\)</span>. Then the model may be expressed as <span class="math display">\[E\left( \begin{array}{c} Y_{111} \\ Y_{112} \\ Y_{121} \\ Y_{122}  \\ Y_{131} \\ Y_{132} \\ Y_{211} \\ Y_{212} \\ Y_{221} \\ Y_{222} \\
+Y _{231} \\ Y_{232} \end{array} \right) = \left(
+\begin{array}{cccccc}
+1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\
+1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\
+1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\
+1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\
+1 &amp; -1 &amp; 1 &amp; 0 &amp; -1 &amp; 0 \\
+1 &amp; -1 &amp; 1 &amp; 0 &amp; -1 &amp; 0 \\
+1 &amp; -1 &amp; 0 &amp; 1 &amp; 0 &amp; -1 \\
+1 &amp; -1 &amp; 0 &amp; 1 &amp; 0 &amp; -1 \\
+1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 \\
+1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 &amp; 1\end{array} \right)
+\left(\begin{array}{c} \mu \\ \alpha_1 \\ \tau_1 \\ \tau_2 \\ (\alpha\tau)_{11} \\ (\alpha\tau)_{12} \end{array} \right).\]</span> For example, the two last entries in the bottom row of the design matrix follow from the fact that, because of the constraints, <span class="math display">\[(\alpha \tau )_{23} = -(\alpha \tau )_{13} = (\alpha \tau )_{11} + (\alpha \tau )_{12} .\]</span></p>
+</div>
+</div>
+</div>
+<p>In general, the inclusion of interactions in the model adds <span class="math inline">\((b-1)(t-1)\)</span> extra parameters and so the number of degrees of freedom for error is <span class="math display">\[btr - 1 - (b-1) - (t-1) - (b-1)(t-1) = bt(r-1).\]</span> The interactions are orthogonal to the other parameters and so the estimators of the latter remain as they were before; the interactions themselves are estimated by <span class="math display">\[\widehat{(\alpha\tau)}_{ij} = \overline{Y}_{ij.} -\overline{Y}_{i..} - \overline{Y}_{.j.} + \overline{Y}_{...}\]</span> and the residual sum of squares is <span class="math display">\[\sum _{i=1}^b \sum _{j=1}^t \sum _{k=1}^r (Y_{ijk}-\overline{Y}_{ij.})^2\]</span></p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Question 1 is a good exam revision exercise (you will have an exam formula sheet: you won’t need to memorise specific formulae). Question 2 is more challenging!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-rbd2" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 4.1</strong></span> &nbsp;</p>
+<ol type="1">
+<li>Derive the variance of an estimated treatment difference:</li>
+</ol>
+<ul>
+<li><p>in a CRD with <span class="math inline">\(t\)</span> treatments and each group of size <span class="math inline">\(b\)</span>;</p></li>
+<li><p>in an RBD (one observation per cell) with the usual notation.</p></li>
+</ul>
+<p>In the first case, such a treatment difference would be denoted by <span class="math inline">\(\mu_i-\mu_{i^{\prime}}\)</span> say, whereas in the second it would be denoted by <span class="math inline">\(\tau_j-\tau_{j^{\prime}}\)</span>. If a RBD is used where the block effects are negligible, has any advantage been gained?</p>
+<ol start="2" type="1">
+<li>Show that, for given positive integers <span class="math inline">\(n&gt;m\)</span>, the product <span class="math inline">\(n_1n_2\ldots n_m\)</span> of positive integers subject to the constraint <span class="math inline">\(n_1+n_2+\ldots +n_m=n\)</span> is maximised by taking <span class="math inline">\(n_1, n_2, \ldots,n_m\)</span> as nearly as possible equal to each other, using the following approach. If two of the factors differ by more than two, say <span class="math inline">\(n_1\geq n_2+2\)</span>, then the product could be increased by replacing <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> by <span class="math inline">\(n_1-1\)</span> and <span class="math inline">\(n_2+1\)</span>; hence such a choice cannot be optimal. Using a similar approach, show that a D-optimal CRD is also A-optimal in that it minimises the sum <span class="math display">\[ \frac{1}{n_1} + \frac{1}{n_2} + \ldots + \frac{1}{n_m} \]</span> subject to the same constraint.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Optimality.html" class="pagination-link" aria-label="Optimality">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Qualitative-multiple factors.html" class="pagination-link" aria-label="Designs for qualitative explanatory variables: multiple factors">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: multiple factors</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

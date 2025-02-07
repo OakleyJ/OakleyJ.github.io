@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Factorial designs – MAS370/61003 Sampling Theory and Design of Experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Designs for mixture experiments.html" rel="next">
+<link href="./Qualitative-multiple factors.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Factorial designs.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MAS370/61003 Sampling Theory and Design of Experiments</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: Experimental Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to experimental design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Experimental Design</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Review of linear models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Optimality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-multiple factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: multiple factors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Factorial designs.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Designs for mixture experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Designs for mixture experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Continuous and exact designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Continuous and exact designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tailor-made designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Tailor-made designs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Sampling Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Simple random sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Simple Random Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Stratified sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Stratified Sampling: Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Population size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Practicalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Practicalities of Surveys: Problems at the Planning Stage</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#complete-factorial-designs-cfd" id="toc-complete-factorial-designs-cfd" class="nav-link active" data-scroll-target="#complete-factorial-designs-cfd"><span class="header-section-number">6.1</span> Complete factorial designs (CFD)</a></li>
+  <li><a href="#blocking-factorial-designs" id="toc-blocking-factorial-designs" class="nav-link" data-scroll-target="#blocking-factorial-designs"><span class="header-section-number">6.2</span> Blocking Factorial Designs</a></li>
+  <li><a href="#fractional-factorial-designs-ffd" id="toc-fractional-factorial-designs-ffd" class="nav-link" data-scroll-target="#fractional-factorial-designs-ffd"><span class="header-section-number">6.3</span> Fractional factorial designs (FFD)</a></li>
+  <li><a href="#screening-experiments" id="toc-screening-experiments" class="nav-link" data-scroll-target="#screening-experiments"><span class="header-section-number">6.4</span> Screening experiments</a></li>
+  <li><a href="#plackett-and-burman-designs" id="toc-plackett-and-burman-designs" class="nav-link" data-scroll-target="#plackett-and-burman-designs"><span class="header-section-number">6.5</span> Plackett and Burman designs</a></li>
+  <li><a href="#composite-designs" id="toc-composite-designs" class="nav-link" data-scroll-target="#composite-designs"><span class="header-section-number">6.6</span> Composite designs</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Factorial designs.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We now consider scenarios in which we wish to investigate the effect of several explanatory variables on the response variable, where at least some of the explanatory variables are continuous. We consider classes of designs in which the continuous explanatory variables are treated as factors, operating at a small number of different levels. For example, suppose we are investigating the effect of temperature, pressure and catalyst on the yield of some chemical process. A possible choice of factor levels is</p>
+<div class="center">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Explanatory variable</th>
+<th></th>
+<th style="text-align: center;">Levels</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Temperature, <span class="math inline">\(^{\circ }C\)</span></td>
+<td><span class="math inline">\(x_1\)</span></td>
+<td style="text-align: center;">180</td>
+<td>190</td>
+<td>200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pressure, psi</td>
+<td><span class="math inline">\(x_2\)</span></td>
+<td style="text-align: center;">70</td>
+<td>90</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Catalyst</td>
+<td><span class="math inline">\(x_3\)</span></td>
+<td style="text-align: center;">Type I</td>
+<td>Type II</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Although temperature and pressure are treated as factors here, we will treat them as continuous quantities when fitting suitable statistical models.</p>
+<section id="complete-factorial-designs-cfd" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="complete-factorial-designs-cfd"><span class="header-section-number">6.1</span> Complete factorial designs (CFD)</h2>
+<p>A <strong>complete factorial design (CFD)</strong> includes all possible combinations of the explanatory variables. If no replications are included, the total number of observations in a CFD is <span class="math display">\[n = \prod _{i=1}^m l_i\]</span> where <span class="math inline">\(m\)</span> is the number of explanatory variables and <span class="math inline">\(l_i\)</span> is the number of levels of the <span class="math inline">\(i\)</span>-th of these explanatory variables. In the above example, <span class="math inline">\(m=3\)</span>, <span class="math inline">\(l_1=3\)</span> and <span class="math inline">\(l_2=l_3=2\)</span> and so <span class="math inline">\(n=3\times 2\times 2 = 12\)</span>. Originally, such designs were proposed for discrete explanatory variables, hence the name ’’factorial”. However, in general, the explanatory variables may be quantitative (temperature and pressure) as well as qualitative (catalyst).</p>
+<p>If <span class="math inline">\(m\)</span> is large, even if the number of levels of each factor is small, the design may require an impractically large number of observations. Also, there may be a need to use blocks. For the moment, we shall only consider designs where each of the factors occurs at two levels and no blocking is required. The models which can be fitted using such designs will be investigated.</p>
+<p>If a factor occurs at two levels, it is convenient to denote these levels by <span class="math inline">\(-1\)</span> (or <span class="math inline">\(-\)</span>), the <strong>low</strong> level, and <span class="math inline">\(+1\)</span> (or <span class="math inline">\(+\)</span>), the <strong>high</strong> level. Sometimes the factors <span class="math inline">\(x_1, x_2, \ldots\)</span> are denoted instead by <span class="math inline">\(a,b,c,\ldots\)</span> and the response corresponding to each combination is given subscripts for each of the factors which occurs at the high level, except that the response corresponding to all the factors being at the low level is given the subscript <span class="math inline">\((1)\)</span>. The following tables illustrate the design for <span class="math inline">\(m=2\)</span> and <span class="math inline">\(m=3\)</span>.</p>
+<div class="center">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;&nbsp;<span class="math inline">\(x_1 (a)\)</span>&nbsp;&nbsp;</th>
+<th style="text-align: center;">&nbsp;&nbsp;<span class="math inline">\(x_2 (b)\)</span>&nbsp;&nbsp;</th>
+<th style="text-align: center;">&nbsp;&nbsp;Response&nbsp;&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_{(1)}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_a\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_b\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_{ab}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>CFD for <span class="math inline">\(m=2\)</span>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;&nbsp;<span class="math inline">\(x_1 (a)\)</span>&nbsp;&nbsp;</th>
+<th style="text-align: center;">&nbsp;&nbsp;<span class="math inline">\(x_2 (b)\)</span>&nbsp;&nbsp;</th>
+<th style="text-align: center;">&nbsp;&nbsp;<span class="math inline">\(x_3 (c)\)</span>&nbsp;&nbsp;</th>
+<th style="text-align: center;">&nbsp;&nbsp;Response&nbsp;&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_{(1)}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_a\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_b\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_{ab}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_c\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_{ac}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_{bc}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y_{abc}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>CFD for <span class="math inline">\(m=3\)</span>.</p>
+</div>
+<p>Note that in these tables, the rows are in <strong>standard order</strong> which means that the first column alternates between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>, the second column has alternating pairs of <span class="math inline">\(-1\)</span>’s and <span class="math inline">\(1\)</span>’s, the third column has alternating groups of four, and so on. This practice ensures that every combination of levels of the factors occurs exactly once, but it should be noted that, in applying such a design, <em>randomisation</em> should take place in assigning factor combinations to experimental units.</p>
+<p>The type of linear model which we can fit to a CFD is the polynomial model <span class="math display">\[E(Y)=\beta_0+\sum_{i=1}^m\beta_ix_i+\sum_{i=1}^{m-1}\sum_{j=i+1}^m\beta_{ij}x_ix_j+\sum_{i=1}^{m-2}\sum_{j=i+1}^{m-1}\sum_{k=j+1}^m\beta_{ijk}x_ix_jx_k+\ldots\]</span> where, because we have chosen <span class="math inline">\(\pm 1\)</span> as the values taken by the <span class="math inline">\(x_i\)</span>’s, there is no need to include any power of <span class="math inline">\(x_i\)</span> greater than one, since <span class="math inline">\(x_i^2\)</span> is identically equal to <span class="math inline">\(1\)</span>. Another good reason for this choice is that it makes the parameters relatively easy to interpret; for instance, in the first-order model <span class="math display">\[E(Y) = \beta_0 + \sum _{i=1}^m \beta_ix_i\]</span> <span class="math inline">\(\beta_0\)</span> can be interpreted as the overall mean and, for <span class="math inline">\(i\geq 1\)</span>, <span class="math inline">\(2\beta_i\)</span> can be interpreted as the difference in effect between high and low levels of factor <span class="math inline">\(i\)</span>.</p>
+<p>In the more general model, the <span class="math inline">\(\beta_i\)</span>’s are called the <strong>main effects</strong> and the higher order parameters <span class="math inline">\(\beta_{ij}, \beta_{ijk},\ldots\)</span> are called the <strong>interactions</strong>. The fullest possible model is the one which includes all orders of interaction up to <span class="math inline">\(m\)</span>, so that the last term in the equation above is <span class="math display">\[\ldots + \beta_{12\ldots m}x_1x_2\ldots x_m\]</span> and the total number of parameters is <span class="math display">\[1 + {m \choose 1} + {m \choose 2} + \ldots + 1 = (1+1)^m = 2^m\]</span> which is the same as the total number of observations. The model is said to be <strong>saturated</strong>: it fits exactly, the residuals are zero and there are no degrees of freedom for error. In practice, an experimenter will rarely expect it necessary to include any but the lowest order interactions in the model, and so the number of parameters will be much smaller, and the usual analysis of variance techniques may be applied.</p>
+<p>Another property of a CFD is that, however many interactions are included in the model, the matrix <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> turns out to be a multiple of the identity matrix, and so all the parameters are mutually orthogonal and it is very easy to write down their estimators.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-cfd1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.1</strong></span> Let <span class="math inline">\(m=3\)</span> and consider the model with two-factor interactions <span class="math display">\[E(Y) = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_{12}x_1x_2 + \beta_{13}x_1x_3 + \beta_{23}x_2x_3 .\]</span> Then the design matrix is <span class="math display">\[\mathbf{X}= \left( \begin{array}{ccccccc} 1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 \\ 1 &amp; -1 &amp; 1 &amp; -1 &amp; -1 &amp; 1 &amp; -1 \\
+1 &amp; 1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 &amp; -1 \\ 1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 \\
+1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \end{array} \right) .\]</span> Note how here the second, third and fourth columns are lifted from the diagram of the design which we gave earlier, and the last three columns are found by multiplying together in pairs the preceding three columns. It is easy to see now that <span class="math inline">\(\mathbf{X}^T\mathbf{X}=8\mathbf{I}_7\)</span> where <span class="math inline">\(\mathbf{I}_7\)</span> is the <span class="math inline">\(7\times 7\)</span> identity matrix, and so <span class="math display">\[\hat{\boldsymbol{\beta}}=\frac{1}{8}\mathbf{X}^T\mathbf{Y}\]</span> or, more fully, <span class="math display">\[\begin{align}
+\hat{\beta_0} &amp;= \frac{1}{8}\left(Y_{(1)}+Y_a+Y_b+Y_{ab}+Y_c+Y_{ac}+Y_{bc}+Y_{abc} \right) \\
+\hat{\beta_1} &amp;= \frac{1}{8}\left(-Y_{(1)}+Y_a-Y_b+Y_{ab}-Y_c+Y_{ac}-Y_{bc}+Y_{abc} \right) \\
+\hat{\beta_2} &amp;= \frac{1}{8}\left(-Y_{(1)}-Y_a+Y_b+Y_{ab}-Y_c-Y_{ac}+Y_{bc}+Y_{abc} \right) \\
+\hat{\beta_3} &amp;= \frac{1}{8}\left(-Y_{(1)}-Y_a-Y_b-Y_{ab}+Y_c+Y_{ac}+Y_{bc}+Y_{abc} \right) \\
+\hat{\beta_{12}} &amp;= \frac{1}{8}\left(Y_{(1)}-Y_a-Y_b+Y_{ab}+Y_c-Y_{ac}-Y_{bc}+Y_{abc} \right) \\
+\hat{\beta_{13}} &amp;= \frac{1}{8}\left(Y_{(1)}-Y_a+Y_b-Y_{ab}-Y_c+Y_{ac}-Y_{bc}+Y_{abc} \right) \\
+\text{and  }\hat{\beta_{23}} &amp;= \frac{1}{8}\left(Y_{(1)}+Y_a-Y_b-Y_{ab}-Y_c-Y_{ac}+Y_{bc}+Y_{abc} \right).
+\end{align}\]</span> It is instructive to observe the pattern of plus and minus signs in these expressions. For instance, in the expression for the estimator of <span class="math inline">\(\beta_{13}\)</span>, the interaction between <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_3\)</span>, the part inside the brackets is the difference between the sum of the observations where <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_3\)</span> are both acting at the same level (high or low) and the sum of the observations where they are acting at opposite levels.</p>
+</div>
+</div>
+</div>
+<p>We have already remarked that a CFD may be used even when the explanatory variables are quantitative, by choosing two values of each and, by suitable scaling, calling them <span class="math inline">\(+1\)</span> and <span class="math inline">\(-1\)</span>. We can think of the design points as the corners of a cuboid in <span class="math inline">\(m\)</span> dimensions. However, in this case the only model we can fit is of the kind we have just considered, where there do not exist, for example, quadratic terms in <span class="math inline">\(x_i^2\)</span>, because <span class="math inline">\(x_i^2\)</span> is identically equal to <span class="math inline">\(1\)</span> at all of the design points and so the coefficient <span class="math inline">\(\beta_{ii}\)</span>, say, would be confounded with the constant term. If we wanted to fit such a model, we would have to add some other design points.</p>
+</section>
+<section id="blocking-factorial-designs" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="blocking-factorial-designs"><span class="header-section-number">6.2</span> Blocking Factorial Designs</h2>
+<p>It may happen that blocking in a CFD is desirable because of the size of the experiment. This can be done provided it is not expected that the higher-order interactions will be significant, and so they can be excluded from the model, and degrees of freedom may be used to introduce blocking parameters instead.</p>
+<p>There is a particularly efficient way of doing this when the number of blocks is a power of <span class="math inline">\(2\)</span> and all of the blocks are the same size, necessarily also a power of <span class="math inline">\(2\)</span>. Consider first the case of two blocks. If we take</p>
+<ul>
+<li><p>Block I: all observations for which <span class="math inline">\(x_1x_2\ldots x_m= 1\)</span></p></li>
+<li><p>Block II: all observations for which <span class="math inline">\(x_1x_2\ldots x_m=-1\)</span></p></li>
+</ul>
+<p>then we are effectively confounding blocks with the highest-order interaction which we have already assumed to be not significant. If we choose <span class="math inline">\(\pm 1\)</span> as the two values of the dummy variable for blocks, then the model is identical to the one containing that interaction, except that the parameter must now be interpreted differently.</p>
+<p>In this model, <span class="math inline">\(x_1x_2\ldots x_m\)</span> is called the <strong>block generator</strong>. The choice of such a generator is not unique, but in this case it is the obvious choice since it enables all the main effects and interactions below the highest still to be included in the model, and is least likely to be harmful to the estimation of parameters.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-cfd2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.2</strong></span> In the case <span class="math inline">\(m=3\)</span>, if we take <span class="math inline">\(x_1x_2x_3\)</span> as the block generator then we get two blocks which may be represented as follows.</p>
+<p>Block I</p>
+<p><span class="math display">\[\begin{array}{|ccc|} \hline + &amp; - &amp; - \\ - &amp; +   &amp; - \\ - &amp; - &amp; + \\ + &amp; + &amp; + \\ \hline \end{array}\]</span> Block II</p>
+<p><span class="math display">\[\begin{array}{|ccc|} \hline - &amp; - &amp; - \\ + &amp; + &amp; - \\ + &amp; - &amp; + \\ - &amp; + &amp; + \\ \hline \end{array}\]</span></p>
+<p>Suppose we then choose to fit the first-order model without interactions <span class="math display">\[E(Y)=\beta_0 + \alpha z + \beta_1x_1 + \beta_2x_2 + \beta_3x_3\]</span> where <span class="math inline">\(z\)</span> is the dummy variable for blocks. Then we get the following design matrix <span class="math display">\[\mathbf{X}=\left( \begin{array}{ccccc} 1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 \\
+1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 \\ 1 &amp; 1 &amp; -1 &amp; -1 &amp; 1 \\ 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\ 1
+&amp; -1 &amp; -1 &amp; -1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; 1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; -1 &amp; 1 \\
+1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 \end{array} \right)\]</span> where the first four rows represent Block I and the last four rows represent Block II. It is easy to see that <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is a multiple of the identity matrix, and so the parameters are all orthogonal, and the estimators of those of interest are the same as they would be without blocking.</p>
+</div>
+</div>
+</div>
+<p>Now consider the case of four blocks. We now have to choose two block generators so that blocks are determined by which of the four possible pairs of values these generators take. If we denote these block generators by <span class="math inline">\(z_1\)</span> and <span class="math inline">\(z_2\)</span>, we might take the following.</p>
+<ul>
+<li><p>Block I: all observations for which <span class="math inline">\(z_1=z_2=1\)</span></p></li>
+<li><p>Block II: all observations for which <span class="math inline">\(z_1=1,z_2=-1\)</span></p></li>
+<li><p>Block III: all observations for which <span class="math inline">\(z_1=-1,z_2=1\)</span></p></li>
+<li><p>Block IV: all observations for which <span class="math inline">\(z_1=z_2=-1\)</span></p></li>
+</ul>
+<p>The choice of two block generators is more subtle than the choice of one, the reason being that, in the full model with all interactions, not only is each of the block generators confounded with an interaction, but so is their product <span class="math inline">\(z_1z_2\)</span> which, bearing in mind the algebra of these numbers (<span class="math inline">\(x_i^2\equiv 1\)</span>), may be a low-order interaction or even a main effect, which would be a bad choice. For example, in the case <span class="math inline">\(m=5\)</span>, it would be bad to choose <span class="math inline">\(z_1=x_1x_2x_3x_4x_5\)</span> and <span class="math inline">\(z_2=x_2x_3x_4x_5\)</span> because then <span class="math display">\[z_1z_2 = (x_1x_2x_3x_4x_5)(x_2x_3x_4x_5)=x_1\]</span> and so the main effect of factor 1 is confounded with blocks.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-cfd3" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.3</strong></span> When <span class="math inline">\(m=3\)</span>, the best we can do is to choose <span class="math inline">\(z_1=x_1x_2\)</span> and <span class="math inline">\(z_2=x_1x_3\)</span> so that their product is <span class="math inline">\(x_2x_3\)</span>, and all of the two-factor interactions are confounded with blocks. Then the model we can fit contains only main effects of the factors, say <span class="math display">\[E(Y) = \beta_0 + \alpha _1z_1 + \alpha _2z_2 + \alpha _{12}z_1z_2 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3\]</span> where <span class="math inline">\(z_1=x_1x_2\)</span> and <span class="math inline">\(z_2=x_1x_3\)</span>. There is one degree of freedom left for error.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+These are both good revision questions, typical of exam questions.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-blockCFD" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.1</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Construct the design matrix of a CFD for <span class="math inline">\(m=4\)</span> factors, in which the model fitted contains the main effects and only the interaction between factors <span class="math inline">\(1\)</span> and <span class="math inline">\(2\)</span>. What are the parameter estimators in this model? You may find it easier to describe them rather than writing them out in full.</p></li>
+<li><p>Suggest a good choice of two block generators in a CFD with <span class="math inline">\(m=6\)</span> factors and four blocks, and discuss what models can be fitted to this design.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="fractional-factorial-designs-ffd" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="fractional-factorial-designs-ffd"><span class="header-section-number">6.3</span> Fractional factorial designs (FFD)</h2>
+<p>In cases where the experimenter would like to use a CFD but this would entail taking an impractically large number of observations, the best that can be done is to select a fraction of the possible factor combinations, giving a <strong>fractional factorial design (FFD)</strong>. This must be done in a way which maintains as much efficiency as possible.</p>
+<p><em>Classical</em> FFD’s will be discussed. They consist of <span class="math inline">\(n=2^{m-t}\)</span> observations, where <span class="math inline">\(m\)</span> is the number of factors and <span class="math inline">\(2^{-t}\)</span> is the proportion of the possible factor combinations used.</p>
+<p>The way in which the factor combinations are chosen resembles the way in which blocks were constructed in Section 6.2. Essentially, we choose just one of the <span class="math inline">\(2^t\)</span> blocks which would have been constructed using <span class="math inline">\(t\)</span> different block generators. Thus, we choose all possible combinations of the factor levels satisfying <span class="math inline">\(t\)</span> equations known as <strong>design generators</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-ffd1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.4</strong></span> Construct a FFD for <span class="math inline">\(m=3\)</span> and <span class="math inline">\(t=1\)</span> using the design generator <span class="math inline">\(x_1x_2x_3=1\)</span>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><em><span class="math inline">\(x_1\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_2\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_3\)</span></em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>If a FFD is used, it is obvious that not all of the interactions can be included in the model, because the CFD was already saturated when all of the interactions were included. The pattern by which the main effects and interactions are confounded with each other in a FFD is called the <strong>alias structure</strong>. This may be found by taking the design generators and finding all the possible equations that can be derived from them by combining them together or multiplying both sides by the same quantity, remembering that in the algebra of these symbols (<span class="math inline">\(x_i^2\equiv 1\)</span>) there is simplification because any square may be deleted.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-alias" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.5</strong></span> Find the alias structure when <span class="math inline">\(m=5\)</span>, <span class="math inline">\(t=2\)</span> and the design generators are <span class="math inline">\(x_1x_2x_3=1\)</span> and <span class="math inline">\(x_3x_4x_5=1\)</span>. Discuss what models is it possible to fit using this design.</p>
+<p>The design generators give <span class="math display">\[1 = x_1x_2x_3 = x_3x_4x_5 = x_1x_2x_4x_5\]</span> where the last term is found by multiplying the two design generators together. We can then multiply these equations by symbols until we have exhausted all the possibilities, as follows.</p>
+<p><span class="math display">\[\begin{align}
+x_1&amp;= x_2x_3 = x_1x_3x_4x_5 = x_2x_4x_5\\
+x_2&amp;= x_1x_3 = x_2x_3x_4x_5 = x_1x_4x_5\\
+x_3&amp;= x_1x_2 = x_4x_5 = x_1x_2x_3x_4x_5\\
+x_4&amp;= x_1x_2x_3x_4 = x_3x_5 = x_1x_2x_5\\
+x_5&amp;= x_1x_2x_3x_5 = x_3x_4 = x_1x_2x_4\\
+x_1x_4&amp;= x_2x_3x_4 = x_1x_3x_5 = x_2x_5\\
+x_1x_5&amp;= x_2x_3x_5 = x_1x_3x_4 = x_2x_4.
+\end{align}\]</span></p>
+<p>This is the alias structure. To fit a model to this design without confounding, we can only include at most one variable from each of these groups. Once we have included the main effects, this only leaves the possibility of two of the two-factor interactions such as <span class="math inline">\(x_1x_4\)</span> and <span class="math inline">\(x_1x_5\)</span>, although including both of these would saturate the model. Note that it rarely makes sense to include a higher-order interaction when at least some of the corresponding lower-order ones are missing.</p>
+</div>
+</div>
+</div>
+<p>To construct a FFD for given <span class="math inline">\(m\)</span> and <span class="math inline">\(t\)</span> and design generators, the following is an efficient method. Construct a CFD with <span class="math inline">\(m-t\)</span> of the factors which are not constrained to be related to each other by the design generators. Then express each of the remaining factors in terms of the previous ones using the design generators, and add a column to the design for each of these, by multiplying together the appropriate preceding columns.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-ffd3" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.6</strong></span> Construct the design defined in <a href="#exm-alias" class="quarto-xref">Example&nbsp;<span>6.5</span></a></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><em><span class="math inline">\(x_1\)</span></em></th>
+<th style="text-align: right;"><em><span class="math inline">\(x_2\)</span></em></th>
+<th style="text-align: right;"><em><span class="math inline">\(x_4\)</span></em></th>
+<th style="text-align: right;"><em><span class="math inline">\(x_3=x_1x_2\)</span></em></th>
+<th style="text-align: right;"><em><span class="math inline">\(x_5=x_3x_4\)</span></em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: right;"><em><span class="math inline">\(1\)</span></em></td>
+</tr>
+</tbody>
+</table>
+<p>In this construction, we have used <span class="math inline">\(x_1, x_2\)</span> and <span class="math inline">\(x_4\)</span> in the initial CFD, represented by the first three columns, since the obvious first choice of <span class="math inline">\(x_1, x_2\)</span> and <span class="math inline">\(x_3\)</span> does not work, as these three factors are constrained by the design generator <span class="math inline">\(x_1x_2x_3=1\)</span>, and so their combinations of values do not range over all eight possibilities. There is no such problem with <span class="math inline">\(x_1, x_2\)</span> and <span class="math inline">\(x_4\)</span>.</p>
+</div>
+</div>
+</div>
+<p>The <strong>resolution</strong> <span class="math inline">\(R\)</span> of a FFD is defined as the order of the lowest order interaction which is confounded with <span class="math inline">\(\beta_0\)</span>, and is traditionally denoted by a Roman numeral. Thus, in Example 6.3.2, <span class="math inline">\(R=\)</span>III, since the lowest order interaction confounded with <span class="math inline">\(\beta_0\)</span> is <span class="math inline">\(\beta_{123}\)</span> or <span class="math inline">\(\beta_{345}\)</span>. Resolution which is as high as possible is obviously desirable. Also, a FFD with given values of <span class="math inline">\(m\)</span> and <span class="math inline">\(t\)</span> is often denoted by <span class="math inline">\(2^{m-t}_R\)</span>, so that the design of <span class="citation" data-cites="exm">(<a href="#ref-exm" role="doc-biblioref"><strong>exm?</strong></a>)</span>:-alias may be described as a <span class="math inline">\(2^{5-2}_{\text{III}}\)</span> design.</p>
+</section>
+<section id="screening-experiments" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="screening-experiments"><span class="header-section-number">6.4</span> Screening experiments</h2>
+<p>In many industrial applications, the number of variables that may affect the response variable of interest is very large. It is therefore important at an early stage of an investigation to study the relative importance of the factors. In such cases <strong>screening experiments</strong> are carried out. The aim is to reduce the number of factors included in models for future experiments. Low resolution fractional factorial designs may be used for this purpose.</p>
+<p>For practical reasons it may only be feasible to fit the first-order model <span class="math display">\[E(Y) = \beta_0 + \sum _{i=1}^m \beta_ix_i\]</span> and for this, the smallest possible FFD is <span class="math inline">\(2^{m-t}\)</span>, where <span class="math inline">\(t\)</span> is the largest integer satisfying <span class="math display">\[2^{m-t}\geq m+1.\]</span> If there is equality in the above, the design is saturated and it is not possible to perform significance tests, but it is still possible to calculate the parameter estimates and compare their magnitudes to get some idea which factors are most influential.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-scr1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.7</strong></span> The filtration stage in a newly constructed industrial plant had been taking almost twice as long as in other plants. To address the problem, the factors which may have been the cause were identified and a screening experiment was carried out. The factors are listed below.</p>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: center;"><em>Level</em></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><em>Variable</em></td>
+<td></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td><em><span class="math inline">\(1\)</span></em></td>
+</tr>
+<tr class="odd">
+<td><em>1</em></td>
+<td><em>water supply</em></td>
+<td style="text-align: center;"><em>town reservoir</em></td>
+<td><em>well</em></td>
+</tr>
+<tr class="even">
+<td><em>2</em></td>
+<td><em>raw material</em></td>
+<td style="text-align: center;"><em>on site</em></td>
+<td><em>other</em></td>
+</tr>
+<tr class="odd">
+<td><em>3</em></td>
+<td><em>temperature</em></td>
+<td style="text-align: center;"><em>low</em></td>
+<td><em>high</em></td>
+</tr>
+<tr class="even">
+<td><em>4</em></td>
+<td><em>recycle</em></td>
+<td style="text-align: center;"><em>yes</em></td>
+<td><em>no</em></td>
+</tr>
+<tr class="odd">
+<td><em>5</em></td>
+<td><em>caustic soda</em></td>
+<td style="text-align: center;"><em>fast</em></td>
+<td><em>slow</em></td>
+</tr>
+<tr class="even">
+<td><em>6</em></td>
+<td><em>filter cloth</em></td>
+<td style="text-align: center;"><em>new</em></td>
+<td><em>old</em></td>
+</tr>
+<tr class="odd">
+<td><em>7</em></td>
+<td><em>holding up time</em></td>
+<td style="text-align: center;"><em>low</em></td>
+<td><em>high</em></td>
+</tr>
+</tbody>
+</table>
+<p>A CFD would require <span class="math inline">\(2^7=128\)</span> observations. However, the first-order model has eight parameters, and, if we are not worried about saturating the design but more worried about the size of the screening experiment, a <span class="math inline">\(2^{7-4}\)</span> FFD may be used. This is what was done, using a CFD involving the factors <span class="math inline">\(x_1, x_2\)</span> and <span class="math inline">\(x_3\)</span> and then the generators <span class="math inline">\(x_4=x_1x_2, x_5=x_1x_3, x_6=x_2x_3\)</span> and <span class="math inline">\(x_7=x_1x_2x_3\)</span>. The results, including the data, are given below.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><em><span class="math inline">\(x_1\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_2\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_3\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_4=x_1x_2\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_5=x_1x_3\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_6=x_2x_3\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(x_7=x_1x_2x_3\)</span></em></th>
+<th style="text-align: center;"><em><span class="math inline">\(y\)</span></em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em>68.4</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em>77.7</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em>66.4</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em>81.0</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em>78.6</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em>41.2</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em>68.7</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(1\)</span></em></td>
+<td style="text-align: center;"><em>38.7</em></td>
+</tr>
+</tbody>
+</table>
+<p>The regression equation fitted by a standard package (and fitting exactly, because the design is saturated) was <span class="math display">\[y = 65.1-5.44x_1-1.39x_2-8.29x_3+1.59x_4-11.4x_5-1.71x_6+0.262x_7.\]</span> The magnitudes of the coefficients suggest that <span class="math inline">\(x_1,  x_3\)</span> and <span class="math inline">\(x_5\)</span> are the influential factors. Note that it is legitimate to compare these magnitudes, because the explanatory variables are all on the same scale <span class="math inline">\(\{ -1,1\}\)</span> and the estimates of the regression coefficients all have the same standard error, even though we cannot estimate it because of the saturation.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="plackett-and-burman-designs" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="plackett-and-burman-designs"><span class="header-section-number">6.5</span> Plackett and Burman designs</h2>
+<p>Plackett and Burman (1946) proposed a method of constructing a FFD in which the total number of observations is not necessarily a power of two, but nevertheless the columns of the design diagram are orthogonal to each other. They discovered designs for values of <span class="math inline">\(n\)</span> which are multiples of 4 up to 100, excluding 92, for which a design was later discovered.</p>
+<p>The method is to find a sequence of <span class="math inline">\(\frac{1}{2}n\)</span> plus signs and <span class="math inline">\(\frac{1}{2}n-1\)</span> minus signs, make this the first row of the diagram, form all the cyclical permutations of this sequence to give the next <span class="math inline">\(n-2\)</span> rows, and finish the diagram off with a row of <span class="math inline">\(-1\)</span>’s. If the initial sequence is chosen right, this design will have the desired orthogonality property; the difficulty is to find a sequence which does the trick. This sequence is called the <strong>generator</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-pb1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.8</strong></span> For <span class="math inline">\(n=12\)</span>, the generator takes the form <span class="math display">\[\begin{array}{ccccccccccc} + &amp; + &amp; - &amp; + &amp; + &amp; + &amp; - &amp; - &amp; - &amp; + &amp; - \\ \end{array}\]</span> and so the design may be represented by the following table. <span class="math display">\[\begin{array}{ccccccccccc}
++ &amp; + &amp; - &amp; + &amp; + &amp; + &amp; - &amp; - &amp; - &amp; + &amp; - \\
+- &amp; + &amp; + &amp; - &amp; + &amp; + &amp; + &amp; - &amp; - &amp; - &amp; + \\
++ &amp; - &amp; + &amp; + &amp; - &amp; + &amp; + &amp; + &amp; - &amp; - &amp; - \\
+- &amp; + &amp; - &amp; + &amp; + &amp; - &amp; + &amp; + &amp; + &amp; - &amp; - \\
+- &amp; - &amp; + &amp; - &amp; + &amp; + &amp; - &amp; + &amp; + &amp; + &amp; - \\
+- &amp; - &amp; - &amp; + &amp; - &amp; + &amp; + &amp; - &amp; + &amp; + &amp; + \\
++ &amp; - &amp; - &amp; - &amp; + &amp; - &amp; + &amp; + &amp; - &amp; + &amp; + \\
++ &amp; + &amp; - &amp; - &amp; - &amp; + &amp; - &amp; + &amp; + &amp; - &amp; + \\
++ &amp; + &amp; + &amp; - &amp; - &amp; - &amp; + &amp; - &amp; + &amp; + &amp; - \\
+- &amp; + &amp; + &amp; + &amp; - &amp; - &amp; - &amp; + &amp; - &amp; + &amp; + \\
++ &amp; - &amp; + &amp; + &amp; + &amp; - &amp; - &amp; - &amp; + &amp; - &amp; + \\
+- &amp; - &amp; - &amp; - &amp; - &amp; - &amp; - &amp; - &amp; - &amp; - &amp; -
+\end{array}\]</span> It may be checked that any two columns in this diagram are orthogonal to each other.</p>
+</div>
+</div>
+</div>
+<p>A Plackett and Burman design can be used in a screening experiment with anything up to <span class="math inline">\(n-1\)</span> factors, and is particularly useful if the number of factors is not close to a power of two, and the screening experiment is to be as small and economical as possible. For instance, the design in the preceding example can test 11 factors with 12 observations, whereas the nearest classical FFD would require 16 observations.</p>
+<p>Plackett and Burman designs are less useful in full experiments because the parameters may not be so easy to interpret.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Question 1 is a good revision question. Questions 2 and 3 are more challenging.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-FFD" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.2</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Construct a <span class="math inline">\(2^{6-2}\)</span> FFD using the two block generators of <a href="#exr-blockCFD" class="quarto-xref">Exercise&nbsp;<span>6.1</span></a> Question 2, now as design generators. What is the resolution of this design?</p></li>
+<li><p>In the screening experiment of <a href="#exm-scr1" class="quarto-xref">Example&nbsp;<span>6.7</span></a>, suppose that the first factor, water supply, has four levels rather than two. Suggest a way in which the experiment might be modified to take account of this.</p></li>
+<li><p>In the construction of designs along the lines of Plackett and Burman, in which any column contains equal numbers of plus and minus signs and any two columns are orthogonal, why must the total number of observations be a multiple of 4?</p></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-designs" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="composite-designs"><span class="header-section-number">6.6</span> Composite designs</h2>
+<p>We have already mentioned that CFD’s cannot be used if at least some of the factors are quantitative and it is desired to fit a quadratic regression model in such factors, so that more design points must be added. This may be done in a lot of ways, but there are certain ways which are fairly standard.</p>
+<p>In a <strong>central composite design (CCD)</strong>, the factors are varied at three equally spaced levels, scaled so as to take the values <span class="math inline">\(-1, 0\)</span> and <span class="math inline">\(1\)</span>. The addition of a third level is sufficient to be able to fit the second order polynomial model <span class="math display">\[E(Y) = \beta_0 + \sum _{i=1}^m \beta_ix_i + \sum _{i=1}^{m-1}\sum_{j=i+1}^m \beta_{ij}x_ix_j + \sum _{i=1}^m \beta_{ii}x_i^2\]</span> provided the design points are chosen appropriately.</p>
+<p>A CCD consists of three types of points:</p>
+<ul>
+<li><p>the points of a CFD or a FFD;</p></li>
+<li><p>’’star” points, namely points all of whose co-ordinates are zero except one, which is <span class="math inline">\(\pm \alpha\)</span>, where <span class="math inline">\(\alpha &gt;0\)</span>, so that the point is a distance <span class="math inline">\(\alpha\)</span> from the origin;</p></li>
+<li><p>centre points, all of whose co-ordinates are zero.</p></li>
+</ul>
+<p>If for the star points we choose <span class="math inline">\(\alpha =1\)</span>, we get the points in the middle of the faces of the cuboid (some of) whose corners appear in the CFD or FFD. Another common choice is <span class="math inline">\(\alpha =\sqrt{m}\)</span> which means that the star points are the same distance from the origin as the points of the CFD or FFD, and the design region must be regarded as a spheroid. In this case, we get a <strong>rotatable composite design (RCD)</strong>. This choice also means that the variables are observed at five levels (<span class="math inline">\(\pm 1, 0, \pm \alpha\)</span>), a consequence of which is that it is possible to test for significance of higher order models than quadratic. If we are able to add a few extra points, replication of centre points adds precision and does not destroy any of the symmetry of the design.</p>
+<p>In general, if all three types of point are used in the design, and if <span class="math inline">\(n_c\)</span> denotes the number of centre points used, then the total number of observations may be written <span class="math display">\[n = 2^{m-t} + 2m + n_c .\]</span></p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-ccd1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.9</strong></span> Construct a CCD for two factors and 10 observations, where it is not expected that a higher order model than quadratic will be needed.</p>
+<p>In this case, <span class="math inline">\(m=2\)</span> and we may choose <span class="math inline">\(\alpha =1\)</span>. We may use a <span class="math inline">\(2^2\)</span> CFD which takes up four observations, the star points will take up another four observations and so we may use two centre points. The design is described by the diagram below.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><em>&nbsp;&nbsp;&nbsp;<span class="math inline">\(x_1\)</span>&nbsp;&nbsp;&nbsp;</em></th>
+<th style="text-align: center;"><em>&nbsp;&nbsp;&nbsp;<span class="math inline">\(x_2\)</span>&nbsp;&nbsp;&nbsp;</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em>1</em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em>1</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em>1</em></td>
+<td style="text-align: center;"><em>1</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em>1</em></td>
+<td style="text-align: center;"><em>0</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+<td style="text-align: center;"><em>0</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em>0</em></td>
+<td style="text-align: center;"><em>1</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em>0</em></td>
+<td style="text-align: center;"><em><span class="math inline">\(-1\)</span></em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em>0</em></td>
+<td style="text-align: center;"><em>0</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><em>0</em></td>
+<td style="text-align: center;"><em>0</em></td>
+</tr>
+</tbody>
+</table>
+<p>The model that can be fitted is the full quadratic model <span class="math display">\[E(Y) = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_{12}x_1x_2 + \beta_{11}x_1^2 + \beta_{22}x_2^2\]</span> and there are four degrees of freedom for error.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Qualitative-multiple factors.html" class="pagination-link" aria-label="Designs for qualitative explanatory variables: multiple factors">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: multiple factors</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Designs for mixture experiments.html" class="pagination-link" aria-label="Designs for mixture experiments">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Designs for mixture experiments</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

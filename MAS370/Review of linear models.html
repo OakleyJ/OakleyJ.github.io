@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; A review of linear models – MAS370/61003 Sampling Theory and Design of Experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Optimality.html" rel="next">
+<link href="./Introduction to experimental design.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Review of linear models.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MAS370/61003 Sampling Theory and Design of Experiments</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: Experimental Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to experimental design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Experimental Design</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Review of linear models.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Optimality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-multiple factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: multiple factors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Factorial designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Designs for mixture experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Designs for mixture experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Continuous and exact designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Continuous and exact designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tailor-made designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Tailor-made designs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Sampling Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Simple random sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Simple Random Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Stratified sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Stratified Sampling: Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Population size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Practicalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Practicalities of Surveys: Problems at the Planning Stage</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link active" data-scroll-target="#the-general-linear-model"><span class="header-section-number">2.1</span> The general linear model</a></li>
+  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation"><span class="header-section-number">2.2</span> Matrix notation</a></li>
+  <li><a href="#least-squares-estimation" id="toc-least-squares-estimation" class="nav-link" data-scroll-target="#least-squares-estimation"><span class="header-section-number">2.3</span> Least squares estimation</a></li>
+  <li><a href="#statistical-properties-of-the-least-squares-estimator" id="toc-statistical-properties-of-the-least-squares-estimator" class="nav-link" data-scroll-target="#statistical-properties-of-the-least-squares-estimator"><span class="header-section-number">2.4</span> Statistical properties of the least squares estimator</a></li>
+  <li><a href="#fitted-values-residuals-and-the-residual-sum-of-squares" id="toc-fitted-values-residuals-and-the-residual-sum-of-squares" class="nav-link" data-scroll-target="#fitted-values-residuals-and-the-residual-sum-of-squares"><span class="header-section-number">2.5</span> Fitted values, residuals, and the residual sum of squares</a></li>
+  <li><a href="#polynomial-models" id="toc-polynomial-models" class="nav-link" data-scroll-target="#polynomial-models"><span class="header-section-number">2.6</span> Polynomial models</a></li>
+  <li><a href="#qualvars" id="toc-qualvars" class="nav-link" data-scroll-target="#qualvars"><span class="header-section-number">2.7</span> Models with qualitative variables</a></li>
+  <li><a href="#orthogonality" id="toc-orthogonality" class="nav-link" data-scroll-target="#orthogonality"><span class="header-section-number">2.8</span> Orthogonality</a></li>
+  <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">2.9</span> Prediction</a></li>
+  <li><a href="#sec-confregions" id="toc-sec-confregions" class="nav-link" data-scroll-target="#sec-confregions"><span class="header-section-number">2.10</span> Confidence regions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Review of linear models.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="the-general-linear-model" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="the-general-linear-model"><span class="header-section-number">2.1</span> The general linear model</h2>
+<p>In this course, we shall mostly be concerned with the <strong>general linear model</strong> which takes the form <span class="math display">\[\begin{equation}
+Y = \mathbf{f}(\mathbf{x})^T\boldsymbol{\beta}+\varepsilon=\sum_{i=1}^p f_i(\mathbf{x})\beta_i + \varepsilon,
+\end{equation}\]</span> where <span class="math inline">\(\mathbf{f}(\mathbf{x})^T = (f_1(\mathbf{x}) ~~ f_2(\mathbf{x})~~\ldots ~~f_p(\mathbf{x})\)</span> is a row vector of known functions of <span class="math inline">\(\mathbf{x}\)</span>. <span class="math inline">\(\mathbf{x}= (x_1~~x_2~~\ldots ~~x_m)^T\)</span> is a vector of fixed but unknown parameters and <span class="math inline">\(\varepsilon\)</span> is a random variable with mean zero. So the assumption is that the expected value of <span class="math inline">\(Y\)</span> <span class="math display">\[E(Y) = \mathbf{f}(\mathbf{x})^T\boldsymbol{\beta}\]</span> is a linear combination of the components of <span class="math inline">\(\mathbf{f}(\mathbf{x})\)</span>, with the coefficients being the unknown parameters.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-linandquad" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.1</strong></span> The simple linear regression model may be written <span class="math display">\[Y = \beta_0 + \beta_1 x + \varepsilon\]</span> so that in this case <span class="math inline">\(m=1\)</span>, <span class="math inline">\(p=2\)</span>, <span class="math inline">\(\mathbf{x}=x\)</span> and <span class="math inline">\(\mathbf{f}(\mathbf{x})^T=(1~~x)\)</span>.</p>
+<p>The quadratic regression model may be written <span class="math display">\[Y = \beta_0 + \beta_1 x + \beta_{11}x^2 + \varepsilon\]</span> so that in this case <span class="math inline">\(m=1\)</span>, <span class="math inline">\(p=3\)</span>, <span class="math inline">\(\mathbf{x}=x\)</span> and <span class="math inline">\(\mathbf{f}(\mathbf{x})^T = (1~~x~~x^2)\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Note that in both of these examples we have labelled the components of the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> not in the standard way (<span class="math inline">\(\beta_1, \beta_2, \ldots\)</span>), but in a way which reflects more naturally the characteristics of the model: we shall see plenty more examples of this later.</p>
+</section>
+<section id="matrix-notation" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="matrix-notation"><span class="header-section-number">2.2</span> Matrix notation</h2>
+<p>Suppose that our design consists of <span class="math inline">\(n\)</span> points <span class="math inline">\(\mathbf{x_1}, \mathbf{x_2},\ldots , \mathbf{x_n}\)</span> (some of which will be the same if replication occurs) and the corresponding observations are <span class="math inline">\(Y_1, Y_2, \ldots , Y_n\)</span>. Then we have <span class="math display">\[Y_j = \mathbf{f}(\mathbf{x_j})^T\boldsymbol{\beta}+\varepsilon_j \;\;\;\ \text{for} \;\;\;\ j=1,2,\ldots ,n\]</span> say, and these <span class="math inline">\(n\)</span> equations may be collected together into the single matrix equation <span class="math display">\[\mathbf{Y}= \mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}\]</span> where <span class="math inline">\(\mathbf{Y}\)</span> and <span class="math inline">\(\boldsymbol{\varepsilon}\)</span> are column vectors containing <span class="math inline">\(Y_1,Y_2, \ldots , Y_n\)</span> and <span class="math inline">\(\varepsilon_1, \varepsilon_2, \ldots ,
+\varepsilon_n\)</span> respectively, and <span class="math inline">\(\mathbf{X}\)</span> is the <span class="math inline">\(n\times p\)</span> matrix whose rows are <span class="math display">\[\mathbf{f}(\mathbf{x_1})^T, \mathbf{f}(\mathbf{x_2})^T, \ldots , \mathbf{f}(\mathbf{x_n})^T\]</span> respectively. This may also be written <span class="math display">\[E(\mathbf{Y})= \mathbf{X}\boldsymbol{\beta}.\]</span></p>
+<p>The matrix <span class="math inline">\(\mathbf{X}\)</span> is known as the <strong>design matrix</strong> of the experiment. It should be noted, however, that it depends not only on the design as previously defined, but also on the model chosen, via the function <span class="math inline">\(\mathbf{f}\)</span>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-2.2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.2</strong></span> Suppose there is a single explanatory variable <span class="math inline">\(x\)</span> and it is decided to take one observation at each of the five points <span class="math inline">\(x=0,1,2,3\)</span> and <span class="math inline">\(4\)</span>. Then for the simple linear regression model the design matrix will be <span class="math display">\[\mathbf{X}=\left(\begin{array}{cc} 1 &amp; 0 \\ 1 &amp; 1 \\ 1 &amp; 2 \\ 1 &amp; 3 \\ 1 &amp; 4 \end{array} \right)\]</span> whereas for the quadratic regression model it will be <span class="math display">\[\mathbf{X}=\left(\begin{array}{ccc} 1 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 2 &amp; 4 \\ 1 &amp; 3 &amp; 9 \\ 1 &amp; 4 &amp; 16 \end{array}\right).\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="least-squares-estimation" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="least-squares-estimation"><span class="header-section-number">2.3</span> Least squares estimation</h2>
+<p>You will have seen how to estimate <span class="math inline">\(\boldsymbol{\beta}\)</span> by minimising the sum of squares: we get an expression for the sum of squares, differentiate with respect to <span class="math inline">\(\boldsymbol{\beta}\)</span> and equate to zero. The aim of estimation is to find a value of <span class="math inline">\(\boldsymbol{\beta}\)</span> such that, in some sense, the observed <span class="math inline">\(\mathbf{Y}\)</span> is close to its expected value <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>.</p>
+<p>In order to be able to identify <span class="math inline">\(\boldsymbol{\beta}\)</span> from <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>, it is desirable that the linear transformation <span class="math inline">\(\boldsymbol{\beta}\rightarrow \mathbf{X}\boldsymbol{\beta}\)</span> be one-to-one, so that every possible value of <span class="math inline">\(\boldsymbol{\beta}\)</span> gives a different <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>. For this to be the case the matrix <span class="math inline">\(\mathbf {X}\)</span> must be of <strong>full rank</strong> <span class="math inline">\(p\)</span> which, since <span class="math inline">\(\mathbf{X}\)</span> is an <span class="math inline">\(n\times p\)</span> matrix, requires <span class="math inline">\(n\geq p\)</span> (at least as many design points as parameters). If it is not the case that <span class="math inline">\(\mathbf{X}\)</span> is of full rank, the model is said to be <strong>over-parametrised</strong>.</p>
+<p>When <span class="math inline">\(\mathbf{X}\)</span> is of full rank <span class="math inline">\(p\)</span>, <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is a positive definite symmetric <span class="math inline">\(p\times p\)</span> matrix and is invertible, so the usual least-squares estimator applies: <span class="math display">\[\hat{\boldsymbol{\beta}} = (\mathbf{X}^T\mathbf{X})^{-1} \mathbf{X}^T\mathbf{Y}.\]</span></p>
+</section>
+<section id="statistical-properties-of-the-least-squares-estimator" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="statistical-properties-of-the-least-squares-estimator"><span class="header-section-number">2.4</span> Statistical properties of the least squares estimator</h2>
+<p>We first note that the least squares estimator is <em>unbiased</em>: <span class="math display">\[E(\hat{\boldsymbol{\beta}}) = (\mathbf{X}^T\mathbf{X})^{-1} \mathbf{X}^T\mathbf{X}\boldsymbol{\beta}=\boldsymbol{\beta}.\]</span> Since <span class="math inline">\(\boldsymbol{\beta}\)</span> is a function of <span class="math inline">\(\mathbf{Y}\)</span> which is a function of <span class="math inline">\(\boldsymbol{\varepsilon}\)</span> we need to consider the distribution of the errors <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>.</p>
+<p>The usual assumption is that they are normally distributed and independent of each other with some common variance <span class="math inline">\(\sigma ^2\)</span>, typically unknown. Under this assumption, there is further statistical justification for the estimation approach above: for example, it may be shown that <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is the maximum likelihood estimator of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>If we adopt this assumption, then it follows that the components of <span class="math inline">\(\mathbf{Y}\)</span> are multivariate normally distributed with variance-covariance matrix given by <span class="math display">\[\text{cov}(\mathbf{Y})= \text{cov}(\boldsymbol{\varepsilon})=\sigma ^2\mathbf{I}\]</span> where <span class="math inline">\(\mathbf{I}\)</span> is the <span class="math inline">\(n\times n\)</span> identity matrix, and it follows that <span class="math display">\[\text{cov}(\hat{\boldsymbol{\beta}}) = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\sigma^2\mathbf{I}\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\]</span> which simplifies to <span class="math display">\[\text{cov}(\hat{\boldsymbol{\beta}}) =\sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}\]</span> We can now state that <span class="math display">\[\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta}, \sigma^2  (\mathbf{X}^T\mathbf{X})^{-1}).\]</span> The matrix <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is called the <strong>information matrix</strong> and is very relevant to the choice of design because, as seen above, it determines the accuracy of estimation of the parameters.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-2.3" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.3</strong></span> In the simple linear regression model, <span class="math inline">\(E(Y)=\beta_0+\beta_1x\)</span>, suppose one observation is taken at each of the points <span class="math inline">\(x_1, x_2, \ldots , x_n\)</span>. Then <span class="math display">\[\begin{align*}
+\mathbf{X}^T\mathbf{X} &amp;= \left(\begin{array}{cc} n &amp; \sum_{j=1}^n x_j \\ \sum_{j=1}^n x_j &amp; \sum_{j=1}^n x_j^2 \end{array} \right) \\
+&amp;=\left(\begin{array}{cc} n &amp; n\bar{x} \\ n\bar{x} &amp; s_{xx}+n\bar{x}^2 \end{array} \right)\\
+(\mathbf{X}^T \mathbf{X})^{-1} &amp;=\frac{1}{ns_{xx}}\left( \begin{array}{cc} s_{xx}+n\bar{x}^2 &amp; -n\bar{x} \\
+-n\bar{x} &amp; n \end{array} \right)
+\end{align*}\]</span> where <span class="math inline">\(s_{xx}=\sum_{j=1}^{n}(x_j-\bar{x})^2=\sum_{j=1}^{n}x_j^2-n\bar{x}^2\)</span></p>
+</div>
+</div>
+</div>
+<p>Design problem: How to choose design points <span class="math inline">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> to give the most precise gradient estimate? See R example 2.3 on Blackboard - how do different designs affect gradient estimate in simple linear regression? - Is bigger always better?</p>
+</section>
+<section id="fitted-values-residuals-and-the-residual-sum-of-squares" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="fitted-values-residuals-and-the-residual-sum-of-squares"><span class="header-section-number">2.5</span> Fitted values, residuals, and the residual sum of squares</h2>
+<p>Having found the least squares estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, we may decompose <span class="math inline">\(\mathbf{Y}\)</span> as <span class="math display">\[\begin{align}
+\mathbf{Y}&amp;= \mathbf{X}\hat{\boldsymbol{\beta}}+(\mathbf{Y}-\mathbf{X}\hat{\boldsymbol{\beta}}) \\
+&amp;=\hat{\mathbf{Y}}+\hat{\boldsymbol{\varepsilon}}
+\end{align}\]</span> say, where <span class="math inline">\(\hat{\mathbf{Y}}=\mathbf{X}\hat{\boldsymbol{\beta}}\)</span> is the vector of <strong>fitted values</strong> and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}=\mathbf{Y}-\mathbf{X}\hat{\boldsymbol{\beta}}\)</span> is the vector of <strong>residuals</strong>. We may also write the above decomposition as <span class="math display">\[\mathbf{Y}=\mathbf{P}\mathbf{Y}+(\mathbf{I}-\mathbf{P})\mathbf{Y}\]</span> where <span class="math inline">\(\mathbf{P}=\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\)</span> and <span class="math inline">\(\mathbf{I}\)</span> is now the <span class="math inline">\(n\times n\)</span> identity matrix. It follows (after some algebra) that <span class="math display">\[\mathbf{Y}^T\mathbf{Y}=\hat{\mathbf{Y}}^T\hat{\mathbf{Y}}+\hat{\boldsymbol{\varepsilon}}^T\hat{\boldsymbol{\varepsilon}}\]</span> which is a decomposition of the sum of squares of the data into the sum of squares of the fitted values and the sum of squares of the residuals. These are called, respectively, the <strong>sum of squares due to the model</strong> and the <strong>residual (or error) sum of squares</strong>.</p>
+<p>If the usual distributional assumptions are made, then it follows from the nice properties of multivariate normal distributions that <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> (or consequently <span class="math inline">\(\hat{\mathbf{Y}}\)</span>) and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> are <em>independent</em> of each other in the statistical sense, and also that <span class="math inline">\(\sigma^{-2}\hat{\boldsymbol{\varepsilon}}^T\hat{\boldsymbol{\varepsilon}}\)</span> has the <span class="math inline">\(\chi ^2\)</span> distribution with <span class="math inline">\(n-p\)</span> degrees of freedom. <span class="math inline">\(n-p\)</span> is the <strong>number of degrees of freedom for error</strong>. In particular, <span class="math display">\[\hat{\sigma }^2=\frac{\hat{\boldsymbol{\varepsilon}}^T \hat{\boldsymbol{\varepsilon}}}{(n-p)}\]</span> is an unbiased estimator of <span class="math inline">\(\sigma ^2\)</span>, and, among other things, measures the goodness of fit of the model: the smaller its value, the better the fit.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+These questions will help you revise some matrix algebra, and are intended to help you to understand these lecture notes, but you won’t get exam questions like these - don’t worry if you find the questions hard!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-task1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.1</strong></span> &nbsp;</p>
+<ol type="1">
+<li>Check that if <span class="math inline">\(\mathbf{X}\)</span> is of full rank <span class="math inline">\(p\)</span> then <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is a positive definite symmetric matrix.</li>
+<li>Check that <span class="math inline">\(\mathbf{P}^2=\mathbf{P}\)</span>, and use the representation <span class="math display">\[\begin{align*}
+\hat{\mathbf{Y}} &amp;= \mathbf{P}\mathbf{Y} \;\;\; \text{and} \\
+\hat{\boldsymbol{\varepsilon}} &amp;= (\mathbf{I} -\mathbf{P})\mathbf{Y}
+\end{align*}\]</span> to show that <span class="math display">\[\begin{equation}
+\hat{\mathbf{Y}}^T\hat{\mathbf{Y}}+\hat{\boldsymbol{\varepsilon}}^T\hat{\boldsymbol{\varepsilon}}=\mathbf{Y}^T\mathbf{Y}.
+\end{equation}\]</span></li>
+<li>Consider what happens to the least squares estimator <span class="math inline">\(\hat{\boldsymbol{\beta} }\)</span> when <span class="math inline">\(n=p\)</span>, in both cases when <span class="math inline">\(\mathbf{X}\)</span> is of full rank and when it is not (<span class="math inline">\(\mathbf{X}\)</span> is an <span class="math inline">\(n\times p\)</span> matrix).</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>We have that <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is symmetric since <span class="math display">\[(\mathbf{X}^T\mathbf{X} )^T = \mathbf{X} ^T(\mathbf{X}^T)^T = \mathbf{X} ^T\mathbf{X} .\]</span> To say that it is positive definite means that <span class="math display">\[\mathbf{a}^T\mathbf{X}^T\mathbf{X} \mathbf{a}\]</span> is positive for all non-zero vectors <span class="math inline">\(\mathbf{a}\)</span>.This is true since it may be written <span class="math display">\[(\mathbf{X} \mathbf{a} )^T\mathbf{X} \mathbf{a}\]</span> which is the sum of squares of the components of the vector <span class="math inline">\(\mathbf{X} \mathbf{a}\)</span>, and this is positive unless <span class="math inline">\(\mathbf{X} \mathbf{a}\)</span> is the zero vector, which in turn means that <span class="math inline">\(\mathbf{a}\)</span> is the zero vector, since <span class="math inline">\(\mathbf{X}\)</span> is of full rank.</p></li>
+<li><p>We have <span class="math display">\[\mathbf{P}^2 = \mathbf{X} (\mathbf{X}^T\mathbf{X} )^{-1}\mathbf{X}^T\mathbf{X} (\mathbf{X}^T\mathbf{X} )^{-1} \mathbf{X}^T = \mathbf{X} (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X} ^T = \mathbf{P}.\]</span> Note also that <span class="math inline">\(\mathbf{P}\)</span> is symmetric, since <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> being symmetric implies that <span class="math inline">\((\mathbf{X}^T\mathbf{X} )^{-1}\)</span> is also symmetric, and then <span class="math display">\[\mathbf{P} ^T = (\mathbf{X} ^T)^T (\mathbf{X} ^T \mathbf{X})^{-1} \mathbf{X} ^T = \mathbf{P} .\]</span> So <span class="math display">\[\hat{\mathbf{Y} }^T\hat{\mathbf{Y} } = \mathbf{Y} ^T\mathbf{P} ^T\mathbf{P} \mathbf{Y} = \mathbf{Y} ^T\mathbf{P} ^2\mathbf{Y} =
+\mathbf{Y} ^T\mathbf{P} \mathbf{Y}\]</span> and <span class="math display">\[\hat{\boldsymbol{\varepsilon} } ^T\hat{\boldsymbol{\varepsilon} } = \mathbf{Y} ^T(\mathbf{I} -\mathbf{P} )^2\mathbf{Y} =
+\mathbf{Y} ^T(\mathbf{I} - 2\mathbf{P} + \mathbf{P} ^2)\mathbf{Y} = \mathbf{Y} ^T(\mathbf{I} - \mathbf{P} )\mathbf{Y}.\]</span> Adding these together gives <span class="math display">\[ \mathbf{Y} ^T[\mathbf{P} + (\mathbf{I} - \mathbf{P} )]\mathbf{Y}  = \mathbf{Y} ^T\mathbf{Y} . \]</span></p></li>
+<li><p>If <span class="math inline">\(n=p\)</span> and <span class="math inline">\(\mathbf{X}\)</span> is of full rank, both <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{X}^T\)</span> are square and non-singular, and so invertible. Then <span class="math display">\[(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T =\mathbf{X}^{-1}(\mathbf{X}^{T})^{-1}\mathbf{X}^T = \mathbf{X}^{-1},\]</span> and so <span class="math display">\[ \hat{\boldsymbol{\beta} } =  \mathbf{X} ^{-1} \mathbf{Y}\]</span> is an exact fit of the model to the data; the residuals are identically zero and there is no possibility of estimating <span class="math inline">\(\sigma^2\)</span>. If <span class="math inline">\(\mathbf{X}\)</span> is not of full rank, there will be a least squares estimator of <span class="math inline">\(\mathbf{X} \boldsymbol{\beta}\)</span> satisfying <span class="math display">\[ \mathbf{X} ^T\hat{(\mathbf{X} \boldsymbol{\beta} )} = \mathbf{X} ^T\mathbf{Y} \]</span> but this will not be sufficient to determine <span class="math inline">\(\hat{\boldsymbol{\beta} }\)</span> uniquely. The model must be reformulated with fewer parameters, <span class="math inline">\(p^{\prime }\)</span> say, such that the new design matrix is of full rank <span class="math inline">\(p^{\prime }\)</span> and then <span class="math inline">\(n&gt;p^{\prime }\)</span>, so that the regular conditions prevail.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="polynomial-models" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="polynomial-models"><span class="header-section-number">2.6</span> Polynomial models</h2>
+<p>If all of <span class="math inline">\(x_1, x_2, \ldots , x_m\)</span> are quantitative, and the response variable is expected to depend in a smooth way on their values, then the design region can be regarded as a subset of <span class="math inline">\(m\)</span>-dimensional space, whose boundaries are determined in practice by the limits to which the variables can be set. For example if each of <span class="math inline">\(x_1, x_2, \ldots , x_m\)</span> are constrained to lie in the real interval <span class="math inline">\([-,1]\)</span> then the design region is <span class="math inline">\([-1-,1]^m\)</span>. Because any smooth function can be approximated within a bounded region by a polynomial, it is common and natural to try to fit polynomial regression models, of which the simple linear and quadratic regression models mentioned in <a href="#exm-linandquad" class="quarto-xref">Example&nbsp;<span>2.1</span></a> are the simplest examples.</p>
+<p>With more than one explanatory variable (<span class="math inline">\(m&gt;1\)</span>) and with higher order polynomials in contention, the number of parameters increases rapidly; for example with <span class="math inline">\(m=4\)</span> the full quadratic model may be written <span class="math display">\[\begin{align}
+EY &amp;= \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_4 + \beta_{12}x_1x_2 + \beta_{13}x_1x_3 + \beta_{14}x_1x_4 \\
+&amp;+ \beta_{23}x_2x_3 + \beta_{24}x_2x_4 + \beta_{34}x_3x_4 + \beta_{11}x_1^2 + \beta_{22}x_2^2 + \beta_{33}x_3^2 + \beta_{44}x_4^2 .
+\end{align}\]</span> Note how in this example the <span class="math inline">\(\beta\)</span> parameters are labelled with subscripts reflecting the explanatory variables to which they are relevant, and in what way: this is a common convention.</p>
+<p>As is often the case, there may be a large number of explanatory variables in contention, and if a model such as the above is to be taken seriously, a correspondingly large number of points must be chosen in the design region, if only to ensure that the design matrix is of full rank. In practice, one aim of the analysis of such data is to demonstrate that some of these parameters do not improve significantly the fit of the model and so can be removed: this applies especially to the higher order ones.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-2.4" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.4</strong></span> Suppose <span class="math inline">\(m=2\)</span> and the model is multiple linear regression <span class="math display">\[E(Y)=\beta_0+\beta_1x_1+\beta_2x_2.\]</span> If three points <span class="math inline">\((x_{11},x_{21}), (x_{12},x_{22})\)</span> and <span class="math inline">\((x_{13},x_{23})\)</span> are chosen at which to take observations, then the design matrix is <span class="math display">\[\left( \begin{array}{ccc} 1 &amp; x_{11} &amp; x_{21} \\ 1 &amp; x_{12} &amp;  x_{22} \\ 1 &amp; x_{13} &amp; x_{23} \end{array} \right)\]</span> and this will be of full rank (i.e.&nbsp;non-singular, since it is square) if and only if there exists no linear relationship of the form <span class="math display">\[\lambda_0 + \lambda_1 x_{1j} + \lambda_2 x_{2j}=0 \quad for \quad j=1,2,3 \quad (\lambda_i \;\text{not all zero})\]</span> between its columns, or, in other words, the three points must be chosen to be <em>not collinear</em> in order to be able to estimate in the model.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="qualvars" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="qualvars"><span class="header-section-number">2.7</span> Models with qualitative variables</h2>
+<p>Qualitative explanatory variables are usually called <strong>factor</strong> variables or <strong>categorical</strong> variables. They enter the design matrix via <strong>indicator</strong> variables to specify the level of the factor. For example, suppose the explanatory variables are pressure and temperature and the effect of using one of two possible catalysts. A model which could be assumed is <span class="math display">\[E(Y) = \beta_0 + \alpha z + \beta_1x_1 + \beta_2x_2\]</span> where <span class="math inline">\(z\)</span> is an indicator variable, taking the values, say, <span class="math inline">\(0\)</span> for the first catalyst and <span class="math inline">\(1\)</span> for the second catalyst. This model would be appropriate if the experimenter expects the relationship between the response and the factors temperature and pressure to be the same for both catalysts, except for a possible difference in level: the regression surfaces of <span class="math inline">\(y\)</span> against temperature (<span class="math inline">\(x_1\)</span>) and pressure (<span class="math inline">\(x_2\)</span>) for the two catalysts will be parallel, with the parameter <span class="math inline">\(\alpha\)</span> measuring the distance between them.&nbsp;If three different catalysts are used, a possible model is <span class="math display">\[E(Y) = \beta_0 + \alpha _1z_1 + \alpha _2z_2 + \alpha _3z_3 + \beta_1x_1 + \beta_2x_2\]</span> where <span class="math inline">\(z_i=1\)</span> if catalyst <span class="math inline">\(i\)</span> is used and <span class="math inline">\(z_i=0\)</span> otherwise. However, provided each run of the experiment uses one catalyst, this model is over-parametrised, because <span class="math inline">\(z_1+z_2+z_3=1\)</span>, and so the second, third and fourth columns of the design matrix add up to the first column, and <span class="math inline">\(X\)</span> is not of full rank. Another way of saying this is that <span class="math inline">\(\beta_0\)</span> is <strong>confounded</strong> with <span class="math inline">\(\alpha _1, \alpha _2\)</span> and <span class="math inline">\(\alpha _3\)</span>, in the sense that they cannot independently be estimated. Such an experiment cannot measure the <strong>absolute</strong> effects of the catalysts, but only the <strong>differences</strong> between their effects.<br>
+This over-parametrisation can be overcome by reducing the number of parameters by one, in various ways: for example, by removing <span class="math inline">\(\beta_0\)</span> from the model, or by imposing some linear constraint on the parameters <span class="math inline">\(\alpha _1, \alpha _2\)</span> and <span class="math inline">\(\alpha _3\)</span> so that one of them can be expressed in terms of the other two and eliminated from the model. If, for example, we impose the constraint <span class="math display">\[\alpha _1+\alpha _2+\alpha _3=0\]</span> then we may write <span class="math inline">\(\alpha _3=-\alpha _1-\alpha _2\)</span> and so eliminate <span class="math inline">\(\alpha _3\)</span> as a parameter of the model. Then <span class="math inline">\(\boldsymbol{\beta}= (\beta_0~~\alpha _1~~\alpha _2~~\beta_1~~\beta_2)^T\)</span> and for any design point <span class="math inline">\(\mathbf{x}\)</span> at which catalyst <span class="math inline">\(3\)</span> is used, <span class="math inline">\(\mathbf{f}(\mathbf{x})^T = (1~~-1~~-1~~x_1~~x_2 )\)</span>.</p>
+</section>
+<section id="orthogonality" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="orthogonality"><span class="header-section-number">2.8</span> Orthogonality</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Orthogonality is an important concept in experimental design, as orthogonal designs have desirable statistical properties.</p>
+</div>
+</div>
+<p>Suppose that in a linear model <span class="math display">\[\boldsymbol{\beta}= \left( \begin{array}{c} \boldsymbol{\gamma}\\ \boldsymbol{\delta}\end{array}\right) \quad \text{and} \quad \mathbf{X}=(\mathbf {V} \quad \mathbf{W})\]</span> where, say, <span class="math inline">\(\boldsymbol{\gamma}\)</span> is a <span class="math inline">\(q\)</span>-vector, <span class="math inline">\(\boldsymbol{\delta}\)</span> is a <span class="math inline">\((p-q)\)</span>-vector, <span class="math inline">\(\mathbf{V}\)</span> is a <span class="math inline">\(n\times q\)</span> matrix and <span class="math inline">\(\mathbf{W}\)</span> is a <span class="math inline">\(n\times (p-q)\)</span> matrix; suppose further that every column of <span class="math inline">\(\mathbf{V}\)</span> is orthogonal (perpendicular) to every column of <span class="math inline">\(\mathbf{W}\)</span>, which may be written succinctly as <span class="math display">\[\mathbf{V}^T\mathbf{W}=\mathbf{0}.\]</span> Then the two groups of parameters comprising the components of <span class="math inline">\(\boldsymbol{\gamma}\)</span> and <span class="math inline">\(\boldsymbol{\delta}\)</span> are said to be <strong>orthogonal</strong> to each other.<br>
+A particular consequence of orthogonality is that, under the usual normal assumptions, <span class="math display">\[\text{cov}(\hat{\boldsymbol{\beta}})=\sigma ^2\left(\begin{array}{cc} (\mathbf{V}^T\mathbf{V})^{-1} &amp; \mathbf{0} \\ \mathbf{0} &amp; (\mathbf{W}^T\mathbf{W})^{-1} \end{array} \right )\]</span> which since, in a multivariate normal distribution, zero correlation implies independence, shows that the estimators of <span class="math inline">\(\boldsymbol{\gamma}\)</span> and <span class="math inline">\(\boldsymbol{\delta}\)</span> are <em>independent</em> in the statistical sense. Another obvious consequence of the above is that if, for whatever reason, the parameters of <span class="math inline">\(\boldsymbol{\delta}\)</span> are excluded from the model, then it does not affect the estimator of <span class="math inline">\(\boldsymbol{\gamma}\)</span> or its sampling distribution.<br>
+It is clear that more than two groups of parameters may be mutually orthogonal. An extreme example of this is when all of the parameters are mutually orthogonal. In this case <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is a <em>diagonal</em> matrix and its inverse is also diagonal, found by taking reciprocals of its diagonal elements. So the estimators of the components of <span class="math inline">\(\boldsymbol{\beta}\)</span> are mutually independent and their variances are easily obtained.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-2.5" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.5</strong></span> The model <span class="math display">\[E(Y)=\beta_0+\alpha z+\beta_1x+\beta_{11}x^2\]</span> is proposed for which one observation is taken at each of the values <span class="math inline">\(x=-1,0,1\)</span> of the quantitative variable <span class="math inline">\(x\)</span> for each of the values <span class="math inline">\(z=-1,1\)</span> of the dummy variable <span class="math inline">\(z\)</span>. Investigate in this design which combinations of the four parameters of this model are mutually orthogonal.<br>
+Ordering the parameters and the design points in an obvious way, we get <span class="math display">\[\mathbf{X}=\left( \begin{array}{cccc} 1 &amp; -1 &amp; -1 &amp; 1 \\ 1 &amp; -1 &amp; 0 &amp; 0 \\
+1 &amp; -1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; -1 &amp; 1 \\ 1 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1 &amp; 1 \end{array} \right)\]</span> from which it follows taking sums of squares and products of columns that <span class="math display">\[\mathbf{X}^T\mathbf{X}=\left(\begin{array}{cccc} 6 &amp; 0 &amp; 0 &amp; 4 \\ 0 &amp; 6 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 4 &amp; 0 \\ 4 &amp; 0 &amp; 0 &amp; 4 \end{array} \right).\]</span> From this we can see that <span class="math inline">\(\{\beta_0, \beta_{11}\} ,\{\alpha\}\)</span> and <span class="math inline">\(\{\beta_1\}\)</span> are mutually orthogonal groups, but that <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_{11}\)</span> are not orthogonal to each other.</p>
+</div>
+</div>
+</div>
+<p>Note that we coded the indicator variable <span class="math inline">\(z\)</span> as <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>, which is a choice often conducive to orthogonality, as we shall see later. R example 2.5 shows the effect of the choice of <span class="math inline">\(z\)</span> constraints on the orthogonality of the design matrix.</p>
+</section>
+<section id="prediction" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="prediction"><span class="header-section-number">2.9</span> Prediction</h2>
+<p>One of the objectives we discussed in <a href="Introduction to experimental design.html#sec-issues" class="quarto-xref"><span>Section 1.4</span></a> was that of predicting the mean response at some point <span class="math inline">\(\mathbf{x_0}\)</span> in the design region which may or may not have been used in the design of the experiment. If we label this mean response as <span class="math inline">\(y(\mathbf{x_0})\)</span>, then we have <span class="math display">\[y(\mathbf{x_0})=\mathbf{f}(\mathbf{x_0})^T\boldsymbol{\beta}\]</span> The predicted value of the response at <span class="math inline">\(\mathbf{x_0}\)</span> is naturally estimated by <span class="math display">\[\hat{y}(\mathbf{x_0})=\mathbf{f}(\mathbf{x_0})^T\hat{\boldsymbol{\beta}}\]</span> which is unbiased and has variance given by <span class="math display">\[\begin{align}
+\text{var}(\hat{y}(\mathbf{x_0})) &amp;= \mathbf{f}(\mathbf{x_0})^T\text{cov}(\hat{\boldsymbol{\beta}})\mathbf{f}(\mathbf{x_0}) \\
+&amp;=\sigma^2 \mathbf{f}(\mathbf{x_0})^T(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{f}(\mathbf{x_0}).
+\end{align}\]</span> So the accuracy of prediction depends on the design matrix and also the point <span class="math inline">\(\mathbf{x_0}\)</span> chosen. R example 2.6 shows how prediction variance changes with choice of prediction point.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-2.6" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.6</strong></span> In the simple linear regression model we have <span class="math display">\[(\mathbf{X}^T\mathbf{X})^{-1}=\frac{1}{ns_{xx}} \left( \begin{array}{cc} \sum x^2 &amp; -\sum x \\ -\sum x &amp; n \end{array} \right)\]</span> and so <span class="math display">\[\begin{align}
+\text{var}(\hat{y}(x_0)) &amp;= \text{var}(\hat{\beta_0}+\hat{\beta_1}x_0)\\
+&amp;=\text{var} \left(\begin{array}{cc} 1 &amp; x_0 \end{array} \right)\left( \begin{array}{cc} \hat{\beta_0} &amp; \hat{\beta_1} \end{array} \right)^T\\
+&amp;=\frac{\sigma^2}{ns_{xx}} \left( \begin{array}{cc} 1 &amp; x_0 \end{array} \right) \left( \begin{array}{cc} \sum x^2 &amp; -\sum x \\ -\sum x &amp; n \end{array} \right) \left( \begin{array}{c} 1 \\ x_0 \end{array} \right)\\
+&amp;= \sigma ^2 \left( \frac{1}{n}+\frac{(x_0-\overline{x})^2}{s_{xx}} \right)
+\end{align}\]</span> where <span class="math inline">\(\overline{x}=\sum x/n\)</span> and <span class="math inline">\(s_{xx} = \sum x^2 - n\overline{x}^2\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Note that if a model fits well within a certain region in which the design points have been chosen, there is a danger in predicting outside this region, because there is no evidence that the model continues to fit well here, and there might be good scientific reason to believe that it does not. For example, a polynomial model which happens to fit well within a limited range might become wildly unrealistic outside it – say, predicting negative values in a situation where these are impossible.</p>
+<p>For future purposes it is convenient here to introduce the <strong>standardised</strong> information matrix <span class="math display">\[\mathbf{M}=n^{-1} \mathbf{X}^T\mathbf{X}\]</span> and the <strong>standardised</strong> variance of prediction at a point <span class="math inline">\(\mathbf{x}\)</span> <span class="math display">\[d(\mathbf{x})=n\mathbf{f}(\mathbf{x})^T(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{f}(\mathbf{x})=\mathbf{f}(\mathbf{x})^T\mathbf{M}^{-1}\mathbf{f}(\mathbf{x})\]</span> where the inclusion of the factor <span class="math inline">\(n^{-1}\)</span> or <span class="math inline">\(n\)</span> compensates for the fact that increasing the sample size inevitably increases the accuracy of estimation, and the exclusion of the factor <span class="math inline">\(\sigma ^2\)</span> from <span class="math inline">\(d(\mathbf{x})\)</span> makes this function a dimensionless and more intrinsic feature of the design. For example, if a whole design is replicated then the standardised information matrix and variance of prediction are the same for the larger experiment as for the smaller one.</p>
+</section>
+<section id="sec-confregions" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="sec-confregions"><span class="header-section-number">2.10</span> Confidence regions</h2>
+<p>In the general linear model, the usual distributional assumptions have the following consequences:</p>
+<ul>
+<li><p><span class="math inline">\(\sigma^{-2}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})^T\mathbf{X}^T\mathbf{X}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})\)</span> has <span class="math inline">\(\chi^2_p\)</span> distribution;</p></li>
+<li><p><span class="math inline">\(p^{-1}\hat{\sigma}^{-2}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})^T\mathbf{X}^T\mathbf{X}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})\)</span> has an <span class="math inline">\(F_{p,n-p}\)</span> distribution, provided <span class="math inline">\(n&gt;p\)</span>.</p></li>
+</ul>
+<p>It follows that, regardless of whether <span class="math inline">\(\sigma ^2\)</span> is known or unknown, a confidence region for <span class="math inline">\(\boldsymbol{\beta}\)</span> will take the form <span class="math display">\[(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}})^T\mathbf{X}^T\mathbf{X}(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}}) \leq \text{constant}\]</span> where the constant on the right hand side will include the appropriate quantile of the <span class="math inline">\(\chi ^2\)</span> or <span class="math inline">\(F\)</span> distribution.</p>
+<p>This region will be the interior of an ellipsoid centred on <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. The size of this ellipsoid will depend obviously on <span class="math inline">\(\sigma ^2\)</span> or <span class="math inline">\(\hat{\sigma }^2\)</span> and the confidence level chosen. Its size, shape and orientation are also determined by the covariance matrix <span class="math inline">\((\mathbf{X}^T\mathbf{X})^{-1}\)</span>. The axes of the ellipsoid point in the directions given by the eigenvectors of <span class="math inline">\((\mathbf{X}^T\mathbf{X})^{-1}\)</span>, and the length along each axis is proportional to the square root of the corresponding eigenvalue.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-2.7" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.7</strong></span> Simple linear regression with observations taken at <span class="math inline">\(x=-1,0 \: \text{and}\: 1\)</span>, and <span class="math inline">\(\sigma^2\)</span> is unknown. In this case <span class="math display">\[\mathbf{X}^T\mathbf{X}= \left( \begin{array}{cc} 3 &amp; 0 \\ 0 &amp; 2 \end{array}\right)\]</span> and so the confidence region for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> is the interior of an ellipse <span class="math display">\[3(\beta_0-\hat{\beta_0})^2 + 2(\beta_1-\hat{\beta_1})^2 \leq 2\hat{\sigma}^2F_{2,1,1-\alpha }\]</span> where <span class="math inline">\(100(1-\alpha )\%\)</span> is the confidence level. In this case, <span class="math inline">\((\mathbf{X}^T\mathbf{X})^{-1}\)</span> is diagonal, and has eigenvectors <span class="math inline">\((1,0)^T\)</span> and <span class="math inline">\((0,1)^T\)</span> and so the two parameters are orthogonal and the ellipse has its principal axes parallel to the co-ordinate axes.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Introduction to experimental design.html" class="pagination-link" aria-label="Introduction to Experimental Design">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Experimental Design</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Optimality.html" class="pagination-link" aria-label="Optimality">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

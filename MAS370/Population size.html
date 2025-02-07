@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; Estimating a Population Size – MAS370/61003 Sampling Theory and Design of Experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Practicalities.html" rel="next">
+<link href="./Cluster sampling.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to sampling.html">Part II: Sampling Theory</a></li><li class="breadcrumb-item"><a href="./Population size.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MAS370/61003 Sampling Theory and Design of Experiments</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: Experimental Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to experimental design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Experimental Design</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Review of linear models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Optimality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-multiple factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: multiple factors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Factorial designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Designs for mixture experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Designs for mixture experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Continuous and exact designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Continuous and exact designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tailor-made designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Tailor-made designs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Sampling Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Simple random sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Simple Random Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Stratified sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Stratified Sampling: Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Population size.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Practicalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Practicalities of Surveys: Problems at the Planning Stage</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#capture-recapture-sampling" id="toc-capture-recapture-sampling" class="nav-link active" data-scroll-target="#capture-recapture-sampling"><span class="header-section-number">14.1</span> Capture-recapture sampling</a>
+  <ul class="collapse">
+  <li><a href="#the-case-study-as-a-capture-recapture-experiment" id="toc-the-case-study-as-a-capture-recapture-experiment" class="nav-link" data-scroll-target="#the-case-study-as-a-capture-recapture-experiment"><span class="header-section-number">14.1.1</span> The case study as a capture-recapture experiment</a></li>
+  </ul></li>
+  <li><a href="#log-linear-models-for-capture-recapture-data" id="toc-log-linear-models-for-capture-recapture-data" class="nav-link" data-scroll-target="#log-linear-models-for-capture-recapture-data"><span class="header-section-number">14.2</span> Log-linear models for capture-recapture data</a>
+  <ul class="collapse">
+  <li><a href="#interaction-terms" id="toc-interaction-terms" class="nav-link" data-scroll-target="#interaction-terms"><span class="header-section-number">14.2.1</span> Interaction terms</a></li>
+  </ul></li>
+  <li><a href="#multiple-systems-estimation" id="toc-multiple-systems-estimation" class="nav-link" data-scroll-target="#multiple-systems-estimation"><span class="header-section-number">14.3</span> Multiple systems estimation</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to sampling.html">Part II: Sampling Theory</a></li><li class="breadcrumb-item"><a href="./Population size.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We can use sampling methods to estimate the size of a population (<span class="math inline">\(N\)</span> in the notation used so far). As a case study, we will consider an analysis conducted at the Home Office on modern slavery in the UK. In 2013, the National Crime Agency (NCA) reported that 2744 potential victims of human trafficking had been <em>encountered</em>. Not all victims would be known to the authorities; can the <em>total</em> number of (potential) victims be estimated?</p>
+<p><span class="citation" data-cites="Silverman">(<a href="#ref-Silverman" role="doc-biblioref">Silverman 2016</a>)</span> describes the NCA figure as coming from different organisations, which he summarises as five lists:</p>
+<ol type="1">
+<li><p>Local Authority (LA);</p></li>
+<li><p>Non-governmental organisation (NG);</p></li>
+<li><p>Police force and National Crime Agency (PF);</p></li>
+<li><p>Government organisation (GO);</p></li>
+<li><p>General public (GP).</p></li>
+</ol>
+<p>Some names appear on more than one list, for example, 54 victims are named on the LA list only, 463 victims are named on the NG list only, and 15 victims are named on both the LA and NG lists. The total number of names across the five lists is 2744, i.e., 2744 victims are named on at least one of the five lists. To estimate the total number of victims, we need to estimate how many victims there are who are not named on any of the lists.</p>
+<p>We can obtain an estimate using the technique of <strong>multiple systems estimation</strong>. This is extension of the technique of <strong>capture-recapture</strong> sampling, which has its origins in environmental applications, in particular in estimating in the abundance of a particular species of animal.</p>
+<section id="capture-recapture-sampling" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="capture-recapture-sampling"><span class="header-section-number">14.1</span> Capture-recapture sampling</h2>
+<p>This method for estimating a population size is as follows.</p>
+<ol type="1">
+<li><p>Draw (‘capture’) a random sample of size <span class="math inline">\(n\)</span> (without replacement) from the population. Each member of the sample is tagged (e.g.&nbsp;a ring may be placed on the leg of a bird).</p></li>
+<li><p>Release all members of the sample back into the population.</p></li>
+<li><p>Draw a second random sample of size <span class="math inline">\(m\)</span> (without replacement) from the population. Observe the number of tagged individuals, denoted by <span class="math inline">\(r\)</span> in the second sample.</p></li>
+</ol>
+<p>A simple estimator of the population size <span class="math inline">\(N\)</span>, known as the Peterson estimator (or “Lincoln index”) is <span class="math display">\[\widehat{N}_p = \frac{nm}{r}.\]</span> This is based on the assumption that <span class="math inline">\(n/N\)</span> should be similar to <span class="math inline">\(r/m\)</span>. If <span class="math inline">\(N\)</span> is large relative to <span class="math inline">\(m\)</span>, we can suppose that <span class="math display">\[r\sim Bin\left(m, \frac{n}{N}\right)\]</span> Based on asymptotic properties of maximum likelihood estimators, we can derive an approximate variance for <span class="math inline">\(\widehat{N_p}\)</span> as <span class="math display">\[\widehat{Var}(\hat{N}_p)= \frac{mn^2(m-r)}{r^3}\]</span> Clearly, this will cause difficulties if we observe <span class="math inline">\(r=0\)</span>. Additionally, <span class="math inline">\(\widehat{N}_p\)</span> is biased, with <span class="math display">\[E(\widehat{N_p})\simeq N\left(1+\frac{N-n}{mn}\right).\]</span> An alternative is the Chapman estimator: <span class="math display">\[\widehat{N_c} = \frac{(n+1)(m+1)}{r+1} -1\]</span> which can be shown to be unbiased for <span class="math inline">\(n+m&gt;N\)</span> and has estimated variance <span class="math display">\[\widehat{Var}(\widehat{N}_c)= \frac{(n+1)(m+1)(n-r)(m-r)}{(r+1)^2(r+2)}.\]</span> There are two assumptions with this method.</p>
+<ol type="1">
+<li><p>The population size <span class="math inline">\(N\)</span> does not change between the first and second samples.</p></li>
+<li><p>All members of the population are equally likely to be captured; there are no ‘trap shy’ or ‘trap happy’ members.</p></li>
+</ol>
+<section id="the-case-study-as-a-capture-recapture-experiment" class="level3" data-number="14.1.1">
+<h3 data-number="14.1.1" class="anchored" data-anchor-id="the-case-study-as-a-capture-recapture-experiment"><span class="header-section-number">14.1.1</span> The case study as a capture-recapture experiment</h3>
+<p>Returning to the case study, suppose there were just two lists: LA and NG. From the data in <span class="citation" data-cites="Silverman">(<a href="#ref-Silverman" role="doc-biblioref">Silverman 2016</a>)</span>, we have</p>
+<ul>
+<li><p>94 victims were named in total on the LA list;</p></li>
+<li><p>567 victims were named in total on the NG list;</p></li>
+<li><p>18 victims were named on both lists.</p></li>
+</ul>
+<p>The assumptions required almost certainly <em>won’t</em> hold, but for illustration, we could interpret this as a capture-recapture experiment:</p>
+<ol type="1">
+<li><p>94 members of the population were ‘tagged’;</p></li>
+<li><p>a second sample of 567 members of the population (of victims) was drawn;</p></li>
+<li><p>18 members of the second sample were ‘observed to be tagged’.</p></li>
+</ol>
+<p>We then obtain <span class="math display">\[\begin{align}
+\widehat{N}_p &amp;= 2961\\
+\widehat{N}_c &amp;= 2839, \\
+\sqrt{\widehat{Var}(\widehat{N}_p)} &amp;= 627\\
+\sqrt{\widehat{Var}(\widehat{N}_c)} &amp;= 558.
+\end{align}\]</span> The estimates do at least exceed the number of known victims that only appeared on the other three lists, but otherwise aren’t very convincing. It’s not plausible that all members of the population are equally likely to be ‘captured’, and names may not appear on the two lists independently.</p>
+</section>
+</section>
+<section id="log-linear-models-for-capture-recapture-data" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="log-linear-models-for-capture-recapture-data"><span class="header-section-number">14.2</span> Log-linear models for capture-recapture data</h2>
+<p>Another way to think about capture-recapture data is as a contingency table with a missing observation. Continuing the example with two lists only, we have</p>
+<div class="center">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: center;">LA</td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: center;">no</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>NG</td>
+<td>no</td>
+<td style="text-align: center;">?</td>
+<td>76</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>yes</td>
+<td style="text-align: center;">549</td>
+<td>18</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>so that the estimate of the population size would be <span class="math inline">\(76+549+18\)</span> plus the estimate of the number of victims not appearing on either list. We will now consider how to model these data, in such a way that the missing count can be estimated. In particular, we are going to use <strong>log-linear models</strong>, a particular case of <strong>generalised linear model</strong>. This may appear unnecessarily complex, but there are benefits:</p>
+<ul>
+<li><p>it is relatively straightforward to extend the approach to multiple lists (i.e.&nbsp;5-way contingency tables);</p></li>
+<li><p>with more than two lists, we can incorporate dependencies between the lists;</p></li>
+<li><p>we can fit the models in R and get standard errors for the parameter estimates.</p></li>
+</ul>
+<p>We think of the counts in each cell as independent Poisson random variables, with expectations</p>
+<div class="center">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: center;">LA (<span class="math inline">\(j\)</span>)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: center;">no</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>NG (<span class="math inline">\(i\)</span>)</td>
+<td>no</td>
+<td style="text-align: center;"><span class="math inline">\(\mu_{11}\)</span></td>
+<td><span class="math inline">\(\mu_{12}\)</span></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>yes</td>
+<td style="text-align: center;"><span class="math inline">\(\mu_{21}\)</span></td>
+<td><span class="math inline">\(\mu_{22}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The interpretation of this is a little difficult, in particular the distinction between observed and expected counts, but one can imagine that a repeat of the data collection process would produce different counts, with <span class="math inline">\(\mu_{ij}\)</span> representing a mean count, assuming no trends over time. The objective is therefore to estimate <span class="math inline">\(\mu_{11}\)</span>. With only two lists, we will have to assume independence between NG and LA, which we express by saying that the two ratios <span class="math inline">\(\mu_{12}/\mu_{11}\)</span> and <span class="math inline">\(\mu_{22}/\mu_{21}\)</span> should be equal. This gives us a way to link <span class="math inline">\(\mu_{11}\)</span> to the three observed counts.</p>
+<p>We parameterise <span class="math inline">\(\mu_{ij}\)</span> as follows: <span id="eq-llmodel"><span class="math display">\[
+\log \mu_{ij} = \phi + \alpha_i + \beta_j,
+\tag{14.1}\]</span></span> with <span class="math inline">\(\alpha_1=\beta_1=0\)</span>, so the total number of parameters is three (the most we could have with only three independent observations). We call this a log-linear model, because the log of the expectation is a linear function of the parameters.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+This is to help you understand the model, but is not the sort of thing you’d be asked to show in an exam.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-loglin" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.1</strong></span> Show that <a href="#eq-llmodel" class="quarto-xref">Equation&nbsp;<span>14.1</span></a> satisfies the independence requirement: <span class="math inline">\(\mu_{12}/\mu_{11}=\mu_{22}/\mu_{21}\)</span></p>
+</div>
+</div>
+</div>
+<p>Maximum likelihood can be used to estimate <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\alpha_2\)</span> and <span class="math inline">\(\beta_2\)</span>. The full-likelihood is <span class="math display">\[L=\frac{e^{-\mu_{12}}\mu_{12}^{76}}{76!}\times\frac{e^{-\mu_{21}}\mu_{21}^{549}}{549!}\times\frac{e^{-\mu_{22}}\mu_{22}^{18}}{18!},\]</span> with <span class="math inline">\(\mu_{ij}=e^{\phi + \alpha_i + \beta_j}\)</span>. Although we could do the maximisation analytically, we will set the data up in R, and get R to do the maximisation for us. Setting up the data in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>two.list <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">count =</span> <span class="fu">c</span>(<span class="dv">76</span>, <span class="dv">549</span>, <span class="dv">18</span>),</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">LA =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"yes"</span>, <span class="st">"no"</span>, <span class="st">"yes"</span>)),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">NG =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"yes"</span>, <span class="st">"yes"</span>)))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>two.list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  count  LA  NG
+1    76 yes  no
+2   549  no yes
+3    18 yes yes</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(count <span class="sc">~</span> LA <span class="sc">+</span> NG, <span class="at">family =</span> <span class="fu">poisson</span>(log), <span class="at">data =</span> two.list)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = count ~ LA + NG, family = poisson(log), data = two.list)
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)   7.7485     0.2656  29.175  &lt; 2e-16 ***
+LAyes        -3.4177     0.2395 -14.268  &lt; 2e-16 ***
+NGyes        -1.4404     0.2621  -5.495 3.91e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance:  7.8597e+02  on 2  degrees of freedom
+Residual deviance: -1.0969e-13  on 0  degrees of freedom
+AIC: 25.055
+
+Number of Fisher Scoring iterations: 3</code></pre>
+</div>
+</div>
+<p>The maximum likelihood estimates are <span class="math inline">\(\hat{\phi}=7.75\)</span>, <span class="math inline">\(\hat{\alpha}_2=-1.44\)</span> and <span class="math inline">\(\hat{\beta}_2=-3.41\)</span>. The fitted value in the missing cell is <span class="math display">\[e^{\hat{\phi}} = 2318,\]</span> and adding on the other cell counts give <span class="math inline">\(\hat{N}=2318 + 76 + 549 + 18 = 2961\)</span>, the same as the Peterson estimator. To get an approximate 95% confidence interval, we take the estimated standard error of <span class="math inline">\(\hat{\phi}\)</span> which is reported as 0.2656, and do <span class="math display">\[\left(76 + 549 + 18 + e^{\hat{\phi} -2\times 0.2656},  76 + 549 + 18 + e^{\hat{\phi} +2\times 0.2656}\right),\]</span> which gives (2005, 4585). (Technically, we’ve only considered an interval for the expectation of the cell count, not the actual count. But as we are assuming a Poisson distribution, the standard deviation is the square root of the mean, and so random variation about the mean is relatively small.)</p>
+<section id="interaction-terms" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="interaction-terms"><span class="header-section-number">14.2.1</span> Interaction terms</h3>
+<p>It is unlikely that names would appear on the two lists independently. Some agencies may share names, and others may be reluctant to do so. For example, a non-governmental organisation may offer complete anonymity to potential victims. If this were the case, we wouldn’t expect the ratios <span class="math inline">\(\mu_{12}/\mu_{11}\)</span> and <span class="math inline">\(\mu_{22}/\mu_{21}\)</span> to be equal; <span class="math inline">\(\mu_{22}\)</span> may be relatively small, for example. Ideally, an appropriate model would be <span class="math display">\[\log \mu_{ij} = \phi + \alpha_i + \beta_j+(\alpha\beta)_{ij},\]</span> with the constraints <span class="math inline">\((\alpha\beta)_{i1}=(\alpha\beta)_{1j}=0\)</span>, so that the interaction parameter is <span class="math inline">\((\alpha_\beta)_{22}\)</span>. Again, with only three observations, we can’t fit a model with four parameters, but such interaction terms <em>can</em> be included once we introduce more lists.</p>
+</section>
+</section>
+<section id="multiple-systems-estimation" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="multiple-systems-estimation"><span class="header-section-number">14.3</span> Multiple systems estimation</h2>
+<p>With more lists, we may have better ‘coverage’ of the population (different organisations may have different means of identifying victims), and we can now account for dependencies between the lists. For simplicity, we now consider three lists: LA, NG and PF. From the data in <span class="citation" data-cites="Silverman">(<a href="#ref-Silverman" role="doc-biblioref">Silverman 2016</a>)</span>, we have</p>
+<div class="center">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">PF = no</td>
+<td></td>
+<td style="text-align: center;">LA</td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td></td>
+<td style="text-align: center;">no</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">NG</td>
+<td>no</td>
+<td style="text-align: center;">?</td>
+<td>57</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td>yes</td>
+<td style="text-align: center;">483</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">PF = yes</td>
+<td></td>
+<td style="text-align: center;">LA</td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td></td>
+<td style="text-align: center;">no</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">NG</td>
+<td>no</td>
+<td style="text-align: center;">1082</td>
+<td>19</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td>yes</td>
+<td style="text-align: center;">66</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>With more than two lists, we don’t have the simple equivalence with capture-recapture sampling, but the log-linear modelling framework can still be used. (Note that the more complex setting with more than two lists is referred to as multiple systems estimation). Again, we suppose each observed count is an independent Poisson random variable, with expected value <span class="math inline">\(\mu_{ijk}\)</span> given by <span class="math display">\[\log \mu_{ijk} = \phi + \alpha_i + \beta_j + \gamma_k + (\alpha\beta)_{ij} + (\alpha\gamma)_{ik}+(\beta\gamma)_{jk},\]</span> with <span class="math inline">\(i,j,k\)</span> corresponding to the PF, NG and LA lists respectively, each taking values 1 or 2, corresponding to a ‘no’ or ‘yes’ respectively. We apply corner point constraints: all parameters are set to 0 except <span class="math inline">\(\phi,\alpha_2,\beta_2,\gamma_2,(\alpha\beta)_{22},(\alpha\gamma)_{22},(\beta\gamma)_{22}\)</span>. This gives seven free parameters, which is the most we can fit, as we have seven observations.</p>
+<p>Setting up the data in R (now with a missing value for <span class="math inline">\(i=j=k=1\)</span> to make it easier to input the data into <code>R</code> using the <code>rep</code> function):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>three.list <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">count =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">57</span>, <span class="dv">483</span>, <span class="dv">16</span>, <span class="dv">1082</span>, <span class="dv">19</span>, <span class="dv">66</span>, <span class="dv">2</span>),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">LA =</span> <span class="fu">as.factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"yes"</span>),<span class="dv">2</span>)),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">NG =</span> <span class="fu">as.factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"no"</span>, <span class="st">"yes"</span>,<span class="st">"yes"</span>), <span class="dv">2</span>)),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">PF =</span> <span class="fu">as.factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"yes"</span>), <span class="at">each =</span> <span class="dv">4</span>)))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>three.list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  count  LA  NG  PF
+1    NA  no  no  no
+2    57 yes  no  no
+3   483  no yes  no
+4    16 yes yes  no
+5  1082  no  no yes
+6    19 yes  no yes
+7    66  no yes yes
+8     2 yes yes yes</code></pre>
+</div>
+</div>
+<p>Fitting the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>glm2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(count <span class="sc">~</span> LA<span class="sc">*</span>NG <span class="sc">+</span> NG<span class="sc">*</span>PF <span class="sc">+</span> LA<span class="sc">*</span>PF, <span class="at">family =</span> <span class="fu">poisson</span>(log), <span class="at">data =</span> three.list)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = count ~ LA * NG + NG * PF + LA * PF, family = poisson(log), 
+    data = three.list)
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  7.99610    0.80673   9.912  &lt; 2e-16 ***
+LAyes       -3.95305    0.79579  -4.967 6.78e-07 ***
+NGyes       -1.81608    0.80545  -2.255   0.0241 *  
+PFyes       -1.00953    0.80616  -1.252   0.2105    
+LAyes:NGyes  0.54562    0.75413   0.724   0.4694    
+NGyes:PFyes -0.98083    0.79541  -1.233   0.2175    
+LAyes:PFyes -0.08908    0.76139  -0.117   0.9069    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 3.3068e+03  on 6  degrees of freedom
+Residual deviance: 3.7748e-15  on 0  degrees of freedom
+  (1 observation deleted due to missingness)
+AIC: 54.782
+
+Number of Fisher Scoring iterations: 3</code></pre>
+</div>
+</div>
+<p>The fitted value in the missing cell is <span class="math display">\[e^{\hat{\phi}} = 2969,\]</span> and adding on the other cell counts give <span class="math inline">\(\hat{N}=4694\)</span>. To get an approximate 95% confidence interval, we take the estimated standard error of <span class="math inline">\(\hat{\mu}\)</span> which is reported as 0.80673, and calculate <span class="math display">\[\left(1725 + e^{\hat{\phi} -2\times 0.80673},  1725 + e^{\hat{\phi} +2\times 0.80673}\right),\]</span> which gives (2361, 16631).</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Silverman" class="csl-entry" role="listitem">
+Silverman, Bernard. 2016. <span>“Modern Slavery: An Application of Multiple Systems Estimation.”</span> Available at <a href="https://www.gov.uk/government/publications/modern-slavery-an-application-of-multiple-systems-estimation" class="uri">https://www.gov.uk/government/publications/modern-slavery-an-application-of-multiple-systems-estimation</a> (2016/05/04).
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Cluster sampling.html" class="pagination-link" aria-label="Cluster Sampling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Practicalities.html" class="pagination-link" aria-label="Practicalities of Surveys: Problems at the Planning Stage">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Practicalities of Surveys: Problems at the Planning Stage</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
