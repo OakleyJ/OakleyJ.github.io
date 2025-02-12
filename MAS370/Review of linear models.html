@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -253,6 +287,35 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: Computer Experiments (MAS61003 only)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction-computer-experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Uncertainty-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -302,7 +365,7 @@ window.Quarto = {
 <h2 data-number="2.1" class="anchored" data-anchor-id="the-general-linear-model"><span class="header-section-number">2.1</span> The general linear model</h2>
 <p>In this course, we shall mostly be concerned with the <strong>general linear model</strong> which takes the form <span class="math display">\[\begin{equation}
 Y = \mathbf{f}(\mathbf{x})^T\boldsymbol{\beta}+\varepsilon=\sum_{i=1}^p f_i(\mathbf{x})\beta_i + \varepsilon,
-\end{equation}\]</span> where <span class="math inline">\(\mathbf{f}(\mathbf{x})^T = (f_1(\mathbf{x}) ~~ f_2(\mathbf{x})~~\ldots ~~f_p(\mathbf{x})\)</span> is a row vector of known functions of <span class="math inline">\(\mathbf{x}\)</span>. <span class="math inline">\(\mathbf{x}= (x_1~~x_2~~\ldots ~~x_m)^T\)</span> is a vector of fixed but unknown parameters and <span class="math inline">\(\varepsilon\)</span> is a random variable with mean zero. So the assumption is that the expected value of <span class="math inline">\(Y\)</span> <span class="math display">\[E(Y) = \mathbf{f}(\mathbf{x})^T\boldsymbol{\beta}\]</span> is a linear combination of the components of <span class="math inline">\(\mathbf{f}(\mathbf{x})\)</span>, with the coefficients being the unknown parameters.</p>
+\end{equation}\]</span> where <span class="math inline">\(\mathbf{f}(\mathbf{x})^T = (f_1(\mathbf{x}) ~~ f_2(\mathbf{x})~~\ldots ~~f_p(\mathbf{x})\)</span> is a row vector of known functions of <span class="math inline">\(\mathbf{x}\)</span>. <span class="math inline">\(\mathbf{x}= (x_1~~x_2~~\ldots ~~x_m)^T\)</span> is a vector of fixed but unknown constants and <span class="math inline">\(\varepsilon\)</span> is a random variable with mean zero. So the assumption is that the expected value of <span class="math inline">\(Y\)</span> <span class="math display">\[E(Y) = \mathbf{f}(\mathbf{x})^T\boldsymbol{\beta}\]</span> is a linear combination of the components of <span class="math inline">\(\mathbf{f}(\mathbf{x})\)</span>, with the coefficients being the unknown parameters.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -532,7 +595,10 @@ Example
 <li><p><span class="math inline">\(\sigma^{-2}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})^T\mathbf{X}^T\mathbf{X}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})\)</span> has <span class="math inline">\(\chi^2_p\)</span> distribution;</p></li>
 <li><p><span class="math inline">\(p^{-1}\hat{\sigma}^{-2}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})^T\mathbf{X}^T\mathbf{X}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})\)</span> has an <span class="math inline">\(F_{p,n-p}\)</span> distribution, provided <span class="math inline">\(n&gt;p\)</span>.</p></li>
 </ul>
-<p>It follows that, regardless of whether <span class="math inline">\(\sigma ^2\)</span> is known or unknown, a confidence region for <span class="math inline">\(\boldsymbol{\beta}\)</span> will take the form <span class="math display">\[(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}})^T\mathbf{X}^T\mathbf{X}(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}}) \leq \text{constant}\]</span> where the constant on the right hand side will include the appropriate quantile of the <span class="math inline">\(\chi ^2\)</span> or <span class="math inline">\(F\)</span> distribution.</p>
+<p>It follows that, regardless of whether <span class="math inline">\(\sigma ^2\)</span> is known or unknown, a <span class="math inline">\(100(1-\alpha)\%\)</span> confidence region for <span class="math inline">\(\boldsymbol{\beta}\)</span> will take the form <span class="math display">\[(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}})^T\mathbf{X}^T\mathbf{X}(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}}) \leq p\hat{\sigma}^2F_{p, n-p, 1-\alpha}\]</span> where <span class="math inline">\(F_{p, n-p, 1-\alpha}\)</span> is the <span class="math inline">\(100(1-\alpha)\)</span> percentile of the <span class="math inline">\(F_{n,p}\)</span> distribution, obtained from R with the command</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qf</span>(<span class="dv">1</span><span class="sc">-</span>alpha, p, n <span class="sc">-</span> p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>This region will be the interior of an ellipsoid centred on <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. The size of this ellipsoid will depend obviously on <span class="math inline">\(\sigma ^2\)</span> or <span class="math inline">\(\hat{\sigma }^2\)</span> and the confidence level chosen. Its size, shape and orientation are also determined by the covariance matrix <span class="math inline">\((\mathbf{X}^T\mathbf{X})^{-1}\)</span>. The axes of the ellipsoid point in the directions given by the eigenvectors of <span class="math inline">\((\mathbf{X}^T\mathbf{X})^{-1}\)</span>, and the length along each axis is proportional to the square root of the corresponding eigenvalue.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">

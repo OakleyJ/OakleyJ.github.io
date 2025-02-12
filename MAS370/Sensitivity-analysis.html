@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Designs for qualitative explanatory variables: one factor – MAS370/61003 Sampling Theory and Design of Experiments</title>
+<title>18&nbsp; Sensitivity analysis – MAS370/61003 Sampling Theory and Design of Experiments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Qualitative-multiple factors.html" rel="next">
-<link href="./Optimality.html" rel="prev">
+<link href="./Uncertainty-analysis.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -110,7 +109,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Qualitative-single factor.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction-computer-experiments.html">Part III: Computer Experiments (MAS61003 only)</a></li><li class="breadcrumb-item"><a href="./Sensitivity-analysis.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -170,7 +169,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link active">
+  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></span></a>
   </div>
 </li>
@@ -276,7 +275,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+  <a href="./Sensitivity-analysis.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
   </div>
 </li>
@@ -292,19 +291,23 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#randomisation" id="toc-randomisation" class="nav-link active" data-scroll-target="#randomisation"><span class="header-section-number">4.1</span> Randomisation</a></li>
-  <li><a href="#completely-randomised-designs-crd" id="toc-completely-randomised-designs-crd" class="nav-link" data-scroll-target="#completely-randomised-designs-crd"><span class="header-section-number">4.2</span> Completely Randomised Designs (CRD)</a></li>
-  <li><a href="#blocks" id="toc-blocks" class="nav-link" data-scroll-target="#blocks"><span class="header-section-number">4.3</span> Blocks</a></li>
-  <li><a href="#RBD" id="toc-RBD" class="nav-link" data-scroll-target="#RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</a></li>
+  <li><a href="#functional-anova-and-variance-decompositions" id="toc-functional-anova-and-variance-decompositions" class="nav-link active" data-scroll-target="#functional-anova-and-variance-decompositions"><span class="header-section-number">18.1</span> Functional ANOVA and variance decompositions</a></li>
+  <li><a href="#main-effect-and-total-effect-variances" id="toc-main-effect-and-total-effect-variances" class="nav-link" data-scroll-target="#main-effect-and-total-effect-variances"><span class="header-section-number">18.2</span> Main effect and total effect variances</a></li>
+  <li><a href="#computation" id="toc-computation" class="nav-link" data-scroll-target="#computation"><span class="header-section-number">18.3</span> Computation</a>
+  <ul class="collapse">
+  <li><a href="#using-monte-carlo" id="toc-using-monte-carlo" class="nav-link" data-scroll-target="#using-monte-carlo"><span class="header-section-number">18.3.1</span> Using Monte Carlo</a></li>
+  <li><a href="#using-regression" id="toc-using-regression" class="nav-link" data-scroll-target="#using-regression"><span class="header-section-number">18.3.2</span> Using regression</a></li>
+  </ul></li>
+  <li><a href="#appendix-proof-of-the-variance-identity" id="toc-appendix-proof-of-the-variance-identity" class="nav-link" data-scroll-target="#appendix-proof-of-the-variance-identity"><span class="header-section-number">18.4</span> Appendix: proof of the variance identity</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to experimental design.html">Part I: Experimental Design</a></li><li class="breadcrumb-item"><a href="./Qualitative-single factor.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction-computer-experiments.html">Part III: Computer Experiments (MAS61003 only)</a></li><li class="breadcrumb-item"><a href="./Sensitivity-analysis.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: one factor</span></h1>
+<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></h1>
 </div>
 
 
@@ -321,28 +324,79 @@ window.Quarto = {
 </header>
 
 
-<p>We now consider some standard designs that can be used to compare the effects of several categorical variables. The simplest case is where there is just one factor, acting at <span class="math inline">\(m\)</span> different levels, and we wish to compare the effects of these levels.</p>
-<p>A typical example is where an investigator is wishing to compare <span class="math inline">\(m\)</span> different drugs, one of which may be a placebo, by dividing the patients into <span class="math inline">\(m\)</span> groups and administering a different drug to each group. Of course, such data can be described with a linear model, for example: <span class="math display">\[Y_{ij}=\mu_i+\varepsilon_{ij},\]</span> where <span class="math inline">\(Y_{ij}\)</span> is the <span class="math inline">\(j\)</span>-th observed response in the <span class="math inline">\(i\)</span>-th treatment group, <span class="math inline">\(\mu_i\)</span> is the population mean response in the <span class="math inline">\(i\)</span>-th treatment group, and <span class="math inline">\(\varepsilon_{ij}\)</span> is an error term following a <span class="math inline">\(N(0,\sigma^2)\)</span> distribution. We can represent this model in the usual matrix form <span class="math inline">\(\mathbf{y}= \mathbf{x}\boldsymbol{\beta}+ \mathbf{\varepsilon}\)</span>. Consequently, all the theory from the previous sections applies.</p>
-<p>The first design question is simply how best to allocate patients to treatment groups. But we can also consider whether it’s possible to reduce experimental error through other features of the design. In later sections, we extend the design problem to the case where we wish to investigate the effects of several factors simultaneously.</p>
-<section id="randomisation" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="randomisation"><span class="header-section-number">4.1</span> Randomisation</h2>
-<p>An important aspect of the design of experiments, in cases where the aim is to investigate the effect of treatments on subjects say, is to choose the combinations of treatments which we wish to apply, and then allocate them to subjects in a completely random way. This helps to avoid bias, possibly subconscious, in the allocation, but there is also a more technical justification for randomisation.</p>
+<p>The term “sensitivity analysis” can be used to mean different things, but broadly refers to investigating how predictions or inferences might change if we change particular assumptions (for example, investigating whether the prediction from a computer model changes if we change an input or parameter value). Here, we use the term sensitivity analysis to mean a specific extension of the probabilistic uncertainty analysis problem.</p>
+<p>We consider a computer model with a scalar output <span class="math inline">\(y\)</span> (or we investigate each element of a vector output separately) and a vector of inputs <span class="math inline">\(\mathbf{x}\)</span>. We suppose that there is a true, uncertain input <span class="math inline">\(\mathbf{X}\)</span>, and we are interested in the value of <span class="math inline">\(Y=f(\mathbf{X})\)</span>. Writing <span class="math inline">\(\mathbf{X}=(X_1,\ldots, X_d)\)</span>, the aim of a probabilistic or global sensitivity analysis is to understand how individual elements of <span class="math inline">\(\mathbf{X}\)</span> contribute to the uncertainty in <span class="math inline">\(Y\)</span>. In particular, if we could commission a study to learn the true value of an input (or at least reduce uncertainty about an input), which input would be best to learn about? Is there a particular subset of inputs that we should be trying to learn about?</p>
+<p>We first state a useful identity (a proof is given in the Appendix). For any two random variables <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, <span id="eq-varident"><span class="math display">\[Var(A)=Var_B\{E(A|B)\} + E_B\{Var(A|B)\} \tag{18.1}\]</span></span> Suppose we could learn the true value of one input. Which would be the best input to choose? One option is to consider a reduction in variance. Without any further information we have <span class="math inline">\(Var(Y)\)</span> as our current variance of the output. Note the interpretation here: if <span class="math inline">\(\mathbf{X}\)</span> is a fixed quantity, so is <span class="math inline">\(Y\)</span>. By reducing variance, we mean we are reducing uncertainty about <span class="math inline">\(Y\)</span>; we are not making <span class="math inline">\(Y\)</span> ‘less variable’ (though one can think in those terms if <span class="math inline">\(\mathbf{X}\)</span> is a randomly varying quantity, and there are options to reduce variability in the inputs).</p>
+<p>If we knew the true value of <span class="math inline">\(X_i\)</span>, our variance would change to <span class="math inline">\(Var(Y|X_i)\)</span>, so the reduction in variance would be <span class="math display">\[Var(Y) - Var(Y|X_i).\]</span> But we don’t yet know what the true value of <span class="math inline">\(X_i\)</span> is going to be; the reduction in variance is uncertain. We could instead consider the <em>expected</em> reduction in variance: <span class="math display">\[Var(Y) - E_{X_i}\{Var(Y|X_i)\} = Var_{X_i}\{E(Y|X_i)\},\]</span> by the variance identity (<a href="#eq-varident" class="quarto-xref">Equation&nbsp;<span>18.1</span></a>). To understand the notation, note that <span class="math display">\[E(Y|X_i) = \int_{\mathcal{X}_{-i}} f(X_i,\mathbf{x}_{-i})p_{\mathbf{X}_{-i}|X_i}(\mathbf{x}_{-i})d\mathbf{x}_{-i},\]</span> where the subscript <span class="math inline">\(-i\)</span> refers to all elements apart from the <span class="math inline">\(i\)</span>th element, and <span class="math inline">\(\mathcal{X}_{-i}\)</span> is the sample space of <span class="math inline">\(\mathbf{X}_{-i}\)</span>. As we have integrated out <span class="math inline">\(\mathbf{X}_{-i}\)</span>, we have <span class="math inline">\(E(Y|X_i)\)</span> as a function of <span class="math inline">\(X_i\)</span> only, so we then evaluate <span class="math inline">\(Var_{X_i}\{E(Y|X_i)\}\)</span>, the variance of this function with respect to <span class="math inline">\(X_i\)</span>.</p>
+<p>We don’t have to assume the inputs are independent, and we can apply the same argument to groups of inputs. The expected reduction in variance from learning a subset of inputs <span class="math inline">\(\mathbf{X}_u\)</span> is <span class="math display">\[Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}\]</span></p>
+<p>We define <span class="math display">\[Var_{X_i}\{E(Y|X_i)\},\]</span> to be the <strong>main effect variance of input <span class="math inline">\(X_i\)</span></strong>, and <span class="math display">\[\frac{Var_{X_i}\{E(Y|X_i)\}}{Var(Y)},\]</span> to be the <strong>main effect index of input <span class="math inline">\(X_i\)</span></strong>. Other names for main effect index include first order sensitivity index, Sobol’ index, and correlation ratio for input <span class="math inline">\(X_i\)</span>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-sa1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.1</strong></span> Consider <span class="math display">\[f(\mathbf{x})=1.1x_1 + x_2 +x_1x_2+x_3^2.\]</span> Define <span class="math inline">\(Y=f(\mathbf{X})\)</span> with <span class="math display">\[X_1\sim N(0,4),\quad X_2\sim U[-4,4],\quad X_3\sim N(0,3).\]</span></p>
+<p>We show in detail how to calculate <span class="math inline">\(Var_{X_1}[E(Y|X_1)]\)</span>. First, in the following, treat <span class="math inline">\(X_1\)</span> as a constant. <span class="math display">\[\begin{align}
+E(Y|X_1)&amp;=E(1.1X_1 + X_2 +X_1X_2+X_3^2|X_1)
+\\&amp;=1.1X_1 +E(X_2) +X_1E(X_2) + E(X_3^2)\\
+&amp;=1.1X_1 + 0 + X_1\times 0  + Var(X_3)+E(X_3)^2\\
+&amp;=1.1X_1 + 3.
+\end{align}\]</span> Hence <span class="math display">\[Var_{X_1}[E(Y|X_1)]=Var_{X_1}(1.1X_1 + 3)=1.1^2\times 4 = 4.84.\]</span></p>
+<p>Similarly, <span class="math display">\[\begin{align}
+Var_{X_2}[E(Y|X_2)]&amp;=5.3,\label{VX2}\\
+Var_{X_3}[E(Y|X_3)]&amp;=18,.
+\end{align}\]</span></p>
+<p>If we could learn one input, we would rank <span class="math inline">\(X_3\)</span> most important, then <span class="math inline">\(X_2\)</span>, then <span class="math inline">\(X_1\)</span>. Now suppose we could learn two inputs. We find <span class="math display">\[\begin{align}
+Var_{X_1,X_2}[E(Y|X_1,X_2)]&amp;=31.5,\\
+Var_{X_1,X_3}[E(Y|X_1,X_3)]&amp;=22.84,\\
+Var_{X_2,X_3}[E(Y|X_2,X_3)]&amp;=23.3.\label{VX23}
+\end{align}\]</span> The best pair to learn is <span class="math inline">\((X_1,X_2)\)</span>, even though best individual input to learn is <span class="math inline">\(X_3\)</span>.</p>
+</div>
+</div>
+</div>
+<section id="functional-anova-and-variance-decompositions" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="functional-anova-and-variance-decompositions"><span class="header-section-number">18.1</span> Functional ANOVA and variance decompositions</h2>
+<p>For independent inputs, we can decompose <span class="math inline">\(Var(Y)\)</span> into main effect variances, two-way interaction variances, three-way interaction variances and so on. We first write <span id="eq-decomp"><span class="math display">\[
+f(\mathbf{x})=f_0+\sum_{i=1}^df_i(x_i)+\sum_{i&lt;j}f_{i,j}(x_i,x_j)+\\ \sum_{i&lt;j&lt;k}f_{i,j,k}(x_i,x_j,x_k)+\ldots+f_{1,\ldots,d}(x_1,\ldots,x_d).
+\tag{18.2}\]</span></span> This is trivial, in that the last term is a function of all the inputs, so we could choose to set <span class="math inline">\(f_{1,\ldots,d}(x_1,\ldots,x_d)=f(\mathbf{x})\)</span> and set all the other terms equal to zero. We now define <span class="math display">\[\begin{align}
+f_0&amp;=E\{f(\mathbf{X})\},\\
+f_i(x_i)&amp;=E\{f(\mathbf{X})|X_i=x_i\}-f_0,\label{fi}\\
+f_{i,j}(x_i,x_j)&amp;=E\{f(\mathbf{X})|X_i=x_i,X_j=x_j\}-f_i(x_i)-f_j(x_j)-f_0\\
+f_{i,j,k}(x_i,x_j,x_k)&amp;=E\{f(\mathbf{X})|X_i=x_i,X_j=x_j,X_k=x_k\}-f_{i,j}(x_i,x_j)-f_{i,k}(x_i,x_k)\nonumber\\
+&amp;-f_{j,k}(x_j,x_k)-f_i(x_i)-f_j(x_j)-f_k(x_k)-f_0,
+\end{align}\]</span> and so on. Inspecting, for example, the definition of <span class="math inline">\(f_{i,j}(x_i,x_j)\)</span>, we can think of this term as representing an additional contribution to <span class="math inline">\(f(\mathbf{x})\)</span>, from the interaction between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span>, on top of the contributions from the single input functions <span class="math inline">\(f_i(x_i)\)</span> and <span class="math inline">\(f_j(x_j)\)</span>. Note also that, following this construction, <span class="math inline">\(f_{1,\ldots,d}(x_1,\ldots, x_d)\)</span> is simply <span class="math inline">\(f(\mathbf{x})\)</span>, minus all the other terms on the RHS of <a href="#eq-decomp" class="quarto-xref">Equation&nbsp;<span>18.2</span></a>, so again, it is trivial to see that the decomposition holds.</p>
+<p>Now, with <span class="math inline">\(Y=f(\mathbf{X})\)</span>, write <span class="math display">\[\begin{align}
+Y=f(\mathbf{X})&amp;=f_0+\sum_{i=1}^df_i(X_i)+\sum_{i&lt;j}f_{i,j}(X_i,X_j)\nonumber\\
+&amp;+\sum_{i&lt;j&lt;k}f_{i,j,k}(X_i,X_j,X_k)+\ldots+f_{1,\ldots,d}(X_1,\ldots,X_d).
+\end{align}\]</span> If inputs in <span class="math inline">\(\mathbf{X}\)</span> are independent, we find that all the terms above are independent, and <span id="eq-vardecomp"><span class="math display">\[
+Var\{Y\}=\sum_{i=1}^dVar\{f_i(X_i)\}+\sum_{i&lt;j}Var\{f_{i,j}(X_i,X_j)\}\\
++\sum_{i&lt;j&lt;k}Var\{f_{i,j,k}(X_i,X_j,X_k)\}+\ldots\\\
++Var\{f_{1,\ldots,d}(X_1,\ldots,X_d)\}.
+\tag{18.3}\]</span></span> Noting the definition of <span class="math inline">\(f_i(x_i)\)</span>, the main effect variance for <span class="math inline">\(X_i\)</span> is <span class="math display">\[Var\{f_i(X_i)\}=Var_{X_i}\{E(Y|X_i)\}\}\]</span> We can define a two-way interaction variance for <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> as <span class="math display">\[Var\{f_{i,j}(X_i,X_j)\},\]</span> which gives the <em>additional</em> contribution to <span class="math inline">\(Var(Y)\)</span> from <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span>, above their main effect contributions. We define a <strong>total effect variance for <span class="math inline">\(X_i\)</span></strong> as the sum of all terms in <span class="math inline">\(Var(Y)\)</span> involving <span class="math inline">\(X_i\)</span> and the <strong>total effect index for <span class="math inline">\(X_i\)</span></strong> as its total effect variance, divided by <span class="math inline">\(Var(Y)\)</span>. We</p>
 </section>
-<section id="completely-randomised-designs-crd" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="completely-randomised-designs-crd"><span class="header-section-number">4.2</span> Completely Randomised Designs (CRD)</h2>
-<p>A <strong>completely randomised design (CRD)</strong> is one where every possible allocation of subjects to treatments is equally likely to be chosen. The model may be written <span class="math display">\[Y_{ij} = \mu _i + \epsilon _{ij}~~~~(i=1,2,\ldots ,m; j=1,2,\ldots n_i)\]</span> where <span class="math inline">\(n_i\)</span> is the size of the <span class="math inline">\(i\)</span>-th group, <span class="math inline">\(Y_{ij}\)</span> is the <span class="math inline">\(j\)</span>-th observation in the <span class="math inline">\(i\)</span>-th group, <span class="math inline">\(\mu _i\)</span> is the unknown mean for the <span class="math inline">\(i\)</span>-th treatment, and <span class="math inline">\(\epsilon _{ij}\)</span> is random error.</p>
-<p>Under the usual assumptions of the general linear model, the analysis is easy, because the parameters are orthogonal and we get <span class="math display">\[\begin{align}
-\hat{\mu}_i=\overline{Y}_{i.}\\
-\text{var}(\hat{\mu})_i=\frac{\sigma ^2}{n_i}
-\end{align}\]</span> where <span class="math inline">\(\overline{Y}_{i.}\)</span> is the mean of the <span class="math inline">\(i\)</span>-th group. The residual sum of squares is <span class="math display">\[S^2 = \sum _{i=1}^m \sum _{j=1}^{n_i}(Y_{ij}-\overline{Y}_{i.})^2\]</span> with <span class="math inline">\(n-m\)</span> degrees of freedom, where <span class="math inline">\(n\)</span> is the total number of observations.</p>
-<p>From the design point of view, the main question here is how best to choose the sizes of the groups. Obviously, as ever, the larger the experiment, the more accurate the estimators will be, and so it is of more interest to look at the problem of choice of <span class="math inline">\(n_1, n_2, \ldots ,n_m\)</span> subject to a fixed total number of observations <span class="math inline">\(n\)</span> say.</p>
-<p>If, for example, we adopt the <span class="math inline">\(D\)</span>-optimality criterion, then, noting that in this case <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is the diagonal matrix with <span class="math inline">\(n_1, n_2, \ldots , n_m\)</span> down the diagonal, its determinant is <span class="math inline">\(n_1n_2\ldots n_m\)</span> and this is maximised subject to <span class="math inline">\(n_1+n_2+\ldots
-+n_m=n\)</span> by taking <span class="math inline">\(n_1, n_2, \ldots , n_m\)</span> as nearly as possible equal to each other.</p>
-<p>If there is a placebo, an alternative might be to aim to minimise the variance of the estimated treatment difference between each of the genuine treatments and the placebo. Suppose that each of the genuine treatments is administered to <span class="math inline">\(t\)</span> patients, and the placebo to the remaining <span class="math inline">\(n-(m-1)t\)</span> patients; then this variance may be written <span class="math display">\[v(t) = \sigma ^2\left( \frac{1}{t} + \frac{1}{n-(m-1)t} \right).\]</span> We minimise this by treating <span class="math inline">\(t\)</span> as a continuous variable and using calculus. Leaving out the constant multiplicative factor <span class="math inline">\(\sigma
-^2\)</span>, <span class="math display">\[\begin{align}
-\frac{d}{dt} v(t)&amp;=-\frac{1}{t^2} + \frac{m-1}{(n-(m-1)t)^2}.\\
-\frac{d^2}{dt^2}v(t)&amp;=\frac{2}{t^3}+\frac{2(m-1)^2}{(n-(m-1)t)^3}&gt;0.
-\end{align}\]</span> Hence a minimum occurs when <span class="math inline">\((m-1)t^2 = (n-(m-1)t)^2\)</span>, and this is an equation which may be solved for <span class="math inline">\(t\)</span>. The solution will not necessarily be an integer, and so in practice it may have to be rounded up or down.</p>
+<section id="main-effect-and-total-effect-variances" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="main-effect-and-total-effect-variances"><span class="header-section-number">18.2</span> Main effect and total effect variances</h2>
+<p>An input can have a small main effect variance, but a large total effect variance. A small main effect variance doesn’t imply ‘unimportant’, but a small total effect variance <em>does</em> imply ‘unimportant’. We can calculate total effect variance <span class="math inline">\(V_i^T\)</span> for input <span class="math inline">\(X_i\)</span> via (joint) main effect variance of remaining inputs <span class="math display">\[Var(Y)=Var_{\mathbf{X}_{-i}}\{E(Y|\mathbf{X}_{-i})\} + V^T_i,\]</span> The effect of calculating <span class="math inline">\(Var_{\mathbf{X}_{-i}}\{E(Y|\mathbf{X}_{-i})\}\)</span> is to sum all the terms in <a href="#eq-vardecomp" class="quarto-xref">Equation&nbsp;<span>18.3</span></a> that do <em>not</em> include input <span class="math inline">\(X_i\)</span>. The total effect index for input <span class="math inline">\(X_i\)</span> is therefore <span class="math display">\[1-\frac{Var_{\mathbf{X}_{-i}}\{E(Y|\mathbf{X}_{-i})\}}{Var(Y)}.\]</span> We can therefore interpret the total effect index for <span class="math inline">\(X_i\)</span> as the expected proportion of variance remaining if we were to learn the true value of all inputs <em>except</em> <span class="math inline">\(X_i\)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Total effect indices are only meaningful for independent inputs; <a href="#eq-vardecomp" class="quarto-xref">Equation&nbsp;<span>18.3</span></a> assumes independence between inputs. Main effect indices are valid (their interpretation holds) regardless of whether the inputs are independet or not.</p>
+</div>
+</div>
+<p>Dependent inputs <span class="math inline">\(\mathbf{X}_u\)</span> should be treated as a single group, so that one would only calculate a total effect index for the whole group. We sum all terms in <a href="#eq-vardecomp" class="quarto-xref">Equation&nbsp;<span>18.3</span></a> involving any elements of <span class="math inline">\(\mathbf{X}_u\)</span>. This corresponds to calculating <span class="math display">\[1-\frac{Var_{\mathbf{X}_{-u}}\{E(Y|\mathbf{X}_{-u})\}}{Var(Y)}.\]</span></p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -353,144 +407,158 @@ Example
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="exm-crd" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.1</strong></span> Let <span class="math inline">\(n=24\)</span> and <span class="math inline">\(m=3\)</span>. In this case the equation is<br>
-<span class="math display">\[2t^2 = (24-2t)^2\]</span> leading to <span class="math display">\[t = \frac{24}{2+\sqrt{2}} \simeq 7.03\]</span> In practice we would take <span class="math inline">\(t=7\)</span>, and administer each of the two genuine treatments to seven patients, and the placebo to the remaining ten.</p>
+<div id="exm-sa2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.2</strong></span> Continuing <a href="#exm-sa1" class="quarto-xref">Example&nbsp;<span>18.1</span></a>, consider <span class="math display">\[Y=1.1X_1 + X_2 +X_1X_2+X_3^2\]</span> with <span class="math display">\[X_1\sim N(0,4),\quad X_2\sim U[-4,4],\quad X_3\sim N(0,3).\]</span> We can partition the variance as follows.</p>
+<div class="center">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_1(X_1)\}\)</span></td>
+<td style="text-align: center;">4.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_2(X_2)\}\)</span></td>
+<td style="text-align: center;">5.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_3(X_3)\}\)</span></td>
+<td style="text-align: center;">18.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{1,2}(X_1,X_2)\}\)</span></td>
+<td style="text-align: center;">21.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{1,3}(X_1,X_3)\}\)</span></td>
+<td style="text-align: center;">0.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{2,3}(X_2,X_3)\}\)</span></td>
+<td style="text-align: center;">0.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{1,2,3}(X_1,X_2,X_3)\}\)</span></td>
+<td style="text-align: center;">0.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var(Y)\)</span></td>
+<td style="text-align: center;">49.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The total effect variance for <span class="math inline">\(X_1\)</span> is <span class="math inline">\(4.8+21.3\)</span>. Note that we can obtain this via <span class="math display">\[49.4 - Var_{X_2,X_3}\{E(Y|X_2,X_3)\} = 49.4 - Var(X_2 + X_3^2) = 49.4-64/12 - 18 = 26.1\]</span> (note <span class="math inline">\(E(X_3^4)=27\)</span>).</p>
 </div>
 </div>
 </div>
 </section>
-<section id="blocks" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="blocks"><span class="header-section-number">4.3</span> Blocks</h2>
-<p>Sometimes we can increase the accuracy of an experiment by making use of knowledge of uncontrollable sources of variation by incorporating them in the model as <strong>blocking variables</strong>. A typical example here is an agricultural experiment, where a number of plants are to be grown, perhaps in order to estimate the effects of several different fertilisers, but the plot on which the plants are to be grown is known to be inhomogeneous with respect to its natural fertility. If a model were fitted which ignored this inhomogeneity, estimates would not be very accurate because the residuals would have to carry the associated variability, and some of them might be expected to be large in magnitude. Also, the assumption of independent observations might be questionable, since those from plants grown close together might be expected to be positively correlated.</p>
-<p>A way of dealing with this is to divide the plot into relatively homogeneous sub-plots known as <strong>blocks</strong> and to incorporate into the model <strong>block effects</strong>, which are additive parameters, one for each block, and which can be dealt with in the formulation of the model using dummy variables, similarly to the catalyst effects discussed in Section @ref(qualvars). The chief difference here is that the block effects may not be of interest in their own right, but are introduced merely to produce a better-fitting model, and increase the accuracy of estimation of parameters which <em>are</em> of interest.</p>
-<div class="callout callout-style-default callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Example
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div id="exm-blocks1" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.2</strong></span> If there are just two blocks, introducing two block parameters <span class="math inline">\(B_1\)</span> and <span class="math inline">\(B_2\)</span> would over-parametrise the model, and so imposing a constraint, say <span class="math inline">\(B_1+B_2=0\)</span>, or equivalently <span class="math inline">\(B_2=-B_1\)</span>, enables us to eliminate <span class="math inline">\(B_2\)</span>, giving a single extra parameter <span class="math inline">\(B_1\)</span>. Correspondingly, the design matrix will have an extra column consisting of a <span class="math inline">\(1\)</span> for every observation from the first block and a <span class="math inline">\(-1\)</span> for every observation from the second block.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Example
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div id="exm-blocks2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.3</strong></span> In an experiment with two blocks, suppose that each observation in one block is twinned with an observation with the same treatment combination in the other block. If the block effect is represented by a parameter <span class="math inline">\(B_1\)</span> which is included in the model as an additive effect <span class="math inline">\(+B_1\)</span> in the first block and <span class="math inline">\(-B_1\)</span> in the second block, explain why this parameter is orthogonal to all of the other parameters in the model.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="RBD" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</h2>
-<p>In an experiment to compare the effects of different drugs, for example, we might wish to use blocks which consist of patients of the same sex and fairly homogeneous with respect to age, so that variation due to these factors can be separated from variation due to the effects of the drugs. If all of the blocks contain the same number of units, and each treatment is used the same number of times within each block, with randomisation taking place independently within each block, we have a <strong>randomised block design (RBD)</strong>.</p>
-<p>The simplest case is where each treatment is administered once within each block. If <span class="math inline">\(b\)</span> denotes the number of blocks and <span class="math inline">\(t\)</span> denotes the number of treatments, the model which we might consider is the additive one <span class="math display">\[Y_{ij} = \mu + \alpha _i + \tau _j + \epsilon_{ij}~~~~(i=1,2,\ldots ,b;~~j=1,2,\ldots ,t)\]</span> where <span class="math inline">\(Y_{ij}\)</span> is the observation in block <span class="math inline">\(i\)</span> for treatment <span class="math inline">\(j\)</span>, <span class="math inline">\(\mu\)</span> is the overall mean, <span class="math inline">\(\alpha _i\)</span> is the effect of block <span class="math inline">\(i\)</span>, and <span class="math inline">\(\tau _j\)</span> is the effect of treatment <span class="math inline">\(j\)</span>. This model is over-parametrised as it stands; to overcome this, and to give <span class="math inline">\(\mu\)</span> a genuine meaning, we need to impose the constraints <span class="math display">\[\sum _{i=1}^b \alpha _i = \sum _{j=1}^t \tau _j = 0\]</span> so that, in applying the machinery of the general linear model, we need to express the parameters <span class="math inline">\(\alpha _b\)</span> and <span class="math inline">\(\tau _t\)</span> in terms of the others and adjust the design matrix accordingly.</p>
-<div class="callout callout-style-default callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Example
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div id="exm-rbd" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.4</strong></span> Let <span class="math inline">\(b=2\)</span> and <span class="math inline">\(t=3\)</span>. Then the model may be expressed as <span class="math display">\[
-E\left( \begin{array}{c} Y_{11} \\ Y_{12} \\ Y_{13} \\ Y_{21} \\
-Y_{22} \\ Y_{23} \end{array} \right) = \left( \begin{array}{cccc} 1 &amp; 1 &amp; 1 &amp; 0 \\ 1 &amp; 1 &amp; 0 &amp; 1 \\ 1 &amp; 1 &amp; -1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; 0 \\
-1 &amp; -1 &amp; 0 &amp; 1 \\ 1 &amp; -1 &amp; -1 &amp; -1 \end{array} \right) \left(\begin{array}{c} \mu \\ \alpha _1 \\ \tau _1 \\ \tau _2 \end{array}\right)
-\]</span> and in this case <span class="math display">\[\mathbf{X}^T\mathbf{X}=\left(\begin{array}{cccc} 6 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 6 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 4 &amp; 2 \\ 0 &amp; 0 &amp; 2 &amp; 4 \end{array} \right)
-\text{ and }(\mathbf{X}^T\mathbf{X})^{-1}=\left(\begin{array}{rrrr}\frac{1}{6} &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; \frac{1}{6} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; \frac{1}{3} &amp;-\frac{1}{6} \\ 0 &amp; 0 &amp; -\frac{1}{6} &amp; \frac{1}{3} \end{array} \right).\]</span> Note that the three groups of parameters <span class="math inline">\(\{ \mu \} , \{ \alpha _i\}\)</span> and <span class="math inline">\(\{ \tau _j\}\)</span> are mutually orthogonal.</p>
-</div>
-</div>
-</div>
-<p>The symmetry of the RBD makes it relatively easy to analyse. If <span class="math inline">\(\overline{Y}_{..}\)</span> denotes the overall mean of the observations, <span class="math inline">\(\overline{Y}_{i.}\)</span> denotes the mean of block <span class="math inline">\(i\)</span> and <span class="math inline">\(\overline{Y}_{.j}\)</span> denotes the mean of treatment <span class="math inline">\(j\)</span>, then we have <span class="math display">\[\begin{align}
-\hat{\mu}&amp;=\overline{Y}_{..} \\
-\text{var}(\hat{\mu})&amp;=\frac{\sigma ^2}{bt}\\
-\hat{\alpha}_i&amp;=\overline{Y}_{i.} - \overline{Y}_{..}\\
-\text{var}(\hat{\alpha}_i)&amp;=\frac{\sigma ^2}{t}\left( 1 - \frac{1}{b} \right)\\
-\text{cov}(\hat{\alpha}_i, \hat{\alpha }_{i^{\prime }})&amp;=-\frac{\sigma ^2}{bt}\text{ for }i\neq i^{\prime}\\
-\hat{\tau }_j&amp;= \overline{Y}_{.j} - \overline{Y}_{..}\\
-\text{var}(\hat{\tau }_j)=&amp;\frac{\sigma^2}{b}\left( 1 - \frac{1}{t} \right)\\
-\text{cov}(\hat{\tau}_j, \hat{\tau }_{j^{\prime }})&amp;=-\frac{\sigma^2}{bt}\text{ for }j\neq j^{\prime}
-\end{align}\]</span> and the three groups of parameters are mutually orthogonal and therefore independent. The residual sum of squares is <span class="math display">\[\sum _{i=1}^b \sum _{j=1}^t (Y_{ij} - \overline{Y}_{i.} -\overline{Y}_{.j} + \overline{Y}_{..})^2\]</span> and the number of degrees of freedom for error is <span class="math display">\[bt - 1 - (b-1) - (t-1) = (b-1)(t-1) .\]</span></p>
-<p>Suppose now we are able to take <span class="math inline">\(r&gt;1\)</span> observations per ’’cell” (block/treatment combination). If we stick to the additive model above, the analysis is similar except that the observations take the form <span class="math inline">\(Y_{ijk}\)</span> (block <span class="math inline">\(i\)</span>, treatment <span class="math inline">\(j\)</span>, replicate <span class="math inline">\(k\)</span>), the estimators have some added suffices, their variances and covariances are divided by a factor <span class="math inline">\(r\)</span>, the residual sum of squares becomes <span class="math display">\[\sum _{i=1}^b \sum _{j=1}^t \sum _{k=1}^r (Y_{ijk} - \overline{Y}_{i..} - \overline{Y}_{.j.} + \overline{Y}_{...})^2\]</span> and the number of degrees of freedom is increased by <span class="math inline">\(bt(r-1)\)</span>.</p>
-<p>However, with replication it is possible to investigate <strong>interactions</strong> between blocks and treatments, by introducing extra parameters to the model. Roughly speaking, the interaction between block <span class="math inline">\(i\)</span> and treatment <span class="math inline">\(j\)</span>, denoted by <span class="math inline">\((\alpha \tau )_{ij}\)</span>, measures the extent to which the observations in this cell depart from what might be expected on the additive model. We may write the model with interactions as <span class="math display">\[Y_{ijk} = \mu + \alpha _i + \tau _j + (\alpha \tau )_{ij} + \epsilon _{ijk} .\]</span> Once again, this model is over-parametrised as it stands, and we need to impose the constraints <span class="math display">\[\begin{align}
-\sum _{i=1}^b (\alpha \tau )_{ij} &amp;= 0\text{ for each }j \\
-\text{and } \sum_{j=1}^t (\alpha \tau)_{ij} &amp;= 0\text{ for each }i
-\end{align}\]</span> so that, in applying the machinery of the general linear model, any interaction <span class="math inline">\((\alpha \tau )_{ij}\)</span> with <em>either</em> <span class="math inline">\(i=b\)</span> <em>or</em> <span class="math inline">\(j=t\)</span> must be expressed in terms of the others.</p>
-<div class="callout callout-style-default callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Example
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div id="exm-rbd2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.5</strong></span> Let <span class="math inline">\(b=2, t=3\)</span> and <span class="math inline">\(r=2\)</span>. Then the model may be expressed as <span class="math display">\[E\left( \begin{array}{c} Y_{111} \\ Y_{112} \\ Y_{121} \\ Y_{122}  \\ Y_{131} \\ Y_{132} \\ Y_{211} \\ Y_{212} \\ Y_{221} \\ Y_{222} \\
-Y _{231} \\ Y_{232} \end{array} \right) = \left(
-\begin{array}{cccccc}
-1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\
-1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\
-1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\
-1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\
-1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\
-1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\
-1 &amp; -1 &amp; 1 &amp; 0 &amp; -1 &amp; 0 \\
-1 &amp; -1 &amp; 1 &amp; 0 &amp; -1 &amp; 0 \\
-1 &amp; -1 &amp; 0 &amp; 1 &amp; 0 &amp; -1 \\
-1 &amp; -1 &amp; 0 &amp; 1 &amp; 0 &amp; -1 \\
-1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 \\
-1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 &amp; 1\end{array} \right)
-\left(\begin{array}{c} \mu \\ \alpha_1 \\ \tau_1 \\ \tau_2 \\ (\alpha\tau)_{11} \\ (\alpha\tau)_{12} \end{array} \right).\]</span> For example, the two last entries in the bottom row of the design matrix follow from the fact that, because of the constraints, <span class="math display">\[(\alpha \tau )_{23} = -(\alpha \tau )_{13} = (\alpha \tau )_{11} + (\alpha \tau )_{12} .\]</span></p>
-</div>
-</div>
-</div>
-<p>In general, the inclusion of interactions in the model adds <span class="math inline">\((b-1)(t-1)\)</span> extra parameters and so the number of degrees of freedom for error is <span class="math display">\[btr - 1 - (b-1) - (t-1) - (b-1)(t-1) = bt(r-1).\]</span> The interactions are orthogonal to the other parameters and so the estimators of the latter remain as they were before; the interactions themselves are estimated by <span class="math display">\[\widehat{(\alpha\tau)}_{ij} = \overline{Y}_{ij.} -\overline{Y}_{i..} - \overline{Y}_{.j.} + \overline{Y}_{...}\]</span> and the residual sum of squares is <span class="math display">\[\sum _{i=1}^b \sum _{j=1}^t \sum _{k=1}^r (Y_{ijk}-\overline{Y}_{ij.})^2\]</span></p>
-<div class="callout callout-style-default callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question 1 is a good exam revision exercise (you will have an exam formula sheet: you won’t need to memorise specific formulae). Question 2 is more challenging!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div id="exr-rbd2" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 4.1</strong></span> &nbsp;</p>
+<section id="computation" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="computation"><span class="header-section-number">18.3</span> Computation</h2>
+<section id="using-monte-carlo" class="level3" data-number="18.3.1">
+<h3 data-number="18.3.1" class="anchored" data-anchor-id="using-monte-carlo"><span class="header-section-number">18.3.1</span> Using Monte Carlo</h3>
+<p>Partition the input <span class="math inline">\(\mathbf{X}\)</span> into <span class="math inline">\((\mathbf{X}_u,\mathbf{X}_{-u})\)</span>. A Monte Carlo procedure for calculating <span class="math inline">\(Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}\)</span> is as follows.</p>
 <ol type="1">
-<li>Derive the variance of an estimated treatment difference:</li>
+<li><p>Sample a value <span class="math inline">\(\mathbf{X}_{u,j}\)</span> from the distribution of <span class="math inline">\(\mathbf{X}_u\)</span>.</p>
+<ol type="1">
+<li><p>Sample a set of values <span class="math inline">\(\mathbf{X}_{-u,1},\ldots,\mathbf{X}_{-u,K}\)</span> from the distribution of <span class="math inline">\(\mathbf{X}_{-u}|\mathbf{X}_u=\mathbf{X}_{u,j}.\)</span></p></li>
+<li><p>Estimate <span class="math inline">\(E(Y|\mathbf{X}_u=\mathbf{X}_{u,j})\)</span> by <span class="math display">\[m_j=\frac{1}{K}\sum_{k=1}^K f(\mathbf{X}_{u,j},\mathbf{X}_{-u,k}).\]</span></p></li>
+</ol></li>
+<li><p>Repeat for <span class="math inline">\(j=1,\ldots,J\)</span> and estimate <span class="math inline">\(Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}\)</span> by <span class="math display">\[\frac{1}{J-1}\sum_{j=1}^J(m_j - \bar{m})^2,\]</span> where <span class="math inline">\(\bar{m} = \frac{1}{J}\sum_{j=1}^Jm_j.\)</span></p></li>
 </ol>
+<p>This can be computationally expensive, in that large values of <span class="math inline">\(J\)</span> and <span class="math inline">\(K\)</span> may be needed to get accurate estimates. An R implementation for <a href="#exm-sa2" class="quarto-xref">Example&nbsp;<span>18.2</span></a> is available on Blackboard.</p>
+</section>
+<section id="using-regression" class="level3" data-number="18.3.2">
+<h3 data-number="18.3.2" class="anchored" data-anchor-id="using-regression"><span class="header-section-number">18.3.2</span> Using regression</h3>
+<p>We first consider estimating a main effect variance <span class="math inline">\(Var_{X_i}\{E(Y|X_i)\}\)</span>. We will shortly see how to do this, using regression, and a sample of inputs and outputs generated for a probabilistic uncertainty analysis. To illustrate this, we consider again <a href="#exm-sa1" class="quarto-xref">Example&nbsp;<span>18.1</span></a>. Suppose we have conducted a Monte Carlo uncertainty analysis:</p>
 <ul>
-<li><p>in a CRD with <span class="math inline">\(t\)</span> treatments and each group of size <span class="math inline">\(b\)</span>;</p></li>
-<li><p>in an RBD (one observation per cell) with the usual notation.</p></li>
+<li><p>We have generated a sample of <span class="math inline">\(N\)</span> values from the distribution of <span class="math inline">\(\mathbf{X}\)</span>. Denote the observed values of this sample by <span class="math inline">\(\mathbf{x}_1,\ldots,\mathbf{x}_N\)</span>, with <span class="math inline">\(\mathbf{x}_i=(x_{1,i},x_{2,i},x_{3,i})\)</span>.</p></li>
+<li><p>We evaluate <span class="math inline">\(y_i=f(\mathbf{x}_i)\)</span> for <span class="math inline">\(i=1,\ldots,N\)</span> to get a sample from the distribution of <span class="math inline">\(Y\)</span>.</p></li>
 </ul>
-<p>In the first case, such a treatment difference would be denoted by <span class="math inline">\(\mu_i-\mu_{i^{\prime}}\)</span> say, whereas in the second it would be denoted by <span class="math inline">\(\tau_j-\tau_{j^{\prime}}\)</span>. If a RBD is used where the block effects are negligible, has any advantage been gained?</p>
-<ol start="2" type="1">
-<li>Show that, for given positive integers <span class="math inline">\(n&gt;m\)</span>, the product <span class="math inline">\(n_1n_2\ldots n_m\)</span> of positive integers subject to the constraint <span class="math inline">\(n_1+n_2+\ldots +n_m=n\)</span> is maximised by taking <span class="math inline">\(n_1, n_2, \ldots,n_m\)</span> as nearly as possible equal to each other, using the following approach. If two of the factors differ by more than two, say <span class="math inline">\(n_1\geq n_2+2\)</span>, then the product could be increased by replacing <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> by <span class="math inline">\(n_1-1\)</span> and <span class="math inline">\(n_2+1\)</span>; hence such a choice cannot be optimal. Using a similar approach, show that a D-optimal CRD is also A-optimal in that it minimises the sum <span class="math display">\[ \frac{1}{n_1} + \frac{1}{n_2} + \ldots + \frac{1}{n_m} \]</span> subject to the same constraint.</li>
-</ol>
+<p>Now suppose we want to calculate <span class="math inline">\(Var_{X_3}\{E(Y|X_3)\}\)</span>. We can think of <span class="math inline">\(E(Y|X_3=x_3)\)</span> as a function of <span class="math inline">\(x_3\)</span>, which we will write as <span class="math inline">\(g(x_3)\)</span>. We could estimate <span class="math inline">\(Var\{g(X_3)\}\)</span> using the sample variance of <span class="math inline">\(g(x_{3,1}),\ldots,g(x_{3,N})\)</span>, if we could work out how to evaluate (or estimate) <span class="math inline">\(g(x_{3,i})\)</span> for each <span class="math inline">\(i\)</span>. In this particular example, by looking at the function, we can see that <span class="math inline">\(g(x_3)=E(Y|X_3=x_3)=x_3^2\)</span>. Now let’s try plotting <span class="math inline">\(y_i\)</span> against <span class="math inline">\(x_{3,i}\)</span>, together with the function <span class="math inline">\(g(x_3^2)=x_3^2\)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Sensitivity-analysis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
 </div>
+<p>Could we have used the data to estimate the function <span class="math inline">\(g(x_3)\)</span>? Yes: this is a regression problem. The observed <span class="math inline">\((y_i,x_{3,i})\)</span> pairs can be related via <span class="math display">\[y_i=g(x_{3,i})+\varepsilon_i,\]</span> If we consider a random pair <span class="math inline">\((Y,X_3)\)</span> pair with corresponding error term <span class="math inline">\(\varepsilon\)</span>, we have <span class="math display">\[E(Y)=E\{g(X_3)\}+E(\varepsilon),\]</span> and <span class="math display">\[E_{X_3}\{g(X_3)\}=E_{X_3}\{E(Y|X_3)\}=E(Y).\]</span> so that <span class="math inline">\(E(\varepsilon)=0\)</span>. (Note that the variance of <span class="math inline">\(\varepsilon\)</span> is not constant for all <span class="math inline">\(x_3\)</span>, which ideally we would account for, though the aim here is merely to estimate <span class="math inline">\(g\)</span>; we are not trying to do any formal inference).</p>
+<p>We can then estimate <span class="math inline">\(g(x_{3,1}),\ldots,g(x_{3,N})\)</span> by estimating the function <span class="math inline">\(g\)</span>, and calculating the fitted values, with the variance of the fitted values giving us an estimate of <span class="math inline">\(Var_{X_3}\{E(Y|X_3)\}\)</span>. We could use ordinary least squares regression to estimate <span class="math inline">\(g\)</span>, though there are other methods that can be use. (In the R code, we use a technique called generalised additive modelling (GAM), which is a more flexible regression technique. The details of GAM are outside the scope of this module).</p>
+<p>We can calculate variance contributions for groups of inputs, e.g <span class="math inline">\(X_1,X_2\)</span>, by fitting regression models for <span class="math inline">\(y\)</span> on <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>, to estimate <span class="math inline">\(E(Y|X_1=x_1,X_2=x_2)\)</span> as a function of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. We can then use the sample of fitted values to estimate <span class="math inline">\(Var_{X_1,X_2}\{E(Y|X_1,X_2)\}\)</span>.</p>
+<p>R code implementations for <a href="#exm-sa2" class="quarto-xref">Example&nbsp;<span>18.2</span></a> using generalised additive modelling are available on Blackboard.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-casestudygam" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.3</strong></span> For the Case Study model <span class="math inline">\(X_{11}, X_{12}, X_{13}\)</span> and <span class="math inline">\(X_{14}\)</span> represent proportions of the target population taking up exercise, and maintaining their exercise, in the control and intervention groups. Below are estimates of the total effect indices for various combinations of <span class="math inline">\(X_{11}, X_{12}, X_{13}\)</span> and <span class="math inline">\(X_{14}\)</span></p>
+<div class="center">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\mathbf{X}_u\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}/Var(Y)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{11}\)</span></td>
+<td style="text-align: center;">0.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(X_{12}\)</span></td>
+<td style="text-align: center;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{13}\)</span></td>
+<td style="text-align: center;">0.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(X_{14}\)</span></td>
+<td style="text-align: center;">0.10</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{11},X_{12}\)</span></td>
+<td style="text-align: center;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(X_{13},X_{14}\)</span></td>
+<td style="text-align: center;">0.26</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{11},X_{12},X_{13},X_{14}\)</span></td>
+<td style="text-align: center;">0.78</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>So, for example, the expected reduction in the variance of the net benefit from learning <span class="math inline">\(X_{13}\)</span> only is 1%, and the expected reduction in variance from learning <span class="math inline">\(X_{14}\)</span> only is 10%, but the expected reduction in variance from learning both <span class="math inline">\(X_{13}\)</span> and <span class="math inline">\(X_{14}\)</span> is about 25%. Learning all four inputs (<span class="math inline">\(X_{11},X_{12},X_{13},X_{14}\)</span>) out of the 24 is expected to reduce the variance of <span class="math inline">\(Y\)</span> by about 80%. There are other uncertain inputs, such as the relative risk of developing diabetes, for exercising versus sedentary adults, that do not contribute substantially to the uncertainty in the net benefit; their total effect indices are relatively small.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="appendix-proof-of-the-variance-identity" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="appendix-proof-of-the-variance-identity"><span class="header-section-number">18.4</span> Appendix: proof of the variance identity</h2>
+<p>For any two random variables <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> (with density functions <span class="math inline">\(p_A(a)\)</span> and <span class="math inline">\(p_B(b)\)</span> and sample spaces <span class="math inline">\(\mathcal{X}_A\)</span> and <span class="math inline">\(\mathcal{X}_B\)</span>), <span class="math display">\[Var(A)=Var_B\{E(A|B)\} + E_B\{Var(A|B)\}.\label{varident2}\]</span> To prove this, we first prove the ‘tower property’ of expectations: <span class="math display">\[\begin{align}
+E_B\{E(A|B)\}&amp;=\int_{\mathcal{X}_B} E(A|B=b) p_B(b) db\\
+&amp;=\int_{\mathcal{X}_B} \int_{\mathcal{X}_A} a p_{A|B}(a|b) p_B(b) da\,db\\
+&amp;=\int_{\mathcal{X}_A} a \int_{\mathcal{X}_B}  p_{A,B}(a,b)db\, da\\
+&amp;=\int_{\mathcal{X}_A} a   p_{A}(a) da\\
+&amp;=E(A).
+\end{align}\]</span> Now, using the tower property, <span class="math display">\[\begin{align}
+Var(A)&amp;= E(A^2) - E(A)^2\nonumber\\
+&amp;= E_B\{E(A^2|B)\} -E(A)^2,\label{v1}
+\end{align}\]</span> and <span class="math display">\[\begin{align}
+Var_B\{E(A|B)\}&amp;= E_B[\{E(A|B)\}^2)] - \left[E_B\{E(A|B)\}\right]^2\nonumber\\
+&amp;=E_B[\{E(A|B)\}^2] - E(A)^2,\label{v2}
+\end{align}\]</span> and <span class="math display">\[E_B\{Var(A|B)\}= E_B\{E(A^2|B)\}-E_B[\{E(A|B)\}^2]\label{v3}\]</span> Adding these expressions for <span class="math inline">\(E_B\{Var(A|B)\}\)</span> and <span class="math inline">\(Var_B\{E(A|B)\}\)</span> gives <span class="math inline">\(Var(A)\)</span>, which proves the identity.</p>
 
 
 </section>
@@ -918,14 +986,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./Optimality.html" class="pagination-link" aria-label="Optimality">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality</span></span>
+      <a href="./Uncertainty-analysis.html" class="pagination-link" aria-label="Uncertainty analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Qualitative-multiple factors.html" class="pagination-link" aria-label="Designs for qualitative explanatory variables: multiple factors">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Designs for qualitative explanatory variables: multiple factors</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

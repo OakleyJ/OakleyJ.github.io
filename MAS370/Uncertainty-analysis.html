@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>13&nbsp; Cluster Sampling – MAS370/61003 Sampling Theory and Design of Experiments</title>
+<title>17&nbsp; Uncertainty analysis – MAS370/61003 Sampling Theory and Design of Experiments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Population size.html" rel="next">
-<link href="./Stratified sampling.html" rel="prev">
+<link href="./Sensitivity-analysis.html" rel="next">
+<link href="./Introduction-computer-experiments.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -110,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to sampling.html">Part II: Sampling Theory</a></li><li class="breadcrumb-item"><a href="./Cluster sampling.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction-computer-experiments.html">Part III: Computer Experiments (MAS61003 only)</a></li><li class="breadcrumb-item"><a href="./Uncertainty-analysis.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -235,7 +269,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link active">
+  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span></a>
   </div>
 </li>
@@ -270,7 +304,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Uncertainty-analysis.html" class="sidebar-item-text sidebar-link">
+  <a href="./Uncertainty-analysis.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></span></a>
   </div>
 </li>
@@ -292,17 +326,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#one-stage-cluster-sampling-with-equal-cluster-sizes" id="toc-one-stage-cluster-sampling-with-equal-cluster-sizes" class="nav-link active" data-scroll-target="#one-stage-cluster-sampling-with-equal-cluster-sizes"><span class="header-section-number">13.1</span> One-stage cluster sampling with equal cluster sizes</a></li>
-  <li><a href="#comparison-with-srs" id="toc-comparison-with-srs" class="nav-link" data-scroll-target="#comparison-with-srs"><span class="header-section-number">13.2</span> Comparison with SRS</a></li>
+  <li><a href="#probabilistic-uncertainty-analysis" id="toc-probabilistic-uncertainty-analysis" class="nav-link active" data-scroll-target="#probabilistic-uncertainty-analysis"><span class="header-section-number">17.1</span> Probabilistic uncertainty analysis</a></li>
+  <li><a href="#probabilistic-uncertainty-analysis-in-health-economic-evaluation" id="toc-probabilistic-uncertainty-analysis-in-health-economic-evaluation" class="nav-link" data-scroll-target="#probabilistic-uncertainty-analysis-in-health-economic-evaluation"><span class="header-section-number">17.2</span> Probabilistic uncertainty analysis in health economic evaluation</a></li>
+  <li><a href="#case-study" id="toc-case-study" class="nav-link" data-scroll-target="#case-study"><span class="header-section-number">17.3</span> Case study</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to sampling.html">Part II: Sampling Theory</a></li><li class="breadcrumb-item"><a href="./Cluster sampling.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction-computer-experiments.html">Part III: Computer Experiments (MAS61003 only)</a></li><li class="breadcrumb-item"><a href="./Uncertainty-analysis.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></h1>
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></h1>
 </div>
 
 
@@ -319,64 +354,165 @@ window.Quarto = {
 </header>
 
 
-<p>The population is now divided into <span class="math inline">\(l\)</span> strata, but, instead of sampling within each, we take a SRS of <em>strata</em> and measure all units in those strata selected. Strata are then called <strong>clusters</strong>.</p>
-<p>Cluster sampling is usually chosen for its ease: it is much easier to measure all units in a cluster than a number of arbitrary units. Consider for example schools in a thinly populated part of the country: random sampling would be very expensive in travel, but maybe there are agents in a small number of towns who could quickly collect data from all schools in their towns. So the advantage is likely to be economical rather than a gain in precision.</p>
-<p>The above is one-stage cluster sampling: all units in the chosen clusters are measured. A development is two-stage cluster sampling, in which there is further selection within the clusters chosen at the first stage. For example, in an educational survey, Local Education Authorities might be the primary units, schools within LEAs the secondary units, and individual children the members of the study population.</p>
-<section id="one-stage-cluster-sampling-with-equal-cluster-sizes" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="one-stage-cluster-sampling-with-equal-cluster-sizes"><span class="header-section-number">13.1</span> One-stage cluster sampling with equal cluster sizes</h2>
-<p>Analysis of cluster sampling is difficult unless we make the assumption that clusters are equal-sized. (If the clusters are not equal-sized, the total sample size will be random, even though the number of clusters sampled is fixed).</p>
-<p>Suppose there are <span class="math inline">\(L\)</span> clusters, each of size <span class="math inline">\(K\)</span>: <span class="math inline">\(LK=N\)</span>. Take SRS of <span class="math inline">\(l\)</span> of the clusters and totally enumerate members, giving <span class="math inline">\(\{x_{ij}\}, i=1,\ldots,l,\;j=1,\ldots,K\)</span>. Consider <span class="math display">\[\overline{x}_{cl} = \frac{1}{lK} \sum_{1}^{l} \sum_{1}^{K} x_{ij}.\]</span></p>
-<p><em>Properties:</em></p>
+<p>We consider a model of the form <span class="math inline">\(y=f(\mathbf{x})\)</span>, where <span class="math inline">\(y\)</span> is a scalar output and <span class="math inline">\(\mathbf{x}=(x_1,\ldots,x_d)\)</span> is a vector of <span class="math inline">\(d\)</span> inputs. We suppose that there is a true value of the input <span class="math inline">\(\mathbf{x}\)</span> such that we would like to know the value of <span class="math inline">\(Y\)</span> where <span class="math inline">\(Y=f(\mathbf{x})\)</span>, but <span class="math inline">\(\mathbf{x}\)</span> is unknown. A simple approach might be</p>
 <ol type="1">
-<li><p><span class="math inline">\(E(\overline{x}_{cl})=\overline{X}\)</span>.</p></li>
-<li><p><span class="math inline">\(\mbox{var}(\overline{x}_{cl}) = \frac{1-f}{l} \frac{1}{L-1}\sum_1^L(\overline{X}_i-\overline{X})^2\)</span></p></li>
+<li><p>Obtain (somehow) a ‘best estimate’ of <span class="math inline">\(\mathbf{x}\)</span>, which we denote by <span class="math inline">\(\hat{\mathbf{x}}=(\hat{X}_1,\ldots,\hat{X}_d)\)</span>.</p></li>
+<li><p>Estimate <span class="math inline">\(Y\)</span> by <span class="math inline">\(\hat{Y}=f(\hat{\mathbf{x}})\)</span>.</p></li>
+<li><p>Do a one-at-a-time experiment to assess uncertainty about <span class="math inline">\(Y\)</span>: for <span class="math inline">\(i=1,\ldots,d\)</span>, compare <span class="math inline">\(\hat{Y}\)</span> with <span class="math inline">\(\hat{Y}_{i,+}\)</span> and <span class="math inline">\(\hat{Y}_{i,-}\)</span>, where <span class="math inline">\(\hat{Y}_{i,+}\)</span> and <span class="math inline">\(\hat{Y}_{i,-}\)</span> correspond to model runs with the <span class="math inline">\(i\)</span>th element of <span class="math inline">\(\hat{\mathbf{x}}\)</span> replaced by <span class="math inline">\(\hat{X}_i +e_i\)</span> and <span class="math inline">\(\hat{X}_i -e_i\)</span> respectively, for some appropriate choice of <span class="math inline">\(e_i\)</span>.</p></li>
 </ol>
-<p>where <span class="math inline">\(f=l/L=lK/LK\)</span> is the sampling fraction, and <span class="math inline">\(\overline{X}_i\)</span> is the mean of the <span class="math inline">\(i\)</span>th cluster. We can estimate <span class="math display">\[S_{bc}^{2} = \frac{1}{L-1} \sum_1^L(\overline{X}_i-\overline{X})^2\quad \mbox{the between-cluster variance}\]</span> by <span class="math display">\[s_{bc}^2=\frac{1}{l-1} \sum _1^l(\overline{x}_i-\overline{x})^2\]</span> which by SRS results is unbiased for it.</p>
-<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<p>This approach is not recommended, for reasons illustrated in the following two examples.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercise
+Example
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="exr-cluster" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 13.1</strong></span> Using the fact that <span class="math inline">\(\overline{x}_{cl}\)</span> is the mean of a SRS of size <span class="math inline">\(l\)</span> drawn from the <code>population</code> <span class="math inline">\(\overline{X}_{1},\dots, \overline{X}_{L}\)</span>, show that properties (1) and (2) are true. You may find the SRS properties in <a href="Simple random sampling.html" class="quarto-xref"><span>Chapter 11</span></a> useful here.</p>
+<div id="exm-chisq" class="theorem example">
+<p><span class="theorem-title"><strong>Example 17.1</strong></span> Consider a model given by the function <span class="math inline">\(y=x^2\)</span>. Suppose we have <span class="math inline">\(X\sim N(0,1)\)</span>, and we wish to estimate <span class="math inline">\(Y=f(X)\)</span>. If we want to estimate <span class="math inline">\(Y\)</span> using its expected value, we find <span class="math display">\[1=E(Y)\neq f(E(X))=f(0)=0.\]</span> (Note that if <span class="math inline">\(X\sim N(0,1)\)</span>, then <span class="math inline">\(Y=X^2\sim \chi^2_1\)</span>, so <span class="math inline">\(E(Y)=1\)</span>).</p>
 </div>
 </div>
 </div>
+<p>In general, if <span class="math inline">\(f\)</span> is a nonlinear function of the inputs, we would not expect <span class="math inline">\(E(Y)\)</span> to be the same as <span class="math inline">\(f(E(\mathbf{x}))\)</span>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-toy2d" class="theorem example">
+<p><span class="theorem-title"><strong>Example 17.2</strong></span> Consider the function <span class="math inline">\(y=f(x_1,x_2)=x_1x_2\)</span>, and suppose we wish to assess uncertainty in <span class="math inline">\(Y=f(X_1,X_2)\)</span>, where <span class="math inline">\(X_1\sim N(0,1)\)</span> and <span class="math inline">\(X_2\sim N(0,1)\)</span>. For a baseline value, we might consider <span class="math inline">\(X_1=0\)</span> and <span class="math inline">\(X_2=0\)</span>, and evaluate <span class="math inline">\(f(0,0)\)</span>. Then, for any choice of <span class="math inline">\(e_1\)</span> and <span class="math inline">\(e_2\)</span>, we have <span class="math display">\[f(0,0)=f(-e_1,0)=f(e_1,0)=f(0,-e_2)=f(0,e_2)=0,\]</span> i.e. none of model runs produce a non-zero output, so the one-at-a-time method gives no information about the uncertainty in <span class="math inline">\(Y=f(X_1,X_2)\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Some further comments.</p>
+<ol type="1">
+<li><p>How do we choose the <span class="math inline">\(e_i\)</span> terms? Should these correspond to the absolute physical limits of the input parameters? Or should we attempting to judge what values of the inputs are likely? And how should we interpret the results? The one-at-a-time experiment may reveal some outputs that are <em>possible</em> but not necessarily <em>plausible</em>.</p></li>
+<li><p>Instead of a one-at-a-time experiment, we might consider a factorial or fractional factorial experiment (more on these later on in this module). These can be more efficient for noisy (non-deterministic) physical experiments, but the problems of non-linearity and interpretability remain.</p></li>
+</ol>
+<section id="probabilistic-uncertainty-analysis" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="probabilistic-uncertainty-analysis"><span class="header-section-number">17.1</span> Probabilistic uncertainty analysis</h2>
+<p>The examples in the previous section have already hinted at a probabilistic approach, but we will now consider this more formally. Given an uncertain <span class="math inline">\(\mathbf{x}\)</span>, the aim is to quantify uncertainty about <span class="math inline">\(Y=f(\mathbf{x})\)</span> by deriving a probability distribution for <span class="math inline">\(Y\)</span>. This first requires a probability distribution for <span class="math inline">\(\mathbf{x}\)</span>. If suitable data are available that inform us about <span class="math inline">\(\mathbf{x}\)</span>, we may derive a (posterior) probability distribution for <span class="math inline">\(\mathbf{x}\)</span> using Bayesian inference. Without data, we may instead use expert judgement (so that we simply have a prior distribution for <span class="math inline">\(\mathbf{x}\)</span>).</p>
+<p>We now have a transformation of a random variable <span class="math inline">\(Y=f(\mathbf{x})\)</span>. In very simple cases, given a density function for <span class="math inline">\(\mathbf{x}\)</span>, we may be able to derive the density function for <span class="math inline">\(Y\)</span>, but typically, this will not be possible. (At the very least, we would need a closed form expression for <span class="math inline">\(f\)</span>). We can instead use a Monte Carlo technique.</p>
+<ol type="1">
+<li><p>Generate a random sample <span class="math inline">\(\mathbf{x}_1,\ldots,\mathbf{x}_N\)</span> from the distribution of <span class="math inline">\(\mathbf{x}\)</span>.</p></li>
+<li><p>Evaluate <span class="math inline">\(Y_1=f(\mathbf{x}_1),\ldots,Y_N=f(\mathbf{x}_N)\)</span>.</p></li>
+<li><p>Use the sample <span class="math inline">\(Y_1,\ldots,Y_N\)</span> to estimate summaries of the distribution of <span class="math inline">\(Y\)</span>. For example, estimate <span class="math inline">\(E(Y)\)</span> and <span class="math inline">\(P(Y\le y)\)</span> by <span class="math display">\[\begin{aligned}
+\hat{E}(Y)&amp;=\frac{1}{N}\sum_{i=1}^NY_i,\\
+\hat{P}(Y\le y )&amp;=\frac{1}{N}\sum_{i=1}^NI(Y_i\le y),\\
+\end{aligned}\]</span> where <span class="math inline">\(I()\)</span> is the indicator function.</p></li>
+</ol>
+<p>Because each <span class="math inline">\(Y_i\)</span> is a random draw from the distribution of <span class="math inline">\(Y\)</span>, we must have <span class="math inline">\(E(Y_i)=E(Y)\)</span> and <span class="math inline">\(P(Y_i\le y)= P(Y \le y)\)</span> (in addition to <span class="math inline">\(Var(Y_i)=Var(Y)\)</span>), so the estimators above are unbiased: <span class="math display">\[\begin{align}
+E\{\hat{E}(Y)\}&amp;=\frac{1}{N}\sum_{i=1}^NE(Y_i)\\&amp;=\frac{1}{N}\sum_{i=1}^NE(Y)\\&amp;=E(Y), \\
+E\{\hat{P}(Y\le y )\}&amp;=\frac{1}{N}\sum_{i=1}^NE\{I(Y_i\le y)\}\\&amp;=\frac{1}{N}\sum_{i=1}^NP(Y_i\le y)\\
+&amp;=\frac{1}{N}\sum_{i=1}^NP(Y\le y)\\&amp;=P(Y\le y).
+\end{align}\]</span> The variances of the estimators decrease as we increase <span class="math inline">\(N\)</span>: <span class="math display">\[\begin{align}
+Var\{\hat{E}(Y)\}&amp;=\frac{1}{N^2}\sum_{i=1}^NVar(Y_i)=\frac{1}{N^2}\sum_{i=1}^NVar(Y)=\frac{Var(Y)}{N}, \\
+Var\{\hat{P}(Y\le y )\}&amp;=\frac{1}{N^2}\sum_{i=1}^NVar\{I(Y_i\le y)\}\\&amp;=\frac{1}{N^2}\sum_{i=1}^NP(Y_i\le y)\{1-P(Y_i\le y)\}\\
+&amp;=\frac{1}{N^2}\sum_{i=1}^NP(Y\le y)\{1-P(Y\le y)\}\\ &amp;=\frac{P(Y\le y)\{1-P(Y\le y)\}
+}{N}.
+\end{align}\]</span> If <span class="math inline">\(N\)</span> is large, we can construct approximate confidence intervals based on the central limit theorem. For example, an approximate 95% confidence interval for <span class="math inline">\(E(Y)\)</span> would be <span class="math display">\[\hat{E}(Y) \pm 1.96 \sqrt{\frac{\widehat{Var}(Y)}{N}},\]</span> where <span class="math display">\[\widehat{Var}(Y)=\frac{1}{N-1}\sum_{i=1}^N\{Y_i-\hat{E}(Y)\}^2.\\\]</span></p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-chisq2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 17.3</strong></span> Continuing <a href="#exm-chisq" class="quarto-xref">Example&nbsp;<span>17.1</span></a>, we show how this works in R. We estimate <span class="math inline">\(E(Y)\)</span> and <span class="math inline">\(P(Y&lt;1)\)</span> (which have true values of 1 and 0.683 to 3 d.p.)</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">61003</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate E(Y)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.046482</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence interval for E(Y)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>s.e <span class="ot">&lt;-</span> (<span class="fu">var</span>(y) <span class="sc">/</span> N)<span class="sc">^</span><span class="fl">0.5</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">mean</span>(y) <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> s.e, <span class="fu">mean</span>(y) <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> s.e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9493342 1.1436297</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate  P(Y&lt;1)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y <span class="sc">&lt;</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.677</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence interval for P(Y&lt;1)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>s.e <span class="ot">&lt;-</span> (<span class="fu">mean</span>(y <span class="sc">&lt;</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">mean</span>(y <span class="sc">&gt;=</span> <span class="dv">1</span>) <span class="sc">/</span> N)<span class="sc">^</span><span class="fl">0.5</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">mean</span>(y <span class="sc">&lt;</span> <span class="dv">1</span>) <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> s.e, <span class="fu">mean</span>(y <span class="sc">&lt;</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> s.e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6480164 0.7059836</code></pre>
+</div>
+</div>
+<p>Increasing <code>N</code> will give better results: the confidence intervals will be narrower, and we expect the estimates to be closer to the true values.</p>
 </section>
-<section id="comparison-with-srs" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="comparison-with-srs"><span class="header-section-number">13.2</span> Comparison with SRS</h2>
-<p>Consider SRS with the same sampling fraction, so that the number sampled is <span class="math inline">\(n = lK\)</span>. Then the variance of the SRS estimator is <span class="math display">\[\mbox{var~}\overline{x} = \left(1-\frac{l}{L} \right) \frac{S^2}{lK}.\]</span> On the other hand the variance of the cluster estimator is <span class="math display">\[\mbox{var}(\overline{x}_{cl}) = \left(1-\frac{l}{L} \right)\frac{1}{l(L-1)} \sum _1^L(\overline{X}_i-\overline{X})^2 = \left(1-\frac{l}{L}\right) \frac{S_{bc}^2}{l}.\]</span> We can express <span class="math inline">\(S^2_{bc}\)</span> in terms of <span class="math inline">\(S\)</span> via the following <span class="math display">\[\begin{align}
-(N-1)S^2= (LK-1)S^2 &amp; =\sum_{i=1}^L \sum_{j=1}^K (X_{ij}-\overline{X})^2 \\
-&amp;=\sum_1^L \sum_1^K (X_{ij}-\overline{X}_i)^2 + \sum_1^L K (\overline{X}_i-\overline{X})^{2}\\
-&amp;=L(K-1)\overline{S}_{wc}^2 + K(L-1)S_{bc}^2
-\end{align}\]</span> where <span class="math inline">\(\overline{S}_{wc}^2\)</span> is the mean within-cluster variance. After some algebra, we can show <span class="math display">\[\mbox{var}(\overline{x}_{cl})-\mbox{var}(\overline{x})=\left(\frac{1}{lK}-\frac{1}{LK}\right)\frac{L(K-1)}{L-1}(S^2 -\overline{S}_{wc}^2)\]</span> and so <span class="math inline">\(\overline{x}\)</span> is more precise than <span class="math inline">\(\overline{x}_{cl}\)</span> when the average within-cluster variance <span class="math inline">\(\overline{S}_{wc}^2\)</span> is less than the population variance <span class="math inline">\(S^2\)</span>. <em>Note that this is in contrast to the case for stratified random sampling,</em> in which the stratified estimator is more precise than <span class="math inline">\(\overline{x}\)</span> when within-strata variance is smaller. The reason for the difference is that if clusters are similar, then the use of clusters - even large ones - may give a poorer estimate than SRS because little extra information is gained from measuring many observations.</p>
-<div class="callout callout-style-default callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-This is a good revision question.
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div id="exr-clusterSRS" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 13.2</strong></span> A survey is to be taken to estimate the mean starting wage of individuals following completion of a new training course. Two pilot studies have been conducted. In the first study, a simple random sample of size 20 was used, and the following summary statistics were observed. <span class="math display">\[
-\sum_{i=1}^{20} x_i=564.9, \hspace{2cm} \sum_{i=1}^{20} x_i^2=16131.2,
-\]</span> where each <span class="math inline">\(x_i\)</span> is measured in 1000. In the second study, cluster sampling was used. Courses are run at different training centres around the country, with 10 students at each centre. Two training centres were selected as the clusters. The following summary statistics were observed. <span class="math display">\[\begin{align}
-\sum_{j=1}^{10} x_{1j}&amp;=258.7,   &amp; \sum_{j=1}^{10} x_{1j}^2=6714.3,\\
-\sum_{j=1}^{10} x_{2j}&amp;=305.0,   &amp; \sum_{j=1}^{10} x_{2j}^2=9319.2,
-\end{align}\]</span> where <span class="math inline">\(x_{ij}\)</span> is observation <span class="math inline">\(j\)</span> within cluster <span class="math inline">\(i\)</span>. Based on the pilot survey data, would you recommend the use of cluster sampling or simple random sampling for the new survey?</p>
+<section id="probabilistic-uncertainty-analysis-in-health-economic-evaluation" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="probabilistic-uncertainty-analysis-in-health-economic-evaluation"><span class="header-section-number">17.2</span> Probabilistic uncertainty analysis in health economic evaluation</h2>
+<p>The above technique is used in many disciplines. One area where it is (almost) a requirement is in health economic evaluations conducted for the National Institute for Health and Care Excellence (NICE). Below are some extracts from their guidance:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> (although they have used the term “probabilistic sensitivity analysis” to mean probabilistic uncertainty analysis. We will use the term sensitivity analysis to mean something else).</p>
+<p>Some extracts for the guidance are as follows.</p>
+<blockquote class="blockquote">
+<p>A third source of uncertainty comes from parameter precision, once the most appropriate sources of information have been identified […] Assign distributions to characterise the uncertainty associated with [parameter/input] values. The distributions chosen for probabilistic sensitivity analysis should not be chosen arbitrarily but chosen to represent the available evidence on the parameter of interest, and their use should be justified</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>When doing a probabilistic analysis, enough model simulations should be used to minimise the effect of Monte Carlo error. Reviewing the variance around probabilistic model outputs […] as the number of simulations increases can provide a way of assessing if the model has been run enough times or more runs are needed.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Using univariate and best- or worst-case sensitivity analysis [one-at-a-time experiments] is an important way of identifying parameters that may have a substantial effect on the cost-effectiveness results and of explaining the key drivers of the model. However, such analyses become increasingly unhelpful in representing the combined effects of multiple sources of uncertainty as the number of parameters increase. Using probabilistic sensitivity analysis can allow a more comprehensive characterisation of the parameter uncertainty associated with all input parameters.</p>
+</blockquote>
+</section>
+<section id="case-study" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="case-study"><span class="header-section-number">17.3</span> Case study</h2>
+<p>We consider a (modified version of a) cost-effectiveness model that was developed to support the National Institute for Health and Care Excellence physical activity guidance<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The model predicts the “incremental net benefit” of an intervention: exercise on prescription (e.g.&nbsp;from a general medical practitioner) to promote physical activity against a ‘do nothing’ scenario. The model assumes that the intervention affects health by reducing the risks of three diseases: coronary heart disease, stroke and diabetes. The health effects included in the model are those that relate to these three diseases, and the model counts costs that accrue as a result of the treatment of the three diseases, as well as those that relate to the intervention itself.</p>
+<p>The incremental net benefit describes the value of the intervention per patient treated. Health benefits are converted into money, on an assumption that the NHS can afford to spend up to £20000 to achieve one extra year of life in perfect health for one patient. A positive incremental net benefit means the intervention is cost effective; a negative incremental net benefit means the money would be better spent on something else. Incremental net benefit is modelled for a cohort of patients with average age 50, at the time of the intervention.</p>
+<p>The model has 24 uncertain inputs <span class="math inline">\(X_1,\ldots,X_{24}\)</span>. We do not list them all here, but examples include the relative risk of a stroke for an active versus a sedentary population, and the probability of new exercise in the intervention group. Further details and R code are available on Blackboard.</p>
+<p>We illustrate a Monte Carlo uncertainty analysis. 100,000 random inputs are drawn from the distribution of <span class="math inline">\(\mathbf{x}\)</span>. The model is run at each input, to obtain a sample <span class="math inline">\(y_1,\ldots,y_{100000}\)</span> from the distribution of <span class="math inline">\(Y\)</span>. Note the interpretation of <span class="math inline">\(Y\)</span> here: it is the mean net benefit per patient treated. It is a fixed, uncertain quantity, because it is a function of 24 input values that are unknown.</p>
+<p>We find <span class="math display">\[\begin{align}
+\hat{E}(Y)&amp;=\frac{1}{100000}\sum_{i=1}^{100000}y_i=248.5\\
+\hat{P}(Y\le 0 )&amp;=\frac{1}{100000}\sum_{i=1}^{100000}I(y_i\le 0)=0.225,
+\end{align}\]</span> with 95% confidence intervals for <span class="math inline">\(E(Y)\)</span> and <span class="math inline">\(P(Y\le 0)\)</span> given by (246.4, 250.6) and (0.223, 0.228) respectively, suggesting that <span class="math inline">\(N=100000\)</span> is sufficiently large for estimating <span class="math inline">\(E(Y)\)</span> and <span class="math inline">\(P(Y\le 0)\)</span> reliably. Hence, although we may estimate that the intervention is cost-effective, based on <span class="math inline">\(E(Y)\)</span>, we are fairly uncertain about this; our probability that the intervention is <em>not</em> cost-effective is about 20%.</p>
+<p>To visualise uncertainty about <span class="math inline">\(Y\)</span>, we can plot a (kernel) density estimate using the sample <span class="math inline">\(y_1,\ldots,y_{100000}\)</span>. We mark on the estimated 2.5th and 97.5th percentiles as vertical dashed lines.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Uncertainty-analysis_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
 </div>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>National Institute for Health and Care Excellence (2002). NICE health technology evaluations: the manual. Available at <a href="https://www.nice.org.uk/process/pmg36">https://www.nice.org.uk/process/pmg36</a>. See section <a href="https://www.nice.org.uk/process/pmg36/chapter/economic-evaluation-2#exploring-uncertainty">4.7 Exploring Uncertainty</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>National Institute for Clinical Excellence (2006) Four commonly used methods to increase physical activity: PH2. Technical Report. National Institute for Clinical Excellence, London. (Available from <a href="http://www.%20nice.org.uk/PH2">http://www. nice.org.uk/PH2</a>.) The version used in this case study is the model described in Strong, M., Oakley J. E. and Chilcott, J. (2012). <a href="https://doi.org/10.1111/j.1467-9876.2011.01014.x">Managing structural uncertainty in health economic decision models: a discrepancy approach</a>. Journal of the Royal Statistical Society, Series C, 61(1), 25-45. Thanks to Mark Strong for providing the R code.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -802,13 +938,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./Stratified sampling.html" class="pagination-link" aria-label="Stratified Sampling: Introduction">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Stratified Sampling: Introduction</span></span>
+      <a href="./Introduction-computer-experiments.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Population size.html" class="pagination-link" aria-label="Estimating a Population Size">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Sensitivity-analysis.html" class="pagination-link" aria-label="Sensitivity analysis">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
