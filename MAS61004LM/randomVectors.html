@@ -275,7 +275,9 @@ E(x_p)\end{array}\right)\]</span></p>
 \cdots &amp; \mbox{Cov}(x_1,x_p) \\ \mbox{Cov}(x_2,x_1) &amp;\ Var(x_2) &amp; \cdots &amp;
 \mbox{Cov}(x_2,x_p) \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \mbox{Cov}(x_p,x_1) &amp;
 \mbox{Cov}(x_p,x_2) &amp; \cdots &amp; \mbox{Var}(x_p) \end{array} \right)\]</span> The above is usually referred to as the <em>variance-covariance matrix</em> of <span class="math inline">\(\mathbf{x}\)</span>, or just as the <em>covariance matrix</em> of <span class="math inline">\(\mathbf{x}\)</span>.</p>
-<p>Notice that since covariance is a symmetric relation, <span class="math inline">\(\mbox{Cov}(x_i,x_j) = \mbox{Cov}(x_j,x_i)\)</span>, this is a symmetric matrix. Thus we can write <span class="math inline">\(\mbox{Var}(\mathbf{x})^T=\mbox{Var}(\mathbf{x})\)</span>. Also we note that <span class="math inline">\(\mbox{Cov}(x_i,x_i)=\mbox{Var}(x_i)\)</span>.</p>
+<p>As the covariance of a random variable with itself is its variance (for example, <span class="math inline">\(\mbox{Cov}(x_i,x_i)=\mbox{Var}(x_i)\)</span>), we sometimes use the notation <span class="math inline">\(Cov(\mathbf{x})\)</span> to mean the same thing as <span class="math inline">\(Var(\mathbf{x})\)</span>:</p>
+<p><span class="math display">\[Cov(\mathbf{x}):=Var(\mathbf{x})\]</span></p>
+<p>Notice that since covariance is a symmetric relation, <span class="math inline">\(\mbox{Cov}(x_i,x_j) = \mbox{Cov}(x_j,x_i)\)</span>, this is a symmetric matrix. Thus we can write <span class="math inline">\(\mbox{Var}(\mathbf{x})^T=\mbox{Var}(\mathbf{x})\)</span>.</p>
 </section>
 <section id="vector-covariance" class="level2" data-number="B.3">
 <h2 data-number="B.3" class="anchored" data-anchor-id="vector-covariance"><span class="header-section-number">B.3</span> Vector covariance</h2>
@@ -295,6 +297,18 @@ E(x_p)\end{array}\right)\]</span></p>
 <li><p><span class="math inline">\(\mbox{Var}(A\mathbf{x}+\mathbf{b})=A\mbox{Var}(\mathbf{x})A^T\)</span>.</p></li>
 <li><p><span class="math inline">\(\mbox{Cov}(A\mathbf{x}+\mathbf{b},C\mathbf{y}+\mathbf{d})=A\mbox{Cov}(\mathbf{x},\mathbf{y})C^T\)</span>, where the dimensions of the matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> and the vectors <span class="math inline">\(\mathbf{b}\)</span> and <span class="math inline">\(\mathbf{d}\)</span> are as required to allow the matrix multiplication.</p></li>
 </ol>
+<p>To understand result 3, note that for scalar random variables, we define <span class="math display">\[
+\mbox{Cov}(x, y) = E((x - E(x))(y - E(y))),
+\]</span> and so the covariance matrix for vectors can be written as</p>
+<p><span class="math display">\[
+\mbox{Cov}(\mathbf{x}, \mathbf{y}) = E((\mathbf{x} - E(\mathbf{x}))(\mathbf{y} - E(\mathbf{y}))^T).
+\]</span> It then follows that <span class="math display">\[\begin{align}
+\mbox{Cov}(A\mathbf{x}+\mathbf{b},C\mathbf{y}+\mathbf{d})&amp;=E((A\mathbf{x}+\mathbf{b} - E(A\mathbf{x}+\mathbf{b}))(C\mathbf{y}+\mathbf{d} - E(C\mathbf{y}+\mathbf{d}))^T) \\
+&amp;= E((A\mathbf{x} - E(A\mathbf{x}))(C\mathbf{y} - E(C\mathbf{y}))^T)\\
+&amp;= E(A(\mathbf{x} - E(\mathbf{x}))(\mathbf{y} - E(\mathbf{y}))^T C^T)\\
+&amp;= AE((\mathbf{x} - E(\mathbf{x}))(\mathbf{y} - E(\mathbf{y}))^T )C^T\\
+&amp;=A\mbox{Cov}(\mathbf{x},\mathbf{y})C^T.
+\end{align}\]</span></p>
 
 
 </section>
