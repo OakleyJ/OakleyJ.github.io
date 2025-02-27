@@ -332,7 +332,7 @@ window.Quarto = {
   <li><a href="#statistical-properties-of-the-least-squares-estimator" id="toc-statistical-properties-of-the-least-squares-estimator" class="nav-link" data-scroll-target="#statistical-properties-of-the-least-squares-estimator"><span class="header-section-number">2.4</span> Statistical properties of the least squares estimator</a></li>
   <li><a href="#fitted-values-residuals-and-the-residual-sum-of-squares" id="toc-fitted-values-residuals-and-the-residual-sum-of-squares" class="nav-link" data-scroll-target="#fitted-values-residuals-and-the-residual-sum-of-squares"><span class="header-section-number">2.5</span> Fitted values, residuals, and the residual sum of squares</a></li>
   <li><a href="#polynomial-models" id="toc-polynomial-models" class="nav-link" data-scroll-target="#polynomial-models"><span class="header-section-number">2.6</span> Polynomial models</a></li>
-  <li><a href="#qualvars" id="toc-qualvars" class="nav-link" data-scroll-target="#qualvars"><span class="header-section-number">2.7</span> Models with qualitative variables</a></li>
+  <li><a href="#sec-qualvars" id="toc-sec-qualvars" class="nav-link" data-scroll-target="#sec-qualvars"><span class="header-section-number">2.7</span> Models with qualitative variables</a></li>
   <li><a href="#orthogonality" id="toc-orthogonality" class="nav-link" data-scroll-target="#orthogonality"><span class="header-section-number">2.8</span> Orthogonality</a></li>
   <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">2.9</span> Prediction</a></li>
   <li><a href="#sec-confregions" id="toc-sec-confregions" class="nav-link" data-scroll-target="#sec-confregions"><span class="header-section-number">2.10</span> Confidence regions</a></li>
@@ -518,8 +518,8 @@ Example
 </div>
 </div>
 </section>
-<section id="qualvars" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="qualvars"><span class="header-section-number">2.7</span> Models with qualitative variables</h2>
+<section id="sec-qualvars" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="sec-qualvars"><span class="header-section-number">2.7</span> Models with qualitative variables</h2>
 <p>Qualitative explanatory variables are usually called <strong>factor</strong> variables or <strong>categorical</strong> variables. They enter the design matrix via <strong>indicator</strong> variables to specify the level of the factor. For example, suppose the explanatory variables are pressure and temperature and the effect of using one of two possible catalysts. A model which could be assumed is <span class="math display">\[E(Y) = \beta_0 + \alpha z + \beta_1x_1 + \beta_2x_2,\]</span> where <span class="math inline">\(z\)</span> is an indicator variable, taking the values, say, <span class="math inline">\(0\)</span> for the first catalyst and <span class="math inline">\(1\)</span> for the second catalyst. This model would be appropriate if the experimenter expects the relationship between the response and the factors temperature and pressure to be the same for both catalysts, except for a possible difference in level: the regression surfaces of <span class="math inline">\(y\)</span> against temperature (<span class="math inline">\(x_1\)</span>) and pressure (<span class="math inline">\(x_2\)</span>) for the two catalysts will be parallel, with the parameter <span class="math inline">\(\alpha\)</span> measuring the distance between them.</p>
 <div class="callout callout-style-default callout-caution no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
