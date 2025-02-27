@@ -336,6 +336,7 @@ window.Quarto = {
   <li><a href="#orthogonality" id="toc-orthogonality" class="nav-link" data-scroll-target="#orthogonality"><span class="header-section-number">2.8</span> Orthogonality</a></li>
   <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">2.9</span> Prediction</a></li>
   <li><a href="#sec-confregions" id="toc-sec-confregions" class="nav-link" data-scroll-target="#sec-confregions"><span class="header-section-number">2.10</span> Confidence regions</a></li>
+  <li><a href="#sec-ch2Appendix" id="toc-sec-ch2Appendix" class="nav-link" data-scroll-target="#sec-ch2Appendix"><span class="header-section-number">2.11</span> Appendix</a></li>
   </ul>
 </nav>
     </div>
@@ -595,7 +596,7 @@ Example
 &amp;=\text{var} \left(\begin{array}{cc} 1 &amp; x_0 \end{array} \right)\left( \begin{array}{cc} \hat{\beta_0} &amp; \hat{\beta_1} \end{array} \right)^T\\
 &amp;=\frac{\sigma^2}{ns_{xx}} \left( \begin{array}{cc} 1 &amp; x_0 \end{array} \right) \left( \begin{array}{cc} \sum x^2 &amp; -\sum x \\ -\sum x &amp; n \end{array} \right) \left( \begin{array}{c} 1 \\ x_0 \end{array} \right)\\
 &amp;= \sigma ^2 \left( \frac{1}{n}+\frac{(x_0-\overline{x})^2}{s_{xx}} \right)
-\end{align}\]</span> where <span class="math inline">\(\overline{x}=\sum x/n\)</span> and <span class="math inline">\(s_{xx} = \sum x^2 - n\overline{x}^2\)</span>.</p>
+\end{align}\]</span> where <span class="math inline">\(\overline{x}=\sum x/n\)</span> and <span class="math inline">\(s_{xx} = \sum x^2 - n\overline{x}^2\)</span>. Some additional steps to help you understand this derivation are given in an Appendix (<a href="#sec-ch2Appendix" class="quarto-xref"><span>Section 2.11</span></a>).</p>
 </div>
 </div>
 </div>
@@ -629,6 +630,23 @@ Example
 </div>
 </div>
 </div>
+</section>
+<section id="sec-ch2Appendix" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="sec-ch2Appendix"><span class="header-section-number">2.11</span> Appendix</h2>
+<p>Some results to help with the algebra in this section. First note that we can write <span class="math inline">\(\sum_{i=1}^n x_i = n\bar{x}\)</span>. Then</p>
+<p><span class="math display">\[\begin{align}
+s_{xx}&amp;:= \sum_{i=1}^n (x_i -\bar{x}^2)\\
+&amp;= \left(\sum_{i=1}^n x_i^2\right) - 2\bar{x}\left(\sum_{i=1}^nx_i\right) + \left(\sum_{i=1}^n \bar{x}^2\right)\\
+&amp; = \left(\sum_{i=1}^n x_i^2\right) - 2\bar{x}n\bar{x} + n\bar{x}^2\\
+&amp; = \left(\sum_{i=1}^n x_i^2\right) - n\bar{x}^2.
+\end{align}\]</span></p>
+<p>To help with <a href="#exm-2.6" class="quarto-xref">Example&nbsp;<span>2.6</span></a>, we can use the result above to write <span class="math display">\[
+\sum_{i=1}^n x_i^2 = s_{xx} + n\bar{x}^2
+\]</span> Then we have <span class="math display">\[\begin{align}
+\left( \begin{array}{cc} 1 &amp; x_0 \end{array} \right) \left( \begin{array}{cc} \sum_{i=1}^n x^2 &amp; -\sum_{i=1}^n x \\ -\sum_{i=1}^n x &amp; n \end{array} \right) \left( \begin{array}{c} 1 \\ x_0 \end{array} \right)&amp;= \left( \begin{array}{cc} 1 &amp; x_0 \end{array} \right) \left( \begin{array}{cc} \sum_{i=1}^n x^2 &amp; -n\bar{x} \\ -n\bar{x} &amp; n \end{array} \right) \left( \begin{array}{c} 1 \\ x_0 \end{array} \right)\\&amp;=\sum_{i=1}^n x_i^2 - 2nx_0\bar{x} + nx_0^2\\
+&amp;= s_{xx} +n\bar{x}^2 - 2nx_0\bar{x} + nx_0^2\\
+&amp;= s_{xx} + n (x_0-\bar{x})^2,
+\end{align}\]</span> from which we derive the expression for <span class="math inline">\(\text{var}(\hat{y}(x_0))\)</span>.</p>
 
 
 </section>
