@@ -415,6 +415,59 @@ Q1 is to help you relate an experimental design to a design matrix: it’s impor
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>I have added the parameters in the top row of the matrix to make it clearer but these should obviously not be there. I have also added additional horizontal and vertical lines to make it easier to read. <span class="math display">\[
+\left(
+\begin{array}{c|ccc|ccc|ccc}
+\mu &amp; \alpha_1 &amp; \alpha_2 &amp; \alpha_3 &amp; \beta_1 &amp; \beta_2 &amp; \beta_3 &amp; \tau_A &amp; \tau_B &amp; \tau_C \\
+\hline
+1&amp; 1&amp; 0&amp; 0&amp; 1&amp; 0&amp; 0&amp; 1&amp; 0&amp; 0\\
+1&amp; 1&amp; 0&amp; 0&amp; 0&amp; 1&amp; 0&amp; 0&amp; 1&amp; 0\\
+1&amp; 1&amp; 0&amp; 0&amp; 0&amp; 0&amp; 1&amp;-1&amp;-1&amp;-1\\
+1&amp; 1&amp; 0&amp; 0&amp;-1&amp;-1&amp;-1&amp; 0&amp; 0&amp; 1\\
+\hline
+1&amp; 0&amp; 1&amp; 0&amp; 1&amp; 0&amp; 0&amp;-1&amp;-1&amp;-1\\
+1&amp; 0&amp; 1&amp; 0&amp; 0&amp; 1&amp; 0&amp; 0&amp; 0&amp; 1\\
+1&amp; 0&amp; 1&amp; 0&amp; 0&amp; 0&amp; 1&amp; 1&amp; 0&amp; 0\\
+1&amp; 0&amp; 1&amp; 0&amp;-1&amp;-1&amp;-1&amp; 0&amp; 1&amp; 0\\
+\hline
+1&amp; 0&amp; 0&amp; 1&amp; 1&amp; 0&amp; 0&amp; 0&amp; 0&amp; 1\\
+1&amp; 0&amp; 0&amp; 1&amp; 0&amp; 1&amp; 0&amp;-1&amp;-1&amp;-1\\
+1&amp; 0&amp; 0&amp; 1&amp; 0&amp; 0&amp; 1&amp; 0&amp; 1&amp; 0\\
+1&amp; 0&amp; 0&amp; 1&amp;-1&amp;-1&amp;-1&amp; 1&amp; 0&amp; 0\\
+\hline
+1&amp;-1&amp;-1&amp;-1&amp; 1&amp; 0&amp; 0&amp; 0&amp; 1&amp; 0\\
+1&amp;-1&amp;-1&amp;-1&amp; 0&amp; 1&amp; 0&amp; 1&amp; 0&amp; 0\\
+1&amp;-1&amp;-1&amp;-1&amp; 0&amp; 0&amp; 1&amp; 0&amp; 0&amp; 1\\
+1&amp;-1&amp;-1&amp;-1&amp;-1&amp;-1&amp;-1&amp;-1&amp;-1&amp;-1\\
+\end{array}
+\right)
+\]</span></p></li>
+<li><p>Calculating the column products shows that <span class="math inline">\(\tau_A\)</span> is orthogonal to all the parameters except <span class="math inline">\(\tau_B\)</span> and <span class="math inline">\(\tau_C\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(Q\)</span> be the set of <span class="math inline">\((i,j)\)</span> values given by <span class="math inline">\(\left\{ (1,1), (2,3), (3,4), (4,2) \right\}\)</span> <span class="math display">\[\begin{align}
+\hat{\tau}_A &amp;= \overline{Y}_{(\kappa)} - \overline{Y}_{..}\\
+&amp;= \frac{Y_{11}+Y_{23}+Y_{34}+Y_{42}}{4} - \frac{\sum_{i=1}^4 \sum_{j=1}^4 Y_{ij} }{16}\\
+&amp;= \frac{3}{16}\left( Y_{11}+Y_{23}+Y_{34}+Y_{42}\right) - \frac{\sum_{(i,j) \not\in Q} Y_{ij}}{16}\\
+\end{align}\]</span> Using the fact that <span class="math inline">\(Y_{i,j}\)</span> is independent of <span class="math inline">\(Y_{i^\prime, j^\prime}\)</span> for <span class="math inline">\((i,j) \neq (i^\prime, j^\prime)\)</span> it follows that <span class="math display">\[\begin{align}
+var({\hat{\tau}_A}) &amp;= \left(\frac{3}{16}\right)^2 4\sigma^2 + \left(\frac{1}{16}\right)^2 12\sigma^2\\
+&amp;= \frac{3\sigma^2}{16}
+\end{align}\]</span></p></li>
+</ol>
+</div>
+</div>
+</div>
 <section id="orthogonal-latin-squares" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="orthogonal-latin-squares"><span class="header-section-number">5.1.1</span> Orthogonal Latin squares</h3>
 <p>If we add to an experiment with Latin square design a further treatment factor, also with <span class="math inline">\(k\)</span> levels, by superimposing a new Latin square on the existing one, such as the one represented by the Greek letters in the following diagram:</p>
@@ -464,6 +517,47 @@ These are both suitable exam revision questions, and will help you to revise the
 <ol type="1">
 <li>What dimensions would the design matrix have in the orthogonal Latin square above?</li>
 <li>Let <span class="math inline">\(\tau_A\)</span> be the effect of treatment <span class="math inline">\(A\)</span> in the first treatment factor and <span class="math inline">\(\tau_{\alpha}\)</span> be the effect of treatment <span class="math inline">\(\alpha\)</span> in the second treatment factor. Show that <span class="math inline">\(\tau_A\)</span> is orthogonal to <span class="math inline">\(\tau_{\alpha}\)</span> in the orthogonal Latin square above.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>The design matrix would be a 16 by 13 matrix.</p></li>
+<li><p>The columns for <span class="math inline">\(\tau_A\)</span> and <span class="math inline">\(\tau_\alpha\)</span> would be <span class="math display">\[
+\begin{array}{r|r}
+1 &amp; 1\\
+0 &amp; 0\\
+-1&amp; 0\\
+0 &amp;-1\\
+\hline
+-1&amp; 0\\
+0 &amp; 1\\
+1 &amp;-1\\
+0 &amp; 0\\
+\hline
+0 &amp; 0\\
+-1&amp;-1\\
+0 &amp; 1\\
+1 &amp; 0\\
+\hline
+0 &amp;-1\\
+1 &amp; 0\\
+0 &amp; 0\\
+-1&amp; 1\\
+\end{array}
+\]</span> The columns are orthogonal and so the parameters are too.</p></li>
 </ol>
 </div>
 </div>
@@ -547,7 +641,7 @@ k &amp;= \text{number of units in a block} \\
 b &amp;= \text{number of blocks} \\
 r &amp;= \text{number of applications of each treatment} \\
 \lambda &amp;= \text{number of times each pair of treatments appears together in a block}
-\end{align}\]</span> Thus, in example @ref(exm:BIBDex), <span class="math inline">\(t=4, k=3, b=4, r=3\)</span> and <span class="math inline">\(\lambda=2\)</span>.</p>
+\end{align}\]</span> Thus, in <a href="#exm-bibd" class="quarto-xref">Example&nbsp;<span>5.2</span></a>, <span class="math inline">\(t=4, k=3, b=4, r=3\)</span> and <span class="math inline">\(\lambda=2\)</span>.</p>
 <p>There are certain relationships between these quantities. Apart from the obvious <span class="math inline">\(t&gt;k\)</span>, which necessitates using incomplete blocks in the first place, we have the following equations. <span class="math display">\[bk = rt = \text{total number of observations}\]</span> <span class="math display">\[r(k-1) = \lambda (t-1) = \text{total number of block neighbours of a given treatment}\]</span> These two equations mean that, for given values of <span class="math inline">\(t\)</span> and <span class="math inline">\(k\)</span>, the ratios <span class="math inline">\(b:r:\lambda\)</span> are determined. The question remains whether, for given <span class="math inline">\(b, r\)</span> and <span class="math inline">\(\lambda\)</span> in the correct ratios, a BIBD exists with these properties.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -653,6 +747,28 @@ Question 1 is a good revision exercise, fairly typical of exam-style questions. 
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>The equations to be satisfied are <span class="math inline">\(3b=7r\)</span> and $2r=6$, from which it follows that <span class="math inline">\(b:r:\lambda =7:3:1\)</span>. These numbers have no common factor, and so if we can find a BIBD with <span class="math inline">\(b=7, r=3\)</span> and <span class="math inline">\(\lambda =1\)</span> it must be the smallest. One possibility is <span class="math display">\[\begin{array}{ccccccc} A &amp; A &amp; A &amp; B &amp; B &amp; C &amp; C \\
+B &amp; D &amp; F &amp;
+D &amp; E &amp; D &amp; E \\ C &amp; E &amp; G &amp; F &amp; G &amp; G &amp; F \end{array}\]</span></p></li>
+<li><p>The procedure would go wrong when it came to the square containing values of <span class="math inline">\(i+2j\)</span>, because for fixed <span class="math inline">\(i\)</span> the values of <span class="math inline">\(i+2j\)</span> do not range through all six possibilities and so the square would not even be a Latin square. This is because <span class="math inline">\(6\)</span> is not prime.</p></li>
+<li><p>One solution would be to use four cars and to put each combination of three compounds in a different tyre position on each of the four cars.</p></li>
+</ol>
+</div>
+</div>
+</div>
 <section id="sec-BIBDconstruct" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="sec-BIBDconstruct"><span class="header-section-number">5.2.1</span> Construction of BIBD’s</h3>
 <p>We have looked at the definition and some properties of balanced incomplete block designs, but the construction of examples has been somewhat <em>ad hoc</em>. Here we review some more systematic methods of constructing them.</p>
@@ -664,7 +780,7 @@ Question 1 is a good revision exercise, fairly typical of exam-style questions. 
 <ol start="2" type="1">
 <li><strong>Designs based on Latin squares</strong></li>
 </ol>
-<p>The easiest way of creating a BIBD from a Latin square is simply to delete, say, the final row, and to treat the columns that remain as blocks. If the Latin square was <span class="math inline">\(t\times t\)</span>, this gives an unreduced design in which <span class="math inline">\(k=t-1\)</span>. Again, example @ref(exm:BIBDex) is of this kind.</p>
+<p>The easiest way of creating a BIBD from a Latin square is simply to delete, say, the final row, and to treat the columns that remain as blocks. If the Latin square was <span class="math inline">\(t\times t\)</span>, this gives an unreduced design in which <span class="math inline">\(k=t-1\)</span>. Again, <a href="#exm-bibd" class="quarto-xref">Example&nbsp;<span>5.2</span></a> is of this kind.</p>
 <p>A rather more subtle use of Latin squares is when we have a complete set of <span class="math inline">\(k-1\)</span> mutually orthogonal <span class="math inline">\(k\times k\)</span> Latin squares, all superimposed. If the number of treatments is <span class="math inline">\(t=k^2\)</span>, we label the cells, each with a different treatment label. We then create blocks of size <span class="math inline">\(k\)</span>, as follows. The first <span class="math inline">\(k\)</span> blocks contain the treatments in each of the rows of the square; the next <span class="math inline">\(k\)</span> blocks contain the treatments in each of the columns of the square; the next <span class="math inline">\(k\)</span> blocks contain the treatments corresponding to each of the Latin labels; the next <span class="math inline">\(k\)</span> blocks contain the treatments corresponding the the Greek labels; and so on. We end up with a BIBD in which <span class="math display">\[\begin{align}
     t &amp; =  k^2 \\
     b &amp; =  k(k+1) \\
@@ -990,7 +1106,7 @@ Example
 </div>
 <div class="callout-body-container callout-body">
 <div id="exm-bibd5" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.6</strong></span> The complementary design of the one constructed in example @ref(exm:LSdesign) is</p>
+<p><span class="theorem-title"><strong>Example 5.6</strong></span> The complementary design of the one constructed in <a href="#exm-bibd3" class="quarto-xref">Example&nbsp;<span>5.4</span></a> is</p>
 <table class="caption-top table">
 <tbody>
 <tr class="odd">
@@ -1094,7 +1210,7 @@ Example
 </div>
 </div>
 </div>
-<p>Note also that the design given in example @ref(exm:BIBDex2) is <em>self-complementary</em> in the sense that the complement of each block already appears in the same design as another block.</p>
+<p>Note also that the design given in <a href="#exm-bibd2" class="quarto-xref">Example&nbsp;<span>5.3</span></a> is <em>self-complementary</em> in the sense that the complement of each block already appears in the same design as another block.</p>
 </section>
 <section id="sec-BIBDestimation" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="sec-BIBDestimation"><span class="header-section-number">5.2.2</span> Efficiency of the BIBD</h3>
@@ -1102,7 +1218,7 @@ Example
 <p>It can be shown that <span class="math display">\[\begin{align}
 \text{var}(\hat{\tau }_j) &amp;= \frac{k(t-1)}{\lambda t^2 }\sigma ^2.
 \end{align}\]</span></p>
-<p>We now compare the BIBD with the RBD. In particular, for a given number of treatments and total number of observations, is it better to use a BIBD or a RBD? If the total number of observations is <span class="math inline">\(rt\)</span>, then in a RBD there will be <span class="math inline">\(r\)</span> blocks and so (see Section @ref(RBD)) <span class="math display">\[\text{var}(\hat{\tau }_j) = \frac{\sigma ^2}{r}\left(1-\frac{1}{t} \right)\]</span> whereas in a BIBD, using the preceding result, <span class="math display">\[\text{var}(\hat{\tau }_j) = \frac{k(t-1)}{\lambda t^2}\sigma ^2 =\frac{k(t-1)^2}{rt^2(k-1)}\sigma ^2.\]</span> The ratio of these (putting BIBD in the numerator) may be written as the <strong>efficiency factor</strong> <span class="math display">\[E := \frac{1-t^{-1}}{1-k^{-1}}\]</span> $E&gt;1 $since <span class="math inline">\(t&gt;k\)</span>. It would appear, therefore, that there is a loss of efficiency due to the use of incomplete blocks. However, the whole point of blocking is to attempt to reduce the effect of uncontrollable variation which contributes to the value of <span class="math inline">\(\sigma^2\)</span>, and, since the BIBD uses smaller blocks, the reduction in <span class="math inline">\(\sigma ^2\)</span> might more than offset the loss of efficiency indicated above, where it was assumed that <span class="math inline">\(\sigma ^2\)</span> was the same for both designs.</p>
+<p>We now compare the BIBD with the RBD. In particular, for a given number of treatments and total number of observations, is it better to use a BIBD or a RBD? If the total number of observations is <span class="math inline">\(rt\)</span>, then in a RBD there will be <span class="math inline">\(r\)</span> blocks and so (see <a href="Qualitative-single factor.html#sec-RBD" class="quarto-xref"><span>Section 4.4</span></a>) <span class="math display">\[\text{var}(\hat{\tau }_j) = \frac{\sigma ^2}{r}\left(1-\frac{1}{t} \right)\]</span> whereas in a BIBD, using the preceding result, <span class="math display">\[\text{var}(\hat{\tau }_j) = \frac{k(t-1)}{\lambda t^2}\sigma ^2 =\frac{k(t-1)^2}{rt^2(k-1)}\sigma ^2.\]</span> The ratio of these (putting BIBD in the numerator) may be written as the <strong>efficiency factor</strong> <span class="math display">\[E := \frac{1-t^{-1}}{1-k^{-1}}\]</span> We have <span class="math inline">\(E&gt;1\)</span> since <span class="math inline">\(t&gt;k\)</span>. It would appear, therefore, that there is a loss of efficiency due to the use of incomplete blocks. However, the whole point of blocking is to attempt to reduce the effect of uncontrollable variation which contributes to the value of <span class="math inline">\(\sigma^2\)</span>, and, since the BIBD uses smaller blocks, the reduction in <span class="math inline">\(\sigma ^2\)</span> might more than offset the loss of efficiency indicated above, where it was assumed that <span class="math inline">\(\sigma ^2\)</span> was the same for both designs.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1114,7 +1230,7 @@ Example
 </div>
 <div class="callout-body-container callout-body">
 <div id="exm-bibd6" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.7</strong></span> Suppose <span class="math inline">\(t=8\)</span> and <span class="math inline">\(k=4\)</span>. In example @ref(exm:BIBDex2) we found the following BIBD with <span class="math inline">\(14\)</span> blocks each of size <span class="math inline">\(4\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 5.7</strong></span> Suppose <span class="math inline">\(t=8\)</span> and <span class="math inline">\(k=4\)</span>. In <a href="#exm-bibd2" class="quarto-xref">Example&nbsp;<span>5.3</span></a> we found the following BIBD with <span class="math inline">\(14\)</span> blocks each of size <span class="math inline">\(4\)</span>.</p>
 <table class="caption-top table">
 <tbody>
 <tr class="odd">

@@ -295,7 +295,7 @@ window.Quarto = {
   <li><a href="#randomisation" id="toc-randomisation" class="nav-link active" data-scroll-target="#randomisation"><span class="header-section-number">4.1</span> Randomisation</a></li>
   <li><a href="#completely-randomised-designs-crd" id="toc-completely-randomised-designs-crd" class="nav-link" data-scroll-target="#completely-randomised-designs-crd"><span class="header-section-number">4.2</span> Completely Randomised Designs (CRD)</a></li>
   <li><a href="#blocks" id="toc-blocks" class="nav-link" data-scroll-target="#blocks"><span class="header-section-number">4.3</span> Blocks</a></li>
-  <li><a href="#RBD" id="toc-RBD" class="nav-link" data-scroll-target="#RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</a></li>
+  <li><a href="#sec-RBD" id="toc-sec-RBD" class="nav-link" data-scroll-target="#sec-RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</a></li>
   </ul>
 </nav>
     </div>
@@ -395,8 +395,8 @@ Example
 </div>
 </div>
 </section>
-<section id="RBD" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</h2>
+<section id="sec-RBD" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-RBD"><span class="header-section-number">4.4</span> Randomised Block Designs (RBD)</h2>
 <p>In an experiment to compare the effects of different drugs, for example, we might wish to use blocks which consist of patients of the same sex and fairly homogeneous with respect to age, so that variation due to these factors can be separated from variation due to the effects of the drugs. If all of the blocks contain the same number of units, and each treatment is used the same number of times within each block, with randomisation taking place independently within each block, we have a <strong>randomised block design (RBD)</strong>.</p>
 <p>The simplest case is where each treatment is administered once within each block. If <span class="math inline">\(b\)</span> denotes the number of blocks and <span class="math inline">\(t\)</span> denotes the number of treatments, the model which we might consider is the additive one <span class="math display">\[Y_{ij} = \mu + \alpha _i + \tau _j + \epsilon_{ij}~~~~(i=1,2,\ldots ,b;~~j=1,2,\ldots ,t)\]</span> where <span class="math inline">\(Y_{ij}\)</span> is the observation in block <span class="math inline">\(i\)</span> for treatment <span class="math inline">\(j\)</span>, <span class="math inline">\(\mu\)</span> is the overall mean, <span class="math inline">\(\alpha _i\)</span> is the effect of block <span class="math inline">\(i\)</span>, and <span class="math inline">\(\tau _j\)</span> is the effect of treatment <span class="math inline">\(j\)</span>. This model is over-parametrised as it stands; to overcome this, and to give <span class="math inline">\(\mu\)</span> a genuine meaning, we need to impose the constraints <span class="math display">\[\sum _{i=1}^b \alpha _i = \sum _{j=1}^t \tau _j = 0\]</span> so that, in applying the machinery of the general linear model, we need to express the parameters <span class="math inline">\(\alpha _b\)</span> and <span class="math inline">\(\tau _t\)</span> in terms of the others and adjust the design matrix accordingly.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
@@ -488,6 +488,47 @@ Question 1 is a good exam revision exercise (you will have an exam formula sheet
 <ol start="2" type="1">
 <li>Show that, for given positive integers <span class="math inline">\(n&gt;m\)</span>, the product <span class="math inline">\(n_1n_2\ldots n_m\)</span> of positive integers subject to the constraint <span class="math inline">\(n_1+n_2+\ldots +n_m=n\)</span> is maximised by taking <span class="math inline">\(n_1, n_2, \ldots,n_m\)</span> as nearly as possible equal to each other, using the following approach. If two of the factors differ by more than two, say <span class="math inline">\(n_1\geq n_2+2\)</span>, then the product could be increased by replacing <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> by <span class="math inline">\(n_1-1\)</span> and <span class="math inline">\(n_2+1\)</span>; hence such a choice cannot be optimal. Using a similar approach, show that a D-optimal CRD is also A-optimal in that it minimises the sum <span class="math display">\[ \frac{1}{n_1} + \frac{1}{n_2} + \ldots + \frac{1}{n_m} \]</span> subject to the same constraint.</li>
 </ol>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>In a CRD, the parameter estimators are independent, and so in the case where <span class="math inline">\(n_i=b\)</span> for all <span class="math inline">\(i\)</span>, <span class="math display">\[ \mbox{var~}(\hat{\mu }_i-\hat{\mu }_{i^{\prime }}) = \frac{\sigma
+^2}{b} + \frac{\sigma ^2}{b} = \frac{2\sigma ^2}{b} .\]</span> In a RBD, <span class="math display">\[\begin{align*}
+\mbox{var~}(\hat{\tau }_j-\hat{\tau }_{j^{\prime }}) &amp; =
+\mbox{var~}\hat{\tau }_j + \mbox{var~}\hat{\tau }_{j^{\prime }}
+-2\mbox{~cov~}(\hat{\tau }_j, \hat{\tau }_{j^{\prime }}) \\
+&amp; =  \frac{2\sigma ^2}{b}\left( 1-\frac{1}{t} \right) +
+\frac{2\sigma ^2}{bt} \\
+&amp; =  \frac{2\sigma ^2}{b} .
+\end{align*}\]</span> So the formula is the same in both cases.</li>
+</ol>
+<p>If the block effects are negligible, the randomisation in the RBD has been unnecessarily restricted, and there are fewer degrees of freedom for estimating <span class="math inline">\(\sigma ^2\)</span>, so that, if anything, the RBD is worse than the CRD.</p>
+<ol start="2" type="1">
+<li>If <span class="math inline">\(n_1\geq n_2+2\)</span> then <span class="math display">\[\begin{align}
+(n_1-1)(n_2+1) &amp; =  n_1n_2 + n_1 - n_2 - 1 \\
+&amp; \geq  n_1n_2 + 2 - 1 \\
+&amp; =  n_1n_2 + 1 \\
+&amp; &gt;  n_1n_2
+\end{align}\]</span> and therefore, since the other factors are all positive, the whole product could be increased by replacing <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> by <span class="math inline">\(n_1-1\)</span> and <span class="math inline">\(n_2+1\)</span>, and therefore the original choice cannot be optimal. It follows that the only candidates for optimality are those where no two numbers differ by more than <span class="math inline">\(1\)</span>, and so they are as nearly as possible equal to each other.</li>
+</ol>
+<p>For the second part, <span class="math display">\[\begin{align} \frac{1}{n_1} + \frac{1}{n_2}
+&amp; &gt;  \frac{1}{n_1-1} + \frac{1}{n_2+1} \\
+\Longleftrightarrow ~~\frac{n_1+n_2}{n_1n_2} &amp; &gt;
+\frac{n_1+n_2}{(n_1-1)(n_2+1)} \\
+\Longleftrightarrow ~~(n_1-1)(n_2+1) &amp; &gt;  n_1n_2
+\end{align}\]</span> which is the same relationship as before.</p>
 </div>
 </div>
 </div>

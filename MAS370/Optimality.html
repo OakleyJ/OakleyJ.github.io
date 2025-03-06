@@ -479,6 +479,81 @@ Question is 1 designed to help you practise the sort of algebra you need on this
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>The determinant of <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is <span class="math inline">\(n\sum x^2 - (\sum x)^2 =
+ns_{xx}\)</span>, and then the expression for <span class="math inline">\((\mathbf{X} ^T\mathbf{X} )^{-1}\)</span> follows by the standard method of inverting a <span class="math inline">\(2\times 2\)</span> matrix. <span class="math display">\[\begin{align} \left(
+\begin{array}{cc} 1 &amp; x_0 \end{array} \right) \left(
+\begin{array}{cc} \sum x^2 &amp; -\sum x \\ -\sum x &amp; n \end{array}
+\right) \left( \begin{array}{c} 1 \\ x_0 \end{array} \right) &amp; =
+\left( \begin{array}{cc} \sum x^2-x_0\sum x &amp; -\sum x+nx_0
+\end{array} \right) \left( \begin{array}{c} 1 \\ x_0 \end{array}
+\right) \\
+&amp; =  \sum x^2 - 2x_0\sum x + nx_0^2 \\
+&amp; =  s_{xx} + n\overline{x}^2 - 2nx_0\overline{x} + nx_0^2 \\
+&amp; =  s_{xx} + n(x_0-\overline{x})^2
+\end{align}\]</span> and then multiplying by <span class="math inline">\(\sigma ^2/(ns_{xx})\)</span> gives the desired expression.</p></li>
+<li><p>We have <span class="math display">\[\begin{align}
+|\mathbf{X} | &amp; =  \begin{array}{|ccc|} 1 &amp; 1 &amp; 1 \\ 1 &amp; -1 &amp; 1 \\ 1 &amp; a &amp;
+a^2 \end{array} \\
+&amp; =  2 - 2a^2. \\
+\mbox{So~~~~}|\mathbf{X} ^T\mathbf{X}| &amp;=4(1-a^2)^2
+\end{align}\]</span> which is maximised when <span class="math inline">\(a=0\)</span>. In this case, <span class="math display">\[\begin{align}
+\mathbf{X} ^T\mathbf{X} &amp;=\left( \begin{array}{ccc} 3 &amp; 0 &amp; 2 \\ 0 &amp; 2 &amp; 0 \\
+2 &amp;
+0 &amp; 2 \end{array} \right) \\
+\mbox{and~~~~}(\mathbf{X} ^T\mathbf{X} )^{-1} &amp;=\frac{1}{4} \left(
+\begin{array}{ccc} 4 &amp; 0 &amp; -4 \\ 0 &amp; 2 &amp; 0 \\ -4 &amp; 0 &amp; 6 \end{array}
+\right) . \\
+d(x) &amp;=\frac{3}{4} \left( \begin{array}{ccc} 1 &amp; x &amp; x^2
+\end{array} \right) \left( \begin{array}{ccc} 4 &amp; 0 &amp; -4 \\ 0 &amp; 2 &amp;
+0 \\ -4 &amp; 0 &amp; 6 \end{array} \right) \left( \begin{array}{c} 1 \\ x
+\\ x^2 \end{array} \right) \\
+&amp;=\frac{3}{4}(4-6x^2 +6x^4)\mbox{~~~~after~some~algebra} \\
+&amp;=\frac{3}{4} \left\{ 6 \left( x^2 - \frac{1}{2} \right) ^2 +
+\frac{5}{2} \right\} .
+\end{align}\]</span> This is maximised when <span class="math inline">\(x^2\)</span> is as far as possible from <span class="math inline">\(\frac{1}{2}\)</span>, namely <span class="math inline">\(x^2=0\mbox{~or~}1\)</span>, and so <span class="math inline">\(x=0\mbox{~or~}\pm
+1\)</span>. Then its value is <span class="math display">\[\frac{3}{4}\left\{ \frac{6}{4} + \frac{5}{2} \right\} = 3 . \]</span></p></li>
+<li><p>We have <span class="math display">\[\int _{-1}^1 x^2 \left( 1 + \frac{n(x-\overline{x})^2}{s_{xx}} \right) dx  =  \frac{2}{3} + \frac{2n}{15s_{xx}}\left( 3+5\bar{x}^2\right) \]</span> so we again see that with an even number of observations it is <span class="math inline">\(V\)</span>-optimal to choose half at <span class="math inline">\(x=1\)</span> and half at <span class="math inline">\(x=-1\)</span> since <span class="math inline">\(\bar{x}=0\)</span> and <span class="math inline">\(s_{xx}\)</span> is maximised.</p></li>
+<li><p>Consider the weight function <span class="math inline">\(w(x)\)</span> given by <span class="math display">\[
+w(x)= \left\{ \begin{array}{ll} 0 &amp; ~ \mbox{for}~ x \leq 0 \\
+1 &amp; ~ \mbox{for}~ x &gt;0
+\end{array}\right.
+\]</span> Then <span class="math display">\[\begin{align}
+\int _{0}^1 \left( 1 + \frac{n(x-\overline{x})^2}{s_{xx}} \right)dx
+&amp;=1 + \frac{n}{s_{xx}} \left[ \frac{(x-\overline{x})^3}{3} \right] _{0}^1 \\
+&amp;=1 + \frac{n}{3s_{xx}} \{ 1 -3\overline{x}+3\overline{x}^2 \} .
+\end{align}\]</span> If we take <span class="math inline">\(x =\{-1,1\}\)</span> then <span class="math inline">\(1 + \frac{n}{3s_{xx}} \{ 1 -3\overline{x}+3\overline{x}^2 \}=4/3\)</span> whereas if <span class="math inline">\(x =\{-0.8,1\}\)</span> then <span class="math inline">\(1 + \frac{n}{3s_{xx}} \{ 1 -3\overline{x}+3\overline{x}^2 \}=316/243&lt;4/3\)</span>. So the design in Example 3.1.3 is not <span class="math inline">\(V\)</span>-optimal.</p></li>
+<li><p>For design A, <span class="math inline">\(\overline{x}=\frac{1}{n}\)</span> and <span class="math display">\[\begin{align}
+s_{xx}&amp;=\frac{n-1}{2}\left(1+\frac{1}{n}\right)^2 + \frac{n+1}{2}\left(1-\frac{1}{n}\right)^2\\
+&amp;=\frac{(n-1)(n+1)}{n}
+\end{align}\]</span> so <span class="math display">\[\begin{align}
+\frac{2+6\overline{x}^2}{s_{xx}}&amp;=\left(\frac{2}{n-1}\right)\left(\frac{n^2+3}{n(n+1)}\right)
+\end{align}\]</span> For design B, <span class="math inline">\(\overline{x}=0\)</span> and <span class="math display">\[\begin{align}
+s_{xx}&amp;=\frac{n-1}{2}(1)^2 + \frac{n-1}{2}(1)^2\\
+&amp;=n-1
+\end{align}\]</span> so <span class="math display">\[\begin{align}
+\frac{2+6\overline{x}^2}{s_{xx}}&amp;=\frac{2}{n-1}
+\end{align}\]</span> If <span class="math inline">\(n=3\)</span> these are the same so both are <span class="math inline">\(V\)</span>-optimal. If <span class="math inline">\(n\)</span> is odd and <span class="math inline">\(n \geq 5\)</span> then for Design A <span class="math display">\[\begin{align}
+\frac{2+6\overline{x}^2}{s_{xx}}&amp;=\left(\frac{2}{n-1}\right)\left(\frac{n^2+3}{n(n+1)}\right)\\
+&amp;=\left(\frac{2}{n-1}\right)\left(\frac{n^2+3}{n^2+n}\right)\\
+&amp;&lt;\frac{2}{n-1}
+\end{align}\]</span> and so Design A is <span class="math inline">\(V\)</span>-optimal.</p></li>
+</ol>
+</div>
+</div>
+</div>
 
 
 </section>
