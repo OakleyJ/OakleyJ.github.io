@@ -293,6 +293,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#the-general-equivalence-theorem" id="toc-the-general-equivalence-theorem" class="nav-link active" data-scroll-target="#the-general-equivalence-theorem"><span class="header-section-number">8.1</span> The General Equivalence Theorem</a></li>
+  <li><a href="#appendix-proof-of-the-get" id="toc-appendix-proof-of-the-get" class="nav-link" data-scroll-target="#appendix-proof-of-the-get"><span class="header-section-number">8.2</span> Appendix: proof of the GET</a></li>
   </ul>
 </nav>
     </div>
@@ -347,7 +348,7 @@ The General Equivalence Theorem (GET)
 </div>
 </div>
 </div>
-<p>In other words, for continuous designs, <span class="math inline">\(D\)</span>-optimality and <span class="math inline">\(G\)</span>-optimality are equivalent, and an optimal design by either of these criteria can be identified by the fact that the maximum variance of prediction is equal to the number of parameters in the model. The proof of the GET is given in a pdf on Blackboard. It is <strong>not</strong> examinable.</p>
+<p>In other words, for continuous designs, <span class="math inline">\(D\)</span>-optimality and <span class="math inline">\(G\)</span>-optimality are equivalent, and an optimal design by either of these criteria can be identified by the fact that the maximum variance of prediction is equal to the number of parameters in the model. The proof of the GET is given in the appendix below. It is <strong>not</strong> examinable.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -374,8 +375,8 @@ Example
 </div>
 <div class="callout-body-container callout-body">
 <div id="exm-GET2" class="theorem example">
-<p><span class="theorem-title"><strong>Example 8.2</strong></span> Still with the quadratic regression model, consider the design <span class="math display">\[\xi = \left( \begin{array}{cccc}-1&amp;-\frac{1}{3}&amp;\frac{1}{3}&amp;1\\ \frac{1}{4}&amp;\frac{1}{4}&amp;\frac{1}{4}&amp;\frac{1}{4}\end{array}\right).\]</span> In this case, with one observation at each of the four points, <span class="math display">\[\mathbf{x}= \left( \begin{array}{ccc}1&amp;-1&amp;1\\1&amp;-\frac{1}{3}&amp;\frac{1}{9}\\1&amp;\frac{1}{3}&amp;\frac{1}{9}\\1&amp;1&amp;1\end{array}\right)\]</span> and therefore <span class="math display">\[\mathbf{x}^T\mathbf{x}=\left(\begin{array}{ccc}4&amp;0&amp;\frac{20}{9}\\0&amp;\frac{20}{9}&amp;0\\ \frac{20}{9}&amp;0&amp;\frac{164}{81}\end{array}\right).\]</span> The standardised variance of prediction is <span class="math display">\[\begin{align}
-d(x)&amp;=4\mathbf{f}(\mathbf{x})^T(\mathbf{x}^T\mathbf{x})^{-1}\mathbf{f}(\mathbf{x})\\
+<p><span class="theorem-title"><strong>Example 8.2</strong></span> Still with the quadratic regression model, consider the design <span class="math display">\[\xi = \left( \begin{array}{cccc}-1&amp;-\frac{1}{3}&amp;\frac{1}{3}&amp;1\\ \frac{1}{4}&amp;\frac{1}{4}&amp;\frac{1}{4}&amp;\frac{1}{4}\end{array}\right).\]</span> In this case, with one observation at each of the four points, <span class="math display">\[\mathbf{x}= \left( \begin{array}{ccc}1&amp;-1&amp;1\\1&amp;-\frac{1}{3}&amp;\frac{1}{9}\\1&amp;\frac{1}{3}&amp;\frac{1}{9}\\1&amp;1&amp;1\end{array}\right)\]</span> and therefore <span class="math display">\[\mathbf{X}^T\mathbf{X}=\left(\begin{array}{ccc}4&amp;0&amp;\frac{20}{9}\\0&amp;\frac{20}{9}&amp;0\\ \frac{20}{9}&amp;0&amp;\frac{164}{81}\end{array}\right).\]</span> The standardised variance of prediction is <span class="math display">\[\begin{align}
+d(x)&amp;=4\mathbf{f}(\mathbf{x})^T(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{f}(\mathbf{x})\\
 &amp;= 2.562 - 3.811x^2 + 5.062x^4\\
 &amp;= 5.062[(x^2-0.376)^2-0.376^2]+2.562
 \end{align}\]</span> which attains its maximum value 3.814 at <span class="math inline">\(x=\pm 1\)</span>. This is greater than 3, and so the design is not <span class="math inline">\(D\)</span>-optimal or <span class="math inline">\(G\)</span>-optimal for this model.</p>
@@ -397,6 +398,114 @@ This is quite hard! Don’t worry if you can’t do it, but the solution will he
 </div>
 </div>
 </div>
+</section>
+<section id="appendix-proof-of-the-get" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="appendix-proof-of-the-get"><span class="header-section-number">8.2</span> Appendix: proof of the GET</h2>
+<p>You will not be examined on this proof.</p>
+<div class="callout callout-style-default callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="lem-get" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 8.1</strong></span> For any continuous design, and model with <span class="math inline">\(p\)</span> parameters, <span class="math display">\[ \sum _{i=1}^k w_id(\mathbf{x} _i,\xi ) = p. \]</span></p>
+</div>
+</div>
+</div>
+<p><strong>Proof</strong> <span class="math display">\[\begin{align}
+\sum _{i=1}^k w_id(\mathbf{x} _i,\xi ) &amp;= \sum _{i=1}^k w_i\mathbf{f} (\mathbf{x}
+_i)^T\mathbf{M} (\xi ) ^{-1}\mathbf{f} (\mathbf{x} _i) \\
+&amp;=  tr\left( \mathbf{M} (\xi ) ^{-1}\sum _{i=1}^k w_i\mathbf{f} (\mathbf{x}
+_i)\mathbf{f} (\mathbf{x} _i)^T \right) \\
+&amp;= tr\left( \mathbf{M} (\xi ) ^{-1}\mathbf{M} (\xi )\right) \\
+&amp;= tr (\mathbf{I} _p) = p
+\end{align}\]</span> where we are using the fact that the trace of a scalar is itself, and the general results that <span class="math inline">\(tr(\lambda \mathbf{A} +\mathbf{B} )=\lambda \mbox{~tr~}\mathbf{A}
++\mbox{tr~}\mathbf{B}\)</span> and <span class="math inline">\(tr(\mathbf{A} \mathbf{B})=tr(\mathbf{B} \mathbf{A})\)</span> whenever these equations make sense.</p>
+<p>In words, this lemma states that the weighted average of the variances of prediction at the design points, with weights those of the design, is equal to the number of parameters in the model.</p>
+<div class="callout callout-style-default callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="lem-lemmadifdet" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 8.2</strong></span> If <span class="math inline">\(\mathbf{A} (\alpha )=(A_{ij}(\alpha ))\)</span> is a <span class="math inline">\(p\times p\)</span> positive definite matrix function of a real variable <span class="math inline">\(\alpha\)</span> and its components are differentiable with respect to <span class="math inline">\(\alpha\)</span>, then <span class="math display">\[
+\frac{\partial}{\partial \alpha}\ln \left|\mathbf{A} \right| = tr\left(
+\mathbf{A}^{-1} \frac{\partial \mathbf{A}}{\partial \alpha} \right).
+\]</span></p>
+</div>
+</div>
+</div>
+<p><strong>Proof</strong></p>
+<p><span class="math display">\[\begin{align}
+\frac{\partial }{\partial \alpha }\ln |\mathbf{A} | &amp;= \frac{1}{|\mathbf{A}
+|}\frac{\partial }{\partial \alpha }|\mathbf{A} | \\
+&amp;= \frac{1}{|\mathbf{A} |} \sum _{i=1}^p \sum _{j=1}^p \frac{\partial
+|\mathbf{A} |}{\partial A_{ij}} \frac{\partial A_{ij}}{\partial \alpha }\\
+&amp;= \frac{1}{|\mathbf{A} |} \sum _{i=1}^p \sum _{j=1}^p B_{ij}
+\frac{\partial A_{ij}}{\partial \alpha }\\
+&amp; &amp; \mbox{where~$B_{ij}$~is~the~cofactor~of~$A_{ij}$}\\
+&amp;= \frac{1}{|\mathbf{A} |} \sum _{i=1}^p \sum _{j=1}^p |\mathbf{A} |(\mathbf{A}
+^{-1})_{ji} \frac{\partial A_{ij}}{\partial \alpha }\\
+&amp;= tr\left( \mathbf{A} ^{-1} \frac{\partial \mathbf{A} }{\partial \alpha
+} \right) .
+\end{align}\]</span></p>
+<p>Next, we introduce the concept of a <strong>mixture</strong> of two or more designs. If <span class="math inline">\(\xi _1\)</span> and <span class="math inline">\(\xi _2\)</span> are any two designs on the same design region, and <span class="math inline">\(0&lt; \alpha &lt;1\)</span>, then the mixture <span class="math inline">\((1-\alpha )\xi
+_1+\alpha \xi _2\)</span> is found by uniting the supports of the two designs and assigning weights to which one or both of <span class="math inline">\(\xi_1\)</span> and <span class="math inline">\(\xi_2\)</span> may contribute in the correct proportions <span class="math inline">\(1-\alpha\)</span> and <span class="math inline">\(\alpha\)</span>. (If <span class="math inline">\(\alpha =0\)</span> or <span class="math inline">\(\alpha =1\)</span>, the mixture has an obvious interpretation.)</p>
+<p>As an example, consider finding <span class="math inline">\(\xi =\frac{1}{4}\xi _1+\frac{3}{4}\xi _2\)</span>, where <span class="math display">\[ \xi _1= \left( \begin{array}{ccc} -1 &amp; 0 &amp; 1 \\ \frac{1}{3} &amp;
+\frac{1}{3} &amp; \frac{1}{3} \end{array} \right) \mbox{~~~~and~~~~} \xi
+_2= \left( \begin{array}{ccc} -2 &amp; 0 &amp; 2 \\ \frac{1}{4} &amp;
+\frac{1}{2} &amp; \frac{1}{4} \end{array} \right) .\]</span> Here the support of the mixture is <span class="math inline">\(\{ -2,-1,0,1,2\}\)</span> and the point <span class="math inline">\(0\)</span> receives weight from both of the designs, whereas the other points only receive weight from one. We get <span class="math display">\[ \xi = \left( \begin{array}{ccccc} -2 &amp; -1 &amp; 0 &amp; 1 &amp; 2 \\
+\frac{3}{16} &amp; \frac{1}{12} &amp; \frac{11}{24} &amp; \frac{1}{12} &amp;
+\frac{3}{16} \end{array} \right) . \]</span></p>
+<p>From our point of view, the important thing about mixtures is that information matrices mix in the same way. In other words, if <span class="math inline">\(\xi =(1-\alpha )\xi _1 +\alpha
+\xi _2\)</span> then <span class="math display">\[ \mathbf{M} (\xi ) = (1-\alpha )\mathbf{M} (\xi _1)+\alpha \mathbf{M} (\xi _2) . \]</span> This is obvious from the definition of the information matrix of a continuous design.</p>
+<p>The following result is needed here, but we shall not prove it.</p>
+<div class="callout callout-style-default callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="lem-lemmaconcave" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 8.3</strong></span> <span class="math inline">\(\ln |\mathbf{M} (\xi )|\)</span> is a <em>concave</em> function of <span class="math inline">\(\xi\)</span>, namely <span class="math display">\[\ln |\mathbf{M} ((1-\alpha )\xi _1+\alpha \xi _2)| \geq (1-\alpha )\ln |\mathbf{M}
+(\xi_1)| + \alpha \ln |\mathbf{M} (\xi _2)|\]</span> for any <span class="math inline">\(\xi_1,\xi _2,\alpha\)</span>.</p>
+</div>
+</div>
+</div>
+<p>We now have the results needed to prove <a href="Simple random sampling.html#thm-get" class="quarto-xref">Theorem&nbsp;<span>11.2</span></a> (GET).</p>
+<p>Let <span class="math inline">\(\xi ^*\)</span> be a design which maximises <span class="math inline">\(|\mathbf{M} (\xi )|\)</span>. For some other fixed design <span class="math inline">\(\xi _0\)</span>, consider mixtures of the form <span class="math display">\[ \xi = (1-\alpha )\xi ^* + \alpha \xi _0 . \]</span> Then by <a href="#lem-lemmadifdet" class="quarto-xref">Lemma&nbsp;<span>8.2</span></a> <span class="math display">\[\begin{align}
+\frac{\partial }{\partial \alpha }\ln |\mathbf{M} (\xi )||_{\alpha =0} &amp; =
+tr\left( \mathbf{M} (\xi )^{-1}\frac{\partial }{\partial \alpha
+}\mathbf{M}
+(\xi )\right) |_{\alpha =0} \\
+&amp;= tr\left( \mathbf{M} (\xi )^{-1}\frac{\partial }{\partial
+\alpha }((1-\alpha )\mathbf{M} (\xi ^*) + \alpha \mathbf{M} (\xi _0))\right)
+|_{\alpha =0} \\
+&amp;= tr\left( \mathbf{M} (\xi )^{-1}(\mathbf{M} (\xi _0)-\mathbf{M} (\xi
+^*))\right ) |_{\alpha =0} \\
+&amp;= tr\left( \mathbf{M} (\xi ^*)^{-1}\mathbf{M} (\xi _0)\right) - p
+\end{align}\]</span> since <span class="math inline">\(\mathbf{M} (\xi ) = \mathbf{M} (\xi ^*)\)</span> at <span class="math inline">\(\alpha =0\)</span>. As <span class="math inline">\(\xi ^*\)</span> maximises <span class="math inline">\(|\mathbf{M} (\xi )|\)</span>, the above partial derivative must be non-positive, and so we get <span class="math display">\[ tr\left( \mathbf{M} (\xi ^*)^{-1}\mathbf{M} (\xi _0)\right) \leq p . \]</span> If we choose <span class="math inline">\(\xi _0\)</span> to be the design with all its weight at a point <span class="math inline">\(\mathbf{x}\)</span> in the design region, we get <span class="math display">\[\begin{align}
+tr\left( \mathbf{M} (\xi ^*)^{-1}\mathbf{M} (\xi _0)\right) &amp;=
+tr\left( \mathbf{M} (\xi ^*)^{-1}\mathbf{f} (\mathbf{x} )\mathbf{f} (\mathbf{x} )^T\right) \\
+&amp;= \mathbf{f} (\mathbf{x} )^T\mathbf{M} (\xi ^*)^{-1}\mathbf{f} (\mathbf{x} ) \\
+&amp;= d(\mathbf{x}, \xi ^*)
+\end{align}\]</span> and so it follows that <span class="math inline">\(d(\mathbf{x} ,\xi ^*)\leq p\)</span> for all points <span class="math inline">\(\mathbf{x}\)</span> in the design region. But <a href="#lem-get" class="quarto-xref">Lemma&nbsp;<span>8.1</span></a> tells us that a weighted average of the values of <span class="math inline">\(d(\mathbf{x},\xi ^*)\)</span> over the points of support of <span class="math inline">\(\xi^*\)</span> is equal to <span class="math inline">\(p\)</span>. It follows that <span class="math inline">\(d(\mathbf{x} ,\xi^*)\)</span> is actually equal to <span class="math inline">\(p\)</span> at each of these points, and that, as a function of <span class="math inline">\(\mathbf{x}\)</span>, it reaches its maximum value at each of these points. Moreover, again by <a href="#lem-get" class="quarto-xref">Lemma&nbsp;<span>8.1</span></a>, any design <span class="math inline">\(\xi\)</span> must have at least one point of support <span class="math inline">\(\mathbf{x}_i\)</span> at which <span class="math inline">\(d(\mathbf{x}_i,\xi )\geq p\)</span>. Therefore <span class="math display">\[ \max _{\mathbf{x} \in \Omega }d(\mathbf{x} ,\xi ) \geq p \]</span> for all designs <span class="math inline">\(\xi\)</span>, and <span class="math inline">\(\xi^*\)</span> achieves the minimum value of the above maximum, this minimum value being <span class="math inline">\(p\)</span>.</p>
+<p>So of the three parts of the statement of the theorem, we have shown that (1.) implies (2.) and (3.). We also know now that there exists at least one design <span class="math inline">\(\xi\)</span> for which <span class="math inline">\(\max_{\mathbf{x} \in \Omega }d(\mathbf{x},\xi )=p\)</span>, so that (2.) and (3.) are equivalent to each other. If we now take a design <span class="math inline">\(\xi^*\)</span> which satisfies (2.) or (3.), then, working backwards, we can conclude that, in the same notation as above, <span class="math display">\[\frac{\partial }{\partial \alpha }\ln |\mathbf{M} (\xi )||_{\alpha =0}
+\leq 0 \]</span> for any choice of <span class="math inline">\(\xi_0\)</span>. This would be impossible if there were a choice of <span class="math inline">\(\xi_0\)</span> for which <span class="math inline">\(|\mathbf{M} (\xi_0)|&gt;|\mathbf{M} (\xi^*)|\)</span>, because of the concavity property of <a href="#lem-lemmaconcave" class="quarto-xref">Lemma&nbsp;<span>8.3</span></a>. Hence <span class="math inline">\(\xi^*\)</span> maximises <span class="math inline">\(|\mathbf{M} (\xi )|\)</span>, and (2.) and (3.) imply (1.). This concludes the proof of the theorem.</p>
 
 
 </section>

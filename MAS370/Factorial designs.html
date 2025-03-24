@@ -568,6 +568,35 @@ These are both good revision questions, typical of exam questions.
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Writing the model as <span class="math display">\[ E(Y) = \beta _0 + \beta _1x_1 + \beta _2x_2 + \beta _3x_3 + \beta
+_4x_4 + \beta _{12}x_1x_2
+\]</span> the design matrix is <span class="math display">\[ \left( \begin{array}{cccccc} 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 \\ 1 &amp; 1 &amp; -1
+&amp; -1 &amp; -1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 \\ 1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 &amp;
+1 \\ 1 &amp; -1 &amp; -1 &amp; 1 &amp; -1 &amp; 1 \\ 1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 &amp; -1 \\ 1 &amp; -1
+&amp; 1 &amp; 1 &amp; -1 &amp; -1 \\ 1 &amp; 1 &amp; 1 &amp; 1 &amp; -1 &amp; 1 \\ 1 &amp; -1 &amp; -1 &amp; -1 &amp; 1
+&amp; 1 \\ 1 &amp; 1 &amp; -1 &amp; -1 &amp; 1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 \\ 1 &amp; 1
+&amp; 1 &amp; -1 &amp; 1 &amp; 1 \\ 1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; -1 &amp; 1 &amp; 1 &amp;
+-1 \\ 1 &amp; -1 &amp; 1 &amp; 1 &amp; 1 &amp; -1 \\ 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \end{array}
+\right) .
+\]</span> The estimator of <span class="math inline">\(\beta _0\)</span> is the overall mean; the estimator of each of the main effects is <span class="math inline">\(\frac{1}{16}\)</span> of the difference between the sum of the observations with that factor at a high level and the sum with it at a low level; the estimator of <span class="math inline">\(\beta _{12}\)</span> is <span class="math inline">\(\frac{1}{16}\)</span> of the difference between the sum of the observations with factors 1 and 2 at the same level and the sum with them at opposite levels. (This is true regardless of which interactions are included, by orthogonality.)</p></li>
+<li><p>A good choice of block generators is <span class="math inline">\(x_1x_2x_3x_4\)</span> and <span class="math inline">\(x_1x_2x_5x_6\)</span>, whose product is <span class="math inline">\(x_3x_4x_5x_6\)</span>. This produces some confounding of four-factor interactions with blocks, but all lower-order interactions may be included in the model without confounding.</p></li>
+</ol>
+</div>
+</div>
+</div>
 </section>
 <section id="fractional-factorial-designs-ffd" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="fractional-factorial-designs-ffd"><span class="header-section-number">6.3</span> Fractional factorial designs (FFD)</h2>
@@ -961,6 +990,43 @@ Question 1 is a good revision question. Questions 2 and 3 are more challenging.
 <li><p>Construct a <span class="math inline">\(2^{6-2}\)</span> FFD using the two block generators of <a href="#exr-blockCFD" class="quarto-xref">Exercise&nbsp;<span>6.1</span></a> Question 2, now as design generators. What is the resolution of this design?</p></li>
 <li><p>In the screening experiment of <a href="#exm-scr1" class="quarto-xref">Example&nbsp;<span>6.7</span></a>, suppose that the first factor, water supply, has four levels rather than two. Suggest a way in which the experiment might be modified to take account of this.</p></li>
 <li><p>In the construction of designs along the lines of Plackett and Burman, in which any column contains equal numbers of plus and minus signs and any two columns are orthogonal, why must the total number of observations be a multiple of 4?</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>The design may be represented as</li>
+</ol>
+<p><span class="math display">\[
+\begin{array}{c|c|c|c|c|c}
+x_1 &amp; x_2 &amp; x_3 &amp; x_5 &amp;
+x_4=x_1x_2x_3 &amp; x_6=x_1x_2x_5 \\ \hline -1 &amp; -1 &amp; -1 &amp;
+-1 &amp; -1 &amp; -1 \\ 1 &amp; -1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 \\ -1 &amp; 1
+&amp; -1 &amp; -1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\
+-1 &amp; -1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 \\ 1 &amp; -1 &amp; 1 &amp; -1 &amp; -1 &amp; 1 \\
+-1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 &amp; 1 \\ 1 &amp; 1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 \\
+-1 &amp; -1 &amp; -1 &amp; 1 &amp; -1 &amp; 1 \\ 1 &amp; -1 &amp; -1 &amp; 1 &amp; 1 &amp; -1 \\
+-1 &amp; 1 &amp; -1 &amp; 1 &amp; 1 &amp; -1 \\ 1 &amp; 1 &amp; -1 &amp; 1 &amp; -1 &amp; 1 \\
+-1 &amp; -1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\ 1 &amp; -1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 \\
+-1 &amp; 1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 \\ 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+\end{array}
+\]</span></p>
+<p>The resolution is IV as, for example, <span class="math inline">\(\beta _{1234}\)</span> is the lowest order interaction confounded with <span class="math inline">\(\beta _0\)</span>.</p>
+<ol start="2" type="1">
+<li><p>Construct a design for factors 2 to 7 with four blocks, and allocate each level of water supply to one of the blocks. Then treat the block parameters seriously, rather than as nuisance parameters, as is usually the case. It should still be possible to find a FFD by choosing at least one design generator which does not confound itself with the block generators, but the number of observations must be at least 16 in order to fit the parameters.</p></li>
+<li><p>The columns must be of even length, in order to contain equal numbers of plus and minus signs. But then for orthogonality, the plus signs in one column must correspond to equal numbers of plus and minus signs in any other column – otherwise the sum of products of the columns would not be zero. Hence each half of a column must be of even length, and so the total length of a column must be divisible by 4.</p></li>
 </ol>
 </div>
 </div>
