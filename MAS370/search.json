@@ -508,7 +508,18 @@
     "href": "Introduction to sampling.html#notation",
     "title": "10  Introduction to Sampling",
     "section": "10.2 Notation",
-    "text": "10.2 Notation\nConsider a finite population of \\(N\\) units.\n\nThe \\(N\\) population values are represented by \\(X_1, \\ldots ,X_N\\)\nThe \\(n\\) sampled values are represented by \\(x_1, \\ldots ,x_n\\)\nThe proportion of the population sampled (the Sampling fraction) is \\(f=n/N\\)\nThe population mean (usual quantity of interest) is \\(\\overline{X} = \\sum_{1}^{N}X_{i}/N\\)\nThe population variance is \\[\\begin{align*}\nS^{2} &= \\frac{1}{N-1} \\sum_{1}^{N} (X_{i}-\\overline{X})^{2}\\\\\n&=\\frac{1}{N-1} \\left(\\sum_{1}^{N} X_{i}^2- N\\overline{X}^{2}\\right)\n\\end{align*}\\]\n\n\n\n\n\n\n\nImportant\n\n\n\nNote that the notational convention for random and non-random variables here is the opposite to that more commonly used: here capitals (\\(X_1, \\ldots ,X_N\\)) denote fixed population values and lower case letters \\(x_1, \\ldots ,x_n\\) denoting the sampled values are the random variables.\n\n\n\n\n\n\nKellner, Peter. 2018. “British Polling Council: A Journalist’s Guide to Opinion Polls.” Available at https://publications.parliament.uk/pa/ld201719/ldselect/ldppdm/106/10616.htm (2014/03/03).",
+    "text": "10.2 Notation\nConsider a finite population of \\(N\\) units.\n\nThe \\(N\\) population values are represented by \\(X_1, \\ldots ,X_N\\)\nThe \\(n\\) sampled values are represented by \\(x_1, \\ldots ,x_n\\)\nThe proportion of the population sampled (the Sampling fraction) is \\(f=n/N\\)\nThe population mean (usual quantity of interest) is \\(\\overline{X} = \\sum_{1}^{N}X_{i}/N\\)\nThe population variance is \\[\\begin{align*}\nS^{2} &= \\frac{1}{N-1} \\sum_{1}^{N} (X_{i}-\\overline{X})^{2}\\\\\n&=\\frac{1}{N-1} \\left(\\sum_{1}^{N} X_{i}^2- N\\overline{X}^{2}\\right)\n\\end{align*}\\]\n\n\n\n\n\n\n\nImportant\n\n\n\nNote that the notational convention for random and non-random variables here is the opposite to that more commonly used: here capitals (\\(X_1, \\ldots ,X_N\\)) denote fixed population values and lower case letters \\(x_1, \\ldots ,x_n\\) denoting the sampled values are the random variables.",
+    "crumbs": [
+      "Part II: Sampling Theory",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introduction to Sampling</span>"
+    ]
+  },
+  {
+    "objectID": "Introduction to sampling.html#appendix-finite-and-infinite-populations",
+    "href": "Introduction to sampling.html#appendix-finite-and-infinite-populations",
+    "title": "10  Introduction to Sampling",
+    "section": "10.3 Appendix: finite and infinite populations",
+    "text": "10.3 Appendix: finite and infinite populations\nThe following discussion is not examinable, but is provided as background.\nWhat does it mean in practice when we distinguish between “finite” and “infinite” populations? For a finite population:\n\nit is possible to make a list of every member of the population.\nPopulation means and variances can be calculated from all the items on the list.\nRandomness occurs purely by the mechanism we use to sample from the list.\nThere is no “model” (e.g. assumption that population values are normally distributed). Statistical properties of estimators can be derived from first principles, through consideration of the sampling mechanism used to select members from the list.\n\nWhen we refer to an infinite population, we are typically assuming a statistical model. This is the approach you will have used in all your other statistics modules. For an infinite population:\n\nit is impossible to make a list of every member of the population. For example, if studying birth weights of new born babies, including those born in the future, it is impossible to make a list of every baby that will ever be born.\nWe cannot make a random selection from all members of the population (e.g. the population includes babies who haven’t been born yet.)\nWe typically assume a statistical model. For example, we might assume that the birth weights of new born babies are normally distributed. Observing a birth weight of a new born baby is thought of as observing a ‘random draw’ from this distribution, rather than making a random selection from a list. We will need to do checks that the statistical model is appropriate.\nPopulation means and variances are defined via the statistical model. For example, if a normal distribution is assumed, the population mean and variance are defined as the mean and variance of the normal distribution.\nStatistical properties of estimators are derived via analysis of the statistical model (e.g. properties of normal random variables).",
     "crumbs": [
       "Part II: Sampling Theory",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introduction to Sampling</span>"
@@ -886,6 +897,28 @@
     "crumbs": [
       "Part III: Computer Experiments (MAS61003 only)",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>Sensitivity analysis</span>"
+    ]
+  },
+  {
+    "objectID": "Introduction to sampling.html#reference",
+    "href": "Introduction to sampling.html#reference",
+    "title": "10  Introduction to Sampling",
+    "section": "Reference",
+    "text": "Reference\n\n\n\n\nKellner, Peter. 2018. “British Polling Council: A Journalist’s Guide to Opinion Polls.” Available at https://publications.parliament.uk/pa/ld201719/ldselect/ldppdm/106/10616.htm (2014/03/03).",
+    "crumbs": [
+      "Part II: Sampling Theory",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introduction to Sampling</span>"
+    ]
+  },
+  {
+    "objectID": "Introduction to sampling.html#references",
+    "href": "Introduction to sampling.html#references",
+    "title": "10  Introduction to Sampling",
+    "section": "References",
+    "text": "References\n\n\n\n\nKellner, Peter. 2018. “British Polling Council: A Journalist’s Guide to Opinion Polls.” Available at https://publications.parliament.uk/pa/ld201719/ldselect/ldppdm/106/10616.htm (2014/03/03).",
+    "crumbs": [
+      "Part II: Sampling Theory",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Introduction to Sampling</span>"
     ]
   }
 ]

@@ -314,6 +314,8 @@ window.Quarto = {
   <ul>
   <li><a href="#a-classic-example-of-the-problems-with-self-selecting-sampling" id="toc-a-classic-example-of-the-problems-with-self-selecting-sampling" class="nav-link active" data-scroll-target="#a-classic-example-of-the-problems-with-self-selecting-sampling"><span class="header-section-number">10.1</span> A classic example of the problems with self-selecting sampling</a></li>
   <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation"><span class="header-section-number">10.2</span> Notation</a></li>
+  <li><a href="#appendix-finite-and-infinite-populations" id="toc-appendix-finite-and-infinite-populations" class="nav-link" data-scroll-target="#appendix-finite-and-infinite-populations"><span class="header-section-number">10.3</span> Appendix: finite and infinite populations</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -349,12 +351,6 @@ window.Quarto = {
 </ul>
 <p><strong>Examples of surveys</strong></p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 16%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Name of survey</th>
@@ -365,19 +361,19 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Opinion Poll</td>
+<td style="text-align: left;">Opinion Poll (e.g.&nbsp;<a href="https://yougov.co.uk/topics/politics">YouGov polls</a>)</td>
 <td style="text-align: left;">People aged 18 or over in the UK</td>
 <td style="text-align: left;">Which political party do you intend to vote for at the next general election?</td>
 <td style="text-align: left;">Population proportion voting for each party</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">International passenger survey (IPS)</td>
+<td style="text-align: left;"><a href="https://www.visitbritain.org/research-insights/about-international-passenger-survey">International passenger survey (IPS)</a></td>
 <td style="text-align: left;">People entering and leaving UK in a given time period</td>
 <td style="text-align: left;">Nationality and length of visit</td>
 <td style="text-align: left;">Total numbers of immigrants and emigrants</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Crime survey for England and Wales</td>
+<td style="text-align: left;"><a href="https://www.crimesurvey.co.uk/en/index.html">Crime survey for England and Wales</a></td>
 <td style="text-align: left;">Population of England and Wales</td>
 <td style="text-align: left;">Have they been a victim of a particular crime?</td>
 <td style="text-align: left;">Proportion of population that have been victims of a particular crime</td>
@@ -435,6 +431,28 @@ Important
 <p>Note that the notational convention for random and non-random variables here is the <strong>opposite</strong> to that more commonly used: here capitals (<span class="math inline">\(X_1, \ldots ,X_N\)</span>) denote fixed population values and lower case letters <span class="math inline">\(x_1, \ldots ,x_n\)</span> denoting the sampled values are the random variables.</p>
 </div>
 </div>
+</section>
+<section id="appendix-finite-and-infinite-populations" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="appendix-finite-and-infinite-populations"><span class="header-section-number">10.3</span> Appendix: finite and infinite populations</h2>
+<p>The following discussion is not examinable, but is provided as background.</p>
+<p>What does it mean in practice when we distinguish between “finite” and “infinite” populations? For a <strong>finite</strong> population:</p>
+<ul>
+<li>it is possible to make a list of every member of the population.</li>
+<li><em>Population</em> means and variances can be <em>calculated</em> from all the items on the list.</li>
+<li>Randomness occurs purely by the mechanism we use to sample from the list.</li>
+<li>There is no “model” (e.g.&nbsp;assumption that population values are normally distributed). Statistical properties of estimators can be derived from first principles, through consideration of the sampling mechanism used to select members from the list.</li>
+</ul>
+<p>When we refer to an <strong>infinite</strong> population, we are typically assuming a statistical model. This is the approach you will have used in all your other statistics modules. For an infinite population:</p>
+<ul>
+<li>it is impossible to make a list of every member of the population. For example, if studying birth weights of new born babies, including those born in the future, it is impossible to make a list of every baby that will ever be born.</li>
+<li>We cannot make a random selection from <em>all</em> members of the population (e.g.&nbsp;the population includes babies who haven’t been born yet.)</li>
+<li>We typically <em>assume</em> a statistical model. For example, we might <em>assume</em> that the birth weights of new born babies are normally distributed. Observing a birth weight of a new born baby is thought of as observing a ‘random draw’ from this distribution, rather than making a random selection from a list. We will need to do checks that the statistical model is appropriate.</li>
+<li>Population means and variances are defined via the statistical model. For example, if a normal distribution is assumed, the population mean and variance are defined as the mean and variance of the normal distribution.</li>
+<li>Statistical properties of estimators are derived via analysis of the statistical model (e.g.&nbsp;properties of normal random variables).</li>
+</ul>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
