@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -646,42 +680,83 @@ Example
 </div>
 <div class="callout-body-container callout-body">
 <div id="exm-xlr" class="theorem example">
-<p><span class="theorem-title"><strong>Example 11.6</strong></span> Consider the motivating example in which the South Yorkshire Mayor’s office wants to know how many minutes per week Sheffield adults spend walking or cycling (with the aim of increasing it through active travel initiatives). They take a SRS of 100 Sheffield adults and ask them how many minutes, on average, they spend walking/cycling per week and how many cars they have in their household. They believe an approximate linear relationship between these two variables is plausible. The data they record is shown in Figure @ref(fig:xlrplot).</p>
-<p>The gradient estimate is -29.8, the mean number of cars per household in the sample was 1.05 and the mean number of minutes walking/cycling in the sample was 132. If the Mayor’s office knows that the mean number of cars per household in Sheffield is 1.45, calculate a 95% confidence interval for the mean number of minutes spent walking or cycling by adults in Sheffield using</p>
+<p><span class="theorem-title"><strong>Example 11.6</strong></span> Consider the motivating example in which the South Yorkshire Mayor’s office wants to know how many minutes per week Sheffield adults spend walking or cycling (with the aim of increasing it through active travel initiatives). They take a SRS of 100 Sheffield adults and ask them how many minutes, on average, they spend walking/cycling per week and how many cars they have in their household. They believe an approximate linear relationship between these two variables is plausible. The data they record is shown in <a href="#fig-xlrplot" class="quarto-xref">Figure&nbsp;<span>11.1</span></a>. In R, minutes walking/cycling are stored in a vector <code>x</code>, and the corresponding number of cars in the household are stored in a vector <code>y</code>.</p>
+<p>If the Mayor’s office knows that the mean number of cars per household in Sheffield is 1.45, use the R output below to calculate a 95% confidence interval for the mean number of minutes spent walking or cycling by adults in Sheffield using</p>
 <ol type="1">
 <li>just the data on the number of minutes spent walking/cycling per week;</li>
 <li>the data on both variables and the linear regression estimate</li>
 </ol>
-</div>
-</div>
-</div>
+<p>You can ignore the finite population correction, and use the normal distribution as an approximation to the <span class="math inline">\(t_{99}\)</span> distribution.</p>
 <div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Simple-random-sampling_files/figure-html/xlrplot-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = x ~ y)
 
-Residuals:
-     Min       1Q   Median       3Q      Max 
--163.192  -49.432    2.831   47.120  129.235 
-
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  163.192      9.838  16.587  &lt; 2e-16 ***
-y            -29.785      6.618  -4.501 1.87e-05 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 69.65 on 98 degrees of freedom
-Multiple R-squared:  0.1713,    Adjusted R-squared:  0.1628 
-F-statistic: 20.26 on 1 and 98 DF,  p-value: 1.867e-05</code></pre>
+(Intercept)            y  
+     163.13       -29.75  </code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-xlrplot" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-xlrplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Simple-random-sampling_files/figure-html/fig-xlrplot-1.png" id="fig-xlrplot" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-xlrplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 131.9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.05</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5783.808</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(x, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.4137072</code></pre>
+</div>
+</div>
+<p>From the R ouput, we have <span class="math inline">\(\bar{x} = 131.9\)</span>, <span class="math inline">\(s^2_X = 5783.808\)</span>, <span class="math inline">\(\bar{y} = 1.05\)</span>, <span class="math inline">\(\hat{\beta} =-29.79\)</span> and <span class="math inline">\(\hat{\rho}=0.4137\)</span>. We are also give <span class="math inline">\(\bar{Y}=1.45\)</span></p>
+<ol type="1">
+<li>We compute the interval as</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fl">131.9</span> <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fl">5783.808</span><span class="sc">/</span><span class="dv">100</span>), <span class="fl">131.9</span> <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fl">5783.808</span><span class="sc">/</span><span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 116.9939 146.8061</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Note that the regression estimate is</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fl">131.9</span> <span class="sc">+</span> <span class="fl">29.79</span> <span class="sc">*</span> (<span class="fl">1.05</span> <span class="sc">-</span> <span class="fl">1.45</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 119.984</code></pre>
+</div>
+</div>
+<p>which is smaller than the sample mean, as we have ‘over-sampled’ adults from households with fewer cars than average. The confidence interval is</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fl">119.984</span> <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fl">5783.808</span><span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.4137</span><span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">100</span>),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">119.984</span> <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fl">5783.808</span><span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.4137</span><span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 106.4133 133.5547</code></pre>
+</div>
+</div>
+<p>which is slightly narrower than the confidence interval using the data only on walking/cycling per week.</p>
+</div>
 </div>
 </div>
 
