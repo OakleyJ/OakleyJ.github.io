@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -372,6 +406,36 @@ This is quite a hard exercise! You won’t be asked prove results such as this i
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We have <span class="math display">\[
+Var( \bar{x}_{st}) =Var\left(\frac{1}{N}\sum_1^l N_i\bar{x}_i\right)= \frac{1}{N^2}\sum_1^lVar(N_i\bar{x}_i) = \sum_1^l\left(\frac{N_i}{N}\right)^2\frac{1 - f_i}{n_i}S_i^2,
+\]</span> as <span class="math inline">\(\bar{x_i}\)</span> is the sample mean obtained from an SRS of size <span class="math inline">\(n_i\)</span> drawn from a population of size <span class="math inline">\(N_i\)</span> with population variance <span class="math inline">\(S_i^2\)</span>.</p>
+<p>It is also possible to show that <span class="math inline">\(\bar{x}_{st}\)</span> is the best linear unbiased estimator (BLUE). Consider a general linear estimator of <span class="math inline">\(\overline{X}\)</span> <span class="math display">\[ t = \sum_{i,j} c_{ij}x_{ij} \]</span> where the <span class="math inline">\(c_{ij}\)</span> are constants.</p>
+<p>Unbiasedness implies <span class="math display">\[\begin{align}
+Et &amp; =  \sum_{ij} c_{ij} \overline{X}_i \\
+&amp; =  \sum_{i=1}^l \left(\sum_{j=1}^{n_i} c_{ij}\right)
+\overline{X}_{i} \\ &amp; =  \overline{X} = \sum_{i=1}^l
+\left(\frac{N_i}{N}\right)
+\overline{X}_i\mbox{ whatever}\overline{X}_i \\
+\mbox{and so }\sum_{j=1}^{n_i} c_{ij} &amp; =  \frac{N_i}{N}
+\mbox{ for each }i.
+\end{align}\]</span> Since the SRS’s from different strata are independent,</p>
+<p><span class="math display">\[ Var(t) =\sum_{i=1}^lVar\left(\sum_{j=1}^{n_i}
+c_{ij}x_{ij}\right)\]</span> and we minimise this by minimising it for each <span class="math inline">\(i\)</span> separately. But within each stratum this is essentially the same problem as for SRS , and the solution is that the <span class="math inline">\(c_{ij}\)</span> should be equal to each other, which means, bearing in mind the above constraint, that <span class="math display">\[c_{ij} = \frac{N_i}{Nn_i}\mbox{ for }j=1,\ldots ,n_i\]</span> and so in SSRS the BLUE of <span class="math inline">\(\overline X\)</span> is <span class="math display">\[\overline{x}_{st} = \sum_{i=1}^l \frac{N_i}{N} \overline{x}_i. \]</span></p>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -431,6 +495,31 @@ Again, you won’t be asked to prove results like this in the exam, but this is 
 <div class="callout-body-container callout-body">
 <div id="exr-proveVar2" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 12.2</strong></span> Prove <a href="#eq-SRSvSSRS" class="quarto-xref">Equation&nbsp;<span>12.3</span></a> using <a href="#eq-VarianceDecomp" class="quarto-xref">Equation&nbsp;<span>12.1</span></a>, <a href="Simple random sampling.html#eq-VarSRS" class="quarto-xref">Equation&nbsp;<span>11.1</span></a> and <a href="#eq-VarSRSS" class="quarto-xref">Equation&nbsp;<span>12.2</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We have <span class="math display">\[ Var(\overline{x}_{st(p)}) = \sum_1^l \left( \frac{N_i}{N}
+\right)^2 \left(1-\frac{n}{N}\right)\frac{S_i^2}{n_i} =
+\frac{1-f}{nN} \sum_1^l N_iS_i^2 \]</span> whereas, following the hint, <span class="math display">\[Var(\overline{x})= \frac{1-f}{n}S^2 = \frac{1-f}{n(N-1)} \left\{
+\sum_{i=1}^l (N_i-1)S_i^2 + \sum_{i=1}^l N_i(\overline{X}_i -
+\overline{X})^2 \right\} . \]</span><br>
+Thus <span class="math display">\[Var(\overline{x})-Var(\overline{x}_{st(p)})=\frac{1-f}{n(N-1)}
+\left\{-\sum_{i=1}^l\frac{N-N_i}{N}S_i^2 +
+\sum_{i=1}^lN_i(\overline{X}_i - \overline{X})^2 \right\}
+\]</span> which is non-negative iff <span class="math display">\[\sum N_i(\overline{X}_i - \overline{X})^2 \geq \sum
+\left(1-\frac{N_i}{N}\right) S_i^2. \]</span></p>
 </div>
 </div>
 </div>
@@ -499,6 +588,32 @@ Example
 </tbody>
 </table>
 <p>The baseline cost (overheads etc) is £10,000 and the overall budget is £15,000. The Council has no information about the strata variances so assumes that <span class="math inline">\(S_1=S_2=S_3\)</span>. Suppose the Council wants to minimise the variance of the estimate of the proportion of households with good insulation. What sample sizes should they use in each strata?</p>
+<p>We use the result <span class="math display">\[
+n_i =\frac{(C-c_0)\frac{N_iS_i}{\sqrt{c_i}}}{\sum_1^lN_iS_i\sqrt{c_i}}.
+\]</span> Given the assumption <span class="math inline">\(S_1=S_2=S_3\)</span> this simplifies to <span class="math display">\[
+n_i =\frac{(C-c_0)\frac{N_i}{\sqrt{c_i}}}{\sum_1^lN_i\sqrt{c_i}}.
+\]</span> and so defining</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="dv">15000</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>c0 <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">400</span>, <span class="dv">900</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Ni <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8000</span>, <span class="dv">2000</span>, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>we compute the sample sizes as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>((C<span class="sc">-</span>c0) <span class="sc">*</span> Ni <span class="sc">/</span> <span class="fu">sqrt</span>(ci)) <span class="sc">/</span> <span class="fu">sum</span>(Ni <span class="sc">*</span> <span class="fu">sqrt</span>(ci))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 26.666667  3.333333  1.111111</code></pre>
+</div>
+</div>
+<p>Rounding to integers and checking we are below the total budget:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">c</span>(<span class="dv">27</span>, <span class="dv">3</span>, <span class="dv">1</span>) <span class="sc">*</span> ci) <span class="sc">+</span> <span class="dv">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 14800</code></pre>
+</div>
+</div>
+<p>We could choose to sample two additional village centre properties and still be within budget.</p>
 </div>
 </div>
 </div>
@@ -514,6 +629,24 @@ This is to help you with the definitions. Note that the formula for the Neyman a
 <div class="callout-body-container callout-body">
 <div id="exr-Neyman" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 12.3</strong></span> Show that if all the stratum variances are the same, the Neyman allocation is the same as proportional allocation.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If the stratum variances are all the same, we have <span class="math inline">\(S_i=K\)</span> for some constant <span class="math inline">\(K\)</span> for all <span class="math inline">\(i\)</span>, and so <span class="math display">\[
+n_i = \frac{nN_iS_i}{\sum N_iS_i} = \frac{nN_i}{\sum N_i} = \frac{nN_i}{N},
+\]</span> the same stratum sample size used in proportional allocation.</p>
 </div>
 </div>
 </div>
@@ -605,6 +738,34 @@ This is a good revision question.
 <li><p>Neyman allocation.</p></li>
 </ol>
 <p>Compare the precision of these methods with that of simple random sampling.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For proportional allocation, take a proportion <span class="math inline">\(n/N=100/2010\)</span> of each stratum, giving (on rounding to the nearest integer) <span class="math display">\[ (n_1,\ldots ,n_7) = (20,23,19,17,8,6,7). \]</span> For Neyman allocation, take <span class="math inline">\(n_i \propto N_iS_i\)</span>, giving <span class="math display">\[ (n_1,\ldots ,n_7) = (10,18,17,19,12,9,15). \]</span> The variances of the estimators of the mean (neglecting the effect of rounding) are given by the standard formulae, namely <span class="math display">\[\begin{align}
+Var(\overline{x}_{st(p)}) &amp; =  \frac{1-f}{n}\sum
+\frac{N_iS_i^2}{N} \simeq 3.26 \\
+\mbox{var~}\overline{x}_{st(o)} &amp; =  \frac{(\sum N_iS_i)^2}{nN^2} -
+\frac{\sum N_iS_i^2}{N^2} \simeq 2.72 \\
+Var(\overline{x}) &amp; =  \frac{1-f}{n}S^2 =
+\frac{1-f}{n}~\frac{\sum (N_i-1)S_i^2 + \sum
+N_i(\overline{X}_i-\overline{X})^2}{N-1} \simeq 5.89
+\end{align}\]</span> which use the following data: <span class="math display">\[
+\sum N_iS_i = 34206.9, \quad\sum S_i^2 = 3381.12,
+\]</span> <span class="math display">\[\sum N_iS_i^2 = 689990.39, \quad\sum
+N_i(\overline{X}_i-\overline{X})^2 = 557693.86.
+\]</span> The variances of the estimators of the total acreage are <span class="math inline">\(N^2\)</span> times the above, namely <span class="math inline">\(13.18\times 10^6, 11.01\times 10^6\)</span> and <span class="math inline">\(23.78\times 10^6\)</span> respectively. Thus, the optimal allocation gives about a 16% improvement in variance compared with proportional allocation, and over a 50% reduction compared with SRS.</p>
 </div>
 </div>
 </div>

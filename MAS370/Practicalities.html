@@ -435,6 +435,37 @@ These questions are quite hard, but will help you understand how the randomised 
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Without doing any calculations, we should expect that setting <span class="math inline">\(P=1\)</span> will minimise the variance of <span class="math inline">\(\hat{\pi}_1\)</span>, because we are maximising the number of people who will answer the question of interest. But, clearly, with <span class="math inline">\(P=1\)</span>, participants will know that the question they are answering is not random, and so they may refuse to take part, or not answer truthfully. For <span class="math inline">\(n\)</span> participants, we have <span class="math display">\[
+Var(\hat{\pi}_1)=\frac{1}{P^2}Var(p)
+\]</span> where <span class="math display">\[
+p\sim Bin(n, P\pi_1 + (1-P)\pi_2),
+\]</span> and so <span class="math display">\[
+Var(\hat{\pi}_1)=\frac{(P\pi_1 + (1-P)\pi_2)\times (1 - P\pi_1 - (1-P)\pi_2)}{nP^2}.
+\]</span> After a little algebra, we have <span class="math display">\[
+Var(\hat{\pi}_1)=\frac{1}{n}\left(\pi_1 + \frac{\pi_2}{P} - \pi_2\right)\left(\frac{1-\pi_2}{P} - \pi_1 + \pi_2\right)
+\]</span> which is minimised when <span class="math inline">\(P=1\)</span>.</p></li>
+<li><p>If <span class="math inline">\(p\)</span> is the proportion of “yes” responses, we have <span class="math display">\[
+E(p)=P(\mbox{yes}) = P\pi_1 + (1-P)(1-\pi_1) = \pi_1(2P-1)+(1-P),
+\]</span> and so an unbiased estimator of <span class="math inline">\(\pi_1\)</span> is <span class="math display">\[
+\frac{p - (1-P)}{2P-1}.
+\]</span> We see that we can’t evaluate this if <span class="math inline">\(P=\frac{1}{2}\)</span>. The problem is that if <span class="math inline">\(P=\frac{1}{2}\)</span>, we have <span class="math inline">\(P(\mbox{yes}) =\frac{1}{2}\)</span> so the observed proportion of “yes” responses cannot give any information about <span class="math inline">\(\pi_1\)</span>.</p></li>
+</ol>
+</div>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

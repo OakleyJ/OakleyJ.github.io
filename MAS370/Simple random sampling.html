@@ -491,7 +491,7 @@ Example
 <div class="callout-body-container callout-body">
 <div id="exm-samplesizeXbar" class="theorem example">
 <p><span class="theorem-title"><strong>Example 11.2</strong></span> Sample size needed for specific precision of <span class="math inline">\(\overline{X}\)</span>. Another SRS of size <span class="math inline">\(n\)</span> is to be taken from the current UK population (68,900,000). Body weight (kg) will again be recorded. A 95% CI for the population mean body weight will be formed. What is the smallest sample size (<span class="math inline">\(n\)</span>) that would give a 95% CI with a width of less than 1 kg?</p>
-<p>We can use the estimate of <span class="math inline">\(S^2\)</span> from the previous sample. The population size is <span class="math inline">\(N=68,900,000\)</span>, the specified CI width is <span class="math inline">\(d=1\)</span>, the <span class="math inline">\(z\)</span> quantile is <span class="math inline">\(z_{1-\alpha/2} = 1.96\)</span> and the population variance estimate is 126.04 kg<span class="math inline">\(^2\)</span>. Using <span class="math display">\[n \geq \frac{N}{1+N(d/(2Sz_{\alpha/2}))^2}\]</span> gives <span class="math inline">\(n \geq 2016.6\)</span> so the smallest integer sample size is <span class="math inline">\(n=2017\)</span>.</p>
+<p>We can use the estimate of <span class="math inline">\(S^2\)</span> from the previous sample. The population size is <span class="math inline">\(N=68,900,000\)</span>, the specified CI width is <span class="math inline">\(d=1\)</span>, the <span class="math inline">\(z\)</span> quantile is <span class="math inline">\(z_{1-\alpha/2} = 1.96\)</span> and the population variance estimate is 126.04 kg<span class="math inline">\(^2\)</span>. Using <span class="math display">\[n \geq \frac{N}{1+N(d/(2Sz_{\alpha/2}))^2}\]</span> gives <span class="math inline">\(n \geq 1936.7\)</span> so the smallest integer sample size is <span class="math inline">\(n=1934\)</span>.</p>
 </div>
 </div>
 </div>
@@ -521,6 +521,54 @@ s_1^2&amp;=3.87 \quad s_2^2=4.02
 <p>Calculate an approximate 99% confidence interval for the mean distance from a student`s living place to the College.</p>
 <ol start="3" type="1">
 <li>A SRS of size <span class="math inline">\(2n\)</span> is chosen from a finite population of size <span class="math inline">\(N\)</span> (<span class="math inline">\(N&gt;2n\)</span>). The population mean and variance are <span class="math inline">\(\overline{X}\)</span> and <span class="math inline">\(S^2\)</span> respectively. The sample is divided into two equal parts: the first <span class="math inline">\(n\)</span> observations, and the second <span class="math inline">\(n\)</span> observations. Only the two sample means are available (not the actual sample values) and are given by <span class="math inline">\(\overline{x}_1\)</span> and <span class="math inline">\(\overline{x}_2\)</span>. Explain why <span class="math inline">\(k\left(\overline{x}_1-\overline{x}_2\right)^2\)</span> is a sensible estimator of <span class="math inline">\(S^2\)</span> where <span class="math inline">\(k\)</span> is a constant. Hence derive a simple unbiased estimator of <span class="math inline">\(S^2\)</span> based only on <span class="math inline">\(\overline{x}_1,\overline{x}_2\)</span> and <span class="math inline">\(n\)</span> (ie find <span class="math inline">\(k\)</span>).</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p><span class="math inline">\(x_{tot} = N\overline{x}\)</span> estimates <span class="math inline">\(X_{tot}\)</span>. Here <span class="math inline">\(\overline{x} = 3.4\dot{6}\)</span> and <span class="math inline">\(s^2 = 1.4989\)</span>, and so <span class="math inline">\(x_{tot}
+= 14848\times 3.4\dot{6} = 51473\)</span>. An approximate 95% confidence interval for <span class="math inline">\(X_{tot}\)</span> is <span class="math inline">\((44692,
+58254)\)</span>. Approximately <span class="math display">\[\overline{x} \sim N\left( \overline{X}, (1-f)\frac{S^2}{n}\right)
+\]</span> and so the required probability is <span class="math display">\[\begin{align}
+P &amp; =  P\left( |\overline{x}-\overline{X}| \leq
+\frac{\overline{X}}{10} \right) \\
+&amp; \simeq  P\left( |Z| \leq
+\frac{\overline{X}/10}{\sqrt{(1-f)S^2/n}} \right)
+\end{align}\]</span> where <span class="math inline">\(Z\sim N(0,1)\)</span>. Substitute <span class="math inline">\(\overline{x}/s\)</span> for <span class="math inline">\(\overline{X}/S\)</span> to get, roughly, <span class="math inline">\(P\simeq 0.88\)</span>. A refinement would be to use <span class="math inline">\(t_{29}\)</span> instead of <span class="math inline">\(N(0,1)\)</span>, giving <span class="math inline">\(P\simeq 0.87\)</span>.</p></li>
+<li><p>The sampling procedure amounts to taking a SRS of size 650 in two stages, and so we need to work out the overall sample mean and sample variance. <span class="math display">\[\begin{align}
+\overline{x} &amp; =  \frac{200\times 5.14 + 450\times 4.90}{650} =
+4.9738.\\
+s^2 &amp; =  \frac{(199s_1^2 + 200\overline{x}_1^2) + (449s_2^2 +
+450\overline{x}_2^2) - 650\overline{x}^2}{649} = 3.9806.
+\end{align}\]</span></p></li>
+</ol>
+<p>The confidence interval is <span class="math display">\[
+\overline{x} \pm
+2.58 ~\sqrt{\frac{(1-650/2400)s^2}{650}}, \]</span> i.e.(4.80, 5.15).</p>
+<ol start="3" type="1">
+<li>The only real candidate for an estimator of <span class="math inline">\(S^2\)</span> is some multiple of <span class="math inline">\((\overline{x}_1-\overline{x}_2)^2\)</span>, and so we look for a multiple which is unbiased. Since <span class="math inline">\(E\overline{x}_1=E\overline{x}_2=\overline{X}\)</span>, <span class="math display">\[ E(\overline{x}_1-\overline{x}_2)^2 =
+\mbox{var~}(\overline{x}_1-\overline{x}_2) =
+\mbox{var~}\overline{x}_1 + \mbox{var~}\overline{x}_2
+-2\mbox{~cov~}(\overline{x}_1, \overline{x}_2) . \]</span> Now <span class="math display">\[\begin{align}
+\mbox{cov~}(\overline{x}_1, \overline{x}_2) &amp; =  \frac{1}{n^2} \sum
+_i \sum _j\mbox{~cov~}(x_{1i},x_{2j})\mbox{~~~~in~obvious~notation}
+\\
+&amp; =  \frac{1}{n^2}n^2\left( -\frac{S^2}{N}\right) \\
+&amp; =  -\frac{S^2}{N} .
+\end{align}\]</span> Thus, substituting in the above, <span class="math display">\[ E(\overline{x}_1-\overline{x}_2)^2 = 2\left( 1-\frac{n}{N}\right)
+\frac{S^2}{n} + \frac{2S^2}{N} = \frac{2S^2}{n} \]</span> and so it follows that <span class="math display">\[ \frac{n(\overline{x}_1-\overline{x}_2)^2}{2} \]</span> is unbiased for <span class="math inline">\(S^2\)</span>.</li>
 </ol>
 </div>
 </div>
@@ -641,6 +689,22 @@ This is a good revision exercise.
 <li><p>more than one car owned by the occupants of the house.</p></li>
 </ol>
 <p>The estimators are required to have standard errors not exceeding 0.02 and 0.01 respectively. From other surveys it is thought that the proportions in (a) and (b) lie in the ranges <span class="math inline">\((0.35,0.55)\)</span> and <span class="math inline">\((0.10,0.20)\)</span> respectively. The two proportions are to be estimated from a single SRS. How large a sample is needed?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(P\)</span> is the population proportion, we require <span class="math inline">\(n\)</span> such that <span class="math display">\[ \sqrt{\frac{1-f}{n}P(1-P)}~~~ \leq ~~~0.02\mbox{ and }0.01 \]</span> respectively in the two cases. The maximum of the standard error on the left hand side occurs when <span class="math inline">\(P=0.5\)</span> in (a) and when <span class="math inline">\(P=0.2\)</span> (the nearest believable value to <span class="math inline">\(P=0.5\)</span>) in (b). This leads to the requirement that <span class="math inline">\(n\geq 556\)</span> in (a) and <span class="math inline">\(n\geq 1213\)</span> in (b). Hence we need <span class="math inline">\(n\geq 1213\)</span> to satisfy both requirements.</p>
 </div>
 </div>
 </div>

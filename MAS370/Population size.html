@@ -399,7 +399,7 @@ window.Quarto = {
 <li><p>Release all members of the sample back into the population.</p></li>
 <li><p>Draw a second random sample of size <span class="math inline">\(m\)</span> (without replacement) from the population. Observe the number of tagged individuals, denoted by <span class="math inline">\(r\)</span> in the second sample.</p></li>
 </ol>
-<p>A simple estimator of the population size <span class="math inline">\(N\)</span>, known as the Peterson estimator (or “Lincoln index”) is <span class="math display">\[\widehat{N}_p = \frac{nm}{r}.\]</span> This is based on the assumption that <span class="math inline">\(n/N\)</span> should be similar to <span class="math inline">\(r/m\)</span>. If <span class="math inline">\(N\)</span> is large relative to <span class="math inline">\(m\)</span>, we can suppose that <span class="math display">\[r\sim Bin\left(m, \frac{n}{N}\right)\]</span> Based on asymptotic properties of maximum likelihood estimators, we can derive an approximate variance for <span class="math inline">\(\widehat{N_p}\)</span> as <span class="math display">\[\widehat{Var}(\hat{N}_p)= \frac{mn^2(m-r)}{r^3}\]</span> Clearly, this will cause difficulties if we observe <span class="math inline">\(r=0\)</span>. Additionally, <span class="math inline">\(\widehat{N}_p\)</span> is biased, with <span class="math display">\[E(\widehat{N_p})\simeq N\left(1+\frac{N-n}{mn}\right).\]</span> An alternative is the Chapman estimator: <span class="math display">\[\widehat{N_c} = \frac{(n+1)(m+1)}{r+1} -1\]</span> which can be shown to be unbiased for <span class="math inline">\(n+m&gt;N\)</span> and has estimated variance <span class="math display">\[\widehat{Var}(\widehat{N}_c)= \frac{(n+1)(m+1)(n-r)(m-r)}{(r+1)^2(r+2)}.\]</span> There are two assumptions with this method.</p>
+<p>A simple estimator of the population size <span class="math inline">\(N\)</span>, known as the Peterson estimator (or “Lincoln index”) is <span class="math display">\[\widehat{N}_p = \frac{nm}{r}.\]</span> This is based on the assumption that <span class="math inline">\(n/N\)</span> should be similar to <span class="math inline">\(r/m\)</span>. If <span class="math inline">\(N\)</span> is large relative to <span class="math inline">\(m\)</span>, we can suppose that <span class="math display">\[r\sim Bin\left(m, \frac{n}{N}\right)\]</span> Based on asymptotic properties of maximum likelihood estimators, we can derive an approximate variance for <span class="math inline">\(\widehat{N_p}\)</span> as <span class="math display">\[\widehat{Var}(\hat{N}_p)= \frac{mn^2(m-r)}{r^3}.\]</span> (The proof of this result is outside the scope of this module, but for reference, the proof uses the “delta method” approximation <span class="math inline">\(Var(g(r))\simeq(\frac{d}{dr}g(r))^2Var(r)\)</span>, with <span class="math inline">\(g(r)=1/r\)</span>, and also uses the observed value of <span class="math inline">\(r\)</span> to estimate <span class="math inline">\(Var(r)\)</span>.) Clearly, this will cause difficulties if we observe <span class="math inline">\(r=0\)</span>. Additionally, <span class="math inline">\(\widehat{N}_p\)</span> is biased, with <span class="math display">\[E(\widehat{N_p})\simeq N\left(1+\frac{N-n}{mn}\right).\]</span> An alternative is the Chapman estimator: <span class="math display">\[\widehat{N_c} = \frac{(n+1)(m+1)}{r+1} -1\]</span> which can be shown to be unbiased for <span class="math inline">\(n+m&gt;N\)</span> and has estimated variance <span class="math display">\[\widehat{Var}(\widehat{N}_c)= \frac{(n+1)(m+1)(n-r)(m-r)}{(r+1)^2(r+2)}.\]</span> There are two assumptions with this method.</p>
 <ol type="1">
 <li><p>The population size <span class="math inline">\(N\)</span> does not change between the first and second samples.</p></li>
 <li><p>All members of the population are equally likely to be captured; there are no ‘trap shy’ or ‘trap happy’ members.</p></li>
@@ -512,6 +512,27 @@ This is to help you understand the model, but is not the sort of thing you’d b
 <div class="callout-body-container callout-body">
 <div id="exr-loglin" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 14.1</strong></span> Show that <a href="#eq-llmodel" class="quarto-xref">Equation&nbsp;<span>14.1</span></a> satisfies the independence requirement: <span class="math inline">\(\mu_{12}/\mu_{11}=\mu_{22}/\mu_{21}\)</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We start by noting that <span class="math display">\[\begin{align*}
+\left( \mu + \beta_2 \right) - \mu &amp;= \left( \mu + \alpha_2 + \beta_2 \right) - \left( \mu + \alpha_2 \right).
+\end{align*}\]</span> Considering the constraints <span class="math inline">\(\alpha_1 = \beta_1 = 0\)</span> it follows that <span class="math display">\[\begin{align*}
+\frac{e^{\left( \mu + \beta_2 \right)}}{e^{\mu}} &amp;= \frac{e^{\left( \mu + \alpha_2 + \beta_2\right)}}{e^{\left(\mu +\alpha_2\right)}}\\ \Rightarrow
+\frac{\mu_{12}}{\mu_{11}}&amp;=\frac{\mu_{22}}{\mu_{21}}
+\end{align*}\]</span> as required.</p>
 </div>
 </div>
 </div>
