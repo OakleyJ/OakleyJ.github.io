@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -37,10 +37,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -398,6 +398,26 @@ This is quite hard! Don’t worry if you can’t do it, but the solution will he
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For the CFD, the standardised information matrix <span class="math inline">\(\mathbf{M}\)</span> is the <span class="math inline">\(p\times p\)</span> identity matrix <span class="math inline">\(I_p\)</span> and so the standardised variance of prediction is of the form <span class="math display">\[\mathbf{f} (\mathbf{x} )^T\mathbf{f} (\mathbf{x} ) = 1 + x_1^2 + x_2^2 + \ldots + x_1^2x_2^2
++ \ldots \]</span> where each term on the right hand side corresponds to a main effect or interaction which is included in the model. There are <span class="math inline">\(p\)</span> terms altogether, where <span class="math inline">\(\mathbf{f} (\mathbf{x})\)</span> is a <span class="math inline">\(p\times 1\)</span> vector.</p>
+<p>Note that <span class="math inline">\(\mathbf{f} (\mathbf{x})\)</span> can include any product, e.g.&nbsp;<span class="math inline">\(x_1x_3x_5\)</span> with the corresponding term in the summation for <span class="math inline">\(\mathbf{f} (\mathbf{x} )^T\mathbf{f} (\mathbf{x} )\)</span> being <span class="math inline">\(x_1^2x_3^2x_5^2\)</span>.</p>
+<p>Since <span class="math inline">\(0\leq x_i^2\leq 1\)</span>, all these terms are simultaneously maximised when <span class="math inline">\(x_i^2=1\)</span>, i.e.&nbsp;<span class="math inline">\(x_i=\pm 1\)</span>, for all <span class="math inline">\(i\)</span>, which is true at all of the points of support of the CFD. Thus the maximised value of the above is <span class="math inline">\(p\)</span>, and the conditions of the GET are satisfied.</p>
+<p>For an FFD, we have to assume that there are no terms included in the model which are confounded with each other by the design – otherwise there is no question of optimality. On this assumption, the standardised information matrix is again <span class="math inline">\(I_p\)</span>, and the above argument holds also for the FFD.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="appendix-proof-of-the-get" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="appendix-proof-of-the-get"><span class="header-section-number">8.2</span> Appendix: proof of the GET</h2>
@@ -593,8 +613,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -705,7 +723,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
