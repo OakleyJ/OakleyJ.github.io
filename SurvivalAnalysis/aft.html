@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Accelerated Failure Time (AFT) Models – Survival analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./proportionalhazards.html" rel="next">
+<link href="./twosample.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aft.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Accelerated Failure Time (AFT) Models</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Survival analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./background.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Background and Basic Concepts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survivor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Estimating survivor functions: life-tables and Kaplan-Meier</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parametric.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Parametric one-sample models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./twosample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Two Sample Comparisons</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./aft.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Accelerated Failure Time (AFT) Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./proportionalhazards.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Proportional Hazards Models</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation"><span class="header-section-number">5.1</span> Motivation</a></li>
+  <li><a href="#a-simple-two-sample-example" id="toc-a-simple-two-sample-example" class="nav-link" data-scroll-target="#a-simple-two-sample-example"><span class="header-section-number">5.2</span> A Simple Two-Sample Example</a></li>
+  <li><a href="#sec-AFTgeneral" id="toc-sec-AFTgeneral" class="nav-link" data-scroll-target="#sec-AFTgeneral"><span class="header-section-number">5.3</span> A General AFT Model Framework for including Explanatory Variables</a></li>
+  <li><a href="#choice-of-distribution-in-aft-models" id="toc-choice-of-distribution-in-aft-models" class="nav-link" data-scroll-target="#choice-of-distribution-in-aft-models"><span class="header-section-number">5.4</span> Choice of distribution in AFT models</a></li>
+  <li><a href="#the-exponential-aft-model" id="toc-the-exponential-aft-model" class="nav-link" data-scroll-target="#the-exponential-aft-model"><span class="header-section-number">5.5</span> The exponential AFT model</a>
+  <ul class="collapse">
+  <li><a href="#parameter-estimation" id="toc-parameter-estimation" class="nav-link" data-scroll-target="#parameter-estimation"><span class="header-section-number">5.5.1</span> Parameter estimation</a></li>
+  <li><a href="#model-fitting-in-r" id="toc-model-fitting-in-r" class="nav-link" data-scroll-target="#model-fitting-in-r"><span class="header-section-number">5.5.2</span> Model fitting in R</a></li>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">5.5.3</span> Hypothesis testing</a></li>
+  <li><a href="#predicting-survival-times" id="toc-predicting-survival-times" class="nav-link" data-scroll-target="#predicting-survival-times"><span class="header-section-number">5.5.4</span> Predicting survival times</a></li>
+  <li><a href="#obtaining-predictions-using-r" id="toc-obtaining-predictions-using-r" class="nav-link" data-scroll-target="#obtaining-predictions-using-r"><span class="header-section-number">5.5.5</span> Obtaining predictions using R</a></li>
+  </ul></li>
+  <li><a href="#the-weibull-aft-model" id="toc-the-weibull-aft-model" class="nav-link" data-scroll-target="#the-weibull-aft-model"><span class="header-section-number">5.6</span> The Weibull AFT Model</a></li>
+  <li><a href="#model-checking" id="toc-model-checking" class="nav-link" data-scroll-target="#model-checking"><span class="header-section-number">5.7</span> Model checking</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="AFTModels" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Accelerated Failure Time (AFT) Models</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Aims for this chapter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this chapter, we will study a class of regression models, Accelerate Failure Time (AFT) models, for relating the survival time of an individual to explanatory variables for that individual. In particular we will</p>
+<ol type="1">
+<li><p>study the defining characteristics of an AFT model: how explanatory variables ‘accelerate’ an individual along the time axis;</p></li>
+<li><p>understand how the parameters of an exponential AFT model are estimated using maximum likelihood;</p></li>
+<li><p>use AFT models to predict survival times;</p></li>
+<li><p>fit AFT models using R, obtain parameter estimates, and conduct hypothesis tests to see which explanatory variables are significant.</p></li>
+</ol>
+</div>
+</div>
+<section id="motivation" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="motivation"><span class="header-section-number">5.1</span> Motivation</h2>
+<p>So far we have just looked at problems when all the failure times of all the individuals are assumed IID or at most there are a fixed number of distinct groups with a common failure time distribution for each group. However, each individual might have their own failure time distribution dependent upon a number of characteristics about either them or their treatment. For a more sensitive analysis, we might want to include in our failure-time model the possible effect of these explanatory variables. Examples of such variables might be:</p>
+<ul>
+<li><p>Treatment given (typically binary or categorical if multiple treatments are considered)</p></li>
+<li><p>Age of individual (continuous)</p></li>
+<li><p>Sex of individual (categorical)</p></li>
+<li><p>Measured variables describing prior medical history</p></li>
+</ul>
+<p>For each individual, with explanatory variables <span class="math inline">\(\mathbf{x}\)</span> we may wish to allow their survival time to depend upon these variables. When we do so, we typically define <span class="math inline">\(\mathbf{x} = \mathbf{0}\)</span> to correspond to a baseline and then measure <span class="math inline">\(\mathbf{x}\)</span> relative to this baseline.</p>
+</section>
+<section id="a-simple-two-sample-example" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="a-simple-two-sample-example"><span class="header-section-number">5.2</span> A Simple Two-Sample Example</h2>
+<p>Consider initially the example where we have <span class="math inline">\(n\)</span> individuals belonging to one of two groups dependent upon whether they are controls (Group 0) or receive a treatment (Group 1). In this case the binary variable <span class="math display">\[
+\mathbf{x_i} = \left\{ \begin{array}{rl}
+                0 &amp; \textrm{if person $i$ is in the control group} \\
+                1 &amp; \textrm{if person $i$ is in the treatment group}
+\end{array} \right.
+\]</span> denotes which group the <span class="math inline">\(i^{th}\)</span> individual belongs to. Suppose the failure times of the individuals in the control and treatment groups are labelled as <span class="math inline">\(T_0\)</span> and <span class="math inline">\(T_1\)</span> respectively. If <span class="math inline">\(S_0(t)\)</span> and <span class="math inline">\(S_1(t)\)</span> are the survivor functions then we could choose to model them as <span class="math display">\[\begin{align}
+\text{Group 0:}&amp; \quad S_0(t) = P(T_0 &gt; t)  \\
+\text{Group 1:}&amp; \quad S_1(t) = P(T_1 &gt; t) = P(T_0 &gt; \psi t) = S_0(\psi t)
+\end{align}\]</span> so that, in terms of random variables <span class="math inline">\(T_1 = T_0/\psi\)</span>. Intuitively this means that lifetime is accelerated/decelerated in group 1 compared with group 0. Any individual with survival time <span class="math inline">\(t\)</span> in group 0 would have survival time <span class="math inline">\(t/\psi\)</span> in group 1. If <span class="math inline">\(\psi &gt; 1\)</span> then individuals will fail more quickly in group 1 compared with group 0 while if <span class="math inline">\(\psi &lt; 1\)</span> then they will fail more slowly.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We refer to <span class="math inline">\(S_0\)</span> as the “baseline” survivor function, and the distribution of <span class="math inline">\(T_0\)</span> as the baseline survival distribution. AFT models involve specifying how explanatory variables change this baseline distribution.</p>
+</div>
+</div>
+</section>
+<section id="sec-AFTgeneral" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-AFTgeneral"><span class="header-section-number">5.3</span> A General AFT Model Framework for including Explanatory Variables</h2>
+<p>Suppose instead that we have a vector of explanatory variables (<span class="math inline">\(\mathbf{x}\)</span>) for each individual. We can extend this idea by modelling the survivor function of an individual with variables <span class="math inline">\(\mathbf{x}\)</span> as <span class="math display">\[\begin{equation}
+S(t;\mathbf{x}) = S_0(t \psi(\mathbf{x}))
+\end{equation}\]</span> where <span class="math inline">\(S_0(t)\)</span> corresponds to the survivor function of the chosen baseline <span class="math inline">\(\mathbf{x} = \mathbf{0}\)</span> for any positive function <span class="math inline">\(\psi(\mathbf{x})\)</span> (with <span class="math inline">\(\psi(\mathbf{0}) = 1\)</span> to satisfy <span class="math inline">\(S(t;\mathbf{x}=\mathbf{0}) = S_0(t)\)</span>). With this parameterisation, we have the density and hazard functions (as functions of <span class="math inline">\(t\)</span> and <span class="math inline">\(\mathbf{x}\)</span>) given by <span class="math display">\[\begin{align}
+f(t;\mathbf{x}) &amp;= f_0(t \psi(\mathbf{x})) \psi(\mathbf{x})  \\
+h(t;\mathbf{x}) &amp;= h_0(t \psi(\mathbf{x})) \psi(\mathbf{x})
+\end{align}\]</span></p>
+<p>In terms of random variables this is equivalent to defining <span class="math display">\[
+T = T_0 / \psi(\mathbf{x}),
+\]</span> where <span class="math inline">\(T_0\)</span> has survivor function <span class="math inline">\(S_0(\cdot)\)</span>. Since we require <span class="math inline">\(\psi(\mathbf{x}) \geq 0\)</span> and <span class="math inline">\(\psi(\mathbf{0}) = 1\)</span> a natural choice is <span class="math display">\[
+\psi(\mathbf{x}) = e^{-\boldsymbol{\beta}'\mathbf{x}}.
+\]</span> For this choice of <span class="math inline">\(\psi(\mathbf{x})\)</span>, we can write <span class="math display">\[
+\log T = \boldsymbol{\beta}'\mathbf{x} + \log T_0.
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>We can think of this of two equivalent ways to specify an AFT model: <span class="math display">\[
+S(t;\mathbf{x}) = S_0(t \exp(-\boldsymbol{\beta}'\mathbf{x})) \quad\Leftrightarrow\quad \log T = \boldsymbol{\beta}'\mathbf{x} + \log T_0,
+\]</span> where <span class="math inline">\(T\)</span> and <span class="math inline">\(T_0\)</span> are two random survival times with survivor functions <span class="math inline">\(S\)</span> and <span class="math inline">\(S_0\)</span> respectively. Note that <span class="math inline">\(T_0\)</span> is the survival time of an individual with covariates <span class="math inline">\(\mathbf{x}=\mathbf{0}\)</span>, and <span class="math inline">\(T\)</span> is the survival time of an individual with some other value for the covariate vector <span class="math inline">\(\mathbf{x}\)</span>.</p></li>
+<li><p>If we denote <span class="math inline">\(\log T_0\)</span> by <span class="math inline">\(\varepsilon\)</span>, noting that <span class="math inline">\(\varepsilon\)</span> is a random variable, and we write <span class="math display">\[
+\log T = \boldsymbol{\beta}'\mathbf{x} + \varepsilon,
+\]</span> then we can see that we have specified a log-linear regression model that relates a log survival time <span class="math inline">\(\log T\)</span> to some covariates <span class="math inline">\(\mathbf{x}\)</span>. If you have studied generalised linear models (GLMs), then note that this is <em>not</em> necessarily a GLM, as we may choose distributions for <span class="math inline">\(\varepsilon\)</span> that are not in the exponential family, and there may also be a need to incorporate censored observations.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="choice-of-distribution-in-aft-models" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="choice-of-distribution-in-aft-models"><span class="header-section-number">5.4</span> Choice of distribution in AFT models</h2>
+<p>To specify an AFT model, we need to make a choice of distribution: the survivor function <span class="math inline">\(S_0\)</span>, or equivalently, the distribution of <span class="math inline">\(\log T_0\)</span>. In theory, the only constraint is that we must have <span class="math inline">\(T_0 &gt;0\)</span>, otherwise, any distribution can be used. However, when fitting an AFT model in R (using the <code>survival::survreg()</code> function), there are some restrictions, and the recommended choices are weibull (or exponential as a special case of the weibull), log normal or log logistic (i.e.&nbsp;<span class="math inline">\(\log T_0\)</span> has a normal/logistic distribution.)</p>
+</section>
+<section id="the-exponential-aft-model" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="the-exponential-aft-model"><span class="header-section-number">5.5</span> The exponential AFT model</h2>
+<p>The simplest AFT model is to assume an exponential distribution for the baseline distribution of <span class="math inline">\(T_0\)</span>. We then assume that each patient’s survival time has an exponential distribution, with a rate parameter that depends on the patient’s explanatory variables.</p>
+<p>Suppose that we have <span class="math inline">\(n\)</span> individuals where for each we have observed</p>
+<p><span class="math display">\[\begin{align}
+t_i &amp;= \min(\textrm{Failure time}, \textrm{Time of right censoring}) \\
+\delta_i &amp;= \left\{ \begin{array}{rl}
+                1 &amp; \textrm{if $i$ is observed to fail} \\
+                0 &amp; \textrm{if $i$ is censored}
+               \end{array} \right. \\
+\mathbf{x_i} &amp;= \textrm{$p$-dimensional vector of explanatory variables}
+\end{align}\]</span> For an exponential AFT model, following the specification set out in <a href="#sec-AFTgeneral" class="quarto-xref"><span>Section 5.3</span></a>, with the choice <span class="math display">\[
+\psi(\mathbf{x}) = e^{-\boldsymbol{\beta}'\mathbf{x}},
+\]</span> we have <span class="math display">\[\begin{align}
+S_0(t)= e^{-\lambda t} &amp; \quad \Rightarrow \quad S(t;\mathbf{x}) = e^{-\lambda t e^{-\boldsymbol{\beta}'\mathbf{x}}}  \\
+h_0(t)=\lambda &amp; \quad \Rightarrow \quad h(t;\mathbf{x}) = \lambda e^{-\boldsymbol{\beta}' \mathbf{x}}  \\
+f_0(t)=\lambda e^{-\lambda t} &amp; \quad \Rightarrow \quad f(t;\mathbf{x})=\lambda e^{-\boldsymbol{\beta}'\mathbf{x}}e^{-\lambda te^{-\boldsymbol{\beta}' \mathbf{x}}}
+\end{align}\]</span> Note that this is equivalent to assuming that with explanatory variables <span class="math inline">\(\mathbf{x}\)</span> the failure time <span class="math display">\[T \sim Exp(\lambda e^{-\boldsymbol{\beta}' \mathbf{x}}).\]</span></p>
+<section id="parameter-estimation" class="level3" data-number="5.5.1">
+<h3 data-number="5.5.1" class="anchored" data-anchor-id="parameter-estimation"><span class="header-section-number">5.5.1</span> Parameter estimation</h3>
+<p>We estimate the <span class="math inline">\(p+1\)</span> parameters <span class="math inline">\(\lambda, \beta_1, \beta_2, \ldots, \beta_p\)</span> by maximum likelihood. We write the likelihood as a product of terms representing the observed failures and a product of terms representing the censored observations. <span class="math display">\[\begin{align}
+L(\lambda,\boldsymbol{\beta}) &amp;= \prod_{i=1}^n f(t_i;\mathbf{x_i})^{\delta_i} S(t_i;\mathbf{x_i})^{1-\delta_i} \\
+&amp;= \prod_{i=1}^n \left[ \lambda e^{-\boldsymbol{\beta}' \mathbf{x_i}} e^{-\lambda t_i e^{-\boldsymbol{\beta}' \mathbf{x_i} }} \right]^{\delta_i} \left[  e^{-\lambda t_i e^{-\boldsymbol{\beta}' \mathbf{x_i}} } \right]^{1- \delta_i}  \\
+&amp;= \prod_{i=1}^n \left[ \lambda e^{-\boldsymbol{\beta}' \mathbf{x_i}} \right]^{\delta_i} e^{ -\lambda t_i e^{-\boldsymbol{\beta}' \mathbf{x_i}}}.
+\end{align}\]</span> Taking logs gives <span class="math display">\[\begin{align}
+l(\lambda,\boldsymbol{\beta}) &amp;= \log \lambda \sum_{i=1}^n \delta_i  - \sum_{i=1}^n \delta_i \boldsymbol{\beta}' \mathbf{x_i} - \lambda \sum_{i=1}^n  t_i e^{-\boldsymbol{\beta}' \mathbf{x_i}}.
+\end{align}\]</span> Differentiating gives <span class="math display">\[\begin{align}
+\frac{\partial l}{\partial \lambda} &amp;= \frac{\Delta}{\lambda} - \sum t_i e^{-\boldsymbol{\beta}' \mathbf{x_i}} \quad \textrm{where } \Delta = \sum_{i=1}^n \delta_i \\
+\frac{\partial l}{\partial \beta_j} &amp;= -\sum_{i=1}^n \delta_i x_{ij} + \lambda \sum_{i=1}^n x_{ij} t_i e^{-\boldsymbol{\beta}' \mathbf{x_i}} \quad \textrm{for } j = 1, \ldots, p.
+\end{align}\]</span></p>
+<p>The maximum likelihood estimates are the solutions of <span class="math display">\[\begin{align}
+\frac{\Delta}{\hat{\lambda}} - \sum t_i e^{-\hat{\boldsymbol{\beta}}' \mathbf{x_i}} &amp;=0,\\
+-\sum_{i=1}^n \delta_i x_{ij} + \hat{\lambda} \sum_{i=1}^n x_{ij} t_i e^{-\hat{\boldsymbol{\beta}}' \mathbf{x_i}}&amp;=0.
+\end{align}\]</span></p>
+<p>We cannot solve these equations analytically, so numerical methods have to be used (R uses the Newton-Raphson method).</p>
+<p>For estimates of variance and standard errors we can use the asymptotic properties of the mle and note that <span class="math display">\[\begin{align}
+\frac{\partial^2 l}{\partial \lambda^2} &amp;= -\frac{\Delta}{\lambda^2} \\
+\frac{\partial^2 l}{\partial \lambda \partial \beta_j} &amp;=\sum_{i=1}^n x_{ij} t_i e^{-\boldsymbol{\beta}' \mathbf{x_i}}  &amp;\quad \textrm{for } j = 1, \ldots, p \\
+\frac{\partial^2 l}{\partial \beta_j \partial \beta_k} &amp;=-\lambda \sum_{i=1}^n x_{ij} x_{ik} t_i e^{-\boldsymbol{\beta}' \mathbf{x_i}}  &amp;\quad \textrm{for } j = 1, \ldots, p; \quad k = 1, \ldots, p
+\end{align}\]</span></p>
+</section>
+<section id="model-fitting-in-r" class="level3" data-number="5.5.2">
+<h3 data-number="5.5.2" class="anchored" data-anchor-id="model-fitting-in-r"><span class="header-section-number">5.5.2</span> Model fitting in R</h3>
+<p>As an example, we will use the <code>leuk</code> data from the <code>MASS</code> package (this doesn’t need installing). The help file (see <code>?MASS::leuk</code>) explains:</p>
+<blockquote class="blockquote">
+<p>Survival times are given for 33 patients who died from acute myelogenous leukaemia. Also measured was the patient’s white blood cell count at the time of diagnosis. The patients were also factored into 2 groups according to the presence or absence of a morphologic characteristic of white blood cells. Patients termed AG positive were identified by the presence of Auer rods and/or significant granulation of the leukaemic cells in the bone marrow at the time of diagnosis.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MASS<span class="sc">::</span>leuk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    wbc      ag time
+1  2300 present   65
+2   750 present  156
+3  4300 present  100
+4  2600 present  134
+5  6000 present   16
+6 10500 present  108</code></pre>
+</div>
+</div>
+<p>The aim is to fit an exponential AFT model with log of white blood cell count, and <code>ag</code> as explanatory variables.</p>
+<p>There is no censoring in this data. We first set up a survival object:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>leuk_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(MASS<span class="sc">::</span>leuk<span class="sc">$</span>time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For fitting in R, we define <span class="math display">\[
+\beta_0:=- \log \lambda,
+\]</span> and then write <span class="math display">\[T \sim Exp(\theta(\mathbf{x})),\]</span> where <span class="math display">\[\theta(\mathbf{x}) = \exp \left( -(\beta_0 + \beta_1 x_1 + \ldots + \beta_p x_p) \right).\]</span></p>
+</div>
+</div>
+<p>In the example, we have <span class="math inline">\(p=2\)</span> given the two explanatory variables, and we define</p>
+<ul>
+<li><span class="math inline">\(x_1\)</span>: the log of the white blood cell count (<code>log(wbc</code>))</li>
+<li><span class="math inline">\(x_2\)</span>: an indicator variable, taking the value 1 if the <code>ag</code> variable is <code>present</code> and 0 otherwise.</li>
+</ul>
+<p>We have three parameters to estimate: an ‘intercept’ <span class="math inline">\(\beta_0\)</span> and the coefficients of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>, denoted by <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> respectively.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>positive</strong> coefficient <span class="math inline">\(\beta_i\)</span> means that increasing <span class="math inline">\(x_i\)</span> is associated with <strong>longer</strong> survival times.</p>
+</div>
+</div>
+<p>We fit this model in R as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>leuk_regexp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(leuk_sv <span class="sc">~</span> <span class="fu">log</span>(wbc) <span class="sc">+</span> ag,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dist =</span> <span class="st">"exponential"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> MASS<span class="sc">::</span>leuk)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuk_regexp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = leuk_sv ~ log(wbc) + ag, data = MASS::leuk, 
+    dist = "exponential")
+             Value Std. Error     z       p
+(Intercept)  5.815      1.263  4.60 4.1e-06
+log(wbc)    -0.304      0.124 -2.45  0.0144
+agpresent    1.018      0.364  2.80  0.0051
+
+Scale fixed at 1 
+
+Exponential distribution
+Loglik(model)= -146.5   Loglik(intercept only)= -155.5
+    Chisq= 17.82 on 2 degrees of freedom, p= 0.00014 
+Number of Newton-Raphson Iterations: 5 
+n= 33 </code></pre>
+</div>
+</div>
+<p>The <code>summary()</code> command in the R output provides us with estimates of <span class="math inline">\(\beta_0, \beta_1, \ldots, \beta_p\)</span> and their standard errors. Here we have</p>
+<p><span class="math display">\[
+\hat{\beta}_0 = 5.815, \quad \hat{\beta}_1 = -0.304,\quad \hat{\beta}_2 = 1.018,
+\]</span> with estimated standard errors 1.263, 0.124 and 0.364 respectively.</p>
+</section>
+<section id="hypothesis-testing" class="level3" data-number="5.5.3">
+<h3 data-number="5.5.3" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">5.5.3</span> Hypothesis testing</h3>
+<p>Suppose we wish to investigate whether particular explanatory variables have an effect on the survival distribution. We can consider testing hypotheses of the form <span class="math display">\[
+H_0:\beta_i = 0
+\]</span></p>
+<p>We can perform <strong>partial</strong> z-tests: we compute <span class="math display">\[
+Z_{obs}:= \frac{\hat{\beta}_i}{\mbox{estimated standard error }(\hat{\beta}_i)},
+\]</span> with <span class="math inline">\(Z_{obs}\sim N(0, 1)\)</span> if <span class="math inline">\(H_0\)</span> is true.</p>
+<p>The tests are conditional on all the remaining covariates being included in the model and hence are termed partial z-tests.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To the test the significance of the <code>ag</code> variable (the “presence of Auer rods and/or significant granulation of the leukaemic cells in the bone marrow at the time of diagnosis”), we have</p>
+<p><span class="math display">\[
+H_0: \beta_2 = 0, \quad Z_{obs} = \frac{1.018}{0.364}=2.80,
+\]</span> and a <span class="math inline">\(p\)</span>-value of <span class="math display">\[
+2\times P(Z\ge 2.80),\quad \mbox{ where } Z\sim N(0,1),
+\]</span> which is 0.0051: strong evidence against <span class="math inline">\(H_0\)</span>: there is strong evidence that an <code>ag</code> test result of <code>present</code> is associated with longer survival times.</p>
+</div>
+</div>
+</section>
+<section id="predicting-survival-times" class="level3" data-number="5.5.4">
+<h3 data-number="5.5.4" class="anchored" data-anchor-id="predicting-survival-times"><span class="header-section-number">5.5.4</span> Predicting survival times</h3>
+<p>Suppose we want to predict survival for patient with a particular set of covariates <span class="math inline">\(\mathbf{x}^*\)</span>. For this patient’s survival time <span class="math inline">\(T\)</span>, we would have <span class="math display">\[
+T\sim Exp(\theta(\mathbf{x}^*)),
+\]</span> and we can estimate <span class="math inline">\(\theta(\mathbf{x}^*)\)</span> by <span class="math display">\[
+\hat{\theta}(\mathbf{x}^*):=\exp \left( -(\hat{\beta}_0 + \hat{\beta}_1 x^*_1 + \ldots + \hat{\beta}_p x^*_p) \right).
+\]</span> We can then estimate the mean survival <span class="math inline">\(E(T)\)</span> by <span class="math display">\[
+\hat{E}(T):=\frac{1}{\hat{\theta}(\mathbf{x}^*)}
+\]</span> and any percentile from the distribution of <span class="math inline">\(T\)</span> by inverting the estimated cumulative distribution function. For example, to estimate the 95th percentile <span class="math inline">\(t_{(0.95)}\)</span> of the distribution of <span class="math inline">\(T\)</span>, we note <span class="math display">\[
+0.05 = \exp(-t_{(0.95)}\theta(\mathbf{x}^*)),
+\]</span> and so an estimate would be <span class="math display">\[
+\hat{t}_{(0.95)} = \frac{-\log 0.05}{\hat{\theta}(\mathbf{x}^*)}
+\]</span></p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We estimate the mean survival time for a patient with a <code>wbc</code> of 10000 and who has an <code>ag</code> test result of <code>present</code>. We have <span class="math display">\[\mathbf{x^*} = (x_1^*,\,x_2^*)^T=(\log 10000,\, 1)^T\]</span> and <span class="math display">\[\hat{\lambda}(\mathbf{x^*}) = \exp(- 5.815 + 0.304\log(10000) - 1.018)= 0.01772,\]</span> hence the estimated mean survival is <span class="math inline">\(1/0.01772\simeq 56\)</span> days.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Approximate standard errors for these estimates can obtained using the general approximation <span class="math display">\[
+var(g(\hat{\phi}))\simeq \left.\{g'(\phi)\}^2\right|_{\phi=\hat{\phi}}var(\hat{\phi}),
+\]</span> with <span class="math display">\[
+\hat{\phi} = \hat{\beta}_0 + \hat{\beta}_1 x^*_1 + \ldots + \hat{\beta}_p x^*_p,
+\]</span> and, for example for <span class="math inline">\(E(T)\)</span>, <span class="math display">\[
+g(\hat{\phi}) = \exp(\hat{\phi}).
+\]</span> Standard errors can be obtained from R: you will not be required to compute these by hand!</p>
+</div>
+</div>
+</section>
+<section id="obtaining-predictions-using-r" class="level3" data-number="5.5.5">
+<h3 data-number="5.5.5" class="anchored" data-anchor-id="obtaining-predictions-using-r"><span class="header-section-number">5.5.5</span> Obtaining predictions using R</h3>
+<p>Predictions can be obtained using R, similar to how predictions are in obtained in R for linear models.</p>
+<p>We first set up a new data frame with the desired explanatory variables for prediction. Column names must match those used for model fitting. Consider again estimating the mean survival time for a patient with a <code>wbc</code> of 10000 and who has an <code>ag</code> test result of <code>present</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>xstar <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">wbc =</span> <span class="dv">10000</span>, <span class="at">ag =</span> <span class="st">"present"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We then use the <code>predict()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuk_regexp, <span class="at">newdata =</span> xstar, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fit
+       1 
+56.22816 
+
+$se.fit
+       1 
+13.65322 </code></pre>
+</div>
+</div>
+<p>We can also estimate percentiles from the distribution of the survival time, and obtain standard errors for the estimates. For example, to obtain the 5th and 95th percentiles:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuk_regexp, <span class="at">newdata =</span> xstar,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"quantile"</span>, <span class="at">p =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fit
+[1]   2.884127 168.444508
+
+$se.fit
+         1          1 
+ 0.7003186 40.9013901 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="the-weibull-aft-model" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="the-weibull-aft-model"><span class="header-section-number">5.6</span> The Weibull AFT Model</h2>
+<p>We briefly discuss the Weibull AFT model. Recall our Weibull parameterisation in <a href="background.html#sec-weibull" class="quarto-xref"><span>Section 1.5.2</span></a>: <span class="math display">\[\begin{align}
+  f(t) &amp;= \lambda \gamma (\lambda t) ^ {\gamma-1} \exp\left[ -(\lambda t) ^ \gamma \right] \\
+  S(t) &amp;= \exp\left[ -(\lambda t) ^ \gamma \right] \\
+  h(t) &amp;= \lambda \gamma (\lambda t) ^ {\gamma-1}
+\end{align}\]</span></p>
+<p>If we model <span class="math inline">\(T\)</span> as an AFT Weibull model with baseline <span class="math inline">\(T_0 \sim Weibull(\lambda_0, \gamma)\)</span> then</p>
+<p><span class="math display">\[
+S(t; \mathbf{x}) = \exp\left(- \left(\lambda_0 t \exp(-\boldsymbol{\beta}' \mathbf{x})\right)^\gamma\right).
+\]</span> We again define <span class="math inline">\(\beta_0 = -\log \lambda\)</span>, so that <span class="math display">\[
+S(t; \mathbf{x})= \exp\left(- \left(t  \exp(-(\beta_0 + \beta_1 x_1 + \ldots + \beta_p x_p)) \right)^\gamma\right)
+\]</span> This is equivalent to <span class="math inline">\(T \sim Weibull(\lambda(\mathbf{x}), \gamma)\)</span> where <span class="math display">\[\lambda(\mathbf{x}) = \exp\left(-(\beta_0 + \beta_1 x_1 + \ldots + \beta_p x_p) \right)\]</span> Note that <span class="math inline">\(\gamma\)</span> does not depend on <span class="math inline">\(\mathbf{x}\)</span>.</p>
+<p>We fit this model in R as follows (though <code>weibull</code> is the default argument for <code>dist</code>, so we could leave out <code>dist = "weibull"</code>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>leuk_regweib <span class="ot">&lt;-</span> <span class="fu">survreg</span>(leuk_sv <span class="sc">~</span> <span class="fu">log</span>(wbc) <span class="sc">+</span> ag,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> MASS<span class="sc">::</span>leuk)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuk_regweib)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = leuk_sv ~ log(wbc) + ag, data = MASS::leuk, 
+    dist = "weibull")
+              Value Std. Error     z       p
+(Intercept)  5.8524     1.3227  4.42 9.7e-06
+log(wbc)    -0.3103     0.1313 -2.36  0.0181
+agpresent    1.0206     0.3781  2.70  0.0069
+Log(scale)   0.0399     0.1392  0.29  0.7745
+
+Scale= 1.04 
+
+Weibull distribution
+Loglik(model)= -146.5   Loglik(intercept only)= -153.6
+    Chisq= 14.18 on 2 degrees of freedom, p= 0.00084 
+Number of Newton-Raphson Iterations: 6 
+n= 33 </code></pre>
+</div>
+</div>
+<p>We can obtain estimates of <span class="math inline">\(\beta_0, \beta_1, \beta_2\)</span> as before. Predictions for this model can be obtained using the <code>predict()</code> function as before.</p>
+<p>The <span class="math inline">\(\gamma\)</span> parameter is referred to as <code>Scale</code> (and <code>Log(scale)</code> for <span class="math inline">\(\log gamma\)</span>). We see that <span class="math inline">\(\log \hat{\gamma} = 0.0399\)</span>, and the partial <span class="math inline">\(z\)</span>-test shows <span class="math inline">\(\log \gamma\)</span> is not significantly different from 0. As <span class="math inline">\(\gamma=1\)</span> corresponds to the exponential distribution, we would conclude there is no evidence in favour of the Weibull distribution over the simpler exponential distribution.</p>
+</section>
+<section id="model-checking" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="model-checking"><span class="header-section-number">5.7</span> Model checking</h2>
+<p>We should discuss how to check the assumptions/goodness of fit for an AFT model, but we are not going to! To cover the topic properly here would add too much content to the module; there will be some discussion of model-checking (for proportional hazards models) in the next chapter. Recommended reading on this topic is Chapter 7 of</p>
+<ul>
+<li>Collett, D. (2023). Modelling Survival Data in Medical Research (4th ed.). Chapman and Hall/CRC.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./twosample.html" class="pagination-link" aria-label="Two Sample Comparisons">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Two Sample Comparisons</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./proportionalhazards.html" class="pagination-link" aria-label="Proportional Hazards Models">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Proportional Hazards Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
