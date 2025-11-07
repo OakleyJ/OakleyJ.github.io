@@ -242,6 +242,7 @@ window.Quarto = {
   <li><a href="#sec-weibull" id="toc-sec-weibull" class="nav-link" data-scroll-target="#sec-weibull"><span class="header-section-number">1.5.2</span> The Weibull Distribution</a></li>
   </ul></li>
   <li><a href="#an-example-dataset" id="toc-an-example-dataset" class="nav-link" data-scroll-target="#an-example-dataset"><span class="header-section-number">1.6</span> An example dataset</a></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">1.7</span> Tasks</a></li>
   </ul>
 </nav>
     </div>
@@ -419,7 +420,7 @@ h(t) &amp;= \lim_{h \rightarrow 0} \frac{P(t\leq T&lt;t+h, T \geq t)}{P(T \geq t
 &amp;= \left\{ \lim_{h \rightarrow 0} \frac{P(t&lt;T&lt;t+h)}{h}\right\} \frac{1}{P(T \geq t)} \nonumber \\
 &amp;= \left\{ \lim_{h \rightarrow 0} \frac{F(t+h)-F(t)}{h}\right\} \frac{1}{P(T \geq t)} \nonumber \\
 &amp;= \frac{F'(t)}{S(t)}=\frac{f(t)}{S(t)}.
-\end{align}\]</span>{#eq-relations}</p>
+\end{align}\]</span></p>
 <p>The Cumulative (or “Integrated”) Hazard Function <span class="math inline">\(H(t)\)</span> is defined as <span class="math display">\[
 H(t) := \int_0^t h(u) du = -\log{S(t)}.
 \]</span></p>
@@ -512,7 +513,7 @@ H(t)=\int_0^t \lambda \gamma (\lambda u) ^ {\gamma-1}du = (\lambda t)^\gamma,
 <p><span class="math display">\[\begin{align}
 S(t) &amp;= \exp\left[ -(\lambda t) ^ \gamma \right]  \\
 f(t) &amp;= \lambda \gamma (\lambda t) ^ {\gamma-1} \exp\left[ -(\lambda t) ^ \gamma \right]\\
-F(t) &amp; 1 - \exp\left[ -(\lambda t) ^ \gamma \right].
+F(t) &amp;= 1 - \exp\left[ -(\lambda t) ^ \gamma \right].
 \end{align}\]</span></p>
 <p>This is another standard distribution: the Weibull distribution. We write <span class="math inline">\(T \sim Weibull(\lambda, \gamma)\)</span>.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -553,6 +554,31 @@ f(t) = (a/\sigma) ( t/\sigma) ^ {a-1} \exp\left[ -( t/\sigma) ^ a \right],
 </div>
 </div>
 <p>In this extract, patient 1 died after 306 days of observation, patient 3 was still alive after 1010 days of observation, and was then no longer in the study.</p>
+</section>
+<section id="tasks" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="tasks"><span class="header-section-number">1.7</span> Tasks</h2>
+<ol type="1">
+<li>Suppose <span class="math inline">\(T \sim Weibull(\lambda, \gamma)\)</span>.</li>
+</ol>
+<ol type="a">
+<li>If it is known that <span class="math inline">\(P(T &lt; 1)=1/2\)</span> and <span class="math inline">\(P(T \leq 2)=15/16\)</span> find the values of <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\gamma\)</span> by considering the relevant survivor function.</li>
+<li>With these values of <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\gamma\)</span> find the maximum value of the hazard <span class="math inline">\(h(t)\)</span> in the interval <span class="math inline">\(t \in [0,10]\)</span>.</li>
+</ol>
+<ol start="2" type="1">
+<li><p>Let the random variable <span class="math inline">\(T\)</span> represent the failure time of an individual. For a constant hazard function <span class="math inline">\(h(t)=\lambda\)</span> for <span class="math inline">\(t\ge 0\)</span>, prove the lack of memory property: <span class="math display">\[
+P(T\ge t + s | T\ge s) = P(T\ge t).
+\]</span></p></li>
+<li><p>Given the following survivor function, sketch the corresponding hazard function. By considering a cohort of 100 patients starting at time 0, the number of patients we would expect to survive for 1 year, and how many of those survivors we would expect to survive for an additional year, explain the shape in your sketch.</p></li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="background_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
