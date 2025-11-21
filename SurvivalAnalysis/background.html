@@ -579,6 +579,64 @@ P(T\ge t + s | T\ge s) = P(T\ge t).
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>1a. We form two simultaneous equations using <span class="math inline">\(S(1)=1/2\)</span> and <span class="math inline">\(S(2)=1/16\)</span>. These give <span class="math display">\[\begin{align*}
+    \exp(-\lambda^\gamma) &amp;=1/2  \\
+    \exp(-(2\lambda)^\gamma) &amp;=1/16
+  \end{align*}\]</span> or equivalently <span class="math display">\[\begin{align*}
+    \lambda^\gamma &amp;=\ln 2  \\
+    (2\lambda)^\gamma &amp;=\ln 16
+  \end{align*}\]</span> Dividing these two equations gives <span class="math inline">\(2^\gamma=4\)</span> so <span class="math inline">\(\gamma=2\)</span>. Substituting gives <span class="math inline">\(\lambda=\sqrt{\ln 2}\)</span></p>
+<p>1b. <span class="math inline">\(h(t) \propto t\)</span> so the hazard is an increasing function and the maximum hazard in the interval <span class="math inline">\(t \in [0,10]\)</span> occurs at <span class="math inline">\(t=10\)</span>.</p>
+<ol start="2" type="1">
+<li>We have</li>
+</ol>
+<p><span class="math display">\[\begin{align*}
+P(T\ge t + s | T\ge s) &amp; = \frac{P(T\ge t+s \mbox{ and } T\ge s)}{P(T\ge s)}\\
+&amp; = \frac{P(T\ge t+s)}{P(T\ge s)}
+\end{align*}\]</span> because if <span class="math inline">\(T\ge t+s\)</span> then is must also be true that <span class="math inline">\(T\ge s\)</span>. Then <span class="math display">\[
+\frac{P(T\ge t+s)}{P(T\ge s)} = \frac{\exp(-\lambda(t+s))}{\exp(-\lambda s)} =\exp(-\lambda t) = P(T\ge t).
+\]</span> Hence <span class="math display">\[
+P(T\ge t + s | T\ge s) = P(T\ge t).
+\]</span> 3. The hazard function is obtained from the survivor function via</p>
+<p><span class="math display">\[
+h(t) = - \frac{d}{dt} \log S(t)
+\]</span></p>
+<p>We have a linear survivor function that is 0 at <span class="math inline">\(t=2\)</span>, so the shape of <span class="math inline">\(-\log S(t)\)</span> is</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="background_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The gradient increases with <span class="math inline">\(t\)</span>, so the shape of the hazard is</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="background_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To explain this shape, if we consider a cohort of 100 patients, we have <span class="math inline">\(S(1)=0.5\)</span>, so we expect 50 of the patients to survive the first year. We have <span class="math inline">\(S(2)=0\)</span>, so of these 50, we expect <em>none</em> of them survive a whole second year. This is why the hazard increases over time, and tends to infinity as <span class="math inline">\(t\)</span> tends to 2, as the probability of surviving beyond two years is 0.</p>
+</div>
+</div>
+</div>
 
 
 </section>
