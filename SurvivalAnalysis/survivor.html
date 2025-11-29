@@ -618,10 +618,10 @@ The actuarial assumption
 <p>We can now calculate estimates of the survivor function through repeated use of the factorisation method in <a href="#sec-factorisation" class="quarto-xref"><span>Section 2.1.1</span></a></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 40%">
-<col style="width: 19%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 35%">
+<col style="width: 21%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1140,7 +1140,7 @@ Note
 </ol>
 <p><span class="math display">\[6^*, 6, 6, 6, 7, 9^*, 10^*, 10, 11^*, 13, 16,\]</span> <span class="math display">\[17^*, 19^*, 20^*, 22, 23, 25^*, 32^*, 34^*, 35^*\]</span></p>
 <ol type="a">
-<li><p>Tabulate the Kaplan-Meier estimate of the survivor function. Sketch the estimator survivor function.</p></li>
+<li><p>Tabulate the Kaplan-Meier estimate of the survivor function. Sketch the estimated survivor function.</p></li>
 <li><p>Estimate the median time to relapse.</p></li>
 <li><p>Estimate the proportion of patients that will not relapse within 6 weeks of starting remission.</p></li>
 <li><p>Use R to verify your table and plot. Note that the following code will set up the data in R:</p></li>
@@ -1158,6 +1158,183 @@ Note
 <ol start="5" type="a">
 <li>Comment on the estimated survivor function for <span class="math inline">\(t&gt;25\)</span> weeks: whether you think the estimate is reliable or not.</li>
 </ol>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>We proceed by finding the number who died in the first interval <span class="math inline">\(2418-1962 = 456\)</span>; in the second interval <span class="math inline">\(1962-39-1697=226\)</span> and so on. We tabulate and add in the adjusted number at risk</li>
+</ol>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 22%">
+<col style="width: 20%">
+<col style="width: 18%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Survival time (years)</th>
+<th style="text-align: center;">Number of patients known to survive at beginning of interval</th>
+<th style="text-align: center;">Number of patients lost to follow up</th>
+<th style="text-align: right;">Number of deaths</th>
+<th style="text-align: right;">Adjusted number at risk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0 - 1</td>
+<td style="text-align: center;">2418</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: right;">456</td>
+<td style="text-align: right;">2418.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1 - 2</td>
+<td style="text-align: center;">1962</td>
+<td style="text-align: center;">39</td>
+<td style="text-align: right;">226</td>
+<td style="text-align: right;">1942.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2 - 3</td>
+<td style="text-align: center;">1697</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: right;">152</td>
+<td style="text-align: right;">1686.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3 - 4</td>
+<td style="text-align: center;">1523</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">1511.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4 - 5</td>
+<td style="text-align: center;">1329</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: right;">135</td>
+<td style="text-align: right;">1317.0</td>
+</tr>
+</tbody>
+</table>
+<p>The life-table estimate is computed as</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 27%">
+<col style="width: 25%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(j\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(t_j\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\hat{P}(T\ge t_j | T\ge t_{j-1})\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\hat{S}(t_j) = \hat{S}(t_{j-1})\times\hat{P}(T\ge t_j | T\ge t_{j-1})\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\((2418-456)/2418\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.81\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\((1942.5-226)/1942.5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.72\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math inline">\((1686.0-152)/1686.0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.64\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><span class="math inline">\((1511.5-171)/1511.5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.57\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><span class="math inline">\((1317.0-135)/1317.0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.50\)</span></td>
+</tr>
+</tbody>
+</table>
+<ol start="2" type="1">
+<li>The R code below is the solution to part d, and also gives the Kaplan-Meier estimate and plot for part a.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>leukemia <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">time =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">19</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">32</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">34</span>, <span class="dv">35</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">censor =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>leukemia_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(leukemia<span class="sc">$</span>time, leukemia<span class="sc">$</span>censor, <span class="at">type =</span> <span class="st">"right"</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>leukemiaSurv <span class="ot">&lt;-</span><span class="fu">survfit</span>(leukemia_sv <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>leukemia)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leukemiaSurv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = leukemia_sv ~ 1, data = leukemia)
+
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    6     21       3    0.857  0.0764        0.720        1.000
+    7     17       1    0.807  0.0869        0.653        0.996
+   10     15       1    0.753  0.0963        0.586        0.968
+   13     12       1    0.690  0.1068        0.510        0.935
+   16     11       1    0.627  0.1141        0.439        0.896
+   22      7       1    0.538  0.1282        0.337        0.858
+   23      6       1    0.448  0.1346        0.249        0.807</code></pre>
+</div>
+</div>
+<p>To get the plot we do</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(leukemiaSurv, <span class="at">data =</span> leukemia,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">surv.median.line =</span> <span class="st">'hv'</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab =</span> <span class="st">"Remission Time (Weeks)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="survivor_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="a">
+<li><p>For the median we need the smallest <span class="math inline">\(t\)</span> for which the estimated survivor function <span class="math inline">\(S(t)\le0.5\)</span>. We can read this off the table as <span class="math inline">\(t=23\)</span>.</p></li>
+<li><p>The the proportion of patients that will not relapse within 6 weeks of starting remission is <span class="math inline">\(S(6)\)</span>. From the table, this is estimated as 0.857.</p></li>
+<li><p>For <span class="math inline">\(t&gt;25\)</span> we see in the plot that the confidence intervals for <span class="math inline">\(\hat{S}(t)\)</span> are wide, and we also note all observations for <span class="math inline">\(t&gt;25\)</span> are censored. The estimate of <span class="math inline">\(S(t)\)</span> may not very reliable here. A ‘flat’ survivor function as seen for <span class="math inline">\(t&gt;23\)</span> may not be plausible, unless it is the case that if remission has not occurred after a certain number of weeks, it is unlikely to occur at all.</p></li>
+</ol>
+</div>
+</div>
+</div>
 
 
 </section>

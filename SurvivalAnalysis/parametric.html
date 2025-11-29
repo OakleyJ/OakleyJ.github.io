@@ -237,6 +237,7 @@ window.Quarto = {
   <li><a href="#fitting-a-weibull-model-to-the-tumour-remission-data" id="toc-fitting-a-weibull-model-to-the-tumour-remission-data" class="nav-link" data-scroll-target="#fitting-a-weibull-model-to-the-tumour-remission-data"><span class="header-section-number">3.2.2</span> Fitting a Weibull model to the tumour remission data</a></li>
   <li><a href="#checking-goodness-of-fit" id="toc-checking-goodness-of-fit" class="nav-link" data-scroll-target="#checking-goodness-of-fit"><span class="header-section-number">3.2.3</span> Checking goodness of fit</a></li>
   </ul></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">3.3</span> Tasks</a></li>
   </ul>
 </nav>
     </div>
@@ -593,9 +594,28 @@ n= 10 </code></pre>
 </div>
 </div>
 </div>
-
-
 </section>
+</section>
+<section id="tasks" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="tasks"><span class="header-section-number">3.3</span> Tasks</h2>
+<p>The data below give the time to relapse (in weeks), following remission, for a group of leukaemia patients treated with a particular drug “Drug-6-MP”: (* indicates a right censored value).</p>
+<p><span class="math display">\[6^*, 6, 6, 6, 7, 9^*, 10^*, 10, 11^*, 13, 16,\]</span> <span class="math display">\[17^*, 19^*, 20^*, 22, 23, 25^*, 32^*, 34^*, 35^*\]</span> These are the data used in the Chapter 2 Tasks. Here, we will suppose the remission times follow an exponential distribution with rate parameter <span class="math inline">\(\lambda\)</span>.</p>
+<ol type="1">
+<li>Estimate the MLE of the rate parameter <span class="math inline">\(\lambda\)</span>.</li>
+<li>Calculate the median relapse time.</li>
+<li>Calculate the inter-quartile range of the relapse time.</li>
+<li>Calculate the probability that a leukaemia patient will not relapse within 6 weeks of remission.</li>
+<li>Estimate the density function of relapse time at 6 weeks.</li>
+<li>Estimate the hazard function of relapse time at 6 weeks.</li>
+<li>Calculate a 95% confidence interval for <span class="math inline">\(\lambda\)</span>.</li>
+<li>A similar study estimates that 48% of leukaemia patients in the Drug-6-MP group do not relapse for at least 15 weeks. Is the confidence interval in (7) consistent with this finding?</li>
+<li>In a similar Drug-6-MP group of 10 leukaemia patients, estimate the probability that at least 2 patients relapse within 8 weeks.</li>
+<li>Calculate a 95% confidence interval for expected relapse time.</li>
+<li>Calculate a 95% confidence interval for median relapse time.</li>
+<li>In R, fit an exponential failure time distribution to the relapse time data for the Drug-6-MP patients. Assess the evidence that a Weibull distribution is more appropriate than the exponential distribution as a model of the relapse time.</li>
+</ol>
+
+
 </section>
 
 </main> <!-- /main -->
