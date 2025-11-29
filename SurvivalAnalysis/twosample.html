@@ -239,6 +239,7 @@ window.Quarto = {
   <li><a href="#likelihood-ratio-test-applied-to-the-brain-tumour-data" id="toc-likelihood-ratio-test-applied-to-the-brain-tumour-data" class="nav-link" data-scroll-target="#likelihood-ratio-test-applied-to-the-brain-tumour-data"><span class="header-section-number">4.3.4</span> Likelihood Ratio Test applied to the Brain Tumour Data</a></li>
   <li><a href="#performing-the-likelihood-ratio-test-in-r" id="toc-performing-the-likelihood-ratio-test-in-r" class="nav-link" data-scroll-target="#performing-the-likelihood-ratio-test-in-r"><span class="header-section-number">4.3.5</span> Performing the Likelihood Ratio Test in R</a></li>
   </ul></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">4.4</span> Tasks</a></li>
   </ul>
 </nav>
     </div>
@@ -606,9 +607,40 @@ groupRT plus CT        -0.2       0.5333333</code></pre>
 <li><p>The <span class="math inline">\(\chi^2_1\)</span> value of 1.2 (giving a p-value of 0.27) given above is the value of the likelihood ratio test statistic.</p></li>
 </ul>
 <p>It can be shown that the MLE and likelihood ratio tests are asymptotically equivalent so for large sample sizes they should lead to similar conclusions. There is some research showing that the LRT is more appropriate for small samples although this is not a hard rule. In large samples, little power is gained by using parametric methods instead of the log-rank test.</p>
-
-
 </section>
+</section>
+<section id="tasks" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="tasks"><span class="header-section-number">4.4</span> Tasks</h2>
+<p>Consider again the leukaemia data from the Chapter 2 Tasks. We have the time to relapse (in weeks), following remission, for a group of leukaemia patients treated with a particular drug “Drug-6-MP”: (* indicates a right censored value).</p>
+<p><span class="math display">\[6^*, 6, 6, 6, 7, 9^*, 10^*, 10, 11^*, 13, 16,\]</span></p>
+<p><span class="math display">\[17^*, 19^*, 20^*, 22, 23, 25^*, 32^*, 34^*, 35^*\]</span></p>
+<p>In addition, there was a control group, with patients randomised to either the drug or control. Times to relapse for the control group were as follows: <span class="math display">\[
+1, 1, 2, 2, 3, 4, 4, 5, 5, 8, 8,
+\]</span> <span class="math display">\[
+8, 8, 11, 11, 12, 12, 15, 17, 22, 23
+\]</span></p>
+<ol type="1">
+<li><p>Use a log rank test to compare the two groups and report your conclusions. Do the calculations by hand!</p></li>
+<li><p>Use the following code to set up the data in R. Then do the log rank test in R to check your result. Note that the R output will give the same expected number of remissions in each group, but will report a slightly different test statistic value, as it applies an adjustment for tied event times. You don’t need to worry about this!</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>leukaemia <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">time =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">19</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">32</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">34</span>, <span class="dv">35</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">8</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">11</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">22</span>, <span class="dv">23</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">censor =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">21</span>)),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"drug6MP"</span>, <span class="st">"control"</span>), <span class="at">each =</span> <span class="dv">21</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Do a suitable plot in R to compare the two groups, and comment on how this relates to your result in question 1.</li>
+</ol>
+
+
 </section>
 
 </main> <!-- /main -->
