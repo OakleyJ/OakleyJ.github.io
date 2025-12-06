@@ -237,6 +237,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#the-weibull-aft-model" id="toc-the-weibull-aft-model" class="nav-link" data-scroll-target="#the-weibull-aft-model"><span class="header-section-number">5.6</span> The Weibull AFT Model</a></li>
   <li><a href="#model-checking" id="toc-model-checking" class="nav-link" data-scroll-target="#model-checking"><span class="header-section-number">5.7</span> Model checking</a></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">5.8</span> Tasks</a></li>
   </ul>
 </nav>
     </div>
@@ -644,6 +645,47 @@ n= 33 </code></pre>
 <ul>
 <li>Collett, D. (2023). Modelling Survival Data in Medical Research (4th ed.). Chapman and Hall/CRC.</li>
 </ul>
+</section>
+<section id="tasks" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="tasks"><span class="header-section-number">5.8</span> Tasks</h2>
+<ol type="1">
+<li>Consider the Weibull AFT model fitted to the leukaemia data</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>leuk_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(MASS<span class="sc">::</span>leuk<span class="sc">$</span>time)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>leuk_regweib <span class="ot">&lt;-</span> <span class="fu">survreg</span>(leuk_sv <span class="sc">~</span> <span class="fu">log</span>(wbc) <span class="sc">+</span> ag,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> MASS<span class="sc">::</span>leuk)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuk_regweib)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = leuk_sv ~ log(wbc) + ag, data = MASS::leuk, 
+    dist = "weibull")
+              Value Std. Error     z       p
+(Intercept)  5.8524     1.3227  4.42 9.7e-06
+log(wbc)    -0.3103     0.1313 -2.36  0.0181
+agpresent    1.0206     0.3781  2.70  0.0069
+Log(scale)   0.0399     0.1392  0.29  0.7745
+
+Scale= 1.04 
+
+Weibull distribution
+Loglik(model)= -146.5   Loglik(intercept only)= -153.6
+    Chisq= 14.18 on 2 degrees of freedom, p= 0.00084 
+Number of Newton-Raphson Iterations: 6 
+n= 33 </code></pre>
+</div>
+</div>
+<ol type="a">
+<li><p>At what time does the survival probability for a leukaemia patient with a white blood cell count of 10000 and <code>ag</code> recorded as <code>absent</code> first drop below 0.25 for the Weibull model?</p></li>
+<li><p>By using the relationship <span class="math inline">\(h(t;x)=h_0(t\psi(\mathbf{x}))\psi(\mathbf{x})\)</span> or otherwise, show(using the usual notation) that the hazard at time <span class="math inline">\(t\)</span> for a leukaemia patient with a log white blood cell count of <span class="math inline">\(x_1\)</span> and <code>ag</code> recorded as <code>present</code> is given by <span class="math inline">\(\gamma \exp(-(\beta_0 + \beta_1 x +\beta_2))(t\exp(-(\beta_0 + \beta_1 x +\beta_2)))^{\gamma-1}\)</span> for the Weibull model.</p></li>
+</ol>
+<ol start="2" type="1">
+<li>For an AFT model the survivor function for an individual with covariate vector <span class="math inline">\(\mathbf{x}\)</span> satisfies <span class="math display">\[S(t;\mathbf{x}) = S_0(te^{-\boldsymbol{\beta}' \mathbf{x}}),\]</span> where <span class="math inline">\(S_0(t)\)</span> is some baseline survivor function. Show that the corresponding hazard function satisfies<br>
+<span class="math display">\[ h(t;\mathbf{x}) = e^{-\boldsymbol{\beta}' \mathbf{x}} h_0 (t e^{-\boldsymbol{\beta}' \mathbf{x}})\]</span> where <span class="math inline">\(h_0(t)\)</span> is the baseline hazard function for <span class="math inline">\(S_0(t)\)</span>. Hint: write the hazard function solely in terms of the survivor function.</li>
+</ol>
 
 
 </section>

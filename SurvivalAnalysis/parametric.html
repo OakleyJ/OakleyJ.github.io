@@ -483,7 +483,7 @@ Number of Newton-Raphson Iterations: 4
 n= 10 </code></pre>
 </div>
 </div>
-<p>Thus <span class="math display">\[\hat{\lambda}=\frac{1}{\text{exp(intercept)}} = \frac{1}{\text{exp}(3.78)} = 0.0228\]</span> and a 95% confidence interval for <span class="math inline">\(\lambda\)</span> is <span class="math display">\[\frac{1}{\exp( 3.78 \pm 1.96 \times 0.378)} = (0.0108, 0.0479)\]</span> The standard errors in the R output are not the same as the standard errors calculated from Equation @ref(eq:censexpvarobs). That would give an approximate standard error of <span class="math inline">\(\hat \lambda\)</span> as <span class="math display">\[\frac{1}{\sqrt{7}\exp(3.78)} = 0.008626 \hspace{1cm} \left[ s.e.(\hat{\lambda}) \approx \frac{\hat{\lambda}}{\sqrt{\sum \delta_i}} \right]\]</span> and a confidence interval of (0.00589, 0.0397). These illustrate that calculations of standard errors and confidence intervals depend on the approach being used although the differences may often not be very large.</p>
+<p>Thus <span class="math display">\[\hat{\lambda}=\frac{1}{\text{exp(intercept)}} = \frac{1}{\text{exp}(3.78)} = 0.0228\]</span> and a 95% confidence interval for <span class="math inline">\(\lambda\)</span> is <span class="math display">\[\frac{1}{\exp( 3.78 \pm 1.96 \times 0.378)} = (0.0108, 0.0479)\]</span> The standard errors in the R output are not the same as the standard errors calculated above. That would give an approximate standard error of <span class="math inline">\(\hat \lambda\)</span> as <span class="math display">\[\frac{1}{\sqrt{7}\exp(3.78)} = 0.008626 \hspace{1cm} \left[ s.e.(\hat{\lambda}) \approx \frac{\hat{\lambda}}{\sqrt{\sum \delta_i}} \right]\]</span> and a confidence interval of (0.00589, 0.0397). These illustrate that calculations of standard errors and confidence intervals depend on the approach being used although the differences may often not be very large.</p>
 </section>
 <section id="fitting-a-weibull-model-to-the-tumour-remission-data" class="level3" data-number="3.2.2">
 <h3 data-number="3.2.2" class="anchored" data-anchor-id="fitting-a-weibull-model-to-the-tumour-remission-data"><span class="header-section-number">3.2.2</span> Fitting a Weibull model to the tumour remission data</h3>
@@ -614,6 +614,121 @@ n= 10 </code></pre>
 <li>Calculate a 95% confidence interval for median relapse time.</li>
 <li>In R, fit an exponential failure time distribution to the relapse time data for the Drug-6-MP patients. Assess the evidence that a Weibull distribution is more appropriate than the exponential distribution as a model of the relapse time.</li>
 </ol>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>We have</li>
+</ol>
+<p><span class="math display">\[\hat{\lambda}=\frac{\text{Numer of non-censored observations}}{\text{total time in study}}=9/359=0.025\]</span></p>
+<ol start="2" type="1">
+<li><p>The median <span class="math inline">\(t_M\)</span> is found by solving <span class="math inline">\(F(t_M)=1/2\)</span>. This gives our estimator as <span class="math display">\[\hat{t}_M=ln(2)/\hat\lambda=27.65\]</span></p></li>
+<li><p>The upper quartile <span class="math inline">\(U\)</span> is found by solving <span class="math inline">\(F(U)=3/4\)</span> and the lower quartile <span class="math inline">\(L\)</span> is found by solving <span class="math inline">\(F(L)=1/4\)</span>. We get <span class="math inline">\(U=ln(4)/\lambda\)</span> and <span class="math inline">\(L=ln(4/3)/\lambda\)</span>. This gives the estimate of the IQR as <span class="math display">\[ln(3)/\lambda=43.82\]</span></p></li>
+<li><p>We have</p></li>
+</ol>
+<p><span class="math display">\[\hat{S}(6)=\exp(-6\hat{\lambda})=0.86\]</span></p>
+<ol start="5" type="1">
+<li>We have</li>
+</ol>
+<p><span class="math display">\[\hat{f}(6)=\hat\lambda \exp(-6\hat\lambda)=0.02.\]</span></p>
+<ol start="6" type="1">
+<li>We have</li>
+</ol>
+<p><span class="math display">\[\hat{h}(6)=\hat \lambda=0.03.\]</span></p>
+<ol start="7" type="1">
+<li>The confidence interval is given by <span class="math inline">\(\hat\lambda\pm1.96\frac{\hat \lambda}{\sqrt{\sum \delta_i}}=(\)</span> 0.009, 0.041)</li>
+</ol>
+<ol start="8" type="1">
+<li>There are two ways to approach this. The simplest way is to estimate <span class="math inline">\(\lambda\)</span> using the new data. Solving <span class="math inline">\(S(15)=0.48\)</span> gives <span class="math inline">\(\hat \lambda=0.049\)</span> which is <strong>not</strong> within the 95% CI calculated in (7). An alternative (but much more complicated!) approach is to</li>
+</ol>
+<ul>
+<li>use <span class="math inline">\(\hat \lambda =0.025\)</span> from the original data set to get an estimate of <span class="math inline">\(S(15)\)</span></li>
+<li>obtain a 95% confidence interval for <span class="math inline">\(S(15)\)</span></li>
+<li>check to see whether 0.48 is in this 95% confidence interval.</li>
+</ul>
+<p>To implement this second approach, we proceed as follows. The survivor function at <span class="math inline">\(t=15\)</span> is <span class="math inline">\(S(15)=\exp(-15 \lambda)\)</span>. Using the invariance property of the MLE we know that the MLE of <span class="math inline">\(S(15)\)</span> is <span class="math inline">\(\widehat{S(15)}=\exp(-15 \hat\lambda)\)</span> = 0.687.</p>
+<p>To get the variance of <span class="math inline">\(\widehat{S(15)}\)</span> we use the method in Section 3.1.3. with <span class="math inline">\(g(\lambda)=\exp(-15 \lambda)\)</span>. <span class="math display">\[\begin{align}
+g(\lambda) &amp;= \exp(-15 \lambda)\\
+g'(\lambda)^2 &amp;=225\exp(-30 \lambda)
+\end{align}\]</span> Therefore <span class="math display">\[\begin{align}
+Var(\widehat{S(15)})&amp;=225\exp(-30 \hat\lambda)Var(\hat\lambda)\\
+&amp;=225\exp(-30 \hat\lambda)\frac{\hat \lambda^2}{\sum \delta_i}
+\end{align}\]</span> Assuming normality of <span class="math inline">\(\widehat{S(15)}\)</span> the 95% CI is therefore <span class="math display">\[
+\widehat{S(15)} \pm 1.96 \times 15\exp(-15 \hat\lambda)\frac{\hat \lambda}{\sqrt{\sum \delta_i}}
+\]</span></p>
+<p>Using <span class="math inline">\(\widehat{S(15)}=0.687\)</span> the 95% CI for <span class="math inline">\(S(15)\)</span> is <span class="math inline">\((0.518,0.855)\)</span>. This is therefore <strong>not</strong> consistent with the 0.48 estimate for <span class="math inline">\(S(15)\)</span> from the other study.</p>
+<ol start="9" type="1">
+<li><p>Let <span class="math inline">\(X\)</span> represent the number of patients that relapse within 8 weeks. Then <span class="math inline">\(X \sim \text{bin}(10, p)\)</span> where <span class="math inline">\(p=F(8)=1-\exp(-8\lambda).\)</span> Therefore <span class="math inline">\(\hat p = 1-exp(-8\hat\lambda)=0.182\)</span>. We require <span class="math inline">\(P(X \geq 2)=1-P(X\leq 1)\)</span> which you can get from R using <em>1-pbinom(1, size=10, prob=0.182)</em>. The probability is <span class="math inline">\(0.567.\)</span></p></li>
+<li><p>The estimate of the expected relapse time <span class="math inline">\(\hat \mu\)</span> is given by <span class="math inline">\(\hat \mu=1/\hat\lambda=39.89\)</span> (using the invariance property of the MLE). Using the expression on slide 25 of the Chapters 2 and 3 slides, the 95% for <span class="math inline">\(\hat \mu\)</span> is <span class="math inline">\(\hat \mu \pm 1.96 \frac{\hat \mu}{\sqrt{\sum\delta_i}}\)</span> which is (13.8,65.9).</p></li>
+<li><p>Using the answer to (2) we know that the estimator of the median is <span class="math inline">\(\widehat{t_M}=ln2/\hat \lambda=27.649\)</span>. Using equation 53 in the notes with <span class="math inline">\(\alpha=0.5\)</span> we get that Var<span class="math inline">\((\widehat{t_M})=(ln2)^2Var(\frac{1}{\hat \lambda})=(ln2)^2Var(\hat \mu)=(ln2)^2\frac{\hat\mu^2}{\sum\delta_i}\)</span></p></li>
+</ol>
+<p>Again assuming normality of <span class="math inline">\(\widehat{t_M}\)</span>, a 95% CI is therefore <span class="math inline">\(\widehat{t_M}\pm 1.96 \times ln2 \times \frac{\hat\mu}{\sqrt{\sum\delta_i}}=(21.8,58)\)</span>.</p>
+<ol start="12" type="1">
+<li>To fit distributions for the relapse time in R we first specify the data</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>leukaemia <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">time =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">19</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">32</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">34</span>, <span class="dv">35</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">censor =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>leukaemia_sv <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">Surv</span>(leukaemia<span class="sc">$</span>time, leukaemia<span class="sc">$</span>censor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we fit the exponential model using</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>leukexp <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survreg</span>(leukaemia_sv <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"exponential"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leukexp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survival::survreg(formula = leukaemia_sv ~ 1, dist = "exponential")
+            Value Std. Error    z      p
+(Intercept) 3.686      0.333 11.1 &lt;2e-16
+
+Scale fixed at 1 
+
+Exponential distribution
+Loglik(model)= -42.2   Loglik(intercept only)= -42.2
+Number of Newton-Raphson Iterations: 4 
+n= 21 </code></pre>
+</div>
+</div>
+<p>and we fit a Weibull using</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>leukexp <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survreg</span>(leukaemia_sv <span class="sc">~</span> <span class="dv">1</span>, <span class="at">dist =</span> <span class="st">"weibull"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leukexp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survival::survreg(formula = leukaemia_sv ~ 1, dist = "weibull")
+             Value Std. Error     z      p
+(Intercept)  3.519      0.273 12.87 &lt;2e-16
+Log(scale)  -0.303      0.278 -1.09   0.28
+
+Scale= 0.739 
+
+Weibull distribution
+Loglik(model)= -41.7   Loglik(intercept only)= -41.7
+Number of Newton-Raphson Iterations: 5 
+n= 21 </code></pre>
+</div>
+</div>
+<p>The null hypothesis here is that the scale parameter is 1 (log(scale)=0). The alternative hypothesis is that it is not equal to 1. The p-value of 0.28 means that there is little evidence to reject the null. There is little evidence that the more general weibull distribution is needed here.</p>
+</div>
+</div>
+</div>
 
 
 </section>

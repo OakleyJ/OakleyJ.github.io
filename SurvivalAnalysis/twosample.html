@@ -239,6 +239,7 @@ window.Quarto = {
   <li><a href="#likelihood-ratio-test-applied-to-the-brain-tumour-data" id="toc-likelihood-ratio-test-applied-to-the-brain-tumour-data" class="nav-link" data-scroll-target="#likelihood-ratio-test-applied-to-the-brain-tumour-data"><span class="header-section-number">4.3.4</span> Likelihood Ratio Test applied to the Brain Tumour Data</a></li>
   <li><a href="#performing-the-likelihood-ratio-test-in-r" id="toc-performing-the-likelihood-ratio-test-in-r" class="nav-link" data-scroll-target="#performing-the-likelihood-ratio-test-in-r"><span class="header-section-number">4.3.5</span> Performing the Likelihood Ratio Test in R</a></li>
   </ul></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">4.4</span> Tasks</a></li>
   </ul>
 </nav>
     </div>
@@ -606,9 +607,196 @@ groupRT plus CT        -0.2       0.5333333</code></pre>
 <li><p>The <span class="math inline">\(\chi^2_1\)</span> value of 1.2 (giving a p-value of 0.27) given above is the value of the likelihood ratio test statistic.</p></li>
 </ul>
 <p>It can be shown that the MLE and likelihood ratio tests are asymptotically equivalent so for large sample sizes they should lead to similar conclusions. There is some research showing that the LRT is more appropriate for small samples although this is not a hard rule. In large samples, little power is gained by using parametric methods instead of the log-rank test.</p>
-
-
 </section>
+</section>
+<section id="tasks" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="tasks"><span class="header-section-number">4.4</span> Tasks</h2>
+<p>Consider again the leukaemia data from the Chapter 2 Tasks. We have the time to relapse (in weeks), following remission, for a group of leukaemia patients treated with a particular drug “Drug-6-MP”: (* indicates a right censored value).</p>
+<p><span class="math display">\[6^*, 6, 6, 6, 7, 9^*, 10^*, 10, 11^*, 13, 16,\]</span></p>
+<p><span class="math display">\[17^*, 19^*, 20^*, 22, 23, 25^*, 32^*, 34^*, 35^*\]</span></p>
+<p>In addition, there was a control group, with patients randomised to either the drug or control. Times to relapse for the control group were as follows: <span class="math display">\[
+1, 1, 2, 2, 3, 4, 4, 5, 5, 8, 8,
+\]</span> <span class="math display">\[
+8, 8, 11, 11, 12, 12, 15, 17, 22, 23
+\]</span></p>
+<ol type="1">
+<li><p>Use a log rank test to compare the two groups and report your conclusions. Do the calculations by hand!</p></li>
+<li><p>Use the following code to set up the data in R. Then do the log rank test in R to check your result. Note that the R output will give the same expected number of remissions in each group, but will report a slightly different test statistic value, as it applies an adjustment for tied event times. You don’t need to worry about this!</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>leukaemia <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">time =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">19</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">32</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">34</span>, <span class="dv">35</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">8</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">11</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">22</span>, <span class="dv">23</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">censor =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">21</span>)),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"drug6MP"</span>, <span class="st">"control"</span>), <span class="at">each =</span> <span class="dv">21</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Do a suitable plot in R to compare the two groups, and comment on how this relates to your result in question 1.</li>
+</ol>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Performing the log-rank test by hand we get</li>
+</ol>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(i\)</span></th>
+<th><span class="math inline">\(t_i\)</span></th>
+<th><span class="math inline">\(r_{1i}\)</span></th>
+<th><span class="math inline">\(r_{2i}\)</span></th>
+<th><span class="math inline">\(r_i\)</span></th>
+<th><span class="math inline">\(d_{1i}\)</span></th>
+<th><span class="math inline">\(d_{2i}\)</span></th>
+<th><span class="math inline">\(d_i\)</span></th>
+<th><span class="math inline">\(e_{1i}\)</span></th>
+<th><span class="math inline">\(e_{2i}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>21</td>
+<td>21</td>
+<td>42</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>1.00</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+<td>21</td>
+<td>19</td>
+<td>40</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>1.05</td>
+<td>0.95</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>3</td>
+<td>21</td>
+<td>17</td>
+<td>38</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0.55</td>
+<td>0.45</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>23</td>
+<td>6</td>
+<td>1</td>
+<td>7</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1.71</td>
+<td>0.28</td>
+</tr>
+<tr class="even">
+<td>Totals</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><span class="math inline">\(O_1 = 9\)</span></td>
+<td><span class="math inline">\(O_2 = 21\)</span></td>
+<td></td>
+<td><span class="math inline">\(E_1 = 19.25\)</span></td>
+<td><span class="math inline">\(E_2 = 10.75\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>which gives us a <span class="math inline">\(\chi^2\)</span> statistic of 15.28 on 1 degree of freedom. Given that the 95th percentile of the <span class="math inline">\(\chi^2_1\)</span> distribution is 3.84, this test provides very strong evidence that the survival patterns are different with the treated group having better survival prospects.</p>
+<ol start="2" type="1">
+<li>In R we do</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>leukS <span class="ot">&lt;-</span> <span class="fu">Surv</span>(leukaemia<span class="sc">$</span>time, leukaemia<span class="sc">$</span>censor)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">survdiff</span>(leukS <span class="sc">~</span> group, <span class="at">data =</span> leukaemia) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+survdiff(formula = leukS ~ group, data = leukaemia)
+
+               N Observed Expected (O-E)^2/E (O-E)^2/V
+group=control 21       21     10.7      9.77      16.8
+group=drug6MP 21        9     19.3      5.46      16.8
+
+ Chisq= 16.8  on 1 degrees of freedom, p= 4e-05 </code></pre>
+</div>
+</div>
+<p>As stated in the question, we get the same expected number of remissions in group, but a slightly different test statistic value.</p>
+<ol start="3" type="1">
+<li>A suitable plot here would be Kaplan Meier estimates for the two groups:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>leukR <span class="ot">&lt;-</span> <span class="fu">survfit</span>(leukS <span class="sc">~</span> group, <span class="at">data =</span> leukaemia)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(leukR, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="twosample_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here we can see the survivor functions are clearly different, and the confidence intervals do not overlap.</p>
+</div>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
