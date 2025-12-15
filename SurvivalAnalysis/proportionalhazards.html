@@ -236,6 +236,7 @@ window.Quarto = {
   <li><a href="#log-log-implementation-in-r" id="toc-log-log-implementation-in-r" class="nav-link" data-scroll-target="#log-log-implementation-in-r"><span class="header-section-number">6.6.2</span> Log-Log Implementation in <span class="math inline">\(R\)</span></a></li>
   <li><a href="#residual-plots" id="toc-residual-plots" class="nav-link" data-scroll-target="#residual-plots"><span class="header-section-number">6.6.3</span> Residual Plots</a></li>
   </ul></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">6.7</span> Tasks</a></li>
   </ul>
 </nav>
     </div>
@@ -308,6 +309,36 @@ h(t; \mathbf{x}) = e^{\boldsymbol{\beta}' \mathbf{x}} h_0(t).
 = e^{-\gamma\boldsymbol{\beta}'(\mathbf{x_1}-\mathbf{x_2})},
 \]</span></p>
 <p>which is again independent of time and therefore has the proportional hazards property. Note that because the exponential is a special case of the Weibull we only really needed to demonstrate this property for the Weibull distribution. The Weibull distribution (and hence Exponential as a special case) is the only distribution for which the corresponding AFT model has the proportional hazards property.</p>
+<p>For an example of an AFT model that does not have the proportional hazards property, consider an AFT model with a log normal baseline distribution: <span class="math inline">\(\log T_0 \sim N(0,1)\)</span> (to make the example simpler, we have specified the mean and variance of <span class="math inline">\(\log T_0\)</span>.) The baseline hazard for a log <span class="math inline">\(N(0,1)\)</span> distribution is <span class="math display">\[
+h_0(t) = \frac{f(t)}{S(t)} = \frac{\frac{1}{t\sqrt{2\pi}}\exp\left(-\frac{1}{2}(\log t)^2\right)}{1-\Phi(\log(t))},
+\]</span> and so for a patient with covariates <span class="math inline">\(\mathbf{x}\)</span>, we have <span class="math display">\[
+h(t;\mathbf{x}) =  \frac{\frac{1}{t\psi(\mathbf{x})\sqrt{2\pi}}\exp\left(-\frac{1}{2}(\log (t\psi(\mathbf{x})))^2\right)}{1-\Phi(\log(t\psi(\mathbf{x})))}\psi(\mathbf{x})
+\]</span> Now consider two patients: patient one with covariates <span class="math inline">\(\mathbf{x}_1\)</span> such that <span class="math inline">\(\psi(\mathbf{x}_1)=1\)</span> and patient two with covariates <span class="math inline">\(\mathbf{x}_2\)</span> such that <span class="math inline">\(\psi(\mathbf{x}_2)=2\)</span>. We can plot the two hazard functions and their ratio, and see that the ratio is not constant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot hazard function for patient 1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dlnorm</span>(x)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">plnorm</span>(x)), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">"t"</span>, <span class="at">ylab =</span> <span class="st">"hazard/hazard ratio"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot hazard function for patient 2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dlnorm</span>(x<span class="sc">*</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">plnorm</span>(x<span class="sc">*</span><span class="dv">2</span>)) <span class="sc">*</span> <span class="dv">2</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the hazard ratio</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dlnorm</span>(x)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">plnorm</span>(x)) <span class="sc">/</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">dlnorm</span>(x<span class="sc">*</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">plnorm</span>(x<span class="sc">*</span><span class="dv">2</span>)) <span class="sc">*</span> <span class="dv">2</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Patient 1 hazard"</span>, <span class="st">"Patient 2 hazard"</span>, <span class="st">"Hazard ratio"</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="proportionalhazards_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="parameter-estimation" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="parameter-estimation"><span class="header-section-number">6.2</span> Parameter Estimation</h2>
@@ -376,13 +407,13 @@ d_{(1)}, d_{(2)},\ldots, d_{(k)} &amp; \quad \textrm{numbers of deaths at these 
 </ul>
 <p>The purpose of the proposed new drug treatment is to maintain normal heart rhythm and the interest is in the time to relapse. We fit a proportional hazards models in R using the <code>coxph</code> function as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"datasets/arfib.RData"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>arfib_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(afib<span class="sc">$</span>time, afib<span class="sc">$</span>cens, <span class="at">type =</span> <span class="st">"right"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>afibph <span class="ot">&lt;-</span> <span class="fu">coxph</span>(arfib_sv <span class="sc">~</span> drug <span class="sc">+</span> age <span class="sc">+</span> hvol <span class="sc">+</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                           diet <span class="sc">+</span> digit <span class="sc">+</span> sex,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> afib)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(afibph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"datasets/arfib.RData"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>arfib_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(afib<span class="sc">$</span>time, afib<span class="sc">$</span>cens, <span class="at">type =</span> <span class="st">"right"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>afibph <span class="ot">&lt;-</span> <span class="fu">coxph</span>(arfib_sv <span class="sc">~</span> drug <span class="sc">+</span> age <span class="sc">+</span> hvol <span class="sc">+</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                           diet <span class="sc">+</span> digit <span class="sc">+</span> sex,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> afib)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(afibph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 coxph(formula = arfib_sv ~ drug + age + hvol + diet + digit + 
@@ -427,7 +458,7 @@ Score (logrank) test = 55.75  on 7 df,   p=1e-09</code></pre>
 <li><span class="math inline">\(x_7\)</span> is a binary indicator representing their sex (<span class="math inline">\(x_7\)</span> is 1 if they are male, 0 if female)</li>
 </ul>
 <p>The model we are fitting for an individual with covariates <span class="math inline">\(\mathbf{x} = (x_1, \ldots, x_7)'\)</span> is <span class="math display">\[h(t;x) = h_0(t) e^{\beta_1 x_1 + \beta_2 x_2+ \ldots + \beta_7 x_7}\]</span></p>
-<p>The model specification in the R code fits only main effects (no interactions). Note that the baseline level of any categorical covariates are <strong>not</strong> included in the output. The baseline level of categorical covariates is always coded as <span class="math inline">\(x_i=0\)</span>. Since the baseline hazard <span class="math inline">\(h_0(t)\)</span> represents the hazard for a patient with all covariates values set to zero it follows that the effect of these baseline levels are all captured by the baseline hazard. The output first shows the significance of the covariates (via p-values) and then the confidence intervals for both <span class="math inline">\(\beta_i\)</span> (the model parameters) and <span class="math inline">\(exp(\beta_i)\)</span>. Recall that Equation @ref(eq:phint) tells us we can interpret the <span class="math inline">\(exp(\beta_i)\)</span> terms as specific hazard ratios which are the primary quantities of interest in a proportional hazards analysis.</p>
+<p>The model specification in the R code fits only main effects (no interactions). Note that the baseline level of any categorical covariates are <strong>not</strong> included in the output. The baseline level of categorical covariates is always coded as <span class="math inline">\(x_i=0\)</span>. Since the baseline hazard <span class="math inline">\(h_0(t)\)</span> represents the hazard for a patient with all covariates values set to zero it follows that the effect of these baseline levels are all captured by the baseline hazard. The output first shows the significance of the covariates (via p-values) and then the confidence intervals for both <span class="math inline">\(\beta_i\)</span> (the model parameters) and <span class="math inline">\(exp(\beta_i)\)</span>. Recall that we can interpret the <span class="math inline">\(exp(\beta_i)\)</span> terms as specific hazard ratios which are the primary quantities of interest in a proportional hazards analysis.</p>
 <p>There are two main questions of interest:</p>
 <ol type="1">
 <li><p>How can we quantify the effects of treatment and other covariates on time to relapse?</p></li>
@@ -455,7 +486,7 @@ H_1: \quad &amp; \beta_1, \beta_2, \ldots \beta_{k-1} \: \text{are not all zero}
 <li><p><strong>Diet:</strong> <span class="math inline">\((1.28/0.58)^2+(0.41/0.59)^2=5.3\)</span> and the 95th percentile of the <span class="math inline">\(\chi^2_2\)</span> distribution is 5.99 (2 degrees of freedom since <span class="math inline">\(k=3\)</span>). Since 5.3 &lt; 5.99 there isn’t significant evidence, at the 5% level of test, that diet affects hazards.</p></li>
 </ul>
 <p>Our data suggest that neither age, digitalisation nor sex appear to affect hazard at the 5% level of significance. This is <strong>not</strong> the same as saying that they have no effect. For example, the 95% confidence interval for <span class="math inline">\(e^{\beta_7}\)</span> is <span class="math inline">\((0.83, 6.18)\)</span> so that the hazard for men could be a fourth fifths that for women or more than six times as much so there <strong>could</strong> be a large difference in hazards between M &amp; F. These data exclude neither possibility at the 95% confidence level. Ideally we would like more data to reduce the width of this interval.</p>
-<p><strong>Hazard ratios</strong> We have already seen in Equation @ref(eq:phint) how to relate the hazard to the parameters of the proportional hazards model. This enables us to calculate hazard ratios comparing two individuals. For example the hazard ratio comparing</p>
+<p><strong>Hazard ratios</strong> We have already seen how to relate the hazard to the parameters of the proportional hazards model. This enables us to calculate hazard ratios comparing two individuals. For example the hazard ratio comparing</p>
 <ul>
 <li>25 year old meat-eater on drug treatment A</li>
 </ul>
@@ -473,7 +504,7 @@ H_1: \quad &amp; \beta_1, \beta_2, \ldots \beta_{k-1} \: \text{are not all zero}
 </section>
 <section id="including-interaction-terms" class="level2" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="including-interaction-terms"><span class="header-section-number">6.5</span> Including interaction terms</h2>
-<p>Suppose that we wanted to investigate the interaction between the two binary variables <strong>treatment</strong> and <strong>sex</strong>. Then we would handle this by creating a new variable e.g.&nbsp; <span class="math display">\[
+<p>Suppose that we wanted to investigate the interaction between the two binary variables <strong>treatment</strong> and <strong>sex</strong>. Then we would handle this by creating a new variable e.g.&nbsp;<span class="math display">\[
 x_7 = x_1 \times x_6,
 \]</span> the product of the treatment and sex variables. Since <span class="math inline">\(x_1=0\)</span> for treatment A and <span class="math inline">\(x_1=1\)</span> for treatment B, if follows that <span class="math inline">\(x_7=0\)</span> for all subjects receiving A and <span class="math inline">\(x_7=x_6\)</span> for those receiving treatment B. The hazards for the interaction model, by treatment, are <span class="math display">\[\begin{align}
 h(t;x) &amp;= h_0(t) e^{\beta_2 x_2 + \beta_3 x_3 +  \beta_4 x_4 + \beta_5 x_5  + \beta_6 x_6} &amp; \quad \textrm{for treatment A} \\
@@ -509,15 +540,15 @@ h(t;x) &amp;= h_0(t) e^{\beta_1 + \beta_2 x_2 +  \beta_3 x_3 +  \beta_4 x_4 + \b
 <h3 data-number="6.6.2" class="anchored" data-anchor-id="log-log-implementation-in-r"><span class="header-section-number">6.6.2</span> Log-Log Implementation in <span class="math inline">\(R\)</span></h3>
 <p>To produce separate log-log survival plots for different levels of a factor variable you can use the <code>strata</code> function within the model specification of the <code>coxph</code> function. The proportional hazards model is then fitted within each level of the factor. For example, for the lymphoma data where there are two levels of the <code>stage</code> variable we write</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"datasets/lymphoma.Rdata"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>lym_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(lymphoma<span class="sc">$</span>time, lymphoma<span class="sc">$</span>censor, <span class="at">type =</span> <span class="st">"right"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lym_ph <span class="ot">&lt;-</span> <span class="fu">coxph</span>(lym_sv <span class="sc">~</span> <span class="fu">strata</span>(lymphoma<span class="sc">$</span>stage))</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggsurvplot</span>(<span class="fu">survfit</span>(lym_ph), <span class="at">fun =</span> <span class="st">"cloglog"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span>  lymphoma,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">300</span>),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xlab =</span> <span class="st">"Time (weeks)"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">legend.labs =</span> <span class="fu">c</span>(<span class="st">"Stage 3"</span>, <span class="st">"Stage 4"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"datasets/lymphoma.Rdata"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>lym_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(lymphoma<span class="sc">$</span>time, lymphoma<span class="sc">$</span>censor, <span class="at">type =</span> <span class="st">"right"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lym_ph <span class="ot">&lt;-</span> <span class="fu">coxph</span>(lym_sv <span class="sc">~</span> <span class="fu">strata</span>(lymphoma<span class="sc">$</span>stage))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggsurvplot</span>(<span class="fu">survfit</span>(lym_ph), <span class="at">fun =</span> <span class="st">"cloglog"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span>  lymphoma,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">300</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xlab =</span> <span class="st">"Time (weeks)"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">legend.labs =</span> <span class="fu">c</span>(<span class="st">"Stage 3"</span>, <span class="st">"Stage 4"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-lymKM" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -540,18 +571,184 @@ r_{ik} = x_{ik} - \sum_{j \in \mathcal{R}(t_{i})} x_{jk} \hat{p}_j,
 \]</span> where <span class="math inline">\(r_{ik}\)</span> is the Schoenfeld residual for individual <span class="math inline">\(i\)</span> for the <span class="math inline">\(k^{th}\)</span> covariate, <span class="math inline">\(x_{jk}\)</span> are the values for that covariate for the individuals <span class="math inline">\(j\)</span> in the risk set for <span class="math inline">\(\mathcal{R}(t_{i})\)</span> of individuals at time <span class="math inline">\(t_i\)</span>, the time of death for the <span class="math inline">\(i^{th}\)</span> individual and <span class="math inline">\(\hat{p}_j\)</span> is the estimated probability that the <span class="math inline">\(j^{th}\)</span> person dies by time <span class="math inline">\(t_i\)</span>. These should be independent of time so a plot of these versus time should show no dependence. Deviation from independence will indicate inadequacy of the proportional hazards model.</p>
 <p>Schoenfeld residuals can be obtained as follows (using the atrial fibrillation example <code>afibph</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>schoenfeld_resid <span class="ot">&lt;-</span> <span class="fu">resid</span>(afibph, <span class="at">type =</span> <span class="st">"schoenfeld"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>schoenfeld_resid <span class="ot">&lt;-</span> <span class="fu">resid</span>(afibph, <span class="at">type =</span> <span class="st">"schoenfeld"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This produces an array with one column per covariate. The function <code>cox.zph()</code> can be used to show plots of residuals against time, and implement hypothesis test of no association with time, but we will not study the use of this function in this module.</p>
-
-
 </section>
+</section>
+<section id="tasks" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="tasks"><span class="header-section-number">6.7</span> Tasks</h2>
+<ol type="1">
+<li>A cohort study to investigate diet was carried out on a group of men. Before entering the study each individual was asked for their smoking and drinking habits; and whether they were vegetarian or not. Their weights were also recorded (kg) and centred around 75 kg (i.e.&nbsp;85 would be coded as 10 and 70 as -5). The outcome of interest was time to death. A Cox proportional hazards model was fitted to the data and some modified output is shown below.</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">Standard Error</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Smoking Habits</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Smoker</td>
+<td style="text-align: center;">baseline</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Non-smoker</td>
+<td style="text-align: center;">-0.25</td>
+<td style="text-align: center;">0.03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Drinking Status</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Regular Drinker</td>
+<td style="text-align: center;">baseline</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Occasional Drinker</td>
+<td style="text-align: center;">-0.15</td>
+<td style="text-align: center;">0.34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Never Drink</td>
+<td style="text-align: center;">-0.33</td>
+<td style="text-align: center;">0.08</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Weight</strong> (centred on 75 kgs as baseline)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;">0.0004</td>
+<td style="text-align: center;">0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Vegetarian</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: center;">baseline</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">No</td>
+<td style="text-align: center;">-0.32</td>
+<td style="text-align: center;">0.31</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Write down the model fitted.</li>
+<li>Describe in detail the effects of these variables on survival.</li>
+<li>Using the model, calculate the estimate of the hazard ratio comparing</li>
+</ol>
+<ul>
+<li>A smoker weighing 83kg who denotes themselves as regular drinker and who is a vegetarian;</li>
+<li>A non-smoker weighing 71kg who denotes themselves as a non-drinker and who is not a vegetarian.</li>
+</ul>
+<ol start="2" type="1">
+<li>A cohort of live born babies was followed up for one year to explore the effect of birth weight and sex on survival. Some modified results from fitting a proportional hazards model in R are shown below. The model relates survival time to birth weight (grouped into four categories), sex of the baby, and the age of the mother.</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">Standard Error</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Sex of Baby</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: center;">baseline</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: center;">-0.39</td>
+<td style="text-align: center;">0.07</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Birthweight</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(\geq 4000\)</span> g</td>
+<td style="text-align: center;">0.12</td>
+<td style="text-align: center;">0.08</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">3500–3999g</td>
+<td style="text-align: center;">baseline</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">3000–3499g</td>
+<td style="text-align: center;">0.27</td>
+<td style="text-align: center;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(&lt;3000\)</span>g</td>
+<td style="text-align: center;">1.61</td>
+<td style="text-align: center;">0.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Age of mother</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(&gt; 40\)</span> yrs</td>
+<td style="text-align: center;">0.65</td>
+<td style="text-align: center;">0.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><span class="math inline">\(\leq 40\)</span> yrs</td>
+<td style="text-align: center;">baseline</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Specify the form of the hazard model used for this analysis, carefully defining each predictor variable.</li>
+<li>Describe in detail the effects of these variables on infant survival.</li>
+<li>How would you assess whether the proportional hazards model was appropriate for these data.</li>
+<li>Using the model, calulate the estimate of the hazard ratio comparing</li>
+</ol>
+<ul>
+<li>A female baby with birth weight 3000–3499g and a 35 yr old mother,</li>
+<li>A male baby with birth weight 3500–3999g and a 41 yr old mother.</li>
+</ul>
+
+
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Cox, D.R. (1972), Regression Models and Life-Tables. Journal of the Royal Statistical Society: Series B (Methodological), 34: 187-202. <a href="https://doi.org/10.1111/j.2517-6161.1972.tb00899.x">https://doi.org/10.1111/j.2517-6161.1972.tb00899.x</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Cox, D. R. (1975). Partial Likelihood. Biometrika, 62(2), 269–276. <a href="https://doi.org/10.2307/2335362">https://doi.org/10.2307/2335362</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Cox, D.R. (1972), Regression Models and Life-Tables. Journal of the Royal Statistical Society: Series B (Methodological), 34: 187-202. <a href="https://doi.org/10.1111/j.2517-6161.1972.tb00899.x" class="uri">https://doi.org/10.1111/j.2517-6161.1972.tb00899.x</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Cox, D. R. (1975). Partial Likelihood. Biometrika, 62(2), 269–276. <a href="https://doi.org/10.2307/2335362" class="uri">https://doi.org/10.2307/2335362</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
