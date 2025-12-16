@@ -663,6 +663,13 @@ r_{ik} = x_{ik} - \sum_{j \in \mathcal{R}(t_{i})} x_{jk} \hat{p}_j,
 <li>A cohort of live born babies was followed up for one year to explore the effect of birth weight and sex on survival. Some modified results from fitting a proportional hazards model in R are shown below. The model relates survival time to birth weight (grouped into four categories), sex of the baby, and the age of the mother.</li>
 </ol>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 7%">
+<col style="width: 22%">
+<col style="width: 19%">
+<col style="width: 23%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Variable</th>
@@ -741,6 +748,63 @@ r_{ik} = x_{ik} - \sum_{j \in \mathcal{R}(t_{i})} x_{jk} \hat{p}_j,
 <li>A female baby with birth weight 3000–3499g and a 35 yr old mother,</li>
 <li>A male baby with birth weight 3500–3999g and a 41 yr old mother.</li>
 </ul>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>1a) This is a Cox-proportional hazards model where the model fitted is <span class="math display">\[
+h(t, \mathbf{x}) = h_0(t) \exp \{\beta^T \mathbf{x}\}
+\]</span> where <span class="math inline">\(\mathbf{x} = (x_1, x_2, x_3, x_4, x_5)^T\)</span> with <span class="math display">\[\begin{align*}
+x_1 &amp;= 1_{\textrm{[Non-smoker]}} \\
+x_2 &amp;= 1_{\textrm{[Occasional Drinker]}} \\
+x_3 &amp;= 1_{\textrm{[Never Drink]}} \\
+x_4 &amp;= \textrm{Weight} - 75 \\
+x_5 &amp;= 1_{\textrm{[Non-vegetarian]}} \\
+\end{align*}\]</span> and <span class="math inline">\(\beta_i\)</span> are given in the output.</p>
+<p>1b)</p>
+<ul>
+<li><p>Smoking: Compare <span class="math inline">\(-0.25/0.03 = -8.3\)</span> with <span class="math inline">\(N(0,1)\)</span> and so conclude that there is overwhelming evidence that non-smokers have a lower hazard i.e.&nbsp;increased survival.</p></li>
+<li><p>Drinking: This is a three level factor and so need to use <span class="math inline">\(\chi^2\)</span> comparison. We find <span class="math inline">\((-0.15/0.34)^2 + (-0.33/0.08)^2 = 17.2\)</span> and compare with <span class="math inline">\(\chi^2_2\)</span>. Again overwhelming evidence that drinking affects survival. The heavier the drinker then the higher the hazard i.e.&nbsp;reduced survival</p></li>
+<li><p>Weight: Compare <span class="math inline">\(0.0004/0.0001 = 4\)</span> with <span class="math inline">\(N(0,1)\)</span> and so conclude that there is extremely strong evidence that weight influences survival. The heavier then the higher the hazard i.e.&nbsp;reduced survival.</p></li>
+<li><p>Diet: Compare <span class="math inline">\(-0.32/0.31 = -1.03\)</span> with <span class="math inline">\(N(0,1)\)</span> and so conclude that there is no significant evidence that being vegetarian affects survival.</p></li>
+</ul>
+<p>1c) Using the model, we find for the initial individual <span class="math display">\[h_1(t) = h_0(t) \exp\{(0.0004 \times 8)\}\]</span> while for the second individual we have <span class="math display">\[
+h_2(t) = h_0(t) \exp\{-0.25 + (0.0004 \times -4) + (-0.33) + (-0.32) \}
+\]</span> so hazard ratio is <span class="math display">\[
+\frac{h_1(t)}{h_2(t)} = \exp\{0.25 + 0.0004 \times 12 + 0.33  + 0.32\} = 2.47
+\]</span></p>
+<p>2a) Model fitted is <span class="math display">\[
+h(t, \mathbf{x}) = h_0(t) \exp \{\beta^T \mathbf{x}\}
+\]</span> where <span class="math inline">\(\mathbf{x} = (x_1, x_2, x_3, x_4, x_5)^T\)</span> with <span class="math display">\[\begin{align*}
+x_1 &amp;= 1_{[\textrm{Baby is Female}]} \\
+x_2 &amp;= 1_{[\textrm{Weight $\geq4000$g}]} \\
+x_3 &amp;= 1_{[\textrm{Weight 3000-3499g}]} \\
+x_4 &amp;= 1_{[\textrm{Weight $&lt;3000$g}]} \\
+x_5 &amp;= 1_{[\textrm{Mother $&gt; 40$ yrs}]}
+\end{align*}\]</span> and <span class="math inline">\(\beta_i\)</span> are given in the table.</p>
+<p>2b)</p>
+<ul>
+<li><p>Sex: Compare <span class="math inline">\(-0.39/0.07 = -5.57\)</span> with <span class="math inline">\(N(0,1)\)</span> and so conclude that there is extremely strong evidence that female babies have a lower hazard i.e.&nbsp;increased survival.</p></li>
+<li><p>Weight: This is a four level factor and so need to use <span class="math inline">\(\chi^2\)</span> comparison. We find <span class="math inline">\((0.12/0.08)^2+(0.27/0.15)^2+(1.61/0.23)^2 = 54.5\)</span> and compare with <span class="math inline">\(\chi^2_3\)</span>. There is therefore also extremely strong evidence that birthweight affects hazard. The data indicate that 3500-3999g has greatest survival while underweight babies <span class="math inline">\(&lt;3000\)</span>g have significantly reduced survival.</p></li>
+<li><p>Age: Compare <span class="math inline">\(0.65/0.33 = 1.97\)</span> with <span class="math inline">\(N(0,1)\)</span> and so conclude that there is reasonably strong evidence that older mothers have an increased hazard i.e.&nbsp;reduced survival.</p></li>
+</ul>
+<p>2c) Would create Log-log plots of the sex, birthweights and ages and check seem reasonably parallel.</p>
+<p>2d) Using the model, we find for female baby <span class="math display">\[h_F(t) = h_0(t) \exp\{-0.39+0.27\}\]</span> while for male baby we have <span class="math display">\[
+h_M(t) = h_0(t) \exp\{0.65\}
+\]</span> so hazard ratio is <span class="math display">\[
+\frac{h_F(t)}{h_M(t)} = \exp\{-0.39+0.27-0.65\} = 0.46
+\]</span></p>
+</div>
+</div>
+</div>
 
 
 </section>
