@@ -235,7 +235,10 @@ window.Quarto = {
   <li><a href="#predicting-survival-times" id="toc-predicting-survival-times" class="nav-link" data-scroll-target="#predicting-survival-times"><span class="header-section-number">5.5.4</span> Predicting survival times</a></li>
   <li><a href="#obtaining-predictions-using-r" id="toc-obtaining-predictions-using-r" class="nav-link" data-scroll-target="#obtaining-predictions-using-r"><span class="header-section-number">5.5.5</span> Obtaining predictions using R</a></li>
   </ul></li>
-  <li><a href="#the-weibull-aft-model" id="toc-the-weibull-aft-model" class="nav-link" data-scroll-target="#the-weibull-aft-model"><span class="header-section-number">5.6</span> The Weibull AFT Model</a></li>
+  <li><a href="#the-weibull-aft-model" id="toc-the-weibull-aft-model" class="nav-link" data-scroll-target="#the-weibull-aft-model"><span class="header-section-number">5.6</span> The Weibull AFT Model</a>
+  <ul class="collapse">
+  <li><a href="#mean-survival-time-and-predictions" id="toc-mean-survival-time-and-predictions" class="nav-link" data-scroll-target="#mean-survival-time-and-predictions"><span class="header-section-number">5.6.1</span> Mean survival time and predictions</a></li>
+  </ul></li>
   <li><a href="#model-checking" id="toc-model-checking" class="nav-link" data-scroll-target="#model-checking"><span class="header-section-number">5.7</span> Model checking</a></li>
   <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">5.8</span> Tasks</a></li>
   </ul>
@@ -636,8 +639,60 @@ Number of Newton-Raphson Iterations: 6
 n= 33 </code></pre>
 </div>
 </div>
-<p>We can obtain estimates of <span class="math inline">\(\beta_0, \beta_1, \beta_2\)</span> as before. Predictions for this model can be obtained using the <code>predict()</code> function as before.</p>
-<p>The <span class="math inline">\(\gamma\)</span> parameter is referred to as <code>Scale</code> (and <code>Log(scale)</code> for <span class="math inline">\(\log gamma\)</span>). We see that <span class="math inline">\(\log \hat{\gamma} = 0.0399\)</span>, and the partial <span class="math inline">\(z\)</span>-test shows <span class="math inline">\(\log \gamma\)</span> is not significantly different from 0. As <span class="math inline">\(\gamma=1\)</span> corresponds to the exponential distribution, we would conclude there is no evidence in favour of the Weibull distribution over the simpler exponential distribution.</p>
+<p>We can obtain estimates of <span class="math inline">\(\beta_0, \beta_1, \beta_2\)</span> as before.</p>
+<p>The reciprocal of the <span class="math inline">\(\gamma\)</span> parameter is referred to as <code>Scale</code> (and <code>Log(scale)</code> for <span class="math inline">\(\log 1/\gamma\)</span>). We see that <span class="math inline">\(\log 1/\hat{\gamma} = 0.0399\)</span>, and the partial <span class="math inline">\(z\)</span>-test shows <span class="math inline">\(\log 1/\gamma\)</span> is not significantly different from 0. As <span class="math inline">\(\gamma=1\)</span> corresponds to the exponential distribution, we would conclude there is no evidence in favour of the Weibull distribution over the simpler exponential distribution.</p>
+<section id="mean-survival-time-and-predictions" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="mean-survival-time-and-predictions"><span class="header-section-number">5.6.1</span> Mean survival time and predictions</h3>
+<p>For the Weibull distribution written as <span class="math inline">\(T \sim Weibull(\lambda, \gamma)\)</span> and parameterised as in <a href="background.html#sec-weibull" class="quarto-xref"><span>Section 1.5.2</span></a>, the mean survival time is <span class="math display">\[
+E(T) = \frac{1}{\lambda}\Gamma\left(1+\frac{1}{\gamma}\right),
+\]</span> where <span class="math inline">\(\Gamma\)</span> is the gamma function. Note that for integer <span class="math inline">\(n\)</span>, we have <span class="math inline">\(\Gamma(n) = (n-1)!\)</span>, and so for <span class="math inline">\(\gamma=1\)</span> which gives the exponential distribution, we have <span class="math inline">\(E(T)=1/\lambda\)</span>.</p>
+<p>For a patient with covariates <span class="math inline">\(\mathbf{x}\)</span>, in the Weibull AFT model we can estimate their mean survival time by <span class="math display">\[
+\hat{E}(T) = \frac{1}{\hat{\lambda}(\mathbf{x})}\Gamma\left(1+\frac{1}{\hat{\gamma}}\right)
+\]</span></p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We again estimate the mean survival time for a patient with a <code>wbc</code> of 10000 and who has an <code>ag</code> test result of <code>present</code>. We have <span class="math display">\[\mathbf{x^*} = (x_1^*,\,x_2^*)^T=(\log 10000,\, 1)^T\]</span> and <span class="math display">\[\hat{\lambda}(\mathbf{x^*}) = \exp(-5.8524 +0.3103\log(10000) - 1.0206)= 0.01804\]</span> We also have <span class="math inline">\(1/\hat{\gamma}=1.04\)</span>. We compute the estimated mean survival as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="fl">0.01804</span> <span class="sc">*</span> <span class="fu">gamma</span>(<span class="fl">2.04</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 56.40664</code></pre>
+</div>
+</div>
+<p>which is very similar to the prediction from the exponential model.</p>
+</div>
+</div>
+<p>Predictions for the Weibull AFT model can also be obtained using the <code>predict()</code> function. However, the default prediction is <em>not</em> the mean survival: it is just the estimate of <span class="math inline">\(1/\hat{\lambda}(\mathbf{x^*})\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>xstar <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">wbc =</span> <span class="dv">10000</span>, <span class="at">ag =</span> <span class="st">"present"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuk_regweib, xstar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+55.40983 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare with estimate of 1/lambda(x)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (will be rounding error as I've used rounded values of parameter estimates)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="fu">exp</span>(<span class="sc">-</span><span class="fl">5.8524</span> <span class="sc">+</span><span class="fl">0.3103</span><span class="sc">*</span><span class="fu">log</span>(<span class="dv">10000</span>) <span class="sc">-</span> <span class="fl">1.0206</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 55.42503</code></pre>
+</div>
+</div>
+<p>This is not very easy to interpret in terms of the distribution of <span class="math inline">\(T\)</span>, so if using the predict command, it is better to obtain an estimate of the median survival instead:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuk_regweib, xstar, <span class="at">type =</span> <span class="st">"quantile"</span>, <span class="at">p =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+37.83864 </code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="model-checking" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="model-checking"><span class="header-section-number">5.7</span> Model checking</h2>
@@ -652,12 +707,12 @@ n= 33 </code></pre>
 <li>Consider the Weibull AFT model fitted to the leukaemia data</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>leuk_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(MASS<span class="sc">::</span>leuk<span class="sc">$</span>time)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>leuk_regweib <span class="ot">&lt;-</span> <span class="fu">survreg</span>(leuk_sv <span class="sc">~</span> <span class="fu">log</span>(wbc) <span class="sc">+</span> ag,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> MASS<span class="sc">::</span>leuk)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuk_regweib)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>leuk_sv <span class="ot">&lt;-</span> <span class="fu">Surv</span>(MASS<span class="sc">::</span>leuk<span class="sc">$</span>time)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>leuk_regweib <span class="ot">&lt;-</span> <span class="fu">survreg</span>(leuk_sv <span class="sc">~</span> <span class="fu">log</span>(wbc) <span class="sc">+</span> ag,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> MASS<span class="sc">::</span>leuk)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuk_regweib)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -687,7 +742,7 @@ n= 33 </code></pre>
 <span class="math display">\[ h(t;\mathbf{x}) = e^{-\boldsymbol{\beta}' \mathbf{x}} h_0 (t e^{-\boldsymbol{\beta}' \mathbf{x}})\]</span> where <span class="math inline">\(h_0(t)\)</span> is the baseline hazard function for <span class="math inline">\(S_0(t)\)</span>. Hint: write the hazard function solely in terms of the survivor function.</li>
 </ol>
 <div class="callout callout-style-default callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -696,7 +751,7 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li><ol type="a">
