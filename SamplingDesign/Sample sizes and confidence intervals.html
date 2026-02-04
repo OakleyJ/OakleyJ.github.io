@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>10&nbsp; Confidence intervals and sample sizes – MPS318/4101 Sampling Theory and Design of Experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Stratified sampling.html" rel="next">
+<link href="./Simple random sampling.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-27c261d06b905028a18691de25d09dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to sampling.html">Part II: Sampling Theory</a></li><li class="breadcrumb-item"><a href="./Sample sizes and confidence intervals.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confidence intervals and sample sizes</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MPS318/4101 Sampling Theory and Design of Experiments</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instructions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: Experimental Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to experimental design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Experimental Design</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Review of linear models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Optimality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality criteria</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Qualitative explanatory variables and blocking</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-multiple factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Latin Square designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Factorial designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Continuous and exact designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Continuous and exact designs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Sampling Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Simple random sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Simple Random Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Sample sizes and confidence intervals.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confidence intervals and sample sizes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Stratified sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Stratified Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Population size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Practicalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Reliability of sample surveys</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: MPS4101 only</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tailor-made designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Modifying designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction-computer-experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Introduction to computer experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Uncertainty-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#estimation-errors-and-sample-sizes" id="toc-estimation-errors-and-sample-sizes" class="nav-link active" data-scroll-target="#estimation-errors-and-sample-sizes"><span class="header-section-number">10.1</span> Estimation errors and sample sizes</a></li>
+  <li><a href="#sec-CIXbar" id="toc-sec-CIXbar" class="nav-link" data-scroll-target="#sec-CIXbar"><span class="header-section-number">10.2</span> Confidence Intervals for <span class="math inline">\(\overline{X}\)</span></a></li>
+  <li><a href="#sec-sampleSizeMean" id="toc-sec-sampleSizeMean" class="nav-link" data-scroll-target="#sec-sampleSizeMean"><span class="header-section-number">10.3</span> Sample size for estimating a mean</a></li>
+  <li><a href="#sec-approx-interval-prop" id="toc-sec-approx-interval-prop" class="nav-link" data-scroll-target="#sec-approx-interval-prop"><span class="header-section-number">10.4</span> Confidence intervals for a proportion <span class="math inline">\(P\)</span></a></li>
+  <li><a href="#sample-size-for-estimating-a-proportion" id="toc-sample-size-for-estimating-a-proportion" class="nav-link" data-scroll-target="#sample-size-for-estimating-a-proportion"><span class="header-section-number">10.5</span> Sample Size for estimating a proportion</a></li>
+  <li><a href="#dependent-proportions-for-polychotomous-variables" id="toc-dependent-proportions-for-polychotomous-variables" class="nav-link" data-scroll-target="#dependent-proportions-for-polychotomous-variables"><span class="header-section-number">10.6</span> Dependent proportions for polychotomous variables</a></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">10.7</span> Tasks</a></li>
+  <li><a href="#appendix-the-normal-approximation-for-confidence-intervals" id="toc-appendix-the-normal-approximation-for-confidence-intervals" class="nav-link" data-scroll-target="#appendix-the-normal-approximation-for-confidence-intervals"><span class="header-section-number">10.8</span> Appendix: the normal approximation for confidence intervals</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Introduction to sampling.html">Part II: Sampling Theory</a></li><li class="breadcrumb-item"><a href="./Sample sizes and confidence intervals.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confidence intervals and sample sizes</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confidence intervals and sample sizes</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Aims for this chapter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this chapter we</p>
+<ol type="1">
+<li><p>construct confidence intervals for populations means and proportions, so uncertainty in sample estimates can be reported;</p></li>
+<li><p>show how to choose the size of a sample based on consideration of the width of a confidence interval.</p></li>
+</ol>
+</div>
+</div>
+<section id="estimation-errors-and-sample-sizes" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="estimation-errors-and-sample-sizes"><span class="header-section-number">10.1</span> Estimation errors and sample sizes</h2>
+<p>In the previous chapter, we saw that the sample mean is an unbiased estimator of the population mean (likewise for proportions). But we would always expect the sample mean to differ from the population mean. This raises two issues:</p>
+<ul>
+<li><p>we need to be able to report how large the estimation error (the difference between the sample mean and the population mean) could be;</p></li>
+<li><p>if the estimation error is potentially too large, the sample survey won’t be very useful; we need to plan the survey to avoid this.</p></li>
+</ul>
+<p>We address both these issues using confidence intervals:</p>
+<ul>
+<li><p>we report a confidence interval (typically a 95% confidence interval) as well as the point estimate from the sample mean (or sample proportion), to indicate a range of plausible values; how far the population mean could be from the sample mean;</p></li>
+<li><p>we consider the relationship between the sample size and the width of the interval; we choose the sample size to ensure the width is acceptably small.</p></li>
+</ul>
+</section>
+<section id="sec-CIXbar" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="sec-CIXbar"><span class="header-section-number">10.2</span> Confidence Intervals for <span class="math inline">\(\overline{X}\)</span></h2>
+<p>Confidence intervals for <span class="math inline">\(\overline{X}\)</span> are usually based on the assumption that under SRS <span class="math display">\[\overline{x} \sim N(\overline{X},(1-f)S^2/n)\]</span> approximately. Using this approximation, we then have <span id="eq-normApproxCI"><span class="math display">\[\frac{\overline{x}-\overline{X}}{\sqrt{(1-f)S^2/n}}\sim N(0,1). \tag{10.1}\]</span></span> The population variance <span class="math inline">\(S^2\)</span> will be unknown, so we estimate it with the sample variance <span class="math inline">\(s^2\)</span>. An approximate 95% confidence interval for <span class="math inline">\(\overline{X}\)</span> can then be reported as <span class="math display">\[
+\bar{x}\pm t_{n; 0.025}\sqrt{(1-f)s^2/n},
+\]</span>, where <span class="math inline">\(t_{n; 0.025}\)</span> is the 97.5th percentile of the <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(n\)</span> degrees of freedom.</p>
+<p>More simply, we may calculate the intervals as <span id="eq-simpleCI"><span class="math display">\[
+\bar{x}\pm 1.96\sqrt{s^2/n},
+\tag{10.2}\]</span></span> where</p>
+<ul>
+<li><p>we have ignored the finite population correction. We may have to if the total population size <span class="math inline">\(N\)</span> is unknown; we would need to assume <span class="math inline">\(n/N\)</span> is small;</p></li>
+<li><p>we have assumed <span class="math inline">\(n\)</span> is large enough such that there is little difference between the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n\)</span> degrees of freedom and the standard normal distribution.</p></li>
+</ul>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-ciXbar" class="theorem example">
+<p><span class="theorem-title"><strong>Example 10.1</strong></span> SRS is to be used in a quality control process. A batch of <span class="math inline">\(N=200\)</span> components has been produced (high-specification bolts in aerospace manufacturing). For this population of 200 bolts, we want to know the mean load <span class="math inline">\(\bar{X}\)</span> the bolts can carry before they break (measured in MegaPascals MPa), but measuring for this for any single bolt will destroy the bolt: we estimate <span class="math inline">\(\bar{X}\)</span> using a small sample with <span class="math inline">\(n=10\)</span>.</p>
+<p>The sample is shown below.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 431.1 512.7 483.0 534.6 580.7 603.1 626.9 611.8 528.9 672.8</code></pre>
+</div>
+</div>
+<p>We compute the sample mean and sample variance as follows</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x)<span class="sc">/</span><span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 558.56</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">9</span> <span class="sc">*</span> <span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5393.547</code></pre>
+</div>
+</div>
+<p>We obtain the 97.5th percentile from the <span class="math inline">\(t_{9}\)</span> distribution:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">9</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.262157</code></pre>
+</div>
+</div>
+<p>A 95% confidence interval is calculated as <span class="math display">\[
+558.56 \pm 2.262 \sqrt{\left(1-\frac{10}{200}\right)\frac{5393.547}{10}}
+\]</span> i.e. <span class="math display">\[
+(507.3,\, 609.8)\mbox{MPa}
+\]</span></p>
+<p>In the appendix, we use simulation to investigate the normal approximation in <a href="#eq-normApproxCI" class="quarto-xref">Equation&nbsp;<span>10.1</span></a>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-sampleSizeMean" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="sec-sampleSizeMean"><span class="header-section-number">10.3</span> Sample size for estimating a mean</h2>
+<p>Now we have formula for the confidence interval, we can (almost!) use it to propose a sample size. We use the simpler form for the confidence interval <a href="#eq-simpleCI" class="quarto-xref">Equation&nbsp;<span>10.2</span></a>.</p>
+<p>The user has to specify the desired maximum width for a confidence interval for <span class="math inline">\(\overline{X}\)</span>, given a desired level of confidence (typically 95%). Using <a href="#eq-simpleCI" class="quarto-xref">Equation&nbsp;<span>10.2</span></a> for a 95% interval, the width <span class="math inline">\(w\)</span> will be <span class="math display">\[
+w:=2\times 1.96 \sqrt{s^2/n}.
+\]</span> If the user specifies the requirement that <span class="math inline">\(w\)</span> is below some desired value, then we could solve for <span class="math inline">\(n\)</span>…except that we don’t know the value of <span class="math inline">\(s^2\)</span>! Two options are</p>
+<ol type="1">
+<li><p>if we have some other data that we think is related, or perhaps data from a pilot study, use that to estimate <span class="math inline">\(s^2\)</span>;</p></li>
+<li><p>choose a value for <span class="math inline">\(s^2\)</span> based on our own judgement of what is plausible for the population standard deviation <span class="math inline">\(S\)</span>: estimate what we think <span class="math inline">\(S\)</span> is, and then replace <span class="math inline">\(s^2\)</span> by the square of our estimate of <span class="math inline">\(S\)</span>.</p></li>
+</ol>
+<p>To estimate the population standard deviation <span class="math inline">\(S\)</span>, note that for a normal distribution, we’d expect 95% of the population to be covered by an interval of width approximately <span class="math inline">\(4S\)</span>. So we could estimate <span class="math inline">\(S\)</span> by thinking of what sort of range of values would cover most of the population, then dividing the the width of this range by 4.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-samplesizeXbar" class="theorem example">
+<p><span class="theorem-title"><strong>Example 10.2</strong></span> A smartphone manufacturer wants to estimate the mean battery life for a particular model, assuming typical everyday use. The manufacturer will report the mean battery life for <span class="math inline">\(n\)</span> different users, given a single full charge per user, and would like to report a mean within an accuracy within plus or half an hour. We interpret this as saying that a 95% confidence interval should have a width of no more than 1 hour.</p>
+<p>We write</p>
+<p><span class="math display">\[n&gt;\frac{(2\times1.96\times s)^2 }{w_{max}^2},\]</span> where <span class="math inline">\(w_{max}=1\)</span> is the maximum acceptable width of the 95% confidence interval.</p>
+<p>We replace <span class="math inline">\(s\)</span> with a plausible estimate of the population <span class="math inline">\(S\)</span>. Following the approach above, we might suppose a range of 8 hours might cover most of the population, so we estimate <span class="math inline">\(S=8/4\)</span>. We then replace <span class="math inline">\(s^2\)</span> by 2 to get</p>
+<p><span class="math display">\[n&gt;(2\times1.96\times 2)^2 = 61.5.\]</span></p>
+<p>We shouldn’t be too precise here: we might report that around 60 is a suitable size.</p>
+<p>Given that we’ve had to estimate <span class="math inline">\(S\)</span>, we could plan for sample of size 60 initially, use our sample data as it comes in to re-estimate <span class="math inline">\(S\)</span>, then adjust the total sample size accordingly.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-approx-interval-prop" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="sec-approx-interval-prop"><span class="header-section-number">10.4</span> Confidence intervals for a proportion <span class="math inline">\(P\)</span></h2>
+<p>We proceed as in <a href="#sec-CIXbar" class="quarto-xref"><span>Section 10.2</span></a>, substituting <span class="math inline">\(p\)</span> for <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(P\)</span> for <span class="math inline">\(\bar{X}\)</span>. We suppose</p>
+<p><span class="math display">\[p \sim N(P,(1-f)S^2/n)\]</span> approximately. Using this approximation, we then have <span class="math display">\[\frac{p-P}{\sqrt{(1-f)S^2/n}}\sim N(0,1).\]</span> As before, we replace <span class="math inline">\(S^2\)</span> by the sample variance <span class="math display">\[
+s^2 = \frac{n}{n-1}p(1-p),
+\]</span> and report a 95% confidence interval <span class="math display">\[
+p\pm 1.96\sqrt{(1-f)\frac{p(1-p)}{n-1}},
+\]</span> One small detail: even though we have estimated a population variance <span class="math inline">\(S^2\)</span> by a sample variance <span class="math inline">\(s^2\)</span>, we don’t make the switch from the normal distribution to the <span class="math inline">\(t\)</span>-distribution. This is because, as commented earlier, in this case the population variance <span class="math inline">\(S^2\)</span> is determined by the value of <span class="math inline">\(P\)</span>: it’s not a separate quantity that we can estimate independently.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-ciForP" class="theorem example">
+<p><span class="theorem-title"><strong>Example 10.3</strong></span> A survey is undertaken to assess what proportion of undergraduate (UG) students at Sheffield University plan to study for a postgraduate (PG) degree. A SRS of 200 of the 18,000 UGs is undertaken. Of those 200 sampled, 56 plan to go on to PG study. Calculate a 95% CI for the proportion of Sheffield UGs that plan to go on to PG study.</p>
+<p>We have <span class="math inline">\(N=18,000\)</span>, <span class="math inline">\(n=200\)</span> and <span class="math inline">\(p=56/200=0.28\)</span> which gives the CI as <span class="math display">\[\begin{align}
+&amp; p \pm z_{1-\alpha/2} \sqrt{\left(1-\frac{200}{18000}\right)\frac{p(1-p)}{(n-1)}} \\
+&amp;=0.28 \pm 1.96\sqrt{\frac{(0.28)(0.72)}{199}}\\
+&amp;\simeq(0.22, 0.34)
+\end{align}\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-size-for-estimating-a-proportion" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="sample-size-for-estimating-a-proportion"><span class="header-section-number">10.5</span> Sample Size for estimating a proportion</h2>
+<p>We use the same approach as in <a href="#sec-sampleSizeMean" class="quarto-xref"><span>Section 10.3</span></a>, with one difference. The user again needs to specify the desired maximum width for a confidence interval for <span class="math inline">\(P\)</span>. For a 95% interval, ignoring the finite population correct, this width is <span class="math display">\[
+w:=2\times 1.96 \sqrt{\frac{p(1-p)}{n-1}}
+\]</span> Again, the width depends on something unknown (<span class="math inline">\(p\)</span>), but the maximum width occurs when <span class="math inline">\(p(1-p)\)</span> is maximised, and because <span class="math inline">\(p\in[0,1]\)</span>, this is maximised at 0.25 when <span class="math inline">\(p=0.5\)</span>. Hence to determine the minimum <span class="math inline">\(m\)</span>, the user specifies the maximum desired width <span class="math inline">\(w_{max}\)</span>, and then we solve for</p>
+<p><span class="math display">\[
+2\times 1.96 \sqrt{\frac{1}{4(n-1)}}\le w_{max}.
+\]</span></p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-samplesizeP" class="theorem example">
+<p><span class="theorem-title"><strong>Example 10.4</strong></span> A SRS is to be undertaken to assess how many UK households do not own a car. How large a sample is required to give a 95% confidence interval for <span class="math inline">\(P\)</span> that has a width less than 0.05?</p>
+<p>We require <span class="math display">\[2\times 1.96 \sqrt{\frac{1}{4(n-1)}}\le 0.05\]</span> so that <span class="math inline">\(n\ge 1537.6\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="dependent-proportions-for-polychotomous-variables" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="dependent-proportions-for-polychotomous-variables"><span class="header-section-number">10.6</span> Dependent proportions for polychotomous variables</h2>
+<p>Suppose for each member of the population, the characteristic of interest is polychotomous (more than two possibilities), rather than binary. For example, in a UK election poll, there are more than two possible parties to vote for.</p>
+<p>The previous methods can be used for point estimation: we can estimate, for example, the proportion of Labour voters by redefining the population characteristic simply as “Labour voter” or “not Labour voter”. However, the analysis is a little more complex if we want to quantify uncertainty about which proportion is largest, as the proportions are not independent, and one proportion does not determine the others.</p>
+<p>Suppose the interest is in who is likely to win out of Conservative and Labour. One way to analyse this is as follows. For member <span class="math inline">\(i\)</span> of the population, define <span class="math display">\[\begin{align}
+X_i &amp;= 1 \mbox{ if Conservative voter, and 0 otherwise},\\
+Y_i &amp;= 1 \mbox{ if Labour voter, and 0 otherwise},\\
+Z_i &amp;= X_i - Y_i,
+\end{align}\]</span> so the population proportions of Conservative and Labour voters are <span class="math inline">\(\overline{X}\)</span> and <span class="math inline">\(\overline{Y}\)</span> respectively, with <span class="math inline">\(\overline{Z}\)</span> the difference between these two proportions. Define the corresponding sample equivalents <span class="math inline">\(x_i, y_i\)</span> and <span class="math inline">\(z_i\)</span>. By SRS results for the sample mean, we have <span class="math inline">\(\bar{z}\)</span> an unbiased estimator of <span class="math inline">\(\overline{Z}\)</span>, with sample variance given by <span class="math display">\[var(\bar{z})=(1-f)\frac{S^2_Z}{n}.\]</span> As usual, we estimate the population variance <span class="math inline">\(S^2_Z\)</span> by the sample variance <span class="math inline">\(s^2_Z\)</span>, and report a 95% confidence interval as <span class="math display">\[\overline{z}\pm 1.96\sqrt{\left(1-\frac{n}{N}\right)\frac{s_Z^2}{n}},\]</span> or <span class="math display">\[\overline{z}\pm 1.96\sqrt{\frac{s_Z^2}{n}},\]</span> if we assume <span class="math inline">\(n/N\)</span> is small enough to ignore the finite population correction.</p>
+<p>Note that <span class="math display">\[\begin{align}
+(n-1)s^2_Z &amp;= \sum_{i=1}^n(z_i-\overline{z})^2\\
+&amp;= n(\overline{x} + \overline{y} - (\overline{x} - \overline{y})^2).
+\end{align}\]</span> as <span class="math inline">\(z_i^2 = x_i + y_i\)</span>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="{#exm-polyCI">
+<p>An opinion poll in Wales will ask the question: “If there were a Senedd (Welsh Parliament) election tomorrow, which party would you vote for?”. A sample size of <span class="math inline">\(n=1000\)</span> is proposed. A previous poll resulted in estimates of 37% and 23% voting for Plaid Cymru and Reform UK respectively, for the two leading parties. What width of confidence interval might we expect for the lead of Plaid Cymru over Reform UK? What would happen with a sample size of <span class="math inline">\(n=100\)</span>?</p>
+<p>Define <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> to be the sample proportions of Plaid Cymru and Reform UK voters respectively. Ignoring the finite population correction, the width of the confidence interval will be <span class="math display">\[
+2\times 1.96 \sqrt{s^2_Z/n}
+\]</span> with <span class="math display">\[
+s^2_Z = \frac{n}{n-1}(\overline{x} + \overline{y} - (\overline{x} - \overline{y})^2).
+\]</span> We have <span class="math inline">\(n=1000\)</span>. Before we conduct the poll, we don’t know what the values of <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> will be. Two options here are:</p>
+<ol type="1">
+<li><p>We estimate <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> to be 0.37 and 0.25 respectively based on the previous poll. This gives a confidence interval width of approximately 0.1. So, for example, if the new poll again observed 37% and 25% of respondents saying they would would vote for Plaid Cymru and Reform UK respectively, the confidence interval would be <span class="math inline">\((7\%, 17\%)\)</span> for the difference between the two parties. For a sample size of <span class="math inline">\(n=100\)</span>, the interval would widen to <span class="math inline">\((-3\%, 27\%)\)</span>: we might consider this to be unacceptably wide, hence a sample size of 100 is too small.</p></li>
+<li><p>We could also note that maximum possible value of <span class="math inline">\(s^2_Z\)</span> occurs when <span class="math inline">\(\bar{x}=\bar{y}=0.5\)</span>, giving a maximum possible width of 0.12. With a sample size of <span class="math inline">\(n=100\)</span>, this increases to a width of 0.4.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="tasks" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="tasks"><span class="header-section-number">10.7</span> Tasks</h2>
+<ol type="1">
+<li><p>A SRS of size 1000 was taken from the UK population and body weight (kg) was recorded. <span class="math inline">\(x_1, x_2, \ldots x_{1000}\)</span> are the 1000 sample weights which had a mean of 78.2 kg. Further calculation gave <span class="math inline">\(\sum_{i=1}^{1000}x_i^2=6,241,154\)</span> kg<span class="math inline">\(^2\)</span>. Find a 95% CI for <span class="math inline">\(\overline X\)</span>, ignoring the finite population correction.</p></li>
+<li><p>Another SRS of size <span class="math inline">\(n\)</span> is to be taken from the current UK population. Body weight (kg) will again be recorded. A 95% CI for the population mean body weight will be formed. What is the smallest sample size (<span class="math inline">\(n\)</span>) that would give a 95% CI with a width of less than 1 kg?</p></li>
+<li><p>A residential area has 5000 private houses. We wish to estimate the proportions of houses with:</p>
+<ol type="a">
+<li><p>more than three people living in them,</p></li>
+<li><p>more than one car owned by the occupants of the house.</p></li>
+</ol></li>
+</ol>
+<p>The estimators are required to have standard errors not exceeding 0.02 and 0.01 respectively. From other surveys it is thought that the proportions in (a) and (b) lie in the ranges <span class="math inline">\((0.35,0.55)\)</span> and <span class="math inline">\((0.10,0.20)\)</span> respectively. The two proportions are to be estimated from a single SRS. How large a sample is needed?</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>We have <span class="math display">\[s^2 = \frac{1}{999}(6241154-1000(78.2)^2)=126.04\]</span> Ignoring the finite population correction, we have that a 95% CI for <span class="math inline">\(\overline{X}\)</span>is given by <span class="math display">\[\begin{align}
+&amp;\overline{x}\pm t_{n-1,0.025} \sqrt{s^2/n}   \\
+&amp;=78.2 \pm 1.962 \sqrt{126.04/1000} \\
+&amp;=(77.5, 78.9) kg
+\end{align}\]</span> 1.962 is the relevant <span class="math inline">\(t_{999}\)</span> quantile (from R) but the degrees of freedom is so large that we could use the normal <span class="math inline">\(z\)</span> quantile.</p></li>
+<li><p>We can use the estimate of <span class="math inline">\(S^2\)</span> from the previous sample. The population size is <span class="math inline">\(N=68,900,000\)</span>, the specified CI width is <span class="math inline">\(d=1\)</span>, the <span class="math inline">\(z\)</span> quantile is <span class="math inline">\(z_{1-\alpha/2} = 1.96\)</span> and the population variance estimate is 126.04 kg<span class="math inline">\(^2\)</span>. Using <span class="math display">\[n \geq \frac{N}{1+N(d/(2Sz_{\alpha/2}))^2}\]</span> gives <span class="math inline">\(n \geq 1936.7\)</span> so the smallest integer sample size is <span class="math inline">\(n=1934\)</span>.</p></li>
+<li><p>If <span class="math inline">\(P\)</span> is the population proportion, we require <span class="math inline">\(n\)</span> such that <span class="math display">\[ \sqrt{\frac{1-f}{n}P(1-P)}~~~ \leq ~~~0.02\mbox{ and }0.01 \]</span> respectively in the two cases. The maximum of the standard error on the left hand side occurs when <span class="math inline">\(P=0.5\)</span> in (a) and when <span class="math inline">\(P=0.2\)</span> (the nearest believable value to <span class="math inline">\(P=0.5\)</span>) in (b). This leads to the requirement that <span class="math inline">\(n\geq 556\)</span> in (a) and <span class="math inline">\(n\geq 1213\)</span> in (b). Hence we need <span class="math inline">\(n\geq 1213\)</span> to satisfy both requirements.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="appendix-the-normal-approximation-for-confidence-intervals" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="appendix-the-normal-approximation-for-confidence-intervals"><span class="header-section-number">10.8</span> Appendix: the normal approximation for confidence intervals</h2>
+<p>Confidence intervals for population means are derived from the approximation <span class="math display">\[
+\bar{x}\sim N(\bar{X},(1-f)S^2/n).
+\]</span> Here we investigate this with a simulation study, expanding on the example in <a href="#exm-ciXbar" class="quarto-xref">Example&nbsp;<span>10.1</span></a>.</p>
+<p>We first make up a population of size 200, where the population distribution is clearly non-normal:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="dv">400</span><span class="sc">+</span><span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="dv">200</span>, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">scale =</span> <span class="dv">100</span>), <span class="dv">1</span>) </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(X, <span class="at">main =</span> <span class="st">"Histogram of population"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Sample-sizes-and-confidence-intervals_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We now generate 10,000 simple random samples of size 10. For each sample, we calculate the sample mean.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sampleMeans <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">10000</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use the sample() function to draw a SRS</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># this randomly selects 10 members from the population (X),</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sampling without replacement</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">sample</span>(X, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the sample mean for the SRS</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  sampleMeans[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We now compare the distribution of the sample mean with the approximate normal distribution given above (shown as the red line). Note that, because we have generated the population, we can determine the population mean and variance <span class="math inline">\(\bar{X}\)</span> and <span class="math inline">\(S^2\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sampleMeans, <span class="at">prob =</span> <span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">"Histogram of sample means"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="fu">mean</span>(X), <span class="at">sd =</span> <span class="fu">sqrt</span>((<span class="dv">1-10</span><span class="sc">/</span><span class="dv">200</span>)<span class="sc">*</span><span class="fu">var</span>(X)<span class="sc">/</span><span class="dv">10</span>)),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">"red"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Sample-sizes-and-confidence-intervals_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that the histogram lines up fairly well (if not perfectly) with the normal distribution, even though the sample size is small (10) and the population distribution is skewed.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Simple random sampling.html" class="pagination-link" aria-label="Simple Random Sampling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Simple Random Sampling</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Stratified sampling.html" class="pagination-link" aria-label="Stratified Sampling">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Stratified Sampling</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

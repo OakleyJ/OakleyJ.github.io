@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>18&nbsp; Sensitivity analysis – MPS318/4101 Sampling Theory and Design of Experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Uncertainty-analysis.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-27c261d06b905028a18691de25d09dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tailor-made designs.html">Part III: MPS4101 only</a></li><li class="breadcrumb-item"><a href="./Sensitivity-analysis.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MPS318/4101 Sampling Theory and Design of Experiments</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instructions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: Experimental Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to experimental design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Experimental Design</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Review of linear models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A review of linear models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Optimality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimality criteria</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-single factor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Qualitative explanatory variables and blocking</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Qualitative-multiple factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Latin Square designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Factorial designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Continuous and exact designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Continuous and exact designs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Sampling Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction to sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Simple random sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Simple Random Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Sample sizes and confidence intervals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Confidence intervals and sample sizes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Stratified sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Stratified Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Population size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Estimating a Population Size</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Practicalities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Reliability of sample surveys</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: MPS4101 only</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tailor-made designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Modifying designs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Cluster sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Cluster Sampling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Introduction-computer-experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Introduction to computer experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Uncertainty-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Sensitivity-analysis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#functional-anova-and-variance-decompositions" id="toc-functional-anova-and-variance-decompositions" class="nav-link active" data-scroll-target="#functional-anova-and-variance-decompositions"><span class="header-section-number">18.1</span> Functional ANOVA and variance decompositions</a></li>
+  <li><a href="#main-effect-and-total-effect-variances" id="toc-main-effect-and-total-effect-variances" class="nav-link" data-scroll-target="#main-effect-and-total-effect-variances"><span class="header-section-number">18.2</span> Main effect and total effect variances</a></li>
+  <li><a href="#computation" id="toc-computation" class="nav-link" data-scroll-target="#computation"><span class="header-section-number">18.3</span> Computation</a>
+  <ul class="collapse">
+  <li><a href="#using-monte-carlo" id="toc-using-monte-carlo" class="nav-link" data-scroll-target="#using-monte-carlo"><span class="header-section-number">18.3.1</span> Using Monte Carlo</a></li>
+  <li><a href="#using-regression" id="toc-using-regression" class="nav-link" data-scroll-target="#using-regression"><span class="header-section-number">18.3.2</span> Using regression</a></li>
+  </ul></li>
+  <li><a href="#proof-of-the-variance-identity" id="toc-proof-of-the-variance-identity" class="nav-link" data-scroll-target="#proof-of-the-variance-identity"><span class="header-section-number">18.4</span> Proof of the variance identity</a></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks"><span class="header-section-number">18.5</span> Tasks</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Tailor-made designs.html">Part III: MPS4101 only</a></li><li class="breadcrumb-item"><a href="./Sensitivity-analysis.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Aims for this chapter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this chapter we investigate the problem of how to identify which uncertain computer model inputs have the largest effect in terms of inducing model output uncertainty.</p>
+</div>
+</div>
+<p>The term “sensitivity analysis” can be used to mean different things, but broadly refers to investigating how predictions or inferences might change if we change particular assumptions (for example, investigating whether the prediction from a computer model changes if we change an input or parameter value). Here, we use the term sensitivity analysis to mean a specific extension of the probabilistic uncertainty analysis problem.</p>
+<p>We consider a computer model with a scalar output <span class="math inline">\(y\)</span> (or we investigate each element of a vector output separately) and a vector of inputs <span class="math inline">\(\mathbf{x}\)</span>. We suppose that there is a true, uncertain input <span class="math inline">\(\mathbf{X}\)</span>, and we are interested in the value of <span class="math inline">\(Y=f(\mathbf{X})\)</span>. Writing <span class="math inline">\(\mathbf{X}=(X_1,\ldots, X_d)\)</span>, the aim of a probabilistic or global sensitivity analysis is to understand how individual elements of <span class="math inline">\(\mathbf{X}\)</span> contribute to the uncertainty in <span class="math inline">\(Y\)</span>. In particular, if we could commission a study to learn the true value of an input (or at least reduce uncertainty about an input), which input would be best to learn about? Is there a particular subset of inputs that we should be trying to learn about?</p>
+<p>We first state a useful identity (a proof is given at the end). For any two random variables <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, <span id="eq-varident"><span class="math display">\[Var(A)=Var_B\{E(A|B)\} + E_B\{Var(A|B)\} \tag{18.1}\]</span></span> Suppose we could learn the true value of one input. Which would be the best input to choose? One option is to consider a reduction in variance. Without any further information we have <span class="math inline">\(Var(Y)\)</span> as our current variance of the output. Note the interpretation here: if <span class="math inline">\(\mathbf{X}\)</span> is a fixed quantity, so is <span class="math inline">\(Y\)</span>. By reducing variance, we mean we are reducing uncertainty about <span class="math inline">\(Y\)</span>; we are not making <span class="math inline">\(Y\)</span> ‘less variable’ (though one can think in those terms if <span class="math inline">\(\mathbf{X}\)</span> is a randomly varying quantity, and there are options to reduce variability in the inputs).</p>
+<p>If we knew the true value of <span class="math inline">\(X_i\)</span>, our variance would change to <span class="math inline">\(Var(Y|X_i)\)</span>, so the reduction in variance would be <span class="math display">\[Var(Y) - Var(Y|X_i).\]</span> But we don’t yet know what the true value of <span class="math inline">\(X_i\)</span> is going to be; the reduction in variance is uncertain. We could instead consider the <em>expected</em> reduction in variance: <span class="math display">\[Var(Y) - E_{X_i}\{Var(Y|X_i)\} = Var_{X_i}\{E(Y|X_i)\},\]</span> by the variance identity (<a href="#eq-varident" class="quarto-xref">Equation&nbsp;<span>18.1</span></a>). To understand the notation, note that <span class="math display">\[E(Y|X_i) = \int_{\mathcal{X}_{-i}} f(X_i,\mathbf{x}_{-i})p_{\mathbf{X}_{-i}|X_i}(\mathbf{x}_{-i})d\mathbf{x}_{-i},\]</span> where the subscript <span class="math inline">\(-i\)</span> refers to all elements apart from the <span class="math inline">\(i\)</span>th element, and <span class="math inline">\(\mathcal{X}_{-i}\)</span> is the sample space of <span class="math inline">\(\mathbf{X}_{-i}\)</span>. As we have integrated out <span class="math inline">\(\mathbf{X}_{-i}\)</span>, we have <span class="math inline">\(E(Y|X_i)\)</span> as a function of <span class="math inline">\(X_i\)</span> only, so we then evaluate <span class="math inline">\(Var_{X_i}\{E(Y|X_i)\}\)</span>, the variance of this function with respect to <span class="math inline">\(X_i\)</span>.</p>
+<p>We don’t have to assume the inputs are independent, and we can apply the same argument to groups of inputs. The expected reduction in variance from learning a subset of inputs <span class="math inline">\(\mathbf{X}_u\)</span> is <span class="math display">\[Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}\]</span></p>
+<p>We define <span class="math display">\[Var_{X_i}\{E(Y|X_i)\},\]</span> to be the <strong>main effect variance of input <span class="math inline">\(X_i\)</span></strong>, and <span class="math display">\[\frac{Var_{X_i}\{E(Y|X_i)\}}{Var(Y)},\]</span> to be the <strong>main effect index of input <span class="math inline">\(X_i\)</span></strong>. Other names for main effect index include first order sensitivity index, Sobol’ index, and correlation ratio for input <span class="math inline">\(X_i\)</span>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-sa1" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.1</strong></span> Consider <span class="math display">\[f(\mathbf{x})=1.1x_1 + x_2 +x_1x_2+x_3^2.\]</span> Define <span class="math inline">\(Y=f(\mathbf{X})\)</span> with <span class="math display">\[X_1\sim N(0,4),\quad X_2\sim U[-4,4],\quad X_3\sim N(0,3).\]</span></p>
+<p>We show in detail how to calculate <span class="math inline">\(Var_{X_1}[E(Y|X_1)]\)</span>. First, in the following, treat <span class="math inline">\(X_1\)</span> as a constant. <span class="math display">\[\begin{align}
+E(Y|X_1)&amp;=E(1.1X_1 + X_2 +X_1X_2+X_3^2|X_1)
+\\&amp;=1.1X_1 +E(X_2) +X_1E(X_2) + E(X_3^2)\\
+&amp;=1.1X_1 + 0 + X_1\times 0  + Var(X_3)+E(X_3)^2\\
+&amp;=1.1X_1 + 3.
+\end{align}\]</span> Hence <span class="math display">\[Var_{X_1}[E(Y|X_1)]=Var_{X_1}(1.1X_1 + 3)=1.1^2\times 4 = 4.84.\]</span></p>
+<p>Similarly, <span class="math display">\[\begin{align}
+Var_{X_2}[E(Y|X_2)]&amp;=5.3,\label{VX2}\\
+Var_{X_3}[E(Y|X_3)]&amp;=18,.
+\end{align}\]</span></p>
+<p>If we could learn one input, we would rank <span class="math inline">\(X_3\)</span> most important, then <span class="math inline">\(X_2\)</span>, then <span class="math inline">\(X_1\)</span>. Now suppose we could learn two inputs. We find <span class="math display">\[\begin{align}
+Var_{X_1,X_2}[E(Y|X_1,X_2)]&amp;=31.5,\\
+Var_{X_1,X_3}[E(Y|X_1,X_3)]&amp;=22.84,\\
+Var_{X_2,X_3}[E(Y|X_2,X_3)]&amp;=23.3.\label{VX23}
+\end{align}\]</span> The best pair to learn is <span class="math inline">\((X_1,X_2)\)</span>, even though best individual input to learn is <span class="math inline">\(X_3\)</span>.</p>
+</div>
+</div>
+</div>
+<section id="functional-anova-and-variance-decompositions" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="functional-anova-and-variance-decompositions"><span class="header-section-number">18.1</span> Functional ANOVA and variance decompositions</h2>
+<p>For independent inputs, we can decompose <span class="math inline">\(Var(Y)\)</span> into main effect variances, two-way interaction variances, three-way interaction variances and so on. We first write <span id="eq-decomp"><span class="math display">\[
+f(\mathbf{x})=f_0+\sum_{i=1}^df_i(x_i)+\sum_{i&lt;j}f_{i,j}(x_i,x_j)+\\ \sum_{i&lt;j&lt;k}f_{i,j,k}(x_i,x_j,x_k)+\ldots+f_{1,\ldots,d}(x_1,\ldots,x_d).
+\tag{18.2}\]</span></span> This is trivial, in that the last term is a function of all the inputs, so we could choose to set <span class="math inline">\(f_{1,\ldots,d}(x_1,\ldots,x_d)=f(\mathbf{x})\)</span> and set all the other terms equal to zero. We now define <span class="math display">\[\begin{align}
+f_0&amp;=E\{f(\mathbf{X})\},\\
+f_i(x_i)&amp;=E\{f(\mathbf{X})|X_i=x_i\}-f_0,\label{fi}\\
+f_{i,j}(x_i,x_j)&amp;=E\{f(\mathbf{X})|X_i=x_i,X_j=x_j\}-f_i(x_i)-f_j(x_j)-f_0\\
+f_{i,j,k}(x_i,x_j,x_k)&amp;=E\{f(\mathbf{X})|X_i=x_i,X_j=x_j,X_k=x_k\}-f_{i,j}(x_i,x_j)-f_{i,k}(x_i,x_k)\nonumber\\
+&amp;-f_{j,k}(x_j,x_k)-f_i(x_i)-f_j(x_j)-f_k(x_k)-f_0,
+\end{align}\]</span> and so on. Inspecting, for example, the definition of <span class="math inline">\(f_{i,j}(x_i,x_j)\)</span>, we can think of this term as representing an additional contribution to <span class="math inline">\(f(\mathbf{x})\)</span>, from the interaction between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span>, on top of the contributions from the single input functions <span class="math inline">\(f_i(x_i)\)</span> and <span class="math inline">\(f_j(x_j)\)</span>. Note also that, following this construction, <span class="math inline">\(f_{1,\ldots,d}(x_1,\ldots, x_d)\)</span> is simply <span class="math inline">\(f(\mathbf{x})\)</span>, minus all the other terms on the RHS of <a href="#eq-decomp" class="quarto-xref">Equation&nbsp;<span>18.2</span></a>, so again, it is trivial to see that the decomposition holds.</p>
+<p>Now, with <span class="math inline">\(Y=f(\mathbf{X})\)</span>, write <span class="math display">\[\begin{align}
+Y=f(\mathbf{X})&amp;=f_0+\sum_{i=1}^df_i(X_i)+\sum_{i&lt;j}f_{i,j}(X_i,X_j)\nonumber\\
+&amp;+\sum_{i&lt;j&lt;k}f_{i,j,k}(X_i,X_j,X_k)+\ldots+f_{1,\ldots,d}(X_1,\ldots,X_d).
+\end{align}\]</span> If inputs in <span class="math inline">\(\mathbf{X}\)</span> are independent, we find that all the terms above are independent, and <span id="eq-vardecomp"><span class="math display">\[
+Var\{Y\}=\sum_{i=1}^dVar\{f_i(X_i)\}+\sum_{i&lt;j}Var\{f_{i,j}(X_i,X_j)\}\\
++\sum_{i&lt;j&lt;k}Var\{f_{i,j,k}(X_i,X_j,X_k)\}+\ldots\\\
++Var\{f_{1,\ldots,d}(X_1,\ldots,X_d)\}.
+\tag{18.3}\]</span></span> Noting the definition of <span class="math inline">\(f_i(x_i)\)</span>, the main effect variance for <span class="math inline">\(X_i\)</span> is <span class="math display">\[Var\{f_i(X_i)\}=Var_{X_i}\{E(Y|X_i)\}\}\]</span> We can define a two-way interaction variance for <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> as <span class="math display">\[Var\{f_{i,j}(X_i,X_j)\},\]</span> which gives the <em>additional</em> contribution to <span class="math inline">\(Var(Y)\)</span> from <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span>, above their main effect contributions. We define a <strong>total effect variance for <span class="math inline">\(X_i\)</span></strong> as the sum of all terms in <span class="math inline">\(Var(Y)\)</span> involving <span class="math inline">\(X_i\)</span> and the <strong>total effect index for <span class="math inline">\(X_i\)</span></strong> as its total effect variance, divided by <span class="math inline">\(Var(Y)\)</span>. We</p>
+</section>
+<section id="main-effect-and-total-effect-variances" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="main-effect-and-total-effect-variances"><span class="header-section-number">18.2</span> Main effect and total effect variances</h2>
+<p>An input can have a small main effect variance, but a large total effect variance. A small main effect variance doesn’t imply ‘unimportant’, but a small total effect variance <em>does</em> imply ‘unimportant’. We can calculate total effect variance <span class="math inline">\(V_i^T\)</span> for input <span class="math inline">\(X_i\)</span> via (joint) main effect variance of remaining inputs <span class="math display">\[Var(Y)=Var_{\mathbf{X}_{-i}}\{E(Y|\mathbf{X}_{-i})\} + V^T_i,\]</span> The effect of calculating <span class="math inline">\(Var_{\mathbf{X}_{-i}}\{E(Y|\mathbf{X}_{-i})\}\)</span> is to sum all the terms in <a href="#eq-vardecomp" class="quarto-xref">Equation&nbsp;<span>18.3</span></a> that do <em>not</em> include input <span class="math inline">\(X_i\)</span>. The total effect index for input <span class="math inline">\(X_i\)</span> is therefore <span class="math display">\[1-\frac{Var_{\mathbf{X}_{-i}}\{E(Y|\mathbf{X}_{-i})\}}{Var(Y)}.\]</span> We can therefore interpret the total effect index for <span class="math inline">\(X_i\)</span> as the expected proportion of variance remaining if we were to learn the true value of all inputs <em>except</em> <span class="math inline">\(X_i\)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Total effect indices are only meaningful for independent inputs; <a href="#eq-vardecomp" class="quarto-xref">Equation&nbsp;<span>18.3</span></a> assumes independence between inputs. Main effect indices are valid (their interpretation holds) regardless of whether the inputs are independet or not.</p>
+</div>
+</div>
+<p>Dependent inputs <span class="math inline">\(\mathbf{X}_u\)</span> should be treated as a single group, so that one would only calculate a total effect index for the whole group. We sum all terms in <a href="#eq-vardecomp" class="quarto-xref">Equation&nbsp;<span>18.3</span></a> involving any elements of <span class="math inline">\(\mathbf{X}_u\)</span>. This corresponds to calculating <span class="math display">\[1-\frac{Var_{\mathbf{X}_{-u}}\{E(Y|\mathbf{X}_{-u})\}}{Var(Y)}.\]</span></p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-sa2" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.2</strong></span> Continuing <a href="#exm-sa1" class="quarto-xref">Example&nbsp;<span>18.1</span></a>, consider <span class="math display">\[Y=1.1X_1 + X_2 +X_1X_2+X_3^2\]</span> with <span class="math display">\[X_1\sim N(0,4),\quad X_2\sim U[-4,4],\quad X_3\sim N(0,3).\]</span> We can partition the variance as follows.</p>
+<div class="center">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_1(X_1)\}\)</span></td>
+<td style="text-align: center;">4.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_2(X_2)\}\)</span></td>
+<td style="text-align: center;">5.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_3(X_3)\}\)</span></td>
+<td style="text-align: center;">18.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{1,2}(X_1,X_2)\}\)</span></td>
+<td style="text-align: center;">21.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{1,3}(X_1,X_3)\}\)</span></td>
+<td style="text-align: center;">0.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{2,3}(X_2,X_3)\}\)</span></td>
+<td style="text-align: center;">0.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(Var\{f_{1,2,3}(X_1,X_2,X_3)\}\)</span></td>
+<td style="text-align: center;">0.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(Var(Y)\)</span></td>
+<td style="text-align: center;">49.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The total effect variance for <span class="math inline">\(X_1\)</span> is <span class="math inline">\(4.8+21.3\)</span>. Note that we can obtain this via <span class="math display">\[49.4 - Var_{X_2,X_3}\{E(Y|X_2,X_3)\} = 49.4 - Var(X_2 + X_3^2) = 49.4-64/12 - 18 = 26.1\]</span> (note <span class="math inline">\(E(X_3^4)=27\)</span>).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="computation" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="computation"><span class="header-section-number">18.3</span> Computation</h2>
+<section id="using-monte-carlo" class="level3" data-number="18.3.1">
+<h3 data-number="18.3.1" class="anchored" data-anchor-id="using-monte-carlo"><span class="header-section-number">18.3.1</span> Using Monte Carlo</h3>
+<p>Partition the input <span class="math inline">\(\mathbf{X}\)</span> into <span class="math inline">\((\mathbf{X}_u,\mathbf{X}_{-u})\)</span>. A Monte Carlo procedure for calculating <span class="math inline">\(Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}\)</span> is as follows.</p>
+<ol type="1">
+<li><p>Sample a value <span class="math inline">\(\mathbf{X}_{u,j}\)</span> from the distribution of <span class="math inline">\(\mathbf{X}_u\)</span>.</p>
+<ol type="1">
+<li><p>Sample a set of values <span class="math inline">\(\mathbf{X}_{-u,1},\ldots,\mathbf{X}_{-u,K}\)</span> from the distribution of <span class="math inline">\(\mathbf{X}_{-u}|\mathbf{X}_u=\mathbf{X}_{u,j}.\)</span></p></li>
+<li><p>Estimate <span class="math inline">\(E(Y|\mathbf{X}_u=\mathbf{X}_{u,j})\)</span> by <span class="math display">\[m_j=\frac{1}{K}\sum_{k=1}^K f(\mathbf{X}_{u,j},\mathbf{X}_{-u,k}).\]</span></p></li>
+</ol></li>
+<li><p>Repeat for <span class="math inline">\(j=1,\ldots,J\)</span> and estimate <span class="math inline">\(Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}\)</span> by <span class="math display">\[\frac{1}{J-1}\sum_{j=1}^J(m_j - \bar{m})^2,\]</span> where <span class="math inline">\(\bar{m} = \frac{1}{J}\sum_{j=1}^Jm_j.\)</span></p></li>
+</ol>
+<p>This can be computationally expensive, in that large values of <span class="math inline">\(J\)</span> and <span class="math inline">\(K\)</span> may be needed to get accurate estimates. An R implementation for <a href="#exm-sa2" class="quarto-xref">Example&nbsp;<span>18.2</span></a> is available on Blackboard.</p>
+</section>
+<section id="using-regression" class="level3" data-number="18.3.2">
+<h3 data-number="18.3.2" class="anchored" data-anchor-id="using-regression"><span class="header-section-number">18.3.2</span> Using regression</h3>
+<p>We first consider estimating a main effect variance <span class="math inline">\(Var_{X_i}\{E(Y|X_i)\}\)</span>. We will shortly see how to do this, using regression, and a sample of inputs and outputs generated for a probabilistic uncertainty analysis. To illustrate this, we consider again <a href="#exm-sa1" class="quarto-xref">Example&nbsp;<span>18.1</span></a>. Suppose we have conducted a Monte Carlo uncertainty analysis:</p>
+<ul>
+<li><p>We have generated a sample of <span class="math inline">\(N\)</span> values from the distribution of <span class="math inline">\(\mathbf{X}\)</span>. Denote the observed values of this sample by <span class="math inline">\(\mathbf{x}_1,\ldots,\mathbf{x}_N\)</span>, with <span class="math inline">\(\mathbf{x}_i=(x_{1,i},x_{2,i},x_{3,i})\)</span>.</p></li>
+<li><p>We evaluate <span class="math inline">\(y_i=f(\mathbf{x}_i)\)</span> for <span class="math inline">\(i=1,\ldots,N\)</span> to get a sample from the distribution of <span class="math inline">\(Y\)</span>.</p></li>
+</ul>
+<p>Now suppose we want to calculate <span class="math inline">\(Var_{X_3}\{E(Y|X_3)\}\)</span>. We can think of <span class="math inline">\(E(Y|X_3=x_3)\)</span> as a function of <span class="math inline">\(x_3\)</span>, which we will write as <span class="math inline">\(g(x_3)\)</span>. We could estimate <span class="math inline">\(Var\{g(X_3)\}\)</span> using the sample variance of <span class="math inline">\(g(x_{3,1}),\ldots,g(x_{3,N})\)</span>, if we could work out how to evaluate (or estimate) <span class="math inline">\(g(x_{3,i})\)</span> for each <span class="math inline">\(i\)</span>. In this particular example, by looking at the function, we can see that <span class="math inline">\(g(x_3)=E(Y|X_3=x_3)=x_3^2\)</span>. Now let’s try plotting <span class="math inline">\(y_i\)</span> against <span class="math inline">\(x_{3,i}\)</span>, together with the function <span class="math inline">\(g(x_3^2)=x_3^2\)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Sensitivity-analysis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Could we have used the data to estimate the function <span class="math inline">\(g(x_3)\)</span>? Yes: this is a regression problem. The observed <span class="math inline">\((y_i,x_{3,i})\)</span> pairs can be related via <span class="math display">\[y_i=g(x_{3,i})+\varepsilon_i,\]</span> If we consider a random pair <span class="math inline">\((Y,X_3)\)</span> pair with corresponding error term <span class="math inline">\(\varepsilon\)</span>, we have <span class="math display">\[E(Y)=E\{g(X_3)\}+E(\varepsilon),\]</span> and <span class="math display">\[E_{X_3}\{g(X_3)\}=E_{X_3}\{E(Y|X_3)\}=E(Y).\]</span> so that <span class="math inline">\(E(\varepsilon)=0\)</span>. (Note that the variance of <span class="math inline">\(\varepsilon\)</span> is not constant for all <span class="math inline">\(x_3\)</span>, which ideally we would account for, though the aim here is merely to estimate <span class="math inline">\(g\)</span>; we are not trying to do any formal inference).</p>
+<p>We can then estimate <span class="math inline">\(g(x_{3,1}),\ldots,g(x_{3,N})\)</span> by estimating the function <span class="math inline">\(g\)</span>, and calculating the fitted values, with the variance of the fitted values giving us an estimate of <span class="math inline">\(Var_{X_3}\{E(Y|X_3)\}\)</span>. We could use ordinary least squares regression to estimate <span class="math inline">\(g\)</span>, though there are other methods that can be use. (In the R code, we use a technique called generalised additive modelling (GAM), which is a more flexible regression technique. The details of GAM are outside the scope of this module).</p>
+<p>We can calculate variance contributions for groups of inputs, e.g <span class="math inline">\(X_1,X_2\)</span>, by fitting regression models for <span class="math inline">\(y\)</span> on <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>, to estimate <span class="math inline">\(E(Y|X_1=x_1,X_2=x_2)\)</span> as a function of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. We can then use the sample of fitted values to estimate <span class="math inline">\(Var_{X_1,X_2}\{E(Y|X_1,X_2)\}\)</span>.</p>
+<p>R code implementations for <a href="#exm-sa2" class="quarto-xref">Example&nbsp;<span>18.2</span></a> using generalised additive modelling are available on Blackboard.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exm-casestudygam" class="theorem example">
+<p><span class="theorem-title"><strong>Example 18.3</strong></span> For the Case Study model <span class="math inline">\(X_{11}, X_{12}, X_{13}\)</span> and <span class="math inline">\(X_{14}\)</span> represent proportions of the target population taking up exercise, and maintaining their exercise, in the control and intervention groups. Below are estimates of the total effect indices for various combinations of <span class="math inline">\(X_{11}, X_{12}, X_{13}\)</span> and <span class="math inline">\(X_{14}\)</span></p>
+<div class="center">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\mathbf{X}_u\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Var_{\mathbf{X}_u}\{E(Y|\mathbf{X}_u)\}/Var(Y)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{11}\)</span></td>
+<td style="text-align: center;">0.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(X_{12}\)</span></td>
+<td style="text-align: center;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{13}\)</span></td>
+<td style="text-align: center;">0.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(X_{14}\)</span></td>
+<td style="text-align: center;">0.10</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{11},X_{12}\)</span></td>
+<td style="text-align: center;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(X_{13},X_{14}\)</span></td>
+<td style="text-align: center;">0.26</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(X_{11},X_{12},X_{13},X_{14}\)</span></td>
+<td style="text-align: center;">0.78</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>So, for example, the expected reduction in the variance of the net benefit from learning <span class="math inline">\(X_{13}\)</span> only is 1%, and the expected reduction in variance from learning <span class="math inline">\(X_{14}\)</span> only is 10%, but the expected reduction in variance from learning both <span class="math inline">\(X_{13}\)</span> and <span class="math inline">\(X_{14}\)</span> is about 25%. Learning all four inputs (<span class="math inline">\(X_{11},X_{12},X_{13},X_{14}\)</span>) out of the 24 is expected to reduce the variance of <span class="math inline">\(Y\)</span> by about 80%. There are other uncertain inputs, such as the relative risk of developing diabetes, for exercising versus sedentary adults, that do not contribute substantially to the uncertainty in the net benefit; their total effect indices are relatively small.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="proof-of-the-variance-identity" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="proof-of-the-variance-identity"><span class="header-section-number">18.4</span> Proof of the variance identity</h2>
+<p>For any two random variables <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> (with density functions <span class="math inline">\(p_A(a)\)</span> and <span class="math inline">\(p_B(b)\)</span> and sample spaces <span class="math inline">\(\mathcal{X}_A\)</span> and <span class="math inline">\(\mathcal{X}_B\)</span>), <span class="math display">\[Var(A)=Var_B\{E(A|B)\} + E_B\{Var(A|B)\}.\label{varident2}\]</span> To prove this, we first prove the ‘tower property’ of expectations: <span class="math display">\[\begin{align}
+E_B\{E(A|B)\}&amp;=\int_{\mathcal{X}_B} E(A|B=b) p_B(b) db\\
+&amp;=\int_{\mathcal{X}_B} \int_{\mathcal{X}_A} a p_{A|B}(a|b) p_B(b) da\,db\\
+&amp;=\int_{\mathcal{X}_A} a \int_{\mathcal{X}_B}  p_{A,B}(a,b)db\, da\\
+&amp;=\int_{\mathcal{X}_A} a   p_{A}(a) da\\
+&amp;=E(A).
+\end{align}\]</span> Now, using the tower property, <span class="math display">\[\begin{align}
+Var(A)&amp;= E(A^2) - E(A)^2\nonumber\\
+&amp;= E_B\{E(A^2|B)\} -E(A)^2,\label{v1}
+\end{align}\]</span> and <span class="math display">\[\begin{align}
+Var_B\{E(A|B)\}&amp;= E_B[\{E(A|B)\}^2)] - \left[E_B\{E(A|B)\}\right]^2\nonumber\\
+&amp;=E_B[\{E(A|B)\}^2] - E(A)^2,\label{v2}
+\end{align}\]</span> and <span class="math display">\[E_B\{Var(A|B)\}= E_B\{E(A^2|B)\}-E_B[\{E(A|B)\}^2]\label{v3}\]</span> Adding these expressions for <span class="math inline">\(E_B\{Var(A|B)\}\)</span> and <span class="math inline">\(Var_B\{E(A|B)\}\)</span> gives <span class="math inline">\(Var(A)\)</span>, which proves the identity.</p>
+</section>
+<section id="tasks" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="tasks"><span class="header-section-number">18.5</span> Tasks</h2>
+<ol type="1">
+<li><p>A computer model is given by the function <span class="math display">\[
+Y=X_1^2+ 2 X_2X_3.
+\]</span> The true values of the three inputs are uncertain, with <span class="math inline">\(X_1 \sim N(6,9)\)</span>, <span class="math inline">\(X_2 \sim U[9,14]\)</span> and <span class="math inline">\(X_3 \sim N(9,1)\)</span>, with <span class="math inline">\(X_1,X_2,X_3\)</span> independent. The model user can choose to learn the true value of <strong>one</strong> of the inputs. The model user wishes to reduce the variance of the output <span class="math inline">\(Y\)</span> as much as possible. Calculate the expected reduction in variance by learning each of <span class="math inline">\(X_1\)</span>, <span class="math inline">\(X_2\)</span> and <span class="math inline">\(X_3\)</span> separately and hence suggest which input the user should choose to learn and why.</p></li>
+<li><p>Suppose instead that <span class="math inline">\(X_1\)</span> now has a gamma, Ga(<span class="math inline">\(\alpha\)</span>,<span class="math inline">\(\beta\)</span>), distribution with shape and rate parameters <span class="math inline">\(\alpha = 12\)</span> and <span class="math inline">\(\beta = 2\)</span> respectively. Note that the probability density function for a random variable <span class="math inline">\(X\)</span> distributed according to a gamma distribution with shape parmeter <span class="math inline">\(\alpha\)</span> and rate parameter <span class="math inline">\(\beta\)</span> is <span class="math display">\[
+f_X(x) = \frac{\beta^ \alpha}{\Gamma(\alpha)}x^{\alpha - 1}\exp{(-\beta x)}.
+\]</span> <span class="math inline">\(X_2\)</span> and <span class="math inline">\(X_3\)</span> keep the same distribution as in Part 1. Use the regression method in to estimate the expected reduction in variance obtained by learning <span class="math inline">\(X_1\)</span>.</p></li>
+<li><p>Now suppose that there is a single input, <span class="math inline">\(X\)</span>, and the output, <span class="math inline">\(Y\)</span>, is given by <span class="math display">\[
+Y=2X+ 3
+\]</span> where <span class="math inline">\(X\)</span> is uncertain with <span class="math inline">\(X \sim N(\alpha, 9)\)</span> and <span class="math inline">\(\alpha\)</span> is a random variable distributed according to <span class="math inline">\(\alpha \sim \text{N}(6,2)\)</span>. What is the reduction in the variance of Y from knowing the value of <span class="math inline">\(\alpha\)</span>? Why do we not need to calculate the <strong>expected</strong> reduction in the variance of Y?</p></li>
+</ol>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>We use the standard result <span class="math inline">\(E(X^2) = \text{var}(X)+E(X)^2\)</span> in many of the following calculations. We have <span class="math display">\[\begin{align*}
+Var_{X_1}(E(Y|X_1))&amp;=Var_{X_1}(X_1^2 + 2E(X_2X_3))\\
+&amp;= Var_{X_1}(X_1^2)\\
+&amp;=E_{X_1}(X_1^4)-E_{X_1}(X_1^2)^2\\
+&amp;= 3483-(36+9)^2=1458.\\
+Var_{X_2}(E(Y|X_2))&amp;=Var_{X_2}(45 + 2\times 9 X_2)\\
+&amp;=675.\\
+Var_{X_3}(E(Y|X_3))&amp;=Var_{X_3}(45+2\times 11.5 X_3)\\
+&amp;= 529.
+\end{align*}\]</span> The best input to learn is therefore <span class="math inline">\(X_1\)</span>, as it will give the largest expected reduction in variance.</p></li>
+<li><p>We implement the regression method as follows.</p></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">100000</span>, <span class="dv">12</span>, <span class="dv">2</span>) <span class="co"># Sample from the distribution of x1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">100000</span>, <span class="dv">9</span>, <span class="dv">14</span>) <span class="co"># Sample from the distribution of x2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>, <span class="dv">9</span>, <span class="dv">1</span>) <span class="co"># Sample from the distribution of x3</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x1<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>x2<span class="sc">*</span>x3 <span class="co"># Evaluate the corresponding y for each sampled x1,x2,x3</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> mgcv<span class="sc">::</span><span class="fu">gam</span>(y <span class="sc">~</span> <span class="fu">s</span>(x1)) <span class="co"># Fit a GAM regression of y on x1</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(g1<span class="sc">$</span>fitted) <span class="co"># Calculate the variance of the fitted values</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 533.133</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>To calculate Var(Y) we can use the variance identity. <span class="math display">\[\begin{align*}
+Var(Y)&amp;=E_\alpha(Var(Y|\alpha))+ Var_\alpha(E(Y|\alpha))\\
+&amp;=E_\alpha(4 Var(X))+Var_\alpha(2\alpha+3)\\
+&amp;=4 \times 9 +2^2 \times Var(\alpha)\\
+&amp;=44
+\end{align*}\]</span></li>
+</ol>
+<p>We can also check by simulation. We can calculate <span class="math inline">\(\text{var}(y)\)</span> via</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>, <span class="dv">6</span>, <span class="fu">sqrt</span>(<span class="dv">2</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>, alpha, <span class="dv">3</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 44.02133</code></pre>
+</div>
+</div>
+<p>The actual reduction in variance from knowing <span class="math inline">\(\alpha\)</span> is <span class="math inline">\(Var(Y)-Var(Y|\alpha)\)</span>. If this reduction depended on the value of <span class="math inline">\(\alpha\)</span>, we would take the expectation with respect to <span class="math inline">\(\alpha\)</span>. But as <span class="math inline">\(Var(Y|\alpha)\)</span> does not depend on <span class="math inline">\(\alpha\)</span> (<span class="math inline">\(Var(Y|\alpha)=36\)</span>) so we don’t need to calculate the <strong>expected</strong> reduction in variance; we can simply calculate the actual reduction in variance.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Uncertainty-analysis.html" class="pagination-link" aria-label="Uncertainty analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Uncertainty analysis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
