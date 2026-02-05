@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; A review of linear models – MPS318/4101 Sampling Theory and Design of Experiments</title>
+<title>2&nbsp; A review of linear models – MPS4101 Sampling Theory and Design of Experiments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -164,7 +164,7 @@ window.Quarto = {
       <a href="./index.html" class="sidebar-logo-link">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">MPS318/4101 Sampling Theory and Design of Experiments</a> 
+      <a href="./">MPS4101 Sampling Theory and Design of Experiments</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -283,7 +283,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Part III: MPS4101 only</span></a>
+ <span class="menu-text">Part III: self-study topics for MPS4101</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -504,7 +504,7 @@ Y &amp;= \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_4 + \beta_{12
 <p>We now consider the properties of <span class="math display">\[\hat{\boldsymbol{\beta}} = (\mathbf{X}^T\mathbf{X})^{-1} \mathbf{X}^T\mathbf{Y},\]</span> noting that <span class="math inline">\(\mathbf{X}\)</span> is a constant and that <span class="math display">\[
 \mathbf{Y}\sim N(\mathbf{X}\boldsymbol{\beta}, \sigma^2I_n)
 \]</span> The least squares estimator is <em>unbiased</em>: <span class="math display">\[E(\hat{\boldsymbol{\beta}}) = (\mathbf{X}^T\mathbf{X})^{-1} \mathbf{X}^T\mathbf{X}\boldsymbol{\beta}=\boldsymbol{\beta}.\]</span></p>
-<p>The variance-covariance matrix <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of <span class="math inline">\(\boldsymbol{\beta}\)</span> is obtained as <span class="math display">\[\text{Var}(\hat{\boldsymbol{\beta}}) = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\sigma^2\mathbf{I}\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\]</span> which simplifies<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> to <span class="math display">\[\text{Var}(\hat{\boldsymbol{\beta}}) =\sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}\]</span> We can now state that <span class="math display">\[\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta}, \sigma^2  (\mathbf{X}^T\mathbf{X})^{-1}).\]</span> The matrix <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is called the <strong>information matrix</strong> and is very relevant to the choice of design because, as seen above, it determines the accuracy of estimation of the parameters.</p>
+<p>The variance-covariance matrix <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of <span class="math inline">\(\boldsymbol{\beta}\)</span> is obtained as <span class="math display">\[\text{Var}(\hat{\boldsymbol{\beta}}) = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\sigma^2\mathbf{I}\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\]</span> which simplifies to <span class="math display">\[\text{Var}(\hat{\boldsymbol{\beta}}) =\sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}\]</span> We can now state that <span class="math display">\[\hat{\boldsymbol{\beta}} \sim N(\boldsymbol{\beta}, \sigma^2  (\mathbf{X}^T\mathbf{X})^{-1}).\]</span> The matrix <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> is called the <strong>information matrix</strong> and is very relevant to the choice of design because, as seen above, it determines the accuracy of estimation of the parameters.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -827,7 +827,6 @@ s_{xx}&amp;:= \sum_{i=1}^n (x_i -\bar{x}^2)\\
 <hr>
 <ol>
 <li id="fn1"><p>If you’ve forgotten the definition/properties of variance-covariance matrices, some notes are available here: <a href="https://oakleyj.github.io/MAS61004LM/randomVectors.html#covariance-matrix">https://oakleyj.github.io/MAS61004LM/randomVectors.html#covariance-matrix</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>If you’ve forgotten the definition/properties of variance-covariance matrices, some notes are available here: <a href="https://oakleyj.github.io/MAS61004LM/randomVectors.html#covariance-matrix">https://oakleyj.github.io/MAS61004LM/randomVectors.html#covariance-matrix</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

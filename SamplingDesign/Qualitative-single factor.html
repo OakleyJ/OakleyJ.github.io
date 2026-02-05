@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Qualitative explanatory variables and blocking – MPS318/4101 Sampling Theory and Design of Experiments</title>
+<title>4&nbsp; Qualitative explanatory variables and blocking – MPS4101 Sampling Theory and Design of Experiments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -164,7 +164,7 @@ window.Quarto = {
       <a href="./index.html" class="sidebar-logo-link">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">MPS318/4101 Sampling Theory and Design of Experiments</a> 
+      <a href="./">MPS4101 Sampling Theory and Design of Experiments</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -283,7 +283,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Part III: MPS4101 only</span></a>
+ <span class="menu-text">Part III: self-study topics for MPS4101</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -609,14 +609,14 @@ Efficiency factor 0.8888889
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(outdesign<span class="sc">$</span>sketch)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
-[1,] "C"  "A"  "B" 
-[2,] "D"  "B"  "C" 
-[3,] "B"  "D"  "A" 
-[4,] "D"  "A"  "C" 
-[5,] "A"  "C"  "D" 
-[6,] "D"  "B"  "C" 
-[7,] "B"  "A"  "C" 
-[8,] "B"  "A"  "D" </code></pre>
+[1,] "B"  "D"  "A" 
+[2,] "B"  "C"  "A" 
+[3,] "B"  "A"  "D" 
+[4,] "C"  "D"  "A" 
+[5,] "C"  "D"  "B" 
+[6,] "C"  "B"  "D" 
+[7,] "A"  "D"  "C" 
+[8,] "B"  "A"  "C" </code></pre>
 </div>
 </div>
 <p>The function will report if a BIBD is not possible for the choice of <span class="math inline">\(t,k, r\)</span>. e.g, for <span class="math inline">\(r=4\)</span> we should have 16 observations in total, but this is not divisible by the block size of <span class="math inline">\(k=3\)</span>:</p>
