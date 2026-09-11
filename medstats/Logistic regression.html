@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Logistic regression for binary outcomes – Medical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./survival intro.html" rel="next">
+<link href="./ANCOVA.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Logistic regression.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Logistic regression for binary outcomes</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Medical Statistics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Drug development.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Drug development: background concepts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Analysing clinical trial data with ANCOVA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Logistic regression.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Logistic regression for binary outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introducing survival analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survivor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Estimating and comparing survivor functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parametric.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Parametric one-sample models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./proportionalhazards.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Hazards Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Sample size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample sizes for clinical trials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Multiplicity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multiplicity</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#example" id="toc-example" class="nav-link active" data-scroll-target="#example"><span class="header-section-number">3.1</span> Example</a></li>
+  <li><a href="#logistic-regression-models" id="toc-logistic-regression-models" class="nav-link" data-scroll-target="#logistic-regression-models"><span class="header-section-number">3.2</span> Logistic regression models</a></li>
+  <li><a href="#estimands-for-binary-outcomes" id="toc-estimands-for-binary-outcomes" class="nav-link" data-scroll-target="#estimands-for-binary-outcomes"><span class="header-section-number">3.3</span> Estimands for binary outcomes</a>
+  <ul class="collapse">
+  <li><a href="#odds-ratios" id="toc-odds-ratios" class="nav-link" data-scroll-target="#odds-ratios"><span class="header-section-number">3.3.1</span> Odds ratios</a></li>
+  <li><a href="#relative-risks-and-risk-differences" id="toc-relative-risks-and-risk-differences" class="nav-link" data-scroll-target="#relative-risks-and-risk-differences"><span class="header-section-number">3.3.2</span> Relative risks and risk differences</a></li>
+  </ul></li>
+  <li><a href="#implementing-the-logistic-regression-analysis-in-r" id="toc-implementing-the-logistic-regression-analysis-in-r" class="nav-link" data-scroll-target="#implementing-the-logistic-regression-analysis-in-r"><span class="header-section-number">3.4</span> Implementing the logistic regression analysis in R</a>
+  <ul class="collapse">
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">3.4.1</span> Hypothesis testing</a></li>
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">3.4.2</span> Confidence intervals</a></li>
+  <li><a href="#reporting-the-results" id="toc-reporting-the-results" class="nav-link" data-scroll-target="#reporting-the-results"><span class="header-section-number">3.4.3</span> Reporting the results</a></li>
+  </ul></li>
+  <li><a href="#alternatives-analyses" id="toc-alternatives-analyses" class="nav-link" data-scroll-target="#alternatives-analyses"><span class="header-section-number">3.5</span> Alternatives analyses</a></li>
+  <li><a href="#predictions" id="toc-predictions" class="nav-link" data-scroll-target="#predictions"><span class="header-section-number">3.6</span> Predictions</a>
+  <ul class="collapse">
+  <li><a href="#obtaining-predictions-with-r" id="toc-obtaining-predictions-with-r" class="nav-link" data-scroll-target="#obtaining-predictions-with-r"><span class="header-section-number">3.6.1</span> Obtaining predictions with R</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Logistic regression for binary outcomes</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this chapter we consider analysis of parallel group trials where the main outcome variable is binary: a patient is judged to have either a “successful” outcome, or an “unsuccessful” outcome. Binary data should not be analysed with the linear model from the last chapter, and so we introduce a new type of model: <strong>logistic regression</strong> models.</p>
+<section id="example" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="example"><span class="header-section-number">3.1</span> Example</h2>
+<p>We will analyse some data from a published phase III trial. The (anonymised) data have been made available in the <code>medicaldata</code> package<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>The data are from a trial published in</p>
+<ul>
+<li>Elmunzer BJ, Scheiman JM, Lehman GA, et al.&nbsp;<a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1111103">A randomized trial of rectal indomethacin to prevent post-ERCP pancreatitis</a>. N Engl J Med. 2012;366(15):1414-1422. doi:10.1056/NEJMoa1111103</li>
+</ul>
+<p>This was a randomised, placebo-controlled, double-blind clinical trial to investigate if a drug (indomethacin) could reduce the risk of pancreatitis (a sudden swelling of the pancreas that needs hospital treatment) for patients who have just had a medical diagnostic procedure (endoscopic retrograde cholangio pancreatography (ERCP))</p>
+<p>The full dataset has 33 columns; we will consider a few for investigation:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(medicaldata)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(indo_rct[, <span class="fu">c</span>(<span class="st">"rx"</span>, <span class="st">"outcome"</span>, <span class="st">"risk"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              rx outcome risk
+1 1_indomethacin   1_yes  2.0
+2      0_placebo    0_no  1.0
+3      0_placebo    0_no  1.0
+4      0_placebo   1_yes  2.0
+5 1_indomethacin    0_no  3.5
+6      0_placebo    0_no  3.0</code></pre>
+</div>
+</div>
+<p>We can see that the treatment group is in the <code>rx</code> column and the outcome is recorded as <code>1_yes</code> if a patient has had pancreatitis following ERCP and <code>0_no</code> otherwise. We consider one covariate: a <code>risk</code> score which records how many risk factors related to pancreatitis a patient had before treatment. We will treat <code>risk</code> as continuous.</p>
+<p>To help understand the data, we will do a little exploratory analysis. To count outcomes in each treatment group we can do</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> outcome <span class="sc">+</span> rx, <span class="at">data =</span> indo_rct)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       rx
+outcome 0_placebo 1_indomethacin
+  0_no        255            268
+  1_yes        52             27</code></pre>
+</div>
+</div>
+<p>so the proportion of pancreatitis cases was smaller for indomethacin: <span class="math inline">\(27/(27+268)\)</span> versus <span class="math inline">\(52/(52+255)\)</span>.</p>
+<p>Patients were randomised to each treatment group, so we should expect similar distributions of risks scores in each group, but there are bound to be some differences. We plot this as follows</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(indo_rct, <span class="fu">aes</span>(<span class="at">x=</span>risk, <span class="at">fill =</span> rx)) <span class="sc">+</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">position =</span> <span class="st">"dodge"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Logistic-regression_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see lower risks scores are slightly more common in the placebo group. To compare means in each group we can</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>indo_rct <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rx) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_risk =</span> <span class="fu">mean</span>(risk))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  rx             mean_risk
+  &lt;fct&gt;              &lt;dbl&gt;
+1 0_placebo           2.34
+2 1_indomethacin      2.42</code></pre>
+</div>
+</div>
+</section>
+<section id="logistic-regression-models" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="logistic-regression-models"><span class="header-section-number">3.2</span> Logistic regression models</h2>
+<p>For patient <span class="math inline">\(j\)</span> in treatment group <span class="math inline">\(j\)</span>, with <span class="math inline">\(j=1\)</span> for placebo and <span class="math inline">\(j=2\)</span> for indomethacin, define</p>
+<ul>
+<li><span class="math inline">\(Y_{ij}=1\)</span> if the patient has pancreatitis following ERCP;</li>
+<li><span class="math inline">\(Y_{ij}=0\)</span> otherwise,</li>
+</ul>
+<p>so that <span class="math inline">\(Y_{ij}\)</span> is a binary variable. We write</p>
+<p><span class="math display">\[
+Y_{ij}\sim Bernoulli(p_{ij}),
+\]</span> with <span class="math inline">\(\mathbb{E}(Y_{ij})=p_{ij}\)</span> and <span class="math inline">\(Var(Y_{ij})=p_{ij}(1-p_{ij})\)</span>. If we define <span class="math inline">\(x_{ij}\)</span> to be the risk score corresponding to patient <span class="math inline">\(ij\)</span>, we now want to describe how <span class="math inline">\(p_{ij}\)</span> depends on treatment group <span class="math inline">\(i\)</span> and risk score <span class="math inline">\(x_{ij}\)</span>. If we try writing an equation such as</p>
+<p><span class="math display">\[
+\mathbb{E}(Y_{ij})=p_{ij} = \beta_0 + \tau_i + \beta_1x_{ij},
+\]</span> (with the usual constraint such as <span class="math inline">\(\tau_1=0\)</span>), we have the problem that <span class="math inline">\(p_{ij}\)</span> must lie in the interval [0,1], which puts an awkward constraint on the parameters <span class="math inline">\(\beta_0,\tau_2,\beta_1\)</span>. Instead, we transform <span class="math inline">\(p_{ij}\)</span> to give an unconstrained quantity. We write <span id="eq-logistic-regression-model"><span class="math display">\[
+\log\left(\frac{p_{ij}}{1-p_{ij}}\right) = \beta_0 + \tau_i + \beta_1x_{ij}.
+\tag{3.1}\]</span></span> This is called a <strong>logistic regression model</strong>.</p>
+<ul>
+<li><p><span class="math inline">\(\log\left(\frac{p_{ij}}{1-p_{ij}}\right)\)</span> is known as the <strong>logit transform</strong>, and transforms a quantity on the interval <span class="math inline">\((0,1)\)</span> to the interval <span class="math inline">\((-\infty, \infty)\)</span>.</p></li>
+<li><p>Transforming back, we get <span id="eq-pLogit-Inverse"><span class="math display">\[
+p_{ij} = Pr(Y_{ij}=1) = \frac{\exp(\beta_0 + \tau_i + \beta_1x_{ij})}{1+ \exp(\beta_0 + \tau_i + \beta_1x_{ij})}
+\tag{3.2}\]</span></span></p></li>
+<li><p>There is no error term <span class="math inline">\(\varepsilon_{ij}\)</span>. For ordinary linear regression when we assume <span class="math inline">\(Y_{ij}\)</span> is normally distributed, the regression equation gives its mean, and its variance <span class="math inline">\(\sigma^2\)</span> comes from the error term <span class="math inline">\(\varepsilon_{ij}\sim N(0,\sigma^2)\)</span>. Here, because <span class="math inline">\(Y_{ij}\)</span> has a Bernoulli distribution, both its mean and its variance are specified by <span class="math inline">\(p_{ij}\)</span>.</p></li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Nonlinearity
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that this probability is a non-linear function of <span class="math inline">\(x_{ij}\)</span>. In general, for nonlinear functions <span class="math inline">\(f\)</span> and random variables <span class="math inline">\(X\)</span>, we have <span class="math display">\[
+f(\mathbb{E}(X))\neq \mathbb{E}(f(X))
+\]</span> This means that if we want to get the population proportion of patients who would have pancreatitis in each treatment group, the mean probability for the population, assuming different risk scores across the population, we can’t just plug in the mean risk score into <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span>3.2</span></a>: we would need to calculate <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span>3.2</span></a> for each risk score value in our population and then calculate the mean.</p>
+</div>
+</div>
+</section>
+<section id="estimands-for-binary-outcomes" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="estimands-for-binary-outcomes"><span class="header-section-number">3.3</span> Estimands for binary outcomes</h2>
+<p>For the estimand (see <a href="ANCOVA.html#sec-estimand" class="quarto-xref"><span>Section 2.4</span></a>) we need a plain-English definition of the effect of the treatment, that is suitably clear and detailed. We then need to relate the parameters of our logistic model to this estimand, so that we can obtain our numerical estimate. For binary outcomes, this can be a little awkward.</p>
+<section id="odds-ratios" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="odds-ratios"><span class="header-section-number">3.3.1</span> Odds ratios</h3>
+<p>For an individual patient given indomethecin, their <strong>odds</strong> of pancreatitis are defined to be <span class="math display">\[
+\frac{P(Y_{2j}=1)}{P(Y_{2j}=0)} = \frac{P(Y_{2j}=1)}{1-P(Y_{2j}=1)}
+\]</span> The <strong>ratio</strong> of their odds of pancreatitis given indomethecin to their odds of pancreatitis given the placebo is then</p>
+<p><span class="math display">\[
+OR:=\frac{P(Y_{2j}=1)}{P(Y_{2j}=0)}\bigg/\frac{P(Y_{1j}=1)}{P(Y_{1j}=0)} =\left( \frac{P(Y_{2j}=1)}{1-P(Y_{2j}=1)}\right)\bigg/\left( \frac{P(Y_{1j}=1)}{1-P(Y_{1j}=1)}\right)
+\]</span> Taking logs, we get <span class="math display">\[\begin{align*}
+\log(OR)&amp;=\log\left( \frac{P(Y_{2j}=1)}{1-P(Y_{2j}=1)}\right) - \log \left( \frac{P(Y_{1j}=1)}{1-P(Y_{1j}=1)}\right)\\
+&amp;= \beta_0 + \tau_2 + \beta_1x_{2j} - (\beta_0  + \beta_1x_{1j})\\
+&amp;=\tau_2,
+\end{align*}\]</span> where we have <span class="math inline">\(x_{2j}=x_{1j}\)</span> because we are considering the <em>same</em> patient from placebo to indomethecin.</p>
+<p>So if we define our estimand as</p>
+<blockquote class="blockquote">
+<p>“the ratio of a patient’s odds of pancreatitis given indomethecin to their odds of pancreatitis given the placebo, for a patient meeting the eligibility criteria of the trial.”</p>
+</blockquote>
+<p>then the estimand corresponds to <span class="math inline">\(\exp(\tau_2)\)</span>: we estimate the odds ratio by estimating <span class="math inline">\(\tau_2\)</span> and then calculating the exponent.</p>
+<p>Note that</p>
+<ul>
+<li><p>if this odds ratio is <span class="math inline">\(&lt;1\)</span> (so <span class="math inline">\(\log \tau_2&lt;0\)</span>), indomethecin has a <em>beneficial</em> effect: pancreatitis is <em>less</em> likely given indomethecin than if given a placebo;</p></li>
+<li><p>if this odds ratio is <span class="math inline">\(&gt;1\)</span> (so <span class="math inline">\(\log \tau_2&gt;0\)</span>), indomethecin has a <em>harmful</em> effect: pancreatitis is <em>more</em> likely given indomethecin than if given a placebo.</p></li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Odds and bookmakers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you see odds quoted by bookmakers or reported in the media, these are odds <em>against</em>; here we use odds <em>for</em>: <span class="math display">\[
+\mbox{odds against}:=\frac{1-p}{p},\quad \mbox{odds for}:=\frac{p}{1-p},
+\]</span> Bookmakers use the phrase “odds <em>on</em>” to mean <span class="math inline">\(1-p &lt; p\)</span>: the event is more likely to occur than not occur and the odds against are less than 1.</p>
+</div>
+</div>
+</section>
+<section id="relative-risks-and-risk-differences" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="relative-risks-and-risk-differences"><span class="header-section-number">3.3.2</span> Relative risks and risk differences</h3>
+<p>Other common ways to specify estimands/describe the effects of a treatment are the relative risk (<span class="math inline">\(RR\)</span>) and risk difference (<span class="math inline">\(RD\)</span>) defined as <span class="math display">\[\begin{align*}
+RR&amp;:= \frac{P(Y_{2j}=1)}{P(Y_{1j}=1)}\\
+RD&amp;:= P(Y_{1j}=1) - P(Y_{2j}=1).
+\end{align*}\]</span></p>
+<p>A difficulty with the risk difference is that depends on the covariate value <span class="math inline">\(x_{ij}\)</span>: the covariate value doesn’t cancel out the way it did for the odds ratio. So we would either have to calculate a mean risk difference, averaging over all possible values of <span class="math inline">\(x_{ij}\)</span>, or choose a representative value of <span class="math inline">\(x_{ij}\)</span> and plug this in.</p>
+<p>The relative risk has a similar problem, but note that if both <span class="math inline">\(P(Y_{2j}=1)\)</span> and <span class="math inline">\(P(Y_{1j}=1)\)</span> are sufficiently small, then the relative risk will be approximately equal to the odds ratio.</p>
+<p>Relative risks and risk difference are more commonly used when there are no covariates to consider other than the treatment of interest.</p>
+</section>
+</section>
+<section id="implementing-the-logistic-regression-analysis-in-r" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="implementing-the-logistic-regression-analysis-in-r"><span class="header-section-number">3.4</span> Implementing the logistic regression analysis in R</h2>
+<p>Model parameter estimates for <a href="#eq-logistic-regression-model" class="quarto-xref">Equation&nbsp;<span>3.1</span></a> can be obtained by maximum likelihood estimation. The likelihood function is <span class="math display">\[
+L(\beta_0,\tau_2,\beta_1;\mathbf{y})=\prod_{i=1,2}\,\prod_{j=1,\ldots,n_i}p_{ij}^{y_{ij}}(1-p_{ij})^{1-y_{ij}},
+\]</span> where <span class="math inline">\(y_{ij}\)</span> is the observed value of <span class="math inline">\(Y_{ij}\)</span>, and <span class="math inline">\(p_{ij}\)</span> is defined in <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span>3.2</span></a>. We cannot analytically obtain formulae for maximum likelihood estimates <span class="math inline">\(\hat{\beta}_0, \hat{\beta}_1,\hat{\tau}_2\)</span>, so numerical optimisation has to be used.</p>
+<p>To implement this in R, we do</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> rx <span class="sc">+</span> risk ,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> indo_rct,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Then to inspect the results, we do</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = outcome ~ rx + risk, family = binomial(link = "logit"), 
+    data = indo_rct)
+
+Coefficients:
+                 Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)       -2.6892     0.3795  -7.087 1.37e-12 ***
+rx1_indomethacin  -0.7543     0.2559  -2.948 0.003198 ** 
+risk               0.4475     0.1350   3.314 0.000919 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 468.01  on 601  degrees of freedom
+Residual deviance: 448.91  on 599  degrees of freedom
+AIC: 454.91
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p>From the <code>Coefficients</code> table we read off</p>
+<ul>
+<li><span class="math inline">\(\hat{\beta}_0=-2.6892\)</span>, <span class="math inline">\(\widehat{Var}(\hat{\beta}_0) =(0.3795)^2\)</span>;</li>
+<li><span class="math inline">\(\hat{\tau}_2=-0.7543\)</span>, <span class="math inline">\(\widehat{Var}(\hat{\tau}_2) =(0.2559)^2\)</span>;</li>
+<li><span class="math inline">\(\hat{\beta}_1=0.4475\)</span>, <span class="math inline">\(\widehat{Var}(\hat{\beta}_1) =(0.1350)^2\)</span>.</li>
+</ul>
+<section id="hypothesis-testing" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">3.4.1</span> Hypothesis testing</h3>
+<p>Inference is based on an approximation that maximum likelihood estimators are normally distributed. To get a sense of whether this approximation is reasonable, we should check that the numbers of ‘successes’ and ‘failures’ in each treatment group are not too small, preferably at least 10. We have seen this already, but to confirm:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> outcome <span class="sc">+</span> rx, <span class="at">data =</span> indo_rct)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       rx
+outcome 0_placebo 1_indomethacin
+  0_no        255            268
+  1_yes        52             27</code></pre>
+</div>
+</div>
+<p>The fitted probability of pancreatitis for each patient is <span class="math display">\[
+\hat{p}_{ij} = \frac{\exp(\hat{\beta}_0 + \hat{\tau}_i + \hat{\beta}_1x_{ij})}{1+ \exp(\hat{\beta}_0 + \hat{\tau}_i + \hat{\beta}_1x_{ij})}.
+\]</span> These are available in R as <code>glm1$fitted.values</code>. Fitted values would tend to 0 or 1 as parameter estimates tend to <span class="math inline">\(-\infty\)</span> or <span class="math inline">\(\infty\)</span>, and this would indicate the normal approximation for the m.l.e. is not appropriate. We can check this has not happened with the command</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm1<span class="sc">$</span>fitted.values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.04761 0.08910 0.11734 0.13123 0.17217 0.33731 </code></pre>
+</div>
+</div>
+<p>To test whether any particular parameter is significantly different from 0, we use a “Wald test”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. For example, to test the null hypothesis <span class="math inline">\(\tau_2=0\)</span>, we calculate <span class="math display">\[
+Z:=\frac{\hat{\tau}_2}{\sqrt{\widehat{Var}(\hat{\tau}_2)}}.
+\]</span> If <span class="math inline">\(H_0\)</span> is true, then approximately <span class="math inline">\(Z\sim N(0,1)\)</span>. In the R output, the <span class="math inline">\(Z\)</span> value and corresponding <span class="math inline">\(p\)</span>-value are given in the <code>coefficients</code> table for each parameter.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Logistic-regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The reported <span class="math inline">\(p\)</span>-value is 0.003198, so there is strong evidence against <span class="math inline">\(H_0\)</span>. We can also see strong evidence against <span class="math inline">\(H_0:\beta_2=0\)</span>, so the <code>risk</code> covariate is also significant.</p>
+</section>
+<section id="confidence-intervals" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">3.4.2</span> Confidence intervals</h3>
+<p>Approximate 95% confidence intervals for model parameters can be computed as, for example <span class="math display">\[
+\hat{\tau}_2 \pm 1.96\sqrt{\widehat{Var}(\hat{\tau}_2)}.
+\]</span> In R, to do the calculations, we do</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint.default</span>(glm1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      2.5 %     97.5 %
+(Intercept)      -3.4329193 -1.9454129
+rx1_indomethacin -1.2557446 -0.2528033
+risk              0.1828604  0.7121936</code></pre>
+</div>
+</div>
+<p>The <code>confint</code> function uses a different method (profile likelihood, outside the scope of this module) which is considered to be an improvement as it doesn’t rely on the same assumptions. We will use intervals based on <code>confint</code> in this module, noting that they will be fairly similar to, if not exactly equal to the interval above:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(glm1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      2.5 %     97.5 %
+(Intercept)      -3.4537110 -1.9634527
+rx1_indomethacin -1.2679264 -0.2613446
+risk              0.1832348  0.7139045</code></pre>
+</div>
+</div>
+<p>Recall that <span class="math inline">\(\tau_2\)</span> is the log of the odds ratio. We can obtain a confidence interval for the odds ratio simply by taking exponents: a 95% confidence interval for the odds ratio (odds of pancreatitis given indomethicin / odds of pancreatitis given placebo):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(glm1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      2.5 %    97.5 %
+(Intercept)      0.03162805 0.1403729
+rx1_indomethacin 0.28141456 0.7700155
+risk             1.20109638 2.0419485</code></pre>
+</div>
+</div>
+</section>
+<section id="reporting-the-results" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="reporting-the-results"><span class="header-section-number">3.4.3</span> Reporting the results</h3>
+<p>When reporting the results, we should cover the same points as in the previous chapter</p>
+<ul>
+<li>give the hypothesis test conclusion and <span class="math inline">\(p\)</span>-value;</li>
+<li>refer to the interpretation of the null hypothesis rather than the equation (e.g.&nbsp;“no treatment effect” rather than “<span class="math inline">\(\tau_2=0\)</span>”);</li>
+<li>report and estimate and confidence interval for the treatment effect;</li>
+</ul>
+<p>but in addition, it can be helpful to report observed proportions in each group, as an odds ratio is harder to interpret.</p>
+<p>So, an example summary of the results would be</p>
+<blockquote class="blockquote">
+<p>“We observed that 9% of patients treated with indomethicin had pancreatitis; the percentage was 17% in the placebo group. We reject the null hypothesis of no treatment effect (an odds ratio equal to 1) at the 5% level of significance (<span class="math inline">\(p\)</span>-value 0.003). Using a logistic regression model to account for differences in risk factors between patients, a 95% confidence interval for the odds ratio (odds of pancreatitis given indomethicin to odds of pancreatitis given placebo) is (0.28, 0.77).”</p>
+</blockquote>
+</section>
+</section>
+<section id="alternatives-analyses" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="alternatives-analyses"><span class="header-section-number">3.5</span> Alternatives analyses</h2>
+<p>We could ignore the <code>risk</code> covariate and compare the proportions directly. There are standard tests for comparing two proportions, which we won’t consider in this module. Here, we just make one observation.</p>
+<p>The estimated odds ratio from the logistic regression model was <span class="math inline">\(\exp(-0.7543 )\sim 0.47\)</span>. If we estimate the odds ratio directly from the data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span>outcome<span class="sc">+</span>rx, indo_rct)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       rx
+outcome 0_placebo 1_indomethacin
+  0_no        255            268
+  1_yes        52             27</code></pre>
+</div>
+</div>
+<p>we get <span class="math display">\[
+\frac{27/(27+268)}{268/(27+268)}\bigg/\frac{52/(52+255)}{255/(52+255)} = \frac{27\times 255}{268\times52}\simeq 0.49.
+\]</span> This is very similar, but slightly higher. We can understand this from our earlier investigation where we noted slightly lower risk scores in the placebo group. As an increasing risk score increases the probability of pancreatitis, ignoring risk score would result in us underestimating (slightly) the effectiveness of the drug.</p>
+</section>
+<section id="predictions" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="predictions"><span class="header-section-number">3.6</span> Predictions</h2>
+<p>To help with communicating the results, it can be useful to report estimates of the proportion of patients given particular covariates who would have pancreatitis. We should also report uncertainty in the estimate of any proportion.</p>
+<p>We derive an estimate and a confidence interval on the logit scale (<span class="math inline">\(\log(p/(1-p))\)</span>), and then transform the estimate and interval back to the probability scale.</p>
+<p>Consider all patients on indomethecin with a <code>risk</code> score of 3. If <span class="math inline">\(p\)</span> is the population proportion of all these patients who would have pancreatitis, then we define <span class="math display">\[
+\mu:=\log\left(\frac{p}{1-p}\right) = \beta_0+\tau_2+3\beta_1
+\]</span> Then our estimate is <span class="math display">\[
+\hat{\mu}:=\hat{\beta}_0+\hat{\tau}_2+3\hat{\beta}_1
+\]</span> where we obtain <span class="math inline">\(\hat{\beta}_0,\hat{\tau}_2,\hat{\beta}_1\)</span> as the parameter estimates from the R output. For a confidence interval for <span class="math inline">\(\mu\)</span>, we compute <span class="math display">\[
+\hat{\mu}\pm 1.96\sqrt{\widehat{Var}(\hat{\mu})}
+\]</span> and we calculate the estimated variance <span class="math inline">\(\widehat{Var}(\hat{\mu})\)</span> as <span class="math display">\[
+\widehat{Var}(\hat{\mu})=(1\quad 1 \quad 3)\left(\begin{array}{ccc} \widehat{Var}(\hat{\beta}_0) &amp; \widehat{Cov}(\hat{\beta_0},\hat{\tau}_2) &amp; \widehat{Cov}(\hat{\beta}_0,\hat{\beta}_1)\\
+\widehat{Cov}(\hat{\tau}_2,\hat{\beta}_0)  &amp; \widehat{Var}(\hat{\tau}_2)&amp; \widehat{Cov}(\hat{\tau}_2,\hat{\beta}_1)\\
+\widehat{Cov}(\hat{\beta}_1,\hat{\beta}_0) &amp; \widehat{Cov}(\hat{\beta}_1,\hat{\tau}_2) &amp; \widehat{Var}(\hat{\beta}_1)
+\end{array}\right)\left(\begin{array}{c}1 \\ 1\\ 3\end{array}\right)
+\]</span> The variance covariance matrix is <span class="math display">\[\left(\begin{array}{ccc} \widehat{Var}(\hat{\beta}_0) &amp; \widehat{Cov}(\hat{\beta_0},\hat{\tau}_2) &amp; \widehat{Cov}(\hat{\beta}_0,\hat{\beta}_1)\\
+\widehat{Cov}(\hat{\tau}_2,\hat{\beta}_0)  &amp; \widehat{Var}(\hat{\tau}_2)&amp; \widehat{Cov}(\hat{\tau}_2,\hat{\beta}_1)\\
+\widehat{Cov}(\hat{\beta}_1,\hat{\beta}_0) &amp; \widehat{Cov}(\hat{\beta}_1,\hat{\tau}_2) &amp; \widehat{Var}(\hat{\beta}_1)
+\end{array}\right)\]</span> is derived from a normal approximation for the distribution of the maximum likelihood estimator, which we won’t consider here, but is provided by R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vcov</span>(glm1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 (Intercept) rx1_indomethacin         risk
+(Intercept)       0.14399969     -0.017129208 -0.046835067
+rx1_indomethacin -0.01712921      0.065462844 -0.002560897
+risk             -0.04683507     -0.002560897  0.018234843</code></pre>
+</div>
+</div>
+<p>We can calculate <span class="math inline">\(\hat{\mu}\)</span> and <span class="math inline">\(\widehat{Var}(\hat{\mu})\)</span> as follows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>parameter_vector <span class="ot">&lt;-</span> <span class="fu">matrix</span>(glm1<span class="sc">$</span>coefficients, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>), <span class="at">ncol =</span><span class="dv">1</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>mu_hat <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> parameter_vector</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>var_mu_hat <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> <span class="fu">vcov</span>(glm1) <span class="sc">%*%</span>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>and then calculate <span class="math inline">\(\hat{p}\)</span> and a confidence interval for <span class="math inline">\(p\)</span> as follows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(mu_hat) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(mu_hat))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.1090134</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(mu_hat <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_mu_hat)) <span class="sc">/</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(mu_hat <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_mu_hat)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]
+[1,] 0.07536761</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(mu_hat <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_mu_hat)) <span class="sc">/</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(mu_hat <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(var_mu_hat)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.1551588</code></pre>
+</div>
+</div>
+<p>To summarise</p>
+<ul>
+<li>for the population of patients on on indomethecin with a <code>risk</code> score of 3, we estimate that 10.9% of them will have pancreatitis;</li>
+<li>a 95% confidence interval for this proportion is (7.5%, 15.5%).</li>
+</ul>
+<section id="obtaining-predictions-with-r" class="level3" data-number="3.6.1">
+<h3 data-number="3.6.1" class="anchored" data-anchor-id="obtaining-predictions-with-r"><span class="header-section-number">3.6.1</span> Obtaining predictions with R</h3>
+<p>Instead of doing all the calculations by hand, we can obtain <span class="math inline">\(\hat{\mu}\)</span> and <span class="math inline">\(\sqrt{\widehat{Var}(\hat{\mu})}\)</span> directly form R using the <code>predict</code> function, setting up a new dataframe <code>newdata</code> with the covariate values at which we wish to make the prediction:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(glm1, </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">rx =</span> <span class="st">"1_indomethacin"</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">risk =</span> <span class="dv">3</span>),</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"link"</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fit
+        1 
+-2.100859 
+
+$se.fit
+[1] 0.2072243
+
+$residual.scale
+[1] 1</code></pre>
+</div>
+</div>
+<p>For comparison, we had</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>mu_hat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] -2.100859</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(var_mu_hat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.2072243</code></pre>
+</div>
+</div>
+<p>We can make a nice visualisation in R using the <code>ggeffects</code> package with <code>ggplot2</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict_response</span>(glm1, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"risk"</span>, <span class="st">"rx"</span>))</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(predictions) <span class="sc">+</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"The effect of indomethecin on reducing </span><span class="sc">\n</span><span class="st">the risk of pancreatitis post ERP"</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Risk score before treatment"</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage of patients with pancreatitis"</span>,</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Treatment"</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Logistic-regression_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Higgins P (2021). <em>medicaldata: Data Package for Medical Datasets</em>. doi:10.32614/CRAN.package.medicaldata <a href="https://doi.org/10.32614/CRAN.package.medicaldata" class="uri">https://doi.org/10.32614/CRAN.package.medicaldata</a>, R package version 0.2.0.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>named after Abraham Wald, 1902-1950. Wald made lots of contributions to mathematics and statistics, and is also famously associated with <a href="https://www.ams.org/publicoutreach/feature-column/fc-2016-06">this story of survivorship bias</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ANCOVA.html" class="pagination-link" aria-label="Analysing clinical trial data with ANCOVA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Analysing clinical trial data with ANCOVA</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./survival intro.html" class="pagination-link" aria-label="Introducing survival analysis">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introducing survival analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Sample sizes for clinical trials – Medical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Multiplicity.html" rel="next">
+<link href="./proportionalhazards.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Sample size.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample sizes for clinical trials</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Medical Statistics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Drug development.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Drug development: background concepts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Analysing clinical trial data with ANCOVA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Logistic regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Logistic regression for binary outcomes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survival intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introducing survival analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./survivor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Estimating and comparing survivor functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parametric.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Parametric one-sample models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./proportionalhazards.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Hazards Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Sample size.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample sizes for clinical trials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Multiplicity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multiplicity</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#normally-distributed-data" id="toc-normally-distributed-data" class="nav-link active" data-scroll-target="#normally-distributed-data"><span class="header-section-number">8.1</span> Normally distributed data</a></li>
+  <li><a href="#binary-data" id="toc-binary-data" class="nav-link" data-scroll-target="#binary-data"><span class="header-section-number">8.2</span> Binary data</a></li>
+  <li><a href="#survival-data" id="toc-survival-data" class="nav-link" data-scroll-target="#survival-data"><span class="header-section-number">8.3</span> Survival data</a>
+  <ul class="collapse">
+  <li><a href="#estimating-the-probabilities-of-an-event" id="toc-estimating-the-probabilities-of-an-event" class="nav-link" data-scroll-target="#estimating-the-probabilities-of-an-event"><span class="header-section-number">8.3.1</span> Estimating the probabilities of an event</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample sizes for clinical trials</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this chapter we consider the problem of how many patients to recruit to a trial. This is an important ethical issue: if a trial has little chance of providing the desired evidence because there are too few patients, it may be unethical to recruit patients to such a trial. If a trial recruits too many patients, this can result in patients being randomised to treatments (potentially receiving an inferior treatment) after sufficient evidence is available.</p>
+<p>We have left this topic towards the end of the module, because to consider a how much data we need (how many patients to recruit), we have to know what we intend to do with the data once we get it: how the data will be analysed. The fundamental idea is to consider the hypothesis test that will be used to test if there is a treatment effect (in the case of a superiority trial), and then work out the sample size needed to achieve a desired <strong>power</strong> of the test.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Definitions: power of a test and Type II error.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>power</strong> of a hypothesis test is the probability of rejecting the null hypothesis when the null hypothesis is false.</p>
+<p>A <strong>Type II error</strong> is the failure to reject the null hypothesis when the the null hypothesis is false.</p>
+</div>
+</div>
+<p>Note that for hypotheses of the form <span class="math display">\[
+H_0:\tau=0, \quad H_A: \tau\neq0,
+\]</span> the power will normally depend on the value of <span class="math inline">\(\tau\)</span>. The power is typically a function of various quantities, including the sample size.</p>
+<p>We recap here the definitions of size of Type I error:</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Definitions: Type I error and size of a test
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>Type I error</strong> is falsely rejecting the null hypothesis when the the null hypothesis is true.</p>
+<p>The <strong>size</strong> of a hypothesis test is the probability making a Type I error.</p>
+</div>
+</div>
+<p>Designing a test involves a trade-off between size and power; we’d like the size to be small as possible, but the only way to have a size of 0 is to make it impossible to reject <span class="math inline">\(H_0\)</span>, and then the power would also be 0.</p>
+<p>For some hypothesis tests, deriving a suitable expression for the power can be difficult. In this chapter, we will concentrate on the general principles, but consider simpler versions of the hypothesis tests we have used thus far. In particular, we will not consider any analyses involving covariates.</p>
+<section id="normally-distributed-data" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="normally-distributed-data"><span class="header-section-number">8.1</span> Normally distributed data</h2>
+<p>We suppose a parallel group superiority trial is to be conducted, where the primary outcome variable is assumed to be normally distributed. We suppose <span class="math inline">\(n\)</span> patients are allocated to each group: treatment and control, with outcomes <span class="math display">\[
+X_{c,1},\ldots,X_{c,n}\stackrel{i.i.d}{\sim}N(\mu_c,\sigma_t^2)
+\]</span> in the control group, and outcomes <span class="math display">\[
+X_{t,1},\ldots,X_{t,n}\stackrel{i.i.d}{\sim}N(\mu_t,\sigma_t^2)
+\]</span> in the treatment group. We define <span class="math inline">\(\tau:=\mu_t - \mu_c\)</span>, and write the hypotheses of interest as <span class="math display">\[
+H_0:\tau=0,\quad H_A:\tau\neq 0.
+\]</span></p>
+<p>The process for choosing <span class="math inline">\(n\)</span> is as follows.</p>
+<ol type="1">
+<li>Identify the method of analysis and hypothesis test.</li>
+</ol>
+<p>Here, we suppose the data will be analysed with a two-sample <span class="math inline">\(t\)</span>-test.</p>
+<ol start="2" type="1">
+<li>Specify the size of the hypothesis test and identify the critical region.</li>
+</ol>
+<p>The size of a test is normally chosen to be 0.05: we are willing to tolerate a 5% probability of falsely rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is true.</p>
+<p>At this point, it may be necessary to make some simplifying assumptions. For a two-sample <span class="math inline">\(t\)</span>-test, our test statistic is <span class="math display">\[
+T:= \frac{\bar{X}_t - \bar{X}_c}{\sqrt{S^2_t/n + S^2_c/n}},
+\]</span> where <span class="math inline">\(\bar{X}_t,\bar{X}_c,S^2_t,S^2_c\)</span> are sample means and sample variances in the treatment and control groups. For a test of size 0.05, the critical region is given by <span class="math inline">\(T&gt;t_{\nu;0.025}\)</span> and <span class="math inline">\(T&lt;t_{\nu;0.975}\)</span> where <span class="math inline">\(t_{\nu;0.975}\)</span> and <span class="math inline">\(t_{\nu;0.025}\)</span> are the 2.5th and 97.5th percentiles of the Student-<span class="math inline">\(t\)</span> distribution with <span class="math inline">\(\nu\)</span> degrees of freedom.</p>
+<p>But the expression of the degrees of freedom <span class="math inline">\(\nu\)</span> depends on the sample size <span class="math inline">\(n\)</span>, which is going to make the algebra difficult for us! So the first simplifying assumption we make is that the <span class="math inline">\(t_{\nu}\)</span> distribution can be approximated by the <span class="math inline">\(N(0,1)\)</span> distribution, which is reasonable if <span class="math inline">\(n\)</span> is large enough.</p>
+<p>So this gives us a critical region where we reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(T&gt;Z_{0.025}=1.96\)</span> or if <span class="math inline">\(T&lt;Z_{0.975}=-1.96\)</span>.</p>
+<ol start="3" type="1">
+<li>Choose the desired power of the test.</li>
+</ol>
+<p>Recall that this is the probability of rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is false; if there really is a treatment effect. The convention is to aim for power between 80% and 90%. We will choose 80% in this example. We use the notation of denoting the probability of a Type II error by <span class="math inline">\(\beta\)</span>, so the power is <span class="math inline">\(1-\beta = 0.8\)</span></p>
+<ol start="4" type="1">
+<li>Specify the minimum clinically relevant difference</li>
+</ol>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Definition: Minimum Clinically Important Difference (MCID)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is the smallest treatment effect that is considered to be worth detecting.</p>
+</div>
+</div>
+<p>For a superiority trial, we want to demonstrate that the treatment is more effective than the control. If it is more effective, but only by some tiny margin, then it is unlikely the treatment would be used in clinical practice, because it typically would involve extra cost, for no worthwhile benefit.</p>
+<p>We suppose that the larger the treatment effect <span class="math inline">\(\tau\)</span> is, the better the treatment is compared to control. We denote the MCID by <span class="math inline">\(\delta\)</span>. For <span class="math inline">\(0&lt;\tau&lt;\delta\)</span>, we suppose that failing to reject <span class="math inline">\(H_0\)</span> is no worse than rejecting <span class="math inline">\(H_0\)</span> and discovering <span class="math inline">\(\tau&lt;\delta\)</span>, because in either case, the treatment wouldn’t be used in practice.</p>
+<ol start="5" type="1">
+<li>Derive the distribution of the test statistic in the case <span class="math inline">\(\tau=\delta\)</span>, and find the power: the probability the test statistic will fall in the critical region.</li>
+</ol>
+<p>To simplify the algebra, we need to make another assumption: we suppose the two variances <span class="math inline">\(\sigma^2_c\)</span> and <span class="math inline">\(\sigma^2_t\)</span> are known, and equal to a common value <span class="math inline">\(\sigma^2\)</span>. In practice, this typically means using data from other published trials to obtain an estimate of <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>With this assumption, we can switch from a two-sample <span class="math inline">\(t\)</span>-test to a <span class="math inline">\(Z\)</span>-test (a test using a normal distribution). Our test statistic is</p>
+<p><span class="math display">\[
+Z:= \frac{\bar{X}_t - \bar{X}_c}{\sqrt{\sigma^2/n + \sigma^2/n}}\sim N(\mu^*,1),
+\]</span> with <span class="math display">\[
+\mu^* = \frac{\delta}{\sqrt{2\sigma^2/n}}.
+\]</span></p>
+<p>Now we need to work out the power. This is the probability of <span class="math inline">\(Z\)</span> lying in the critical region, where <span class="math inline">\(Z\sim N(\mu^*,1)\)</span>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Sample-size_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So if the desired power is <span class="math inline">\(1-\beta\)</span>, then we have <span class="math display">\[
+1-\beta =P(Z&lt; -1.96) +  P(Z&gt;1.96),
+\]</span> We assume that <span class="math inline">\(\delta\)</span> is large enough such that <span class="math inline">\(P(Z&lt; -1.96)\simeq 0\)</span>. Now we have <span class="math display">\[\begin{align*}
+1-\beta &amp;= P(Z&gt;1.96)\\
+\Rightarrow P(Z\le 1.96) &amp;= \beta\\
+\Rightarrow P\left((Z-\mu^*)\le (1.96-\mu^*\right) &amp;= \beta\\
+\Rightarrow 1.96-\mu^*&amp;=\Phi^{-1}(\beta),
+\end{align*}\]</span> where <span class="math inline">\(\Phi^{-1}(.)\)</span> is the inverse CDF of the <span class="math inline">\(N(0,1)\)</span> distribution. For 80% power, we have <span class="math inline">\(\beta=0.2\)</span> and</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.8416212</code></pre>
+</div>
+</div>
+<p>Hence <span class="math display">\[\begin{align*}
+\mu^* &amp;= \frac{\delta}{\sqrt{2\sigma^2/n}} \simeq (1.96 + 0.841)\\
+\Rightarrow n &amp;\simeq \frac{2(1.96+0.841)^2\sigma^2}{\delta^2}
+\end{align*}\]</span></p>
+<p>In general, for a test of size <span class="math inline">\(\alpha\)</span> and desired power <span class="math inline">\(\beta\)</span>, we choose the sample size <span class="math inline">\(n\)</span> per group as <span class="math display">\[
+n =\frac{2\left(\Phi^{-1}(1-\alpha/2)-\Phi^{-1}(\beta)\right)^2\sigma^2}{\delta^2}=\frac{2\left(\Phi^{-1}(\alpha/2)+\Phi^{-1}(\beta)\right)^2\sigma^2}{\delta^2}
+\]</span> A more precise result can be obtained in R using the <code>power.t.test()</code> function. This function does not use the simplification we made of approximating the <span class="math inline">\(t\)</span>-distribution with the normal distribution, but it needs to use numerical methods to find <span class="math inline">\(n\)</span>. This relates to the discussion in step 2 above, where the degrees of freedom parameter in the <span class="math inline">\(t\)</span>-distribution depends on <span class="math inline">\(n\)</span>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A clinical research team is planning a randomized controlled trial to evaluate whether a new daily medication lowers systolic blood pressure more effectively than a standard-of-care control. A parallel group superiority trial will be conducted, with equal number of patients per group.</p>
+<ul>
+<li><p>The outcome measure is defined to be change from baseline in systolic blood pressure at rest, measured in mmHg.</p></li>
+<li><p>Data will be analysed with a two-sided two-sample <span class="math inline">\(t\)</span>-test of size 0.05.</p></li>
+<li><p>The minimum clinically important difference to detect is 5mmHg.</p></li>
+<li><p>From previous studies, the standard deviation of individual patient observations is estimated to be 12 mmHG.</p></li>
+<li><p>90% power is desired.</p></li>
+<li><p>A 10% patient dropout rate is expected.</p></li>
+</ul>
+<p>In our notation, we have <span class="math inline">\(\delta=5, \sigma=12, \alpha = 0.05, \beta = 0.1\)</span>.</p>
+<p>We obtain <span class="math inline">\(\Phi^{-1}(\alpha/2)\)</span> and <span class="math inline">\(\Phi^{-1}(\beta)\)</span> from R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1.959964 -1.281552</code></pre>
+</div>
+</div>
+<p>so, ignoring dropouts, we have <span class="math display">\[
+n\simeq\frac{2(1.96+1.28)^2\times12^2}{5^2}\simeq 121
+\]</span> patients per group.</p>
+<p>Note that R gives a similar result:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span><span class="dv">5</span>, <span class="at">sd =</span> <span class="dv">12</span>, <span class="at">power =</span> <span class="fl">0.9</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">sig.level =</span> <span class="fl">0.05</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">type =</span> <span class="st">"two.sample"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">alternative =</span> <span class="st">"two.sided"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 122.0139
+          delta = 5
+             sd = 12
+      sig.level = 0.05
+          power = 0.9
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p>Inflating for dropouts, we chose <span class="math inline">\(n=121/0.9 \simeq 135\)</span> patients per group.</p>
+</div>
+</div>
+</section>
+<section id="binary-data" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="binary-data"><span class="header-section-number">8.2</span> Binary data</h2>
+<p>Here, we again consider a simplified analysis, where we do not consider any covariates. We suppose that</p>
+<ul>
+<li>the number of ‘successes’ <span class="math inline">\(X_c\)</span> in the control group has the <span class="math inline">\(Binomial(n, \theta_c)\)</span> distribution;</li>
+<li>the number of ‘successes’ <span class="math inline">\(X_t\)</span> in the treatment group has the <span class="math inline">\(Binomial(n,\theta_t)\)</span> distribution;</li>
+<li>once the data are obtained, we test the hypothesis <span class="math inline">\(H_0:\theta_c = \theta_t\)</span>, using a two sample <span class="math inline">\(Z\)</span>-test, assuming the sample proportions <span class="math inline">\(X_c/n\)</span> and <span class="math inline">\(X_t/n\)</span> are normally distributed.</li>
+</ul>
+<p>We follow the same approach before of specifying the desired power of the test and deriving the required sample size. Two differences are</p>
+<ol type="1">
+<li>we first specify <span class="math inline">\(\theta_c\)</span>, for example using historical data, and then set <span class="math inline">\(\theta_t = \theta_c+\delta\)</span>, where <span class="math inline">\(\delta\)</span> is the minimum clinically important difference;</li>
+<li>there is no separate variance parameter to estimate; variances are determined once <span class="math inline">\(\theta_c,\theta_t\)</span> and <span class="math inline">\(n\)</span> are specified.</li>
+</ol>
+<p>We won’t work through the derivation here, but it is similar to the normally distributed case above. We obtain</p>
+<p><span class="math display">\[
+n =\frac{\left(\Phi^{-1}(\alpha/2)+\Phi^{-1}(\beta)\right)^2(\theta_c(1-\theta_c)+ \theta_t(1-\theta_t))}{\delta^2}
+\]</span> As before, we might inflate this number if we expect patients to drop out of the trial.</p>
+</section>
+<section id="survival-data" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="survival-data"><span class="header-section-number">8.3</span> Survival data</h2>
+<p>We consider sample sizes for two group comparisons analysed with the log-rank test. Here, the minimum clinically important difference <span class="math inline">\(\delta\)</span> needs to be specified as a hazard ratio. Again, we won’t consider the derivation, but it can be shown that the total number of <em>events</em> across both groups (where the event could be a patient death, or some other outcome that we wait to observe) to achieve power of <span class="math inline">\(1-\beta\)</span> assuming a test of size <span class="math inline">\(\alpha\)</span> is <span class="math display">\[
+d = \frac{4\left(\Phi^{-1}(\alpha/2)+\Phi^{-1}(\beta)\right)^2}{\left(\log \delta\right)^2}
+\]</span> The complication here is that the number of events is not the same as the number of patients: a patient could survive to the end of the trial, for example.</p>
+<p>If we recruit <span class="math inline">\(n\)</span> patients per group, and <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> are the probabilities of an event for a patient in each group respectively, then the expected number of events in total is <span class="math inline">\(np_1 + np_2\)</span>. If we equate this to the required number of events, we get <span class="math display">\[
+n = \frac{d}{p_1+p_2}
+\]</span></p>
+<section id="estimating-the-probabilities-of-an-event" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="estimating-the-probabilities-of-an-event"><span class="header-section-number">8.3.1</span> Estimating the probabilities of an event</h3>
+<p>We make some assumptions and specify some further trial characteristics to estimate <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span>.</p>
+<ul>
+<li><p>We suppose that for a patient in the control group, their time to event has an exponential distribution with rate parameter <span class="math inline">\(\lambda_1\)</span>.</p></li>
+<li><p>We suppose that for a patient in the treatment group, their time to event has an exponential distribution with rate parameter <span class="math inline">\(\lambda_2\)</span>.</p></li>
+<li><p>As we have already assumed a hazard ratio of <span class="math inline">\(\delta\)</span> (hazard for treatment / hazard for control), we have <span class="math inline">\(\lambda_2 = \delta \lambda 1\)</span>.</p></li>
+<li><p>We use historical data to estimate <span class="math inline">\(\lambda_1\)</span>.</p></li>
+<li><p>We suppose there is a recruitment period lasting <span class="math inline">\(a\)</span> units of time, and than patients arrive uniformly during the recruitment period.</p></li>
+<li><p>The trial concludes after <span class="math inline">\(a+b\)</span> units of time: events can be observed at any time between 0 and <span class="math inline">\(a+b\)</span>, but not after <span class="math inline">\(a+b\)</span>.</p></li>
+</ul>
+<p>For a patient allocated to group <span class="math inline">\(i\)</span>, we suppose they enter the trial at some random time <span class="math inline">\(R\)</span>, with <span class="math inline">\(R\sim U[0,a]\)</span>. Given <span class="math inline">\(R=t\)</span>, the remaining time for a patient to have the event is <span class="math inline">\(a+b-t\)</span>. If <span class="math inline">\(T\)</span> is their time to event, with <span class="math inline">\(T\sim exp(rate = \lambda_i)\)</span>, then we require <span class="math inline">\(T\le a+b-t\)</span>.</p>
+<p>Their probability of an event <span class="math inline">\(p_i\)</span> is <span class="math display">\[\begin{align*}
+p_i&amp; =\int_0^af_R(t)Pr(\mbox{event before } a+b | \mbox{entered at time }t)dt\\
+&amp;=\int_0^a\frac{1}{a}Pr(T\le a+b-t)dt\\
+&amp;=\int_0^a\frac{1}{a}(1-\exp(-\lambda_i(a+b-t))dt\\
+&amp;=1 - \frac{\exp(-\lambda_i b)}{a\lambda_i}\left(1-\exp(-\lambda a)\right)
+\end{align*}\]</span></p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A clinical research team is planning a randomized controlled trial to evaluate whether a new combination therapy prolongs overall survival in patients with advanced-stage cancer compared to a standard-of-care control. A parallel group superiority trial will be conducted, with equal number of patients per group.</p>
+<ul>
+<li><p>The outcome measure is defined to be time to death from any cause (overall survival).</p></li>
+<li><p>Data will be analysed with a two-sided log-rank test of size 0.05.</p></li>
+<li><p>The minimum clinically important difference to detect is a hazard ratio of 0.75 (representing a 25% reduction in the risk of death).</p></li>
+<li><p>From previous studies, the median survival time in the standard-of-care control group is estimated to be 9 months, assuming exponential survival.</p></li>
+<li><p>90% power is desired.</p></li>
+<li><p>The trial will run for 2 years, with patients recruited during the first 6 months.</p></li>
+<li><p>A 10% loss to follow-up rate (unrelated to the event of interest) is expected.</p></li>
+</ul>
+<p>In our notation, we have <span class="math inline">\(\delta=0.75, \alpha = 0.05, \beta = 0.1, a = 0.6\)</span> and <span class="math inline">\(a+b = 2\)</span>.</p>
+<p>We obtain <span class="math inline">\(\Phi^{-1}(\alpha/2)\)</span> and <span class="math inline">\(\Phi^{-1}(\beta)\)</span> from R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1.959964 -1.281552</code></pre>
+</div>
+</div>
+<p>so the total number of events (deaths) that we will need to observe is <span class="math display">\[
+d\simeq\frac{4(1.96+1.28)^2}{(\log 0.75)^2}\simeq 508
+\]</span></p>
+<p>Now we need the event (death) probabilities for each group. We are told that in the control group, median survival is 0.75 years. Assuming an exponential distribution, we have <span class="math display">\[
+\exp(-\lambda_1 0.75) = 0.5\quad \Rightarrow \lambda_1 = \frac{\log 0.5}{-0.75}
+\]</span> with <span class="math inline">\(\lambda_2=0.75\lambda_1\)</span>. Using the formula <span class="math display">\[p_i=1 - \frac{\exp(-\lambda_i b)}{a\lambda_i}\left(1-\exp(-\lambda a)\right),\]</span> we compute <span class="math inline">\(p_1\simeq 0.8\)</span> and <span class="math inline">\(p_2\simeq 0.7\)</span>, and so the total number of patients to recruit per group is <span class="math inline">\(508/1.5\)</span> which we round up to 339 per group. Finally, we inflate this to allow for dropouts, giving <span class="math inline">\(339/.9\)</span> which we round up to 377 per group.</p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./proportionalhazards.html" class="pagination-link" aria-label="Proportional Hazards Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Proportional Hazards Models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Multiplicity.html" class="pagination-link" aria-label="Multiplicity">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multiplicity</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
