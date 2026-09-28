@@ -406,18 +406,18 @@ window.Quarto = {
 <p>Related to the issue of intention-to-treat verses per protocol analyses, there is the issue of what to do about missing data. Where we have incomplete data for individual patients, the data can still be valuable, and we may want to incorporate what we have in our analyses to follow the intention-to-treat principle.</p>
 <p>Here, we will use a very simple technique (used in practice, but also criticised for its limitations): “last observation carried forward”: we replace each missing value by the last value observed for that patient. We can do this in R with the function <code>na_locf()</code> from the <code>imputeTS</code> package<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>imputedData <span class="ot">&lt;-</span> <span class="fu">apply</span>(cholesterol[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>imputedData <span class="ot">&lt;-</span> <span class="fu">apply</span>(cholesterol[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)], <span class="at">MARGIN =</span> <span class="dv">1</span>,</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     imputeTS<span class="sc">::</span>na_locf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>“Imputation” is the process of estimating missing data, and there are a variety of methods to do this. To explain the code, we</p>
 <ul>
-<li>exclude the first three columns of <code>cholesterol</code> using <code>cholesterol[, -c(1:3)]</code> as we don’t want to pass these to the <code>imputeTS::na_locf()</code> function</li>
-<li>use the <code>apply()</code> function with <code>MARGIN=2</code> to apply the function <code>imputeTS::na_locf()</code> to each <em>row</em> of <code>cholesterol[, -c(1:3)]</code></li>
+<li>exclude the first two columns of <code>cholesterol</code> using <code>cholesterol[, -c(1:2)]</code> as we don’t want to pass these to the <code>imputeTS::na_locf()</code> function</li>
+<li>use the <code>apply()</code> function with <code>MARGIN=1</code> to apply the function <code>imputeTS::na_locf()</code> to each <em>row</em> of <code>cholesterol[, -c(1:2)]</code></li>
 </ul>
 <p>Finally, we will make a copy of the <code>cholesterol</code> data and insert the imputed data:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cholesterol_imputed <span class="ot">&lt;-</span> cholesterol</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>cholesterol_imputed[, <span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">&lt;-</span> imputedData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>cholesterol_imputed[, <span class="dv">3</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fu">t</span>(imputedData)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We will use more sophisticated methods for handling incomplete data when we study survival analysis later on in this module.</p>
 </section>
@@ -537,38 +537,38 @@ lm(formula = month6 ~ baseline + treatment, data = cholesterol_imputed)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.53251 -0.18104 -0.03647  0.13741  0.90280 
+-0.45506 -0.16499 -0.04444  0.14453  0.91081 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    3.09781    0.46417   6.674 1.55e-09 ***
-baseline       0.34201    0.10313   3.316  0.00128 ** 
-treatmentdrug -0.13992    0.05631  -2.485  0.01467 *  
+(Intercept)    2.41959    0.45292   5.342 6.07e-07 ***
+baseline       0.49485    0.10063   4.918 3.57e-06 ***
+treatmentdrug -0.16205    0.05494  -2.950  0.00399 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.278 on 97 degrees of freedom
-Multiple R-squared:  0.1337,    Adjusted R-squared:  0.1158 
-F-statistic: 7.482 on 2 and 97 DF,  p-value: 0.0009509</code></pre>
+Residual standard error: 0.2713 on 97 degrees of freedom
+Multiple R-squared:  0.2305,    Adjusted R-squared:  0.2147 
+F-statistic: 14.53 on 2 and 97 DF,  p-value: 3.024e-06</code></pre>
 </div>
 </div>
-<p>From this, we read off the least squares estimate of the treatment effect <span class="math inline">\(\tau_2\)</span> from the <code>treatmentdrug</code> column: <span class="math inline">\(\hat{\tau}_2=-0.13995\)</span>. To test the hypothesis of no treatment effect, <span class="math inline">\(H_0:\tau_2=0\)</span>, we compute the test statistic <span class="math display">\[
+<p>From this, we read off the least squares estimate of the treatment effect <span class="math inline">\(\tau_2\)</span> from the <code>treatmentdrug</code> column: <span class="math inline">\(\hat{\tau}_2=\)</span>-0.162. To test the hypothesis of no treatment effect, <span class="math inline">\(H_0:\tau_2=0\)</span>, we compute the test statistic <span class="math display">\[
 T=\frac{\hat{\tau}_2}{\sqrt{\widehat{Var}(\hat{\tau}_2)}}
-\]</span> where <span class="math inline">\(\sqrt{\widehat{Var}(\hat{\tau}_2)}\)</span> is the estimated standard error of <span class="math inline">\(\hat{\tau}_2\)</span>, and is given in the R output as 0.05631. The observed value of <span class="math inline">\(T\)</span> is reported in the R output as -2.485. If <span class="math inline">\(H_0\)</span> were true, <span class="math inline">\(T\)</span> would have a <span class="math inline">\(t_{n-p}\)</span> distribution, <span class="math inline">\(n\)</span> is the number of observations (100) and <span class="math inline">\(p\)</span> is the number of parameters in the model (3). This is the degrees of freedom, reported by R as 97.</p>
+\]</span> where <span class="math inline">\(\sqrt{\widehat{Var}(\hat{\tau}_2)}\)</span> is the estimated standard error of <span class="math inline">\(\hat{\tau}_2\)</span>, and is given in the R output as 0.0549. The observed value of <span class="math inline">\(T\)</span> is reported in the R output as -2.95. If <span class="math inline">\(H_0\)</span> were true, <span class="math inline">\(T\)</span> would have a <span class="math inline">\(t_{n-p}\)</span> distribution, <span class="math inline">\(n\)</span> is the number of observations (100) and <span class="math inline">\(p\)</span> is the number of parameters in the model (3). This is the degrees of freedom, reported by R as 97.</p>
 <p>For a two-sided alternative hypothesis, the <span class="math inline">\(p\)</span>-value is <span class="math display">\[
-Pr(t_{97}\le -2.485) + Pr(t_{97}\ge 2.485),
-\]</span> i.e.&nbsp;the probability of observing a test statistic ‘as least as extreme’ as -2.485, if <span class="math inline">\(H_0\)</span> were true. We visualise this below</p>
+Pr(t_{97}\le -2.95) + Pr(t_{97}\ge 2.95),
+\]</span> i.e.&nbsp;the probability of observing a test statistic ‘as least as extreme’ as -2.95, if <span class="math inline">\(H_0\)</span> were true. We visualise this below</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="ANCOVA_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ANCOVA_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>R reports the <span class="math inline">\(p\)</span>-value as 0.01467; the shaded area under the curve is 1.47% of the total area under the curve. As this is a small probability (below 5%), we conclude that this is fairly strong evidence against <span class="math inline">\(H_0\)</span>.</p>
-<p>Had we chosen to specify a critical region and reject <span class="math inline">\(H_0\)</span>, if <span class="math inline">\(T\)</span> lies in the critical region, from the <span class="math inline">\(p\)</span>-value we can see we would reject <span class="math inline">\(H_0\)</span> for a test of size 0.05 (5% critical region), but not for a test of size 0.01 (1% critical region). For reference, to find, say, the 5% critical region, we need the 2.5th and 97.5th percentiles of the <span class="math inline">\(t_{97}\)</span> distribution:</p>
+<p>R reports the <span class="math inline">\(p\)</span>-value as 0.004; the shaded area under the curve is 0.4% of the total area under the curve. As this is a small probability (below 5%), we conclude that this is fairly strong evidence against <span class="math inline">\(H_0\)</span>.</p>
+<p>Had we chosen to specify a critical region and reject <span class="math inline">\(H_0\)</span>, if <span class="math inline">\(T\)</span> lies in the critical region, from the <span class="math inline">\(p\)</span>-value we can see we would reject <span class="math inline">\(H_0\)</span> for a test of size 0.05 (5% critical region), but not for a test of size 0.001 (0.1% critical region). For reference, to find, say, the 5% critical region, we need the 2.5th and 97.5th percentiles of the <span class="math inline">\(t_{97}\)</span> distribution:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), <span class="dv">97</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -579,7 +579,7 @@ Pr(t_{97}\le -2.485) + Pr(t_{97}\ge 2.485),
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="ANCOVA_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ANCOVA_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -591,9 +591,9 @@ Pr(t_{97}\le -2.485) + Pr(t_{97}\ge 2.485),
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(lm1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   2.5 %      97.5 %
-(Intercept)    2.1765715  4.01905353
-baseline       0.1373341  0.54668759
-treatmentdrug -0.2516719 -0.02817064</code></pre>
+(Intercept)    1.5206697  3.31850926
+baseline       0.2951279  0.69456290
+treatmentdrug -0.2710942 -0.05300828</code></pre>
 </div>
 </div>
 <section id="reporting-the-results" class="level3" data-number="2.8.1">
@@ -607,7 +607,7 @@ treatmentdrug -0.2516719 -0.02817064</code></pre>
 </ul>
 <p>So, an example summary of the result would be</p>
 <blockquote class="blockquote">
-<p>“We reject the null hypothesis of no treatment effect at the 5% level of significance (<span class="math inline">\(p\)</span>-value 0.015). The drug is estimated to give a mean non-LDL cholesterol reduction of 0.14 mmol/L (95% confidence interval: (0.03, 0.25)mmol/L) after 6 months of treatment.”</p>
+<p>“We reject the null hypothesis of no treatment effect at the 5% level of significance (<span class="math inline">\(p\)</span>-value 0.004). The drug is estimated to give a mean non-LDL cholesterol reduction of 0.16 mmol/L (95% confidence interval: (0.05, 0.27)mmol/L) after 6 months of treatment.”</p>
 </blockquote>
 </section>
 </section>
@@ -645,16 +645,16 @@ H_0:\mu_c=\mu_t,
     Welch Two Sample t-test
 
 data:  month6 by treatment
-t = 1.8919, df = 95.195, p-value = 0.06155
+t = 1.9838, df = 97.183, p-value = 0.0501
 alternative hypothesis: true difference in means between group placebo and group drug is not equal to 0
 95 percent confidence interval:
- -0.005464215  0.226952810
+ -5.278381e-05  2.397247e-01
 sample estimates:
 mean in group placebo    mean in group drug 
-             4.631765              4.521020 </code></pre>
+             4.639020              4.519184 </code></pre>
 </div>
 </div>
-<p>But the <span class="math inline">\(p\)</span>-value of 0.06 would not be considered small enough to reject <span class="math inline">\(H_0\)</span>, and we have failed to detect a treatment effect.</p>
+<p>But the <span class="math inline">\(p\)</span>-value is fractionally above 0.05 and may not be considered small enough to reject <span class="math inline">\(H_0\)</span>, and we have failed to detect a treatment effect.</p>
 <p>Now the difference is no longer significant! To understand this, consider again the model in <a href="#eq-ANCOVA" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, which we will refer to as the “full model”, and then drop the baseline term, to give us a “reduced model. The reduced model is</p>
 <p><span class="math display">\[
 Y_{ij}=\mu + \tau_i + \varepsilon_{ij},
@@ -671,20 +671,21 @@ lm(formula = month6 ~ treatment, data = cholesterol_imputed)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.73102 -0.17176 -0.00639  0.17898  0.88898 
+-0.72918 -0.17902  0.00082  0.18082  0.89082 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    4.63176    0.04087 113.336   &lt;2e-16 ***
-treatmentdrug -0.11074    0.05838  -1.897   0.0608 .  
+(Intercept)    4.63902    0.04224 109.822   &lt;2e-16 ***
+treatmentdrug -0.11984    0.06034  -1.986   0.0498 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.2919 on 98 degrees of freedom
-Multiple R-squared:  0.03542,   Adjusted R-squared:  0.02557 
-F-statistic: 3.598 on 1 and 98 DF,  p-value: 0.06079</code></pre>
+Residual standard error: 0.3017 on 98 degrees of freedom
+Multiple R-squared:  0.03868,   Adjusted R-squared:  0.02888 
+F-statistic: 3.944 on 1 and 98 DF,  p-value: 0.04984</code></pre>
 </div>
 </div>
+<p>(Note that the <span class="math inline">\(p\)</span>-value has just edged below 0.05, but we now have the equivalent of a two-sample <span class="math inline">\(t\)</span>-test <em>assuming equal variances</em>; the Welch test reported above is normally preferred here).</p>
 <p>To summarise:</p>
 <table class="caption-top table">
 <thead>
@@ -697,18 +698,18 @@ F-statistic: 3.598 on 1 and 98 DF,  p-value: 0.06079</code></pre>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\hat{\sigma}\)</span></td>
-<td>0.278</td>
-<td>0.2919</td>
+<td>0.2713</td>
+<td>0.3017</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(\sqrt{\widehat{Var}(\hat{\tau}_2)}\)</span></td>
-<td>0.05631</td>
-<td>0.05838</td>
+<td>0.0549</td>
+<td>0.0603</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(R^2\)</span></td>
-<td>0.13</td>
-<td>0.035</td>
+<td>0.2305</td>
+<td>0.0387</td>
 </tr>
 </tbody>
 </table>
@@ -739,18 +740,18 @@ lm(formula = month6 - baseline ~ treatment, data = cholesterol_imputed)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.76667 -0.21765 -0.05364  0.22939  0.92939 
+-0.61878 -0.20392 -0.06392  0.20108  0.93122 
 
 Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)   
-(Intercept)    0.14667    0.04615   3.178  0.00198 **
-treatmentdrug -0.19605    0.06593  -2.974  0.00370 **
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    0.15392    0.04242   3.629 0.000455 ***
+treatmentdrug -0.20515    0.06060  -3.385 0.001024 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.3296 on 98 degrees of freedom
-Multiple R-squared:  0.08277,   Adjusted R-squared:  0.07342 
-F-statistic: 8.844 on 1 and 98 DF,  p-value: 0.003702</code></pre>
+Residual standard error: 0.3029 on 98 degrees of freedom
+Multiple R-squared:  0.1047,    Adjusted R-squared:  0.09557 
+F-statistic: 11.46 on 1 and 98 DF,  p-value: 0.001024</code></pre>
 </div>
 </div>
 <table class="caption-top table">
@@ -764,25 +765,25 @@ F-statistic: 8.844 on 1 and 98 DF,  p-value: 0.003702</code></pre>
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\hat{\sigma}\)</span></td>
-<td style="text-align: right;">0.278</td>
-<td style="text-align: right;">0.3296</td>
+<td style="text-align: right;">0.2713</td>
+<td style="text-align: right;">0.3029</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(\sqrt{\widehat{Var}(\hat{\tau}_2)}\)</span></td>
-<td style="text-align: right;">0.05631</td>
-<td style="text-align: right;">0.06593</td>
+<td style="text-align: right;">0.0549</td>
+<td style="text-align: right;">0.0606</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(\hat{\tau}_2\)</span></td>
-<td style="text-align: right;">-0.13992</td>
-<td style="text-align: right;">-0.19605</td>
+<td style="text-align: right;">-0.1621</td>
+<td style="text-align: right;">-0.2051</td>
 </tr>
 </tbody>
 </table>
 <p>We can see that the change-from-baseline model has resulted in a larger treatment effect. This has occurred because</p>
 <ul>
 <li>the treatment group had a slightly higher mean cholesterol level at baseline;</li>
-<li>the ANCOVA model estimated a smaller effect of baseline cholesterol on 6-month cholesterol (<span class="math inline">\(\hat{\beta}=0.44\)</span>);</li>
+<li>the ANCOVA model estimated a smaller effect of baseline cholesterol on 6-month cholesterol (<span class="math inline">\(\hat{\beta}=0.49\)</span>);</li>
 <li>the change from baseline has compensated for its assumption of a larger effect of baseline cholesterol (<span class="math inline">\(\beta=1\)</span>) by estimating a stronger treatment effect.</li>
 </ul>
 </section>
@@ -802,23 +803,23 @@ lm(formula = month6 ~ treatment + baseline + age, data = cholesterol_imputed)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.57994 -0.18378 -0.02196  0.13339  0.87133 
+-0.49518 -0.16234 -0.06778  0.12595  0.87551 
 
 Coefficients:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    3.282985   0.494079   6.645 1.84e-09 ***
-treatmentdrug -0.134618   0.056465  -2.384 0.019087 *  
-baseline       0.354414   0.103661   3.419 0.000924 ***
-age           -0.003775   0.003476  -1.086 0.280112    
+(Intercept)    2.627320   0.481154   5.460 3.72e-07 ***
+treatmentdrug -0.156102   0.054988  -2.839  0.00553 ** 
+baseline       0.508759   0.100950   5.040 2.19e-06 ***
+age           -0.004235   0.003385  -1.251  0.21388    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.2778 on 96 degrees of freedom
-Multiple R-squared:  0.1442,    Adjusted R-squared:  0.1174 
-F-statistic: 5.391 on 3 and 96 DF,  p-value: 0.001798</code></pre>
+Residual standard error: 0.2705 on 96 degrees of freedom
+Multiple R-squared:  0.2429,    Adjusted R-squared:  0.2192 
+F-statistic: 10.26 on 3 and 96 DF,  p-value: 6.347e-06</code></pre>
 </div>
 </div>
-<p>Here, the test of the hypothesis <span class="math inline">\(H_0:\gamma=0\)</span> has a test statistic of <span class="math inline">\(-1.086\)</span> and a <span class="math inline">\(p\)</span>-value of 0.280112: so no evidence of an age effect.</p>
+<p>Here, the test of the hypothesis <span class="math inline">\(H_0:\gamma=0\)</span> has a test statistic of <span class="math inline">\(-1.2516\)</span> and a <span class="math inline">\(p\)</span>-value of 0.21: so no evidence of an age effect.</p>
 <p>We will consider later “subgroup analysis”, where we investigate if there are different treatment effects for different subgroups of patients (e.g.&nbsp;subgroups defined by age). In general, however, we do not speculatively search for effects of covariates; we only incorporate covariates when there are good reasons for expecting an effect on the response. This would normally be considered in advance and stated in the protocol/statistical analysis plan.</p>
 
 
