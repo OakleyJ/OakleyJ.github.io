@@ -280,10 +280,23 @@ window.Quarto = {
 
 <p>With clinical trial data, it is usually possible to conduct multiple hypothesis tests, for reasons we will discuss shortly. However, the more tests we do, the more likely we are to have a ‘false positive’ result (rejecting a null hypothesis and thinking we have discovered a treatment effect, when the null hypothesis is actually false and there is no real effect). This problem is referred to as <strong>multiplicity</strong></p>
 <p>If we conduct <span class="math inline">\(k\)</span> separate hypothesis tests of size 0.05 in attempt to find a treatment effect, but in reality, the treatment has no effect on anything, then the probability of falsely rejecting at least one null hypothesis would be <span class="math inline">\(1-0.95^k\)</span>. For <span class="math inline">\(k\ge 14\)</span> it becomes more likely than not that we will make a false claim that there is a treatment effect.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Definition: family-wise error rate (FWER)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose we a set of null hypotheses, a “family”, that will all be tested as part of a single investigation. The family-wise error rate (FWER) is the probability that <em>at least one</em> null hypothesis would be rejected, if every null hypothesis in the family were true.</p>
+</div>
+</div>
 <section id="bonferroni-corrections" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="bonferroni-corrections"><span class="header-section-number">9.1</span> Bonferroni corrections</h2>
-<p>One general approach for handling multiplicity is to make it more difficult to reject any single null hypothesis, so that the overall probability of falsely rejecting any null is acceptably small.</p>
-<p>Suppose we conduct <span class="math inline">\(k\)</span> hypothesis tests. If we want the probability of falsely rejecting at least one null hypothesis (when all null hypotheses are true) to be <span class="math inline">\(\alpha\)</span>, the Bonferroni correction is to set the size of each test to be <span class="math inline">\(\alpha/k\)</span>. This is a conservative rule (stricter than necessary), but easy to implement. Note that</p>
+<p>One general approach for handling multiplicity is to make it more difficult to reject any single null hypothesis, so that the FWER is acceptably small.</p>
+<p>Suppose we conduct <span class="math inline">\(k\)</span> hypothesis tests. If we want the FWER to be <span class="math inline">\(\alpha\)</span>, the Bonferroni correction is to set the size of each test to be <span class="math inline">\(\alpha/k\)</span>. This is a conservative rule (stricter than necessary), but easy to implement. Note that</p>
 <p><span class="math display">\[P(\mbox{reject at least one null}) \le \sum_{i=1}^k P(\mbox{reject null in $i$-th test}) = k\frac{\alpha}{k} = \alpha,\]</span></p>
 <p>so by applying the correction, we have <span class="math inline">\(P(\mbox{reject at least one null}) \le \alpha\)</span>.</p>
 </section>
