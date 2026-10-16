@@ -290,7 +290,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose we a set of null hypotheses, a “family”, that will all be tested as part of a single investigation. The family-wise error rate (FWER) is the probability that <em>at least one</em> null hypothesis would be rejected, if every null hypothesis in the family were true.</p>
+<p>Suppose we have a set of null hypotheses, referred to as a “family”, that will all be tested as part of a single investigation. The family-wise error rate (FWER) is the probability that <em>at least one</em> null hypothesis would be rejected, if every null hypothesis in the family were true.</p>
 </div>
 </div>
 <section id="bonferroni-corrections" class="level2" data-number="9.1">
@@ -310,7 +310,7 @@ window.Quarto = {
 </section>
 <section id="subgroup-analysis" class="level2" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="subgroup-analysis"><span class="header-section-number">9.3</span> Subgroup analysis</h2>
-<p>In a subgroup analysis, the aim is to determine whether the treatment is more or less effective than average for particular subgroups of the patient population, whether is the treatment more effective for female patients than male patients. Multiplicity issues arise if we test for lots of different potential subgroup effects. In particular, there may be scepticism if, for example, overall there is no evidence of a treatment effect, but by considering lots of different subgroups, we eventually find one where there appears to be a significant treatment effect.</p>
+<p>In a subgroup analysis, the aim is to determine whether the treatment is more or less effective than average for particular subgroups of the patient population. Multiplicity issues arise if we test for lots of different potential subgroup effects. In particular, there may be scepticism if, for example, overall there is no evidence of a treatment effect, but by considering lots of different subgroups, we eventually find one where there appears to be a significant treatment effect.</p>
 <p>In general, any subgroup analysis should be set out in advance in the statistical analysis plan, with some rationale as to why the treatment effects may vary between the identified subgroups.</p>
 <p>Subgroup effects can be modelled as treatment-subgroup <em>interactions</em>. For a continuous outcome variable, consider again an ANCOVA model such as</p>
 <p><span class="math display">\[
@@ -326,14 +326,14 @@ Y_{ij}=\mu+\tau_i + \beta x_{ij} + \varepsilon_{ij},
 Y_{ij}=\mu+\tau_i +  \beta x_{ij} + \alpha I\{s_{ij}=1\} +\gamma I\{s_{ij}=1\}I\{i=2\}+\varepsilon_{ij}.
 \]</span> The parameter <span class="math inline">\(\alpha\)</span> is the effect of smoking regardless of treatment, and <span class="math inline">\(\gamma\)</span> is the <em>interaction</em> effect of smoking and treatment, sometimes referred to as a treatment effect <em>modifier</em>. If we consider the expected change in response for the same patient with covariate <span class="math inline">\(x\)</span>, who switches from placebo to drug, for a non-smoker this would be</p>
 <p><span class="math display">\[
-(\mu + \tau_2 + \beta x ) - (\mu + \beta_x) = \tau_2
+(\mu + \tau_2 + \beta x ) - (\mu + \beta x) = \tau_2
 \]</span> and for a smoker this would be <span class="math display">\[
-(\mu + \tau_2 + \beta x + \alpha + \gamma ) - (\mu + \beta_x + \alpha) = \tau_2 + \gamma,
+(\mu + \tau_2 + \beta x + \alpha + \gamma ) - (\mu + \beta x + \alpha) = \tau_2 + \gamma,
 \]</span> so <span class="math inline">\(\gamma\)</span> is the subgroup effect, representing how the treatment effect changes depending on whether the patient is a smoker.</p>
 <section id="testing-for-multiple-subgroup-effects" class="level3" data-number="9.3.1">
 <h3 data-number="9.3.1" class="anchored" data-anchor-id="testing-for-multiple-subgroup-effects"><span class="header-section-number">9.3.1</span> Testing for multiple subgroup effects</h3>
 <p>Typically, multiple groups for a trial population can be identified, so that we could test for multiple subgroup effects. Note that these tests may have low power, as sample sizes for particular subgroups may be small.</p>
-<p>To manage multiplicity, we can do a <em>single</em> hypothesis test that <em>all</em> subgroup effects are zero: we do an <span class="math inline">\(F\)</span>-test to compare a linear model with all the subgroup effect included against a linear model with them all removed.</p>
+<p>To manage multiplicity, we can do a <em>single</em> hypothesis test that <em>all</em> subgroup effects are zero: we do an <span class="math inline">\(F\)</span>-test to compare a linear model with all the subgroup effects included against a linear model with them all removed.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -359,7 +359,7 @@ Y_{ij}=\mu+\tau_i +  \beta x_{ij} + \alpha I\{s_{ij}=1\} +\gamma I\{s_{ij}=1\}I\
 6      Drug           -0.17          1.72   High Positive</code></pre>
 </div>
 </div>
-<p>In addition to testing whether the drug has had an effect compared to placebo, we also want to see if the effect of the drug differs by sex and differs by allergy status.</p>
+<p>In addition to testing whether the drug has had an effect compared to placebo, we also want to see if the effect of the drug differs by use of glucocorticoids and differs by allergy status.</p>
 <p>We consider the following model:</p>
 <p><span class="math display">\[\begin{align*}
 Y_{ij}&amp;=\mu+\tau_i +  \beta x_{ij} + \alpha_1 I\{s_{ij}=1\} +\gamma_1 I\{g_{ij}=1\}I\{i=2\}\\
@@ -407,7 +407,7 @@ Multiple R-squared:  0.0599,    Adjusted R-squared:  0.05454
 F-statistic: 11.17 on 6 and 1052 DF,  p-value: 4.11e-12</code></pre>
 </div>
 </div>
-<p>We can see strong evidence of a treatment effect (evidence that <span class="math inline">\(\tau_2\neq=0\)</span>). The <span class="math inline">\(p\)</span>-value for the test of an allergen subgroup effect (<span class="math inline">\(\gamma_2=0\)</span>) is just above 0.05, so we would be doubtful of a subgroup effect in any case, but we can jointly test that all subgroups effect are zero by fitting a reduced model <span class="math display">\[
+<p>We can see strong evidence of a treatment effect (evidence that <span class="math inline">\(\tau_2\neq 0\)</span>). The <span class="math inline">\(p\)</span>-value for the test of an allergen subgroup effect (<span class="math inline">\(\gamma_2=0\)</span>) is just above 0.05, so we would be doubtful of a subgroup effect in any case, but we can jointly test that all subgroups effect are zero by fitting a reduced model <span class="math display">\[
 Y_{ij}=\mu+\tau_i +  \beta x_{ij} + \alpha_1 I\{s_{ij}=1\}
 +\alpha_2 I\{a_{ij}=1\}  +\varepsilon_{ij}.
 \]</span></p>
@@ -490,6 +490,19 @@ Model 2: fev1_change_w52 ~ fev1_baseline + treatment * gc + treatment *
 </tbody>
 </table>
 <p>Comparing the Pocock method with no interim analysis there is a stricter requirement (lower significance level) at the final analysis: this is the cost of having the additional opportunity to reject <span class="math inline">\(H_0\)</span> at the interim stage. In the O’Brien-Fleming, it is much harder to reject <span class="math inline">\(H_0\)</span> at the interim stage: the evidence has to be much stronger; but it is only slightly harder to reject <span class="math inline">\(H_0\)</span> at the final analysis, compared with the no-interim analysis option.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Definition: <span class="math inline">\(\alpha\)</span>-spending
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This process of adjusting significance levels to achieve an overall Type I error rate of <span class="math inline">\(\alpha\)</span> is known as <span class="math inline">\(\alpha\)</span>-spending. The more we ‘spend’ at the interim analysis (the easier we make to reject <span class="math inline">\(H_0\)</span>), the less we have left at the final analysis (the harder it is to reject <span class="math inline">\(H_0\)</span>.)</p>
+</div>
+</div>
 <p>We visualise this below, in the case where the test statistic has the <span class="math inline">\(N(0,1)\)</span> distribution, so that we can work out the critical region given the required significance at each stage.</p>
 <div class="cell">
 <div class="cell-output-display">
