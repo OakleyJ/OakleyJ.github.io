@@ -387,13 +387,13 @@ p_{ij} = Pr(Y_{ij}=1) = \frac{\exp(\beta_0 + \tau_i + \beta_1x_{ij})}{1+ \exp(\b
 <div class="callout-body-container callout-body">
 <p>Note that this probability is a non-linear function of <span class="math inline">\(x_{ij}\)</span>. In general, for nonlinear functions <span class="math inline">\(f\)</span> and random variables <span class="math inline">\(X\)</span>, we have <span class="math display">\[
 f(\mathbb{E}(X))\neq \mathbb{E}(f(X))
-\]</span> This means that if we want to get the population proportion of patients who would have pancreatitis in each treatment group, the mean probability for the population, assuming different risk scores across the population, we can’t just plug in the mean risk score into <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-pLogit-Inverse</span></a>: we would need to calculate <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-pLogit-Inverse</span></a> for each risk score value in our population and then calculate the mean.</p>
+\]</span> This means that if we want to get the population proportion of patients who would have pancreatitis in each treatment group, the mean probability for the population, assuming different risk scores across the population, we can’t just plug in the mean risk score into <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span>3.2</span></a>: we would need to calculate <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span>3.2</span></a> for each risk score value in our population and then calculate the mean.</p>
 </div>
 </div>
 </section>
 <section id="estimands-for-binary-outcomes" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="estimands-for-binary-outcomes"><span class="header-section-number">3.3</span> Estimands for binary outcomes</h2>
-<p>For the estimand (see <a href="#sec-estimand" class="quarto-xref"><span class="quarto-unresolved-ref">sec-estimand</span></a>) we need a plain-English definition of the effect of the treatment, that is suitably clear and detailed. We then need to relate the parameters of our logistic model to this estimand, so that we can obtain our numerical estimate. For binary outcomes, this can be a little awkward.</p>
+<p>For the estimand (see <a href="ANCOVA.html#sec-estimand" class="quarto-xref"><span>Section 2.4</span></a>) we need a plain-English definition of the effect of the treatment, that is suitably clear and detailed. We then need to relate the parameters of our logistic model to this estimand, so that we can obtain our numerical estimate. For binary outcomes, this can be a little awkward.</p>
 <section id="odds-ratios" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="odds-ratios"><span class="header-section-number">3.3.1</span> Odds ratios</h3>
 <p>For an individual patient given indomethecin, their <strong>odds</strong> of pancreatitis are defined to be <span class="math display">\[
@@ -445,9 +445,9 @@ RD&amp;:= P(Y_{1j}=1) - P(Y_{2j}=1).
 </section>
 <section id="implementing-the-logistic-regression-analysis-in-r" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="implementing-the-logistic-regression-analysis-in-r"><span class="header-section-number">3.4</span> Implementing the logistic regression analysis in R</h2>
-<p>Model parameter estimates for <a href="#eq-logistic-regression-model" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-logistic-regression-model</span></a> can be obtained by maximum likelihood estimation. The likelihood function is <span class="math display">\[
+<p>Model parameter estimates for <a href="#eq-logistic-regression-model" class="quarto-xref">Equation&nbsp;<span>3.1</span></a> can be obtained by maximum likelihood estimation. The likelihood function is <span class="math display">\[
 L(\beta_0,\tau_2,\beta_1;\mathbf{y})=\prod_{i=1,2}\,\prod_{j=1,\ldots,n_i}p_{ij}^{y_{ij}}(1-p_{ij})^{1-y_{ij}},
-\]</span> where <span class="math inline">\(y_{ij}\)</span> is the observed value of <span class="math inline">\(Y_{ij}\)</span>, and <span class="math inline">\(p_{ij}\)</span> is defined in <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-pLogit-Inverse</span></a>. We cannot analytically obtain formulae for maximum likelihood estimates <span class="math inline">\(\hat{\beta}_0, \hat{\beta}_1,\hat{\tau}_2\)</span>, so numerical optimisation has to be used.</p>
+\]</span> where <span class="math inline">\(y_{ij}\)</span> is the observed value of <span class="math inline">\(Y_{ij}\)</span>, and <span class="math inline">\(p_{ij}\)</span> is defined in <a href="#eq-pLogit-Inverse" class="quarto-xref">Equation&nbsp;<span>3.2</span></a>. We cannot analytically obtain formulae for maximum likelihood estimates <span class="math inline">\(\hat{\beta}_0, \hat{\beta}_1,\hat{\tau}_2\)</span>, so numerical optimisation has to be used.</p>
 <p>To implement this in R, we do</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> rx <span class="sc">+</span> risk ,</span>

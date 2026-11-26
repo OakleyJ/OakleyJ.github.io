@@ -445,7 +445,7 @@ Y_{ij} = \mu + \tau_i + \beta x_{ij} + \varepsilon_{ij},
 </div>
 </div>
 </div>
-<p>We now have to relate our model to the estimand as defined in <a href="#sec-estimand" class="quarto-xref"><span class="quarto-unresolved-ref">sec-estimand</span></a>. If we define:</p>
+<p>We now have to relate our model to the estimand as defined in <a href="#sec-estimand" class="quarto-xref"><span>Section 2.4</span></a>. If we define:</p>
 <ul>
 <li><span class="math inline">\(\bar{X}\)</span>: the population mean non-LDL cholesterol at baseline before treatment,</li>
 <li><span class="math inline">\(E(Y_2)\)</span>: the population mean non-LDL cholesterol (mmol/L) at 6 months for patients taking the drug daily;</li>
@@ -658,7 +658,7 @@ mean in group placebo    mean in group drug
 </div>
 </div>
 <p>But the <span class="math inline">\(p\)</span>-value is fractionally above 0.05 and may not be considered small enough to reject <span class="math inline">\(H_0\)</span>, and we have failed to detect a treatment effect.</p>
-<p>Now the difference is no longer significant! To understand this, consider again the model in <a href="#eq-ANCOVA" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-ANCOVA</span></a>, which we will refer to as the “full model”, and then drop the baseline term, to give us a “reduced model. The reduced model is</p>
+<p>Now the difference is no longer significant! To understand this, consider again the model in <a href="#eq-ANCOVA" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, which we will refer to as the “full model”, and then drop the baseline term, to give us a “reduced model. The reduced model is</p>
 <p><span class="math display">\[
 Y_{ij}=\mu + \tau_i + \varepsilon_{ij},
 \]</span> with <span class="math inline">\(\varepsilon_{ij}\sim N(0,\sigma^2)\)</span>.</p>
@@ -726,7 +726,7 @@ F-statistic: 3.944 on 1 and 98 DF,  p-value: 0.04984</code></pre>
 Y_{ij} - x_{ij} &amp; = \mu + \tau_i + \varepsilon_{ij}\\
 \Rightarrow Y_{ij}  &amp; = \mu + \tau_i +  x_{ij}+ \varepsilon_{ij}
 \end{align*}\]</span></p>
-<p>If we now compare this with <a href="#eq-ANCOVA" class="quarto-xref">Equation&nbsp;<span class="quarto-unresolved-ref">eq-ANCOVA</span></a>, we can see this the ANCOVA model with <span class="math inline">\(\beta=1\)</span>. Unless we have good reason to be sure <span class="math inline">\(\beta\)</span> really does equal 1, fixing <span class="math inline">\(\beta=1\)</span> is undesirable because, assuming the least squares estimate <span class="math inline">\(\hat{\beta}\neq 1\)</span> for an ANCOVA model,</p>
+<p>If we now compare this with <a href="#eq-ANCOVA" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, we can see this the ANCOVA model with <span class="math inline">\(\beta=1\)</span>. Unless we have good reason to be sure <span class="math inline">\(\beta\)</span> really does equal 1, fixing <span class="math inline">\(\beta=1\)</span> is undesirable because, assuming the least squares estimate <span class="math inline">\(\hat{\beta}\neq 1\)</span> for an ANCOVA model,</p>
 <ul>
 <li>we get a model fit that is worse than the least-squares fit: the least-squares fit minimises the sum of the squared errors;</li>
 <li>the treatment effect estimator <span class="math inline">\(\hat{\tau}_2\)</span> is biased: the estimators <span class="math inline">\(\hat{\tau}_2\)</span> and <span class="math inline">\(\hat{\beta}\)</span> are typically correlated, and we have fixed <span class="math inline">\(\hat{\beta}\)</span> at the wrong value;</li>
